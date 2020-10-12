@@ -24,9 +24,8 @@ import allied_logo from "../../images/allied_logo_svg.svg";
 import identityService from "../Register/redux/saga/identityService";
 import AlertDialog from "../shared/components/AlertDialog";
 import SpinnerDialog from "../shared/components/SpinnerDialog";
-import { FingerprintService } from "../shared/services/fingerprint-service";
 import useUserState from "./redux/useUserState";
-import UserPool from "./UserPool";
+// import UserPool from "./UserPool";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -62,18 +61,7 @@ const SignIn = () => {
 
   const identitySvc = identityService();
 
-  useEffect(() => {
-    async function getIsLocked() {
-      const fpSvc = await FingerprintService.getInstance();
-      if (fpSvc !== undefined) {
-        let fp = fpSvc.getFingerPrint();
-        let locked = await identitySvc.queryLoginLockout(user.email, fp);
-        setFPValue(fp);
-        setRegLocked(locked);
-      }
-    }
-    getIsLocked();
-  }, [failCounter, identitySvc, user.email]);
+ 
 
   const createAccountSchema = yup.object().shape({
     email: yup
@@ -99,49 +87,47 @@ const SignIn = () => {
 
   const handleLogin = (values: any, actions: any) => {
     setRegSubmit(true);
-    const cognitoUser = new CognitoUser({
-      Username: values.email,
-      Pool: UserPool,
-    });
+    // const cognitoUser = new CognitoUser({
+    //   Username: values.email,
+    //   Pool: UserPool,
+    // });
 
-    const authDetails = new AuthenticationDetails({
-      Username: values.email,
-      Password: values.password,
-    });
+    // const authDetails = new AuthenticationDetails({
+    //   Username: values.email,
+    //   Password: values.password,
+    // });
 
-    cognitoUser.authenticateUser(authDetails, {
-      onSuccess: (data: any) => {
-        console.log("success", data);
-        setCognitoUser(data);
-        identitySvc.loginSuccessReport(values.email, fpValue);
-        history.push("/dashboard");
-      },
-      onFailure: (err: any) => {
-        setState((prev) => ({ ...prev, isError: true, message: err.message }));
-        identitySvc.loginFailureReport(values.email, fpValue);
-        setUser(values);
-        setFailCounter(failCounter + 1);
-      },
-      newPasswordRequired: (data: any) => {
-        console.log("New password Required", data);
-        setState((prev) => ({
-          ...prev,
-          isError: true,
-          message: "Please enter new password",
-          isNewPassword: true,
-        }));
-        cognitoUser.changePassword(values.password, "(Paris1234!)", function(
-          err,
-          result
-        ) {
-          if (err) {
-            alert(err.message || JSON.stringify(err));
-            return;
-          }
-          console.log("call result: " + result);
-        });
-      },
-    });
+    // cognitoUser.authenticateUser(authDetails, {
+    //   onSuccess: (data: any) => {
+    //     console.log("success", data);
+    //     setCognitoUser(data);
+    //     history.push("/dashboard");
+    //   },
+    //   onFailure: (err: any) => {
+    //     setState((prev) => ({ ...prev, isError: true, message: err.message }));
+    //     setUser(values);
+    //     setFailCounter(failCounter + 1);
+    //   },
+    //   newPasswordRequired: (data: any) => {
+    //     console.log("New password Required", data);
+    //     setState((prev) => ({
+    //       ...prev,
+    //       isError: true,
+    //       message: "Please enter new password",
+    //       isNewPassword: true,
+    //     }));
+    //     cognitoUser.changePassword(values.password, "(Paris1234!)", function(
+    //       err,
+    //       result
+    //     ) {
+    //       if (err) {
+    //         alert(err.message || JSON.stringify(err));
+    //         return;
+    //       }
+    //       console.log("call result: " + result);
+    //     });
+    //   },
+    // });
     setUser(values);
     actions.setSubmitting(false);
     setRegSubmit(false);

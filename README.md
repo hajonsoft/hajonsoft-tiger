@@ -1,6 +1,6 @@
-### LISA Portal
+### HajOnSoft Web
 
-This react project allows hajonsoft administrator to login to alialiayman firebase account and perform operations like
+This react project allows hajonsoft customers to login to their own firebase account and perform haj and umrah tasks
 
 edit master translation 
 edit customers 
@@ -8,5 +8,3 @@ save chat log
 edit other looks up 
 connect to any other firebase project as owner
 
-
-![image](https://user-images.githubusercontent.com/69173146/93246374-87b5e080-f741-11ea-8756-b80b8cfcad37.png)

@@ -25,11 +25,7 @@ import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import lisa_log_sm from "../../images/lisa_logo_sm.svg";
 import AlliedHeader from "../Header/AlliedHeader";
-import profileService from "../Profile/profileService";
-import AlertDialog from "../shared/components/AlertDialog";
-import SpinnerDialog from "../shared/components/SpinnerDialog";
-import { FingerprintService } from "../shared/services/fingerprint-service";
-import UserPool from "../SignIn/UserPool";
+// import UserPool from "../SignIn/UserPool";
 import identityService from "./redux/saga/identityService";
 var AmazonCognitoIdentity = require("amazon-cognito-identity-js");
 
@@ -102,18 +98,6 @@ const Register = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  useEffect(() => {
-    async function getIsLocked() {
-      const fpSvc = await FingerprintService.getInstance();
-      if (fpSvc !== undefined) {
-        let fp = fpSvc.getFingerPrint();
-        let locked = await identitySvc.queryRegistrationLockout(fp);
-        setFPValue(fp);
-        setRegLocked(locked);
-      }
-    }
-    getIsLocked();
-  }, [failCounter]);
 
   const signupSchema = yup.object().shape({
     lastName: yup
@@ -154,40 +138,40 @@ const Register = () => {
   });
 
   const handleVerify = async (registrationInfo: any, setValues: any) => {
-    setRegSubmit(true);
-    const profileSvc = profileService();
-    const employeeNumber: any = await identitySvc.verifyEmployee(
-      registrationInfo.lastName,
-      registrationInfo.birthDate,
-      registrationInfo.SSN6,
-      fpValue
-    );
-    if (employeeNumber) {
-      const foundEmployee = await profileSvc.getEmployeeById(employeeNumber);
-      if (foundEmployee) {
-        setEmp({ ...foundEmployee, employee_number: employeeNumber });
-        setValues({
-          ...registrationInfo,
-          phone_number: employeeNumber["phone_number"],
-          phone1_description: employeeNumber["phone1_description"],
-          is_opt: employeeNumber["is_opt"],
-          email: "",
-        });
-        setActiveStep(1);
-        setRegSubmit(false);
-        return;
-      }
-    } else {
-      setFailCounter(failCounter + 1);
-    }
-    // error handling
-    setState({
-      isRegistrationError: true,
-      message: "Verification error: Please review information provided!",
-      isCreatePasswordError: false,
-      isInvalidCode: false,
-    });
-    setRegSubmit(false);
+    // setRegSubmit(true);
+    // const profileSvc = profileService();
+    // const employeeNumber: any = await identitySvc.verifyEmployee(
+    //   registrationInfo.lastName,
+    //   registrationInfo.birthDate,
+    //   registrationInfo.SSN6,
+    //   fpValue
+    // );
+    // if (employeeNumber) {
+    //   const foundEmployee = await profileSvc.getEmployeeById(employeeNumber);
+    //   if (foundEmployee) {
+    //     setEmp({ ...foundEmployee, employee_number: employeeNumber });
+    //     setValues({
+    //       ...registrationInfo,
+    //       phone_number: employeeNumber["phone_number"],
+    //       phone1_description: employeeNumber["phone1_description"],
+    //       is_opt: employeeNumber["is_opt"],
+    //       email: "",
+    //     });
+    //     setActiveStep(1);
+    //     setRegSubmit(false);
+    //     return;
+    //   }
+    // } else {
+    //   setFailCounter(failCounter + 1);
+    // }
+    // // error handling
+    // setState({
+    //   isRegistrationError: true,
+    //   message: "Verification error: Please review information provided!",
+    //   isCreatePasswordError: false,
+    //   isInvalidCode: false,
+    // });
+    // setRegSubmit(false);
   };
 
   const handleCreateAccount = async (values: any, actions: any) => {
@@ -219,64 +203,64 @@ const Register = () => {
     attributeList.push(attributeEmployeeNumber);
     attributeList.push(attributeEmail);
     attributeList.push(attributeName);
-    UserPool.signUp(
-      values.email,
-      values.password,
-      attributeList,
-      null,
-      function(err: any, result: any) {
-        if (err) {
-          setState((prev) => ({
-            ...prev,
-            isCreatePasswordError: true,
-            message: err.message,
-          }));
-          return;
-        }
-        var userSignedUp = result.user;
-        console.log("user name is " + userSignedUp.getUsername());
-        setActiveStep(2);
-      }
-    );
+    // UserPool.signUp(
+    //   values.email,
+    //   values.password,
+    //   attributeList,
+    //   null,
+    //   function(err: any, result: any) {
+    //     if (err) {
+    //       setState((prev) => ({
+    //         ...prev,
+    //         isCreatePasswordError: true,
+    //         message: err.message,
+    //       }));
+    //       return;
+    //     }
+    //     var userSignedUp = result.user;
+    //     console.log("user name is " + userSignedUp.getUsername());
+    //     setActiveStep(2);
+    //   }
+    // );
   };
 
   const handleConfirmEmail = async (values: any, actions: any) => {
-    var userData = {
-      Username: emp.email,
-      Pool: UserPool,
-    };
+//     var userData = {
+//       Username: emp.email,
+//       Pool: UserPool,
+//     };
 
-    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    cognitoUser.confirmRegistration(values.code, true, function(
-      err: any,
-      result: any
-    ) {
-      if (err) {
-        setState((prev) => ({
-          ...prev,
-          isCreatePasswordError: false,
-          isInvalidCode: true,
-          isRegistrationError: false,
-          message: err.message,
-        }));
-        return;
-      }
-      const profileSvc = profileService();
-      /*       emp.email = userData.Username;
-      setEmp(emp);
-      profileSvc.updateEmployee(emp.id.toString(), emp); */
-      console.log("call result: " + result);
-      setActiveStep((ac) => ac + 1);
-    });
+//     var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+//     cognitoUser.confirmRegistration(values.code, true, function(
+//       err: any,
+//       result: any
+//     ) {
+//       if (err) {
+//         setState((prev) => ({
+//           ...prev,
+//           isCreatePasswordError: false,
+//           isInvalidCode: true,
+//           isRegistrationError: false,
+//           message: err.message,
+//         }));
+//         return;
+//       }
+// //      const profileSvc = profileService();
+//       /*       emp.email = userData.Username;
+//       setEmp(emp);
+//       profileSvc.updateEmployee(emp.id.toString(), emp); */
+//       console.log("call result: " + result);
+//       setActiveStep((ac) => ac + 1);
+//     });
   };
   const handlePhoneNumbers = async (values: any, setValues: any) => {
-    const svc = profileService();
-    await svc.updateSMSOptStatus(emp.employee_number, {
-      employee_number: emp.employee_number,
-      phone_number: values.phone_number,
-      opt_status: values.is_opt,
-    });
-    setActiveStep((ac) => ac + 1);
+    // const svc = profileService();
+    // await svc.updateSMSOptStatus(emp.employee_number, {
+    //   employee_number: emp.employee_number,
+    //   phone_number: values.phone_number,
+    //   opt_status: values.is_opt,
+    // });
+    // setActiveStep((ac) => ac + 1);
   };
 
   return (
@@ -284,29 +268,8 @@ const Register = () => {
 
       <AlliedHeader />
     <div className={classes.container}>
-      <AlertDialog
-        title="Registration Locked"
-        open={regLocked}
-        setOpen={setAlertOpen}
-        onClose={handleAlertClose}
-        showOk={true}
-      >
-        <p>
-          This browser is currently locked from further registration attempts.
-          <br />
-          Please contact the Help Desk at 949-555-1212 to resolve this issue.
-        </p>
-        <p>
-          Please provide this reference code:{" "}
-          <strong>
-            <span style={{ color: "red" }}>{fpValue}</span>
-          </strong>
-        </p>
-      </AlertDialog>
 
-      <SpinnerDialog open={regSubmit}>
-        <CircularProgress />
-      </SpinnerDialog>
+
       <Box  pl={6} >
         <Grid container spacing={8} md={10} xs={12}>
           {!mobileMedia && (
@@ -644,28 +607,7 @@ const Register = () => {
                                   fullWidth
                                 />
                               </Grid>
-                              <AlertDialog
-                                formikProps={props}
-                                title="SMS Agreement"
-                                setOpen={(closeState: boolean) =>
-                                  setIsSmsAlertOpen(closeState)
-                                }
-                                open={isSmsAlertOpen}
-                              >
-                                I give Allied Universal, its affiliates and
-                                subsidiaries, and their service providers,
-                                permission to contact me at this phone number
-                                about job opportunities, staffing, scheduling,
-                                or other promotional, marketing or
-                                employment-related matters by autodialed phone
-                                call or text message. I understand that I am not
-                                required to give my consent as a condition of
-                                employment or the provision of any services,
-                                that the number and timing of messages or phone
-                                calls I receive may vary, and that message,
-                                data, and calling rates may apply.
-                              </AlertDialog>
-                              <Grid item xs={12} md={3}>
+                                 <Grid item xs={12} md={3}>
                                 <Box mx={2}>
                                   <Field
                                     as={Select}

@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
 import allied_logo from '../../images/allied_logo_svg.svg';
-import UserPool from './UserPool';
+// import UserPool from './UserPool';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -45,43 +45,43 @@ const ForgotPassword = () => {
 
     const handleSendCode = (values: any, actions: any) => {
 
-        const cognitoUser = new CognitoUser({
-            Username: values.email,
-            Pool: UserPool
-        });
+        // const cognitoUser = new CognitoUser({
+        //     Username: values.email,
+        //     Pool: UserPool
+        // });
 
-        setEmail(values.email);
-        cognitoUser.forgotPassword({
-            onSuccess: function (data) {
-                setIsCodeSent(true);
-                setErrorState({ isError: false, message: '' });
+        // setEmail(values.email);
+        // cognitoUser.forgotPassword({
+        //     onSuccess: function (data) {
+        //         setIsCodeSent(true);
+        //         setErrorState({ isError: false, message: '' });
 
-            },
-            onFailure: function (err) {
-                setErrorState({ isError: true, message: err.message });
-            }
-        });
+        //     },
+        //     onFailure: function (err) {
+        //         setErrorState({ isError: true, message: err.message });
+        //     }
+        // });
         actions.setSubmitting(false);
 
     }
 
     const handleChangePassword = (values: any, actions: any) => {
 
-        const cognitoUser = new CognitoUser({
-            Username: values.email,
-            Pool: UserPool
-        });
+        // const cognitoUser = new CognitoUser({
+        //     Username: values.email,
+        //     Pool: UserPool
+        // });
 
-        cognitoUser.confirmPassword(values.code, values.password, {
-            onSuccess() {
-                history.push('/login');
-            },
-            onFailure(err) {
-                setErrorState({ isError: true, message: err.message });
+        // cognitoUser.confirmPassword(values.code, values.password, {
+        //     onSuccess() {
+        //         history.push('/login');
+        //     },
+        //     onFailure(err) {
+        //         setErrorState({ isError: true, message: err.message });
 
-            },
-        });
-        actions.setSubmitting(false);
+        //     },
+        // });
+        // actions.setSubmitting(false);
 
     }
     return (

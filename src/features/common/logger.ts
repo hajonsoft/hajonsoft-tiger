@@ -1,7 +1,7 @@
 import { datadogLogs } from '@datadog/browser-logs';
 
 datadogLogs.init({
-    clientToken: 'pub53593a4ff7c67498d883020ad3e5bf8d',
+    clientToken: 'pub8f5cd67e84c804d6835f1200fce39421',
     site: 'datadoghq.com',
     forwardErrorsToLogs: true,
     sampleRate: 100
