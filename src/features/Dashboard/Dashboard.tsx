@@ -5,7 +5,7 @@ import {
 import "date-fns";
 import React from "react";
 import dashboardImage from "../../images/4_SP.png";
-import AlliedHeader from "../Header/AlliedHeader";
+import HajonsoftHeader from "../Header/HajonsoftHeader";
 
 const Dashboard = ({ employee }: any) => {
   const mobileMedia = useMediaQuery((theme: any) =>
@@ -20,7 +20,7 @@ const Dashboard = ({ employee }: any) => {
           opacity: 1,
         }}
       >
-        <AlliedHeader />
+        <HajonsoftHeader />
         <div
           style={{
             display: "flex",
@@ -31,14 +31,14 @@ const Dashboard = ({ employee }: any) => {
         >
           <div style={{ width: mobileMedia ? "100%" : "25%", padding: "3rem" }}>
             <Typography gutterBottom variant="h5" style={{ color: "#DDDDDA" }}>
-              Welcome to LISA.
+              Welcome to HajOnSoft.
             </Typography>
             <div
               style={{ color: "#DDDDDA", width: mobileMedia ? "80%" : "100%" }}
             >
               <Typography variant="caption">
-                Thanks for your interest in using the LISA Web Portal! As an
-                employee of Allied Universal, you can use this system as a
+                Thanks for your interest in using the HajOnSoft Web Portal! As a
+                customer of HajOnSoft, you can use this system as a
                 resource for accessing and updating information and personal
                 preferences about scheduling, job opportunities, and other
                 employment-related matters. You can also update your contact

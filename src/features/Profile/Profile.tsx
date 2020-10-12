@@ -7,25 +7,23 @@ import {
   Select,
   Snackbar,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import Box from '@material-ui/core/Box';
 import Grid from "@material-ui/core/Grid";
-import { styled, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Alert from "@material-ui/lab/Alert";
-import Box from '@material-ui/core/Box';
-import NumberFormat from 'react-number-format';
-import InputMask from 'react-input-mask';
 import "date-fns";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import NumberFormat from 'react-number-format';
 import lisa_logo_sm from "../../images/lisa_logo_sm.svg";
-import AlliedHeader from "../Header/AlliedHeader";
+import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
 import profileService from "./profileService";
-import AlertDialog from "../shared/components/AlertDialog";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +64,6 @@ const Profile = () => {
 
   const { cognitoUser } = useUserState();
   const [employee, setEmployee] = useState(initialEmployee);
-  const [smsOptStatus, setSmsOptStatus] = useState({employee_number: 0, phone_number: '', opt_status:false});
   const [isError, setIsError] = React.useState(false);
   const classes = useStyles();
 
@@ -100,7 +97,6 @@ const Profile = () => {
           phone_number: `+1${employee?.phone_number}`,
           opt_status: employee?.is_opt
         }
-        setSmsOptStatus(status);
         
       } catch {
         setIsError(true);
@@ -114,9 +110,6 @@ const Profile = () => {
   const handleSubscribeToSMS = (e: any) => {
     if (employee && employee.id) {
       try {
-        smsOptStatus.opt_status = e.target.checked;
-        svc.updateSMSOptStatus(employee.id, smsOptStatus);
-        setSmsOptStatus((prev) => ({ ...prev, opt_status: e.target.checked }));
         employee.is_opt = e.target.checked;
         setEmployee(employee);
       } catch (err) {
@@ -128,7 +121,7 @@ const Profile = () => {
 
   return (
     <React.Fragment>
-      <AlliedHeader />
+      <HajonsoftHeader />
       <div className={classes.container}>
         <Grid container justify="space-between">
           <Grid item xs={12} sm={1}>
@@ -143,7 +136,7 @@ const Profile = () => {
             </Grid>
             <Grid item container justify="center">
               <Grid item xs={12} md={6} key={employee?.id}>
-                <ProfileForm data={employee} smsOptStatus={smsOptStatus} />
+                <ProfileForm data={employee} smsOptStatus={true} />
               </Grid>
               <Grid item xs={10} md={1}>
                 <Hidden smDown>
@@ -159,7 +152,7 @@ const Profile = () => {
                     Account-related notifications
                   </Typography>
                   <Typography variant="body2">
-                  Thanks for your interest in using the LISA Web Portal! As an employee of Allied Universal, 
+                  Thanks for your interest in using the LISA Web Portal! As an employee of HajOnSoft, 
                   you can use this system as a resource for accessing and updating information and personal 
                   preferences about scheduling, job opportunities, and other employment-related matters. 
                   You can also update your contact information and opt-in and out of various contact methods. 

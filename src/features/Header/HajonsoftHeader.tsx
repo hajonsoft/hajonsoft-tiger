@@ -12,13 +12,13 @@ import smallLogo from '../../images/AU_initials.png';
 import AppHeader from '../shared/components/AppHeader/AppHeader';
 import { IHeaderConfig } from '../shared/components/interfaces';
 
-const AlliedHeader: React.FC = () => {
+const HajonsoftHeader: React.FC = () => {
   const config: IHeaderConfig = {
     logo,
     smallLogo,
     elevation: 2,
     sideMenu: {
-      title: "Allied Universal",
+      title: "HajOnSoft",
       items: [
         {
           title: "Dashboard",
@@ -60,4 +60,4 @@ const AlliedHeader: React.FC = () => {
   return <AppHeader config={config} />;
 };
 
-export default AlliedHeader;
+export default HajonsoftHeader;

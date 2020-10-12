@@ -1,16 +1,15 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import "./AppFooter.scss";
 
 const AppFooter = () => (
   <React.Fragment>
-    <div className="AppFooter" style={{ color: "#DDDDDA", opacity: "0.5" }}>
+    <div style={{ color: "#DDDDDA", opacity: "0.5" }}>
       <Typography variant="subtitle2" gutterBottom>
-        FOR ALLIED UNIVERSAL EMPLOYEE USE ONLY
+        FOR HajOnSoft CUSTOMERS USE ONLY
       </Typography>
       <Typography variant="caption">
-        This website intended for authorized use only by Allied Universal
-        employees only. Unauthorized access or use of this website may subject
+        This website intended for authorized use only by HajOnSoft
+        customers only. Unauthorized access or use of this website may subject
         violators to administrative action, civil, and/or criminal prosecution
         under the United States Criminal Code (Title 18 U.S.C. § 1030).
       </Typography>

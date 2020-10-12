@@ -3,7 +3,7 @@ import {
   Button,
   Checkbox,
   Grid,
-  Link,
+
   MenuItem,
   Select,
   Step,
@@ -13,18 +13,17 @@ import {
   Tabs,
   TextField,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import lisa_log_sm from "../../images/lisa_logo_sm.svg";
-import AlliedHeader from "../Header/AlliedHeader";
+import HajonsoftHeader from "../Header/HajonsoftHeader";
 // import UserPool from "../SignIn/UserPool";
 import identityService from "./redux/saga/identityService";
 var AmazonCognitoIdentity = require("amazon-cognito-identity-js");
@@ -266,7 +265,7 @@ const Register = () => {
   return (
     <React.Fragment>
 
-      <AlliedHeader />
+      <HajonsoftHeader />
     <div className={classes.container}>
 
 
@@ -274,7 +273,7 @@ const Register = () => {
         <Grid container spacing={8} md={10} xs={12}>
           {!mobileMedia && (
             <Grid item>
-              <img src={lisa_log_sm} alt="Lisa logo"></img>
+              <img src={lisa_log_sm} alt="HajOnSoft logo"></img>
             </Grid>
           )}
           <Grid item xs>
@@ -654,7 +653,7 @@ const Register = () => {
                                       variant="body2"
                                       color="textSecondary"
                                     >
-                                      I give Allied Universal, its affiliates
+                                      I give HajOnSoft, its affiliates
                                       and subsidiaries, and their service
                                       providers, permission to contact me at
                                       this phone number about job opportunities,

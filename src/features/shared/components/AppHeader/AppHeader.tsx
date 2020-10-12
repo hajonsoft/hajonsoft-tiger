@@ -217,7 +217,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                 <Box p={2}>
                   <img
                     src={mobileMedia ? config.smallLogo : config.logo}
-                    alt="Allied Universal"
+                    alt="HajOnSoft"
                   />
                 </Box>
               </Grid>

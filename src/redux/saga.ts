@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authService } from './services';
+import { authService } from './authService';
 
 function* sagas() {
     yield takeLatest('LOGIN', loginSaga);

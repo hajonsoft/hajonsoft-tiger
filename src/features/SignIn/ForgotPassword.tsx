@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Link, Paper, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
-import { CognitoUser } from 'amazon-cognito-identity-js';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';

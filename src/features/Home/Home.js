@@ -4,7 +4,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import logo from '../../images/lisa_logo_lg.svg';
 import AppFooter from '../shared/components/AppFooter/AppFooter';
-import allied_logo from './allied_logo.svg';
+import hajonsoft_logo from '../../images/logo-dark.png';
 
 const Home = () => {
 
@@ -20,14 +20,14 @@ const Home = () => {
 
                     <Grid item container justify="center" alignItems="center">
                         <Zoom in={true} timeout={{ appear: 1000, enter: 3000, exit: 15000 }} mountOnEnter unmountOnExit style={{ width: '50%' }}>
-                            <img src={logo} alt="Lisa logo"></img>
+                            <img src={logo} alt="HajOnSoft"></img>
                         </Zoom>
 
                     </Grid>
 
                     <Grid item>
                         <Typography style={{ color: '#fff' }} variant="h5">
-                            <Box letterSpacing={2}>Live Interactive Support AI</Box>
+                            <Box letterSpacing={2}>Engineered Travel Management</Box>
                         </Typography>
                     </Grid>
 
@@ -58,7 +58,7 @@ const Home = () => {
                 
                     <Grid item container direction="column" alignItems="center">
                         <Grid item style={{ margin: '50px 0px' }}>
-                        <img src={allied_logo} alt="Allied Universal logo"></img>
+                        <img src={hajonsoft_logo} alt="HajOnSoft"></img>
 
                         </Grid>
                         <Grid item>

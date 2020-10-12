@@ -9,21 +9,17 @@ import {
   Paper,
   TextField,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import * as yup from "yup";
 import allied_logo from "../../images/allied_logo_svg.svg";
 import identityService from "../Register/redux/saga/identityService";
-import AlertDialog from "../shared/components/AlertDialog";
-import SpinnerDialog from "../shared/components/SpinnerDialog";
 import useUserState from "./redux/useUserState";
 // import UserPool from "./UserPool";
 
@@ -53,15 +49,7 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const { setCognitoUser } = useUserState();
-  const [failCounter, setFailCounter] = useState(0);
-  const [fpValue, setFPValue] = useState("");
-  const [regLocked, setRegLocked] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [regSubmit, setRegSubmit] = useState(false);
-
   const identitySvc = identityService();
-
- 
 
   const createAccountSchema = yup.object().shape({
     email: yup
@@ -80,13 +68,8 @@ const SignIn = () => {
       ),
   });
 
-  const handleAlertClose = () => {
-    setAlertOpen(false);
-    history.push("/");
-  };
 
   const handleLogin = (values: any, actions: any) => {
-    setRegSubmit(true);
     // const cognitoUser = new CognitoUser({
     //   Username: values.email,
     //   Pool: UserPool,
@@ -130,27 +113,9 @@ const SignIn = () => {
     // });
     setUser(values);
     actions.setSubmitting(false);
-    setRegSubmit(false);
   };
   return (
     <div className={classes.container}>
-      <AlertDialog
-        title="Registration Locked"
-        open={regLocked}
-        setOpen={setAlertOpen}
-        onClose={handleAlertClose}
-        showOk={true}
-      >
-        <p>
-          Your account is currently locked from further registration attempts.
-          <br />
-          Please contact the Lisa Help Desk at 949-555-1212 to resolve this
-          issue.
-        </p>
-      </AlertDialog>
-      <SpinnerDialog open={regSubmit}>
-        <CircularProgress />
-      </SpinnerDialog>
       <Grid
         container
         direction="column"
@@ -174,7 +139,7 @@ const SignIn = () => {
           </Typography>
 
           <Typography align="center">
-            Login to continue to Lisa-Portal
+            Login to continue to HajOnSoft
           </Typography>
         </Grid>
         <Grid item>
