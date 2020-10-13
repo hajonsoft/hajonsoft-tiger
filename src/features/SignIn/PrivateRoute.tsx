@@ -4,11 +4,11 @@ import useUserState from './redux/useUserState';
 
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
-    const {isAuthenticated} = useUserState();
+    const {isValid} = useUserState();
     return (
 
         <Route {...rest} render={props => (
-            isAuthenticated ?
+            isValid ?
                 <Component {...props} />
                 : <Redirect to="/" />
         )} />

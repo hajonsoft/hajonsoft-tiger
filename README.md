@@ -8,6 +8,17 @@ save chat log
 edit other looks up 
 connect to any other firebase project as owner
 
+# Getting started 
+
+1- setup a firebase project 
+2- create database and storage use custom names as much as possible
+3- setup security rules after migration 
+
+# security rule 
+recommended security rule is 
+
+
+
 # Credits
 
 Favicon Generator https://realfavicongenerator.net/

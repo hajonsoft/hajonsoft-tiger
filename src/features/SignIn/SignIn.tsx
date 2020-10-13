@@ -40,7 +40,8 @@ const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
-  const { fetchUser, error } = useUserState("firebase");
+  // TODO: test error and returned data 
+  const { fetchUser, error , user} = useUserState("firebase");
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -63,6 +64,10 @@ const SignIn = () => {
     fetchUser(values);
     actions.setSubmitting(false);
   };
+  
+  if (user) {
+    history.push('/home')
+  }
   return (
     <div className={classes.container}>
       <Grid

@@ -7,6 +7,8 @@ import React from "react";
 import dashboardImage from "../../images/4_SP.png";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 
+// TODO: show order history component here 
+
 const Dashboard = ({ employee }: any) => {
   const mobileMedia = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
