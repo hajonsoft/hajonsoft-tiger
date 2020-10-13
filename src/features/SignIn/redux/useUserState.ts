@@ -1,18 +1,23 @@
-import { loginSuccess } from './actions';
+import { login } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
+// Using reducer from src\redux\reducer.ts
+const useUserState = ({provider}: any): any => {
+    const authProvider = provider || 'firebase';
 
-const useUserState = (): any => {
     const dispatch = useDispatch();
 
-    const setCognitoUser = (user: any) => {
-        dispatch(loginSuccess(user))
+    const fetchUser = (user: any) => {
+        dispatch(login({...user, authProvider}))
     }
 
-
+// TODO: standardize state member based on site name
     return {
-        cognitoUser: useSelector((state: any) => state.cognitoUser),
-        isAuthenticated: useSelector((state: any) => state.cognitoUser ? true : false),
-        setCognitoUser
+        user: useSelector((state: any) => state.user.data),
+        loading: useSelector((state: any) => state.user.loading),
+        error: useSelector((state: any) => state.user.error),
+        //TODO: Calculate isValid based on validity of the token. If the token is expired then the user is no longer valid
+        isValid: useSelector((state: any) => state.user.data?.exp_at ? true : false),
+        fetchUser
     }
 }
 

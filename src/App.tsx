@@ -19,7 +19,7 @@ import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
-
+// TODO: find the primary color from the logo a shade of blue, the secondary color from the logo or no secondary color. https://material-ui.com/customization/color/#color
 let defaultTheme = createMuiTheme({
   palette: {
     primary: {

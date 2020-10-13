@@ -2,7 +2,7 @@ import { Box, Button, Grid, Typography } from '@material-ui/core';
 import Zoom from '@material-ui/core/Zoom';
 import React from 'react';
 import { useHistory } from 'react-router';
-import logo from '../../images/lisa_logo_lg.svg';
+import logo from '../../images/logo-dark.png';
 import AppFooter from '../shared/components/AppFooter/AppFooter';
 import hajonsoft_logo from '../../images/logo-dark.png';
 
@@ -20,14 +20,14 @@ const Home = () => {
 
                     <Grid item container justify="center" alignItems="center">
                         <Zoom in={true} timeout={{ appear: 1000, enter: 3000, exit: 15000 }} mountOnEnter unmountOnExit style={{ width: '50%' }}>
-                            <img src={logo} alt="HajOnSoft"></img>
+                            <Typography variant="h1" align="center">Haj On Soft</Typography>
                         </Zoom>
 
                     </Grid>
 
                     <Grid item>
                         <Typography style={{ color: '#fff' }} variant="h5">
-                            <Box letterSpacing={2}>Engineered Travel Management</Box>
+                            <Box letterSpacing={2}>Travel Management Engineered</Box>
                         </Typography>
                     </Grid>
 
@@ -62,7 +62,6 @@ const Home = () => {
 
                         </Grid>
                         <Grid item>
-
                             <AppFooter />
                         </Grid>
                     </Grid>

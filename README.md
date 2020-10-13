@@ -8,3 +8,8 @@ save chat log
 edit other looks up 
 connect to any other firebase project as owner
 
+# Credits
+
+Favicon Generator https://realfavicongenerator.net/
+
+Favicon article https://serverless-stack.com/chapters/add-app-favicons.html

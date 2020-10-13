@@ -9,7 +9,7 @@ import {
   Paper,
   TextField,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
@@ -18,10 +18,8 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import * as yup from "yup";
-import allied_logo from "../../images/allied_logo_svg.svg";
-import identityService from "../Register/redux/saga/identityService";
+import logo from "../../images/logo.jpg";
 import useUserState from "./redux/useUserState";
-// import UserPool from "./UserPool";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,17 +39,10 @@ const SignIn = () => {
   );
   const classes = useStyles();
   const history = useHistory();
-  const [user, setUser] = useState({ email: "", password: "" });
-  const [state, setState] = useState({
-    isError: false,
-    message: "",
-    isNewPassword: false,
-  });
   const [showPassword, setShowPassword] = useState(false);
-  const { setCognitoUser } = useUserState();
-  const identitySvc = identityService();
+  const { fetchUser, error } = useUserState("firebase");
 
-  const createAccountSchema = yup.object().shape({
+  const loginSchema = yup.object().shape({
     email: yup
       .string()
       .email("Invalid email address")
@@ -68,50 +59,8 @@ const SignIn = () => {
       ),
   });
 
-
   const handleLogin = (values: any, actions: any) => {
-    // const cognitoUser = new CognitoUser({
-    //   Username: values.email,
-    //   Pool: UserPool,
-    // });
-
-    // const authDetails = new AuthenticationDetails({
-    //   Username: values.email,
-    //   Password: values.password,
-    // });
-
-    // cognitoUser.authenticateUser(authDetails, {
-    //   onSuccess: (data: any) => {
-    //     console.log("success", data);
-    //     setCognitoUser(data);
-    //     history.push("/dashboard");
-    //   },
-    //   onFailure: (err: any) => {
-    //     setState((prev) => ({ ...prev, isError: true, message: err.message }));
-    //     setUser(values);
-    //     setFailCounter(failCounter + 1);
-    //   },
-    //   newPasswordRequired: (data: any) => {
-    //     console.log("New password Required", data);
-    //     setState((prev) => ({
-    //       ...prev,
-    //       isError: true,
-    //       message: "Please enter new password",
-    //       isNewPassword: true,
-    //     }));
-    //     cognitoUser.changePassword(values.password, "(Paris1234!)", function(
-    //       err,
-    //       result
-    //     ) {
-    //       if (err) {
-    //         alert(err.message || JSON.stringify(err));
-    //         return;
-    //       }
-    //       console.log("call result: " + result);
-    //     });
-    //   },
-    // });
-    setUser(values);
+    fetchUser(values);
     actions.setSubmitting(false);
   };
   return (
@@ -131,21 +80,19 @@ const SignIn = () => {
       >
         <Grid item>
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
-            <img src={allied_logo} alt="Allied logo"></img>
+            <img src={logo} alt="HajOnSoft logo"></img>
           </Box>
 
           <Typography color="primary" variant="h6" gutterBottom align="center">
             <Box p={2}>WELCOME</Box>
           </Typography>
 
-          <Typography align="center">
-            Login to continue to HajOnSoft
-          </Typography>
+          <Typography align="center">Login to continue to HajOnSoft</Typography>
         </Grid>
         <Grid item>
           <Formik
             initialValues={user}
-            validationSchema={createAccountSchema}
+            validationSchema={loginSchema}
             onSubmit={handleLogin}
           >
             {({ handleSubmit }) => (
@@ -211,9 +158,9 @@ const SignIn = () => {
                         </Link>
                       </Grid>
                     </Grid>
-                    {state.isError && (
+                    {error && (
                       <Grid item>
-                        <Alert severity="error">{`${state.message}`}</Alert>
+                        <Alert severity="error">{`${error}`}</Alert>
                       </Grid>
                     )}
                   </Grid>

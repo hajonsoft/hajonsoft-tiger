@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authService } from './authService';
+import { authService } from './firebaseAuthService';
 
 function* sagas() {
     yield takeLatest('LOGIN', loginSaga);
@@ -12,7 +12,7 @@ function* loginSaga(action: any) {
         yield put({ type: 'LOGIN_SUCCESS', payload: result });
 
     } catch (e) {
-        yield put({ type: 'LOGIN_ERROR', message: e.message });
+        yield put({ type: 'LOGIN_FAIL', payload: e.message });
     }
 
 }
