@@ -41,7 +41,7 @@ const SignIn = () => {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   // TODO: test error and returned data 
-  const { fetchUser, error , user} = useUserState("firebase");
+  const { fetchUser, error, user , isValid} = useUserState("firebase");
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -64,8 +64,8 @@ const SignIn = () => {
     fetchUser(values);
     actions.setSubmitting(false);
   };
-  
-  if (user) {
+
+  if (user && isValid) {
     history.push('/home')
   }
   return (
@@ -144,8 +144,8 @@ const SignIn = () => {
                                   {showPassword ? (
                                     <Visibility />
                                   ) : (
-                                    <VisibilityOff />
-                                  )}
+                                      <VisibilityOff />
+                                    )}
                                 </IconButton>
                               </InputAdornment>
                             ),

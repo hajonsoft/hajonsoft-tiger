@@ -13,9 +13,9 @@ const Home = () => {
     return (
 
         <React.Fragment >
-            <div style={{ background: 'transparent radial-gradient(closest-side at 50% 50%, #007EB8 0%, #00547A 100%) 0% 0% no-repeat', opacity: '1', color: '#fff',  height: '100vh'}}>
+            <div style={{ background: 'transparent radial-gradient(closest-side at 50% 50%, #007EB8 0%, #00547A 100%) 0% 0% no-repeat', opacity: '1', color: '#fff', height: '100vh' }}>
 
-                <Grid container direction="column" alignItems="center" justify="space-around" style={{height: '100%'}}>
+                <Grid container direction="column" alignItems="center" justify="space-around" style={{ height: '100%' }}>
                     <Grid item ><Typography alignItems="center" variant="h3">Welcome to</Typography></Grid>
 
                     <Grid item container justify="center" alignItems="center">
@@ -55,10 +55,10 @@ const Home = () => {
 
                         </Grid>
                     </Grid>
-                
+
                     <Grid item container direction="column" alignItems="center">
                         <Grid item style={{ margin: '50px 0px' }}>
-                        <img src={hajonsoft_logo} alt="HajOnSoft"></img>
+                            <img src={hajonsoft_logo} alt="HajOnSoft"></img>
 
                         </Grid>
                         <Grid item>

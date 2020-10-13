@@ -1,8 +1,10 @@
 import {
   AppBar,
-  Button,
+
+
+  Box, Button,
   Card,
-  Box,
+
   CardContent,
   CardHeader,
   ClickAwayListener,
@@ -21,7 +23,7 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-  useScrollTrigger,
+  useScrollTrigger
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { blue } from "@material-ui/core/colors";
@@ -106,7 +108,7 @@ const svc = profileService();
 
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const classes = useStyles();
-  const { cognitoUser } = useUserState();
+  const { user } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
 
   let initialEmployee: {
     id: number;
@@ -144,16 +146,16 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
     async function getEmployee() {
       try {
         const result = await svc.getEmployeeById(
-          cognitoUser?.idToken?.payload["profile"]
+          user?.idToken?.payload["profile"]
         );
-        result.email = cognitoUser?.idToken?.payload["email"];
+        result.email = user?.idToken?.payload["email"];
         setEmployee(result);
       } catch {
         setIsError(true);
       }
     }
     getEmployee();
-  }, [cognitoUser]);
+  }, [user]);
 
   const handleButtonMenuClose = (e: any, b: any) => {
     setState((p) => {
@@ -222,8 +224,8 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                 </Box>
               </Grid>
               <Grid item>
-                {cognitoUser &&
-                  cognitoUser.idToken &&
+                {user &&
+                  user.idToken &&
                   config.buttons.map((b) => (
                     <React.Fragment key={`topButton/${b.name || b.title}`}>
                       <IconButton
@@ -320,7 +322,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                       )}
                     </React.Fragment>
                   ))}
-                {cognitoUser && cognitoUser.idToken && (
+                {user && user.idToken && (
                   <React.Fragment key={`profile`}>
                     <IconButton
                       onClick={(e) =>
@@ -441,7 +443,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                   </React.Fragment>
                 )}
 
-                {(!cognitoUser || !cognitoUser.idToken) && !mobileMedia && (
+                {(!user || !user.idToken) && !mobileMedia && (
                   <Box p={2}>
                     <Button
                       type="submit"
@@ -456,7 +458,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                   </Box>
                 )}
 
-                {(!cognitoUser || !cognitoUser.idToken) && mobileMedia && (
+                {(!user || !user.idToken) && mobileMedia && (
                   <Button
                     type="submit"
                     color="primary"

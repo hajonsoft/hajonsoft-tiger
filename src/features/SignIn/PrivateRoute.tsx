@@ -4,7 +4,7 @@ import useUserState from './redux/useUserState';
 
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
-    const {isValid} = useUserState();
+    const {isValid} = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
     return (
 
         <Route {...rest} render={props => (

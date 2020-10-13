@@ -62,7 +62,7 @@ const Profile = () => {
     email: ''
   };
 
-  const { cognitoUser } = useUserState();
+  const { user } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
   const [employee, setEmployee] = useState(initialEmployee);
   const [isError, setIsError] = React.useState(false);
   const classes = useStyles();
@@ -78,16 +78,16 @@ const Profile = () => {
     async function getEmployee() {
       try {
         const result = await svc.getEmployeeById(
-          cognitoUser?.idToken?.payload["profile"]
+          user?.idToken?.payload["profile"]
         );
-        result.email = cognitoUser?.idToken?.payload["email"]
+        result.email = user?.idToken?.payload["email"]
         setEmployee(result);
       } catch {
         setIsError(true);
       }
     }
     getEmployee();
-  }, [cognitoUser]);
+  }, [user]);
 
   useEffect(() => {
     async function getSmsOptStatus() {
