@@ -41,7 +41,7 @@ const SignIn = () => {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   // TODO: test error and returned data 
-  const { fetchUser, error, user , isValid} = useUserState("firebase");
+  const { fetchUser, error, user , isValid: isLoggedin} = useUserState("firebase");
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -65,8 +65,8 @@ const SignIn = () => {
     actions.setSubmitting(false);
   };
 
-  if (user && isValid) {
-    history.push('/home')
+  if (isLoggedin) {
+     history.push('/dashboard')
   }
   return (
     <div className={classes.container}>
@@ -96,7 +96,7 @@ const SignIn = () => {
         </Grid>
         <Grid item>
           <Formik
-            initialValues={user}
+            initialValues={{email: 'ayali@hotmail.com', password: '(Paris123)'}}
             validationSchema={loginSchema}
             onSubmit={handleLogin}
           >

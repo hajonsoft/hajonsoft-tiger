@@ -16,7 +16,7 @@ const useUserState = ({provider}: any): any => {
         loading: useSelector((state: any) => state.user.loading),
         error: useSelector((state: any) => state.user.error),
         //TODO: Calculate isValid based on validity of the token. If the token is expired then the user is no longer valid
-        isValid: useSelector((state: any) => state.user.data?.exp_at ? true : false),
+        isValid: useSelector((state: any) => state.user.data?.idToken ),
         fetchUser
     }
 }

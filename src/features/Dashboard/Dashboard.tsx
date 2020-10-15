@@ -6,6 +6,7 @@ import "date-fns";
 import React from "react";
 import dashboardImage from "../../images/4_SP.png";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
+import useUserState from "../SignIn/redux/useUserState";
 
 // TODO: show order history component here 
 
@@ -13,6 +14,8 @@ const Dashboard = ({ employee }: any) => {
   const mobileMedia = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
+  const {user} = useUserState('firebase');
+
   return (
     <React.Fragment>
       <div
@@ -48,6 +51,7 @@ const Dashboard = ({ employee }: any) => {
                 are not required to use this system — participation is 100%
                 optional.
               </Typography>
+              <pre>{JSON.stringify(user)}</pre>
             </div>
           </div>
           <div

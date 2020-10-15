@@ -1,7 +1,7 @@
 import {
   createMuiTheme,
   responsiveFontSizes,
-  ThemeProvider,
+  ThemeProvider
 } from "@material-ui/core";
 import React from "react";
 import { Provider } from "react-redux";

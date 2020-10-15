@@ -3,26 +3,29 @@ import { authService } from './firebaseAuthService';
 import {fork} from 'redux-saga/effects';
 
 function* sagas() {
-    yield fork(loginFlow);
-    yield takeLatest('PACKAGES', packagesFlow);
-    yield takeLatest('PACKAGECUSTOMERS', packageCustomersFlow);
-
-}
-
-function* loginFlow() {
     yield takeLatest('LOGIN', loginSaga);
+
+    // yield fork(loginFlow);
+    // yield fork( packagesFlow);
+    // yield fork(packageCustomersFlow);
+
 }
 
-function* packagesFlow() {
-    yield takeLatest('PACKAGES', packageSaga);
-}
+// function* loginFlow() {
+//     yield takeLatest('LOGIN', loginSaga);
+// }
 
-function* packageCustomersFlow() {
-    yield takeLatest('PACKAGECUSTOMERS', packageCustomersSaga);
-}
+// function* packagesFlow() {
+//     yield takeLatest('PACKAGES', packageSaga);
+// }
+
+// function* packageCustomersFlow() {
+//     yield takeLatest('PACKAGECUSTOMERS', packageCustomersSaga);
+// }
 function* loginSaga(action: any) {
     try {
         const result = yield call(authService.login, action.payload);
+        console.log('----------------------ATTENTION----------', result);
         if (result.error) {
             yield put({ type: 'LOGIN_FAIL', payload: result.error.message });
 
@@ -37,27 +40,27 @@ function* loginSaga(action: any) {
 
 }
 
-function* packageSaga(action: any) {
-    try {
-        const result = yield call(authService.login, action.payload);
-        yield put({ type: 'LOGIN_SUCCESS', payload: result });
+// function* packageSaga(action: any) {
+//     try {
+//         const result = yield call(authService.login, action.payload);
+//         yield put({ type: 'LOGIN_SUCCESS', payload: result });
 
-    } catch (e) {
-        yield put({ type: 'LOGIN_FAIL', payload: e.message });
-    }
+//     } catch (e) {
+//         yield put({ type: 'LOGIN_FAIL', payload: e.message });
+//     }
 
-}
+// }
 
-function* packageCustomersSaga(action: any) {
-    try {
-        const result = yield call(authService.login, action.payload);
-        yield put({ type: 'LOGIN_SUCCESS', payload: result });
+// function* packageCustomersSaga(action: any) {
+//     try {
+//         const result = yield call(authService.login, action.payload);
+//         yield put({ type: 'LOGIN_SUCCESS', payload: result });
 
-    } catch (e) {
-        yield put({ type: 'LOGIN_FAIL', payload: e.message });
-    }
+//     } catch (e) {
+//         yield put({ type: 'LOGIN_FAIL', payload: e.message });
+//     }
 
-}
+// }
 
 
 export default sagas;
