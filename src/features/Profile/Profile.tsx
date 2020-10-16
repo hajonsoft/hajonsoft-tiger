@@ -20,7 +20,7 @@ import "date-fns";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import NumberFormat from 'react-number-format';
-import lisa_logo_sm from "../../images/lisa_logo_sm.svg";
+import lisa_logo_sm from "../../images/logo_mobile.jpg";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
 import profileService from "./profileService";

@@ -22,7 +22,7 @@ import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
-import lisa_log_sm from "../../images/lisa_logo_sm.svg";
+import logo_mobile from "../../images/logo_mobile.jpg";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 // import UserPool from "../SignIn/UserPool";
 import identityService from "./redux/saga/identityService";
@@ -273,7 +273,7 @@ const Register = () => {
         <Grid container spacing={8} md={10} xs={12}>
           {!mobileMedia && (
             <Grid item>
-              <img src={lisa_log_sm} alt="HajOnSoft logo"></img>
+              <img src={logo_mobile} alt="HajOnSoft logo"></img>
             </Grid>
           )}
           <Grid item xs>

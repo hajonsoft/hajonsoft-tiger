@@ -1,20 +1,19 @@
-import {
-  Typography,
-  useMediaQuery
-} from "@material-ui/core";
+import { Typography, useMediaQuery } from "@material-ui/core";
 import "date-fns";
 import React from "react";
-import dashboardImage from "../../images/4_SP.png";
+import dashboardImage from "../../images/travel-booking.svg";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
 
-// TODO: show order history component here 
+// TODO: show order history component here
 
 const Dashboard = ({ employee }: any) => {
   const mobileMedia = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
-  const {user} = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
+  const { user } = useUserState({
+    provider: process.env.REACT_APP_AUTHPROVIDER,
+  });
 
   return (
     <React.Fragment>
@@ -34,8 +33,8 @@ const Dashboard = ({ employee }: any) => {
             height: "100vh",
           }}
         >
-         Your contents here
-           </div>
+          <img src={dashboardImage} alt="travel" />
+        </div>
       </div>
     </React.Fragment>
   );

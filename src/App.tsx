@@ -23,22 +23,22 @@ import sagas from "./redux/saga";
 let defaultTheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#0089C7",
+      main: "#3E95DC", //summer sky
     },
     secondary: {
-      main: "#4D5C64",
+      main: "#9e2b25", // auburn 
     },
     error: {
-      main: "#C13636",
+      main: "#ff5a5f", //sizling red
     },
     warning: {
-      main: "#EAD432",
+      main: "#033f63", //Inch worm
     },
     success: {
-      main: "#45AD1E",
+      main: "#9e2b25", // hunter green
     },
     info: {
-      main: "#0EA4CC",
+      main: "#033f63", //indigo
     },
   },
 });

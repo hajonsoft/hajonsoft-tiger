@@ -24,3 +24,12 @@ recommended security rule is
 Favicon Generator https://realfavicongenerator.net/
 
 Favicon article https://serverless-stack.com/chapters/add-app-favicons.html
+
+Material secondary color https://material-ui.com/customization/color/#color
+
+Color Harmony generator https://coolors.co/
+
+SVG images https://undraw.co/
+
+
+
