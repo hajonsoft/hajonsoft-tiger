@@ -31,7 +31,7 @@ import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
 import ArrowForwardOutlinedIcon from "@material-ui/icons/ArrowForwardOutlined";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { makeStyles } from "@material-ui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import profileService from "../../../Profile/profileService";
 import useUserState from "../../../SignIn/redux/useUserState";
@@ -108,54 +108,19 @@ const svc = profileService();
 
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const classes = useStyles();
-  const { user } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
+  const { user, isValid: isloggedin } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
 
-  let initialEmployee: {
-    id: number;
-    is_opt: boolean;
-    employee_number: number;
-    name: string;
-    last_name: string;
-    phone_number: string;
-    phone1_description: string;
-    email: string;
-  } = {
-    id: 0,
-    is_opt: false,
-    employee_number: 0,
-    name: "",
-    last_name: "",
-    phone_number: "",
-    phone1_description: "",
-    email: "",
-  };
 
   let history = useHistory();
   const mobileMedia = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
+
   const [state, setState] = useState({
     drawerOpen: false,
     sidebar: { selectedItem: "", selectedSubItem: "", anchorElement: null },
     buttons: [],
   });
-  const [employee, setEmployee] = useState(initialEmployee);
-  const [isError, setIsError] = React.useState(false);
-
-  useEffect(() => {
-    async function getEmployee() {
-      try {
-        const result = await svc.getEmployeeById(
-          user?.idToken?.payload["profile"]
-        );
-        result.email = user?.idToken?.payload["email"];
-        setEmployee(result);
-      } catch {
-        setIsError(true);
-      }
-    }
-    getEmployee();
-  }, [user]);
 
   const handleButtonMenuClose = (e: any, b: any) => {
     setState((p) => {
@@ -206,6 +171,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   };
 
   const handleLogout = (e: any, mi: any, b: any) => {
+
     handleButtonItemClick(e, mi, b);
   };
 
@@ -218,14 +184,14 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
               <Grid item xs>
                 <Box p={2}>
                   <img
+                  style={{maxHeight: '48px'}}
                     src={mobileMedia ? config.smallLogo : config.logo}
                     alt="HajOnSoft"
                   />
                 </Box>
               </Grid>
               <Grid item>
-                {user &&
-                  user.idToken &&
+                {isloggedin &&
                   config.buttons.map((b) => (
                     <React.Fragment key={`topButton/${b.name || b.title}`}>
                       <IconButton
@@ -378,13 +344,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                                       variant="rounded"
                                       className={classes.rounded}
                                     >
-                                      {`${employee?.name.substring(
-                                        0,
-                                        1
-                                      )} ${employee?.last_name.substring(
-                                        0,
-                                        1
-                                      )}`}
+                                      {`${user?.displayName || user?.email}`} 
                                     </Avatar>
                                   </Grid>
                                   <Grid
@@ -397,7 +357,8 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                                     <Grid item>
                                       <Typography
                                         gutterBottom
-                                      >{`${employee?.name} ${employee?.last_name}`}</Typography>
+                                      > {`${user?.displayName || user?.email}`} 
+                                      </Typography>
                                     </Grid>
                                     <Grid item>
                                       <Link

@@ -5,7 +5,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
-import allied_logo from '../../images/allied_logo_svg.svg';
+import logo from '../../images/logo.jpg';
 // import UserPool from './UserPool';
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
 
                     <Grid item>
                         <Box p={4} style={{ display: 'flex', justifyContent: 'center' }}>
-                            <img src={allied_logo} alt="Allied logo"></img>
+                            <img src={logo} alt="Allied logo"></img>
                         </Box>
                         <Box p={2}>
 

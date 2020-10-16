@@ -1,18 +1,23 @@
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CircularProgress,
   Divider,
   Grid,
   IconButton,
   InputAdornment,
   Link,
   Paper,
+  Popover,
   TextField,
   Typography,
   useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import MenuIcon from "@material-ui/icons/Menu";
 import Alert from "@material-ui/lab/Alert";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
@@ -40,8 +45,11 @@ const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
-  // TODO: test error and returned data 
-  const { fetchUser, error, user , isValid: isLoggedin} = useUserState("firebase");
+  const [drawerOpen, setdrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { fetchUser, error, isValid: isLoggedin } = useUserState({
+    provider: process.env.REACT_APP_AUTHPROVIDER,
+  });
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -60,14 +68,35 @@ const SignIn = () => {
       ),
   });
 
+  const webapiSchema = yup.object().shape({
+    webapikey: yup
+      .string()
+      .required("Required"),
+    projectId: yup
+      .string()
+      .required("Required")
+  });
+
   const handleLogin = (values: any, actions: any) => {
     fetchUser(values);
     actions.setSubmitting(false);
   };
-
+  const handlewebapiKey = (values: any, actions: any) => {
+    setdrawerOpen(false);
+    actions.setSubmitting(false);
+  };
+  
   if (isLoggedin) {
-     history.push('/dashboard')
+    history.push("/dashboard");
   }
+  const handleFirebaseClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setdrawerOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div className={classes.container}>
       <Grid
@@ -75,7 +104,7 @@ const SignIn = () => {
         direction="column"
         alignItems="stretch"
         justify="center"
-        spacing={4}
+        spacing={2}
         alignContent="center"
         component={Paper}
         elevation={4}
@@ -83,6 +112,15 @@ const SignIn = () => {
         md={3}
         xs={12}
       >
+        <Grid item>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <IconButton onClick={(e) => handleFirebaseClick(e)}>
+                <MenuIcon color="secondary" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid item>
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
             <img src={logo} alt="HajOnSoft logo"></img>
@@ -96,11 +134,14 @@ const SignIn = () => {
         </Grid>
         <Grid item>
           <Formik
-            initialValues={{email: 'ayali@hotmail.com', password: '(Paris123)'}}
+            initialValues={{
+              email: "ayali@hotmail.com",
+              password: "(Paris123)",
+            }}
             validationSchema={loginSchema}
             onSubmit={handleLogin}
           >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, isSubmitting }) => (
               <Form>
                 <Box p={2}>
                   <Grid container direction="column" spacing={2}>
@@ -144,8 +185,8 @@ const SignIn = () => {
                                   {showPassword ? (
                                     <Visibility />
                                   ) : (
-                                      <VisibilityOff />
-                                    )}
+                                    <VisibilityOff />
+                                  )}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -174,6 +215,11 @@ const SignIn = () => {
                       variant="contained"
                       color="primary"
                       type="submit"
+                      startIcon={
+                        isSubmitting && (
+                          <CircularProgress size={20} color="inherit" />
+                        )
+                      }
                       fullWidth
                     >
                       Continue
@@ -197,6 +243,78 @@ const SignIn = () => {
           </Typography>
         </Grid>
       </Grid>
+   
+   <Popover open={drawerOpen}         onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}>
+<Card title="Database credentials">
+<CardContent>
+<Formik
+            initialValues={{
+              webapikey: "",
+              projectId: "",
+            }}
+            validationSchema={webapiSchema}
+            onSubmit={handlewebapiKey}
+          >
+            {({ handleSubmit, isSubmitting }) => (
+              <Form>
+                <Box p={2}>
+                  <Grid container direction="column" spacing={2}>
+                    <Grid
+                      item
+                      container
+                      justify="space-between"
+                      spacing={2}
+                      alignItems="center"
+                    >
+                      <Grid item xs={12}>
+                        <Field
+                          name="webapikey"
+                          label="WebApi Key"
+                          as={TextField}
+                          variant="outlined"
+                          fullWidth
+                        ></Field>
+
+                        <Box style={{ color: "#C13636" }}>
+                          <ErrorMessage name="webapikey" />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field
+                          name="projectId"
+                          label="Project Id"
+                          as={TextField}
+                          fullWidth
+                          variant="outlined"
+                        />
+                        <Box style={{ color: "#C13636" }} mb={1}>
+                          <ErrorMessage name="projectId" />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Box mt={2}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      fullWidth
+                    >
+                      Done
+                    </Button>
+                  </Box>
+                </Box>
+              </Form>
+            )}
+          </Formik>
+       
+</CardContent>
+</Card>
+   </Popover>
     </div>
   );
 };

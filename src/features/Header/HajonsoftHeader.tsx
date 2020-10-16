@@ -7,8 +7,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import StorageOutlinedIcon from '@material-ui/icons/StorageOutlined';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import React from 'react';
-import logo from '../../images/allied_logo_svg.svg';
-import smallLogo from '../../images/AU_initials.png';
+import logo from '../../images/logo.jpg';
+import smallLogo from '../../images/logo_mobile.jpg';
 import AppHeader from '../shared/components/AppHeader/AppHeader';
 import { IHeaderConfig } from '../shared/components/interfaces';
 
