@@ -1,33 +1,42 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import Zoom from '@material-ui/core/Zoom';
 import React from 'react';
 import { useHistory } from 'react-router';
-import logo from '../../images/logo-dark.png';
 import AppFooter from '../shared/components/AppFooter/AppFooter';
-import hajonsoft_logo from '../../images/logo-dark.png';
+import logo from '../../images/logo-dark.png';
 
+
+const useStyles = makeStyles((theme)=> ({
+container: {
+    background: `transparent linear-gradient(180deg, #005F90 0%, #0089C7 100%) 0% 0% no-repeat`, 
+    opacity: '1', 
+    color: '#fff', 
+    height: '100vh'
+}
+}))
 const Home = () => {
 
     const history = useHistory();
+    const classes = useStyles();
 
     return (
 
         <React.Fragment >
-            <div style={{ background: 'transparent radial-gradient(closest-side at 50% 50%, #007EB8 0%, #00547A 100%) 0% 0% no-repeat', opacity: '1', color: '#fff', height: '100vh' }}>
+            <div className={classes.container}>
 
                 <Grid container direction="column" alignItems="center" justify="space-around" style={{ height: '100%' }}>
                     <Grid item ><Typography alignItems="center" variant="h3">Welcome to</Typography></Grid>
 
                     <Grid item container justify="center" alignItems="center">
                         <Zoom in={true} timeout={{ appear: 1000, enter: 3000, exit: 15000 }} mountOnEnter unmountOnExit style={{ width: '50%' }}>
-                            <Typography variant="h1" align="center">Haj On Soft</Typography>
+                            <Typography variant="h1" align="center" color="textPrimary">Haj On Soft</Typography>
                         </Zoom>
 
                     </Grid>
 
                     <Grid item>
-                        <Typography style={{ color: '#fff' }} variant="h5">
-                            <Box letterSpacing={2}>Travel Management Engineered</Box>
+                        <Typography color="textSecondary" variant="h5">
+                            <Box letterSpacing={4}>Travel management software ...</Box>
                         </Typography>
                     </Grid>
 
@@ -58,7 +67,7 @@ const Home = () => {
 
                     <Grid item container direction="column" alignItems="center">
                         <Grid item style={{ margin: '50px 0px' }}>
-                            <img src={hajonsoft_logo} alt="HajOnSoft"></img>
+                            <img src={logo} alt="HajOnSoft"></img>
 
                         </Grid>
                         <Grid item>

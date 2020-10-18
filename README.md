@@ -14,9 +14,34 @@ connect to any other firebase project as owner
 2- create database and storage use custom names as much as possible
 3- setup security rules after migration 
 
-# security rule 
-recommended security rule is 
 
+# security rule 
+**Testing Mode** Full Access
+
+```
+{
+  "rules": {
+    "foo": {
+      ".read": true,
+      ".write": false
+    }
+  }
+}
+```
+
+**Production Mode** Full Access only to user folder
+
+```
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      }
+    }
+  }
+}
+```
 
 
 # Credits
@@ -31,5 +56,8 @@ Color Harmony generator https://coolors.co/
 
 SVG images https://undraw.co/
 
+Database Rules https://firebase.google.com/docs/database/security/
 
+private, restricted routes https://medium.com/@thanhbinh.tran93/private-route-public-route-and-restricted-route-with-react-router-d50b27c15f5e
 
+Firebase Rest https://firebase.google.com/docs/reference/rest/database

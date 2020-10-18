@@ -1,9 +1,14 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { authService } from './firebaseAuthService';
 import {fork} from 'redux-saga/effects';
+import firebaseDataService from './firebaseDataService';
 
 function* sagas() {
-    yield takeLatest('LOGIN', loginSaga);
+    yield all([
+        loginFlow(),
+        packagesFlow(),
+    ])
+    // yield takeLatest('LOGIN', loginSaga);
 
     // yield fork(loginFlow);
     // yield fork( packagesFlow);
@@ -11,13 +16,13 @@ function* sagas() {
 
 }
 
-// function* loginFlow() {
-//     yield takeLatest('LOGIN', loginSaga);
-// }
+function* loginFlow() {
+    yield takeLatest('LOGIN', loginSaga);
+}
 
-// function* packagesFlow() {
-//     yield takeLatest('PACKAGES', packageSaga);
-// }
+function* packagesFlow() {
+    yield takeLatest('PACKAGES', packagesSaga);
+}
 
 // function* packageCustomersFlow() {
 //     yield takeLatest('PACKAGECUSTOMERS', packageCustomersSaga);
@@ -25,7 +30,6 @@ function* sagas() {
 function* loginSaga(action: any) {
     try {
         const result = yield call(authService.login, action.payload);
-        console.log('----------------------ATTENTION----------', result);
         if (result.error) {
             yield put({ type: 'LOGIN_FAIL', payload: result.error.message });
 
@@ -40,16 +44,16 @@ function* loginSaga(action: any) {
 
 }
 
-// function* packageSaga(action: any) {
-//     try {
-//         const result = yield call(authService.login, action.payload);
-//         yield put({ type: 'LOGIN_SUCCESS', payload: result });
+function* packagesSaga(action: any) {
+    try {
+        const result = yield call(firebaseDataService.getRecordsShallow, action.payload);
+        yield put({ type: 'PACKAGES_SUCCESS', payload: result });
 
-//     } catch (e) {
-//         yield put({ type: 'LOGIN_FAIL', payload: e.message });
-//     }
+    } catch (e) {
+        yield put({ type: 'PACKAGES_FAIL', payload: e.message });
+    }
 
-// }
+}
 
 // function* packageCustomersSaga(action: any) {
 //     try {

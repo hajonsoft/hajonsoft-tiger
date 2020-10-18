@@ -69,12 +69,8 @@ const SignIn = () => {
   });
 
   const webapiSchema = yup.object().shape({
-    webapikey: yup
-      .string()
-      .required("Required"),
-    projectId: yup
-      .string()
-      .required("Required")
+    webapikey: yup.string().required("Required"),
+    projectId: yup.string().required("Required"),
   });
 
   const handleLogin = (values: any, actions: any) => {
@@ -85,11 +81,11 @@ const SignIn = () => {
     setdrawerOpen(false);
     actions.setSubmitting(false);
   };
-  
+
   if (isLoggedin) {
     history.push("/dashboard");
   }
-  const handleFirebaseClick = (event) => {
+  const handleMnuClick = (event) => {
     setAnchorEl(event.currentTarget);
     setdrawerOpen(true);
   };
@@ -115,7 +111,7 @@ const SignIn = () => {
         <Grid item>
           <Grid container justify="flex-end">
             <Grid item>
-              <IconButton onClick={(e) => handleFirebaseClick(e)}>
+              <IconButton onClick={(e) => handleMnuClick(e)}>
                 <MenuIcon color="secondary" />
               </IconButton>
             </Grid>
@@ -243,78 +239,88 @@ const SignIn = () => {
           </Typography>
         </Grid>
       </Grid>
-   
-   <Popover open={drawerOpen}         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}>
-<Card title="Database credentials">
-<CardContent>
-<Formik
-            initialValues={{
-              webapikey: "",
-              projectId: "",
-            }}
-            validationSchema={webapiSchema}
-            onSubmit={handlewebapiKey}
-          >
-            {({ handleSubmit, isSubmitting }) => (
-              <Form>
-                <Box p={2}>
-                  <Grid container direction="column" spacing={2}>
-                    <Grid
-                      item
-                      container
-                      justify="space-between"
-                      spacing={2}
-                      alignItems="center"
-                    >
-                      <Grid item xs={12}>
-                        <Field
-                          name="webapikey"
-                          label="WebApi Key"
-                          as={TextField}
-                          variant="outlined"
-                          fullWidth
-                        ></Field>
 
-                        <Box style={{ color: "#C13636" }}>
-                          <ErrorMessage name="webapikey" />
-                        </Box>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Field
-                          name="projectId"
-                          label="Project Id"
-                          as={TextField}
-                          fullWidth
-                          variant="outlined"
-                        />
-                        <Box style={{ color: "#C13636" }} mb={1}>
-                          <ErrorMessage name="projectId" />
-                        </Box>
+      <Popover
+        open={drawerOpen}
+        onClose={handleClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Card title="Database credentials">
+          <CardContent>
+            <Formik
+              initialValues={{
+                webapikey: "",
+                projectId: "",
+              }}
+              validationSchema={webapiSchema}
+              onSubmit={handlewebapiKey}
+            >
+              {({ handleSubmit, isSubmitting }) => (
+                <Form>
+                  <Box p={2}>
+                    <Grid container direction="column" spacing={2}>
+                      <Grid item>
+                        <Typography variant="h6">Firebase information</Typography>
+                        </Grid>
+                      <Grid
+                        item
+                        container
+                        justify="space-between"
+                        spacing={2}
+                        alignItems="center"
+                      >
+                        <Grid item xs={12}>
+                          <Field
+                            name="webapikey"
+                            label="WebApi Key"
+                            as={TextField}
+                            variant="outlined"
+                            fullWidth
+                          ></Field>
+
+                          <Box style={{ color: "#C13636" }}>
+                            <ErrorMessage name="webapikey" />
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            name="projectId"
+                            label="Project Id"
+                            as={TextField}
+                            fullWidth
+                            variant="outlined"
+                          />
+                          <Box style={{ color: "#C13636" }} mb={1}>
+                            <ErrorMessage name="projectId" />
+                          </Box>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                  <Box mt={2}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      fullWidth
-                    >
-                      Done
-                    </Button>
+                    <Box mt={2}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                        fullWidth
+                      >
+                        Done
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </Form>
-            )}
-          </Formik>
-       
-</CardContent>
-</Card>
-   </Popover>
+                </Form>
+              )}
+            </Formik>
+          </CardContent>
+        </Card>
+      </Popover>
     </div>
   );
 };

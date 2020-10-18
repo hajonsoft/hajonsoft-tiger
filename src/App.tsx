@@ -1,7 +1,7 @@
 import {
   createMuiTheme,
   responsiveFontSizes,
-  ThemeProvider
+  ThemeProvider,
 } from "@material-ui/core";
 import React from "react";
 import { Provider } from "react-redux";
@@ -19,17 +19,16 @@ import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
-// TODO: find the primary color from the logo a shade of blue, the secondary color from the logo or no secondary color. https://material-ui.com/customization/color/#color
 let defaultTheme = createMuiTheme({
   palette: {
     primary: {
       main: "#3E95DC", //summer sky
     },
     secondary: {
-      main: "#9e2b25", // auburn 
+      main: "#9e2b25", // auburn
     },
     error: {
-      main: "#ff5a5f", //sizling red
+      main: "#ff5a5f", // sizzling red
     },
     warning: {
       main: "#033f63", //Inch worm
@@ -63,16 +62,12 @@ function App() {
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/" component={Home} />
-            <PublicRoute exact path="/profile" component={Profile} />
-            <PublicRoute exact path="/register" component={Register} />
-            <PublicRoute exact path="/login" component={SignIn} />
-            <PublicRoute
-              exact
-              path="/forgot-password"
-              component={ForgotPassword}
-            />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PublicRoute exact path="/logout" component={SignOut} />
+            <PublicRoute path="/register" component={Register} />
+            <PublicRoute path="/login" component={SignIn} />
+            <PublicRoute path="/forgot-password" component={ForgotPassword} />
+            <PublicRoute path="/logout" component={SignOut} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/profile" component={Profile} />
           </Provider>
         </Router>
       </ThemeProvider>
