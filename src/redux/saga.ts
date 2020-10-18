@@ -1,18 +1,13 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { authService } from './firebaseAuthService';
-import {fork} from 'redux-saga/effects';
 import firebaseDataService from './firebaseDataService';
 
 function* sagas() {
     yield all([
         loginFlow(),
         packagesFlow(),
+        packageCustomersFlow(),
     ])
-    // yield takeLatest('LOGIN', loginSaga);
-
-    // yield fork(loginFlow);
-    // yield fork( packagesFlow);
-    // yield fork(packageCustomersFlow);
 
 }
 
@@ -24,9 +19,9 @@ function* packagesFlow() {
     yield takeLatest('PACKAGES', packagesSaga);
 }
 
-// function* packageCustomersFlow() {
-//     yield takeLatest('PACKAGECUSTOMERS', packageCustomersSaga);
-// }
+function* packageCustomersFlow() {
+    yield takeLatest('PACKAGECUSTOMERS', packageCustomersSaga);
+}
 function* loginSaga(action: any) {
     try {
         const result = yield call(authService.login, action.payload);
@@ -55,16 +50,17 @@ function* packagesSaga(action: any) {
 
 }
 
-// function* packageCustomersSaga(action: any) {
-//     try {
-//         const result = yield call(authService.login, action.payload);
-//         yield put({ type: 'LOGIN_SUCCESS', payload: result });
+function* packageCustomersSaga(action: any) {
+    try {
+// TODO: call the correct method
+        const result = yield call(authService.login, action.payload); 
+        yield put({ type: 'PACKAGECUSTOMERS_SUCCESS', payload: result });
 
-//     } catch (e) {
-//         yield put({ type: 'LOGIN_FAIL', payload: e.message });
-//     }
+    } catch (e) {
+        yield put({ type: 'PACKAGECUSTOMERS_FAIL', payload: e.message });
+    }
 
-// }
+}
 
 
 export default sagas;
