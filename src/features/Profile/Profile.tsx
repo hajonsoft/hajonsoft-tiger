@@ -89,23 +89,6 @@ const Profile = () => {
     getEmployee();
   }, [user]);
 
-  useEffect(() => {
-    async function getSmsOptStatus() {
-      try {
-        const status  = {
-          employee_number: employee?.id,
-          phone_number: `+1${employee?.phone_number}`,
-          opt_status: employee?.is_opt
-        }
-        
-      } catch {
-        setIsError(true);
-      }
-    }
-    getSmsOptStatus();
-  }, [employee]);
-
-
 
   const handleSubscribeToSMS = (e: any) => {
     if (employee && employee.id) {
@@ -201,7 +184,6 @@ const ProfileForm = ({ data }: any, { opt }: any) => {
   const [isEdit, setIsEdit] = useState(false);
   const [employee, setEmployee] = useState(data);
   const [isError, setIsError] = React.useState(false);
-  const [smsOptStatus, setSmsOptStatus] = useState(opt);
   
   const handleClose = (event: any, reason: string) => {
     if (reason === "clickaway") {

@@ -33,7 +33,6 @@ import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import profileService from "../../../Profile/profileService";
 import useUserState from "../../../SignIn/redux/useUserState";
 import { IButtonState, IHeaderConfig, IMenuItem } from "../interfaces";
 
@@ -104,7 +103,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const svc = profileService();
 
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const classes = useStyles();

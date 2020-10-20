@@ -2,7 +2,7 @@ import { Box, Button, Grid, Link, Paper, TextField, Typography } from '@material
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
 import logo from '../../images/logo.jpg';
@@ -24,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
 const ForgotPassword = () => {
     const classes = useStyles();
     const history = useHistory();
-    const [email, setEmail] = useState('');
-    const [isCodeSent, setIsCodeSent] = useState(false);
-    const [errorState, setErrorState] = useState({ isError: false, message: '' });
+    // const [isCodeSent, setIsCodeSent] = useState(false);
+    // const [errorState, setErrorState] = useState({ isError: false, message: '' });
 
 
     const emailSchema = yup.object().shape({
@@ -98,11 +97,11 @@ const ForgotPassword = () => {
                         </Box>
                         <Box>
 
-                            <Typography align="center" color="textSecondary" >{`${isCodeSent ? 'Please enter the verification code and choose a new password' : 'Please enter your registered email address.'}`}</Typography>
+                            <Typography align="center" color="textSecondary" >{`${'isCodeSent' ? 'Please enter the verification code and choose a new password' : 'Please enter your registered email address.'}`}</Typography>
                         </Box>
                     </Grid>
 
-                    {!isCodeSent &&
+                    {!'isCodeSent' &&
                         <Grid item >
 
                             <Formik
@@ -122,11 +121,11 @@ const ForgotPassword = () => {
                                                         </Box>
                                                     </Grid>
                                                 </Grid>
-                                                {errorState.isError &&
+                                                {'errorState.isError '&&
 
                                                     <Grid item>
 
-                                                        <Alert severity="error">{`${errorState.message}`}</Alert>
+                                                        <Alert severity="error">{`${'errorState.message'}`}</Alert>
                                                     </Grid>
                                                 }
                                             </Grid>
@@ -143,12 +142,12 @@ const ForgotPassword = () => {
                         </Grid>
                     }
 
-                    {isCodeSent &&
+                    {'isCodeSent' &&
 
                         <Grid item xs>
                             <Formik
                                 style={{ width: '100%' }}
-                                initialValues={{ email: email, code: '', password: '', passwordConfirm: '' }}
+                                initialValues={{ email: '', code: '', password: '', passwordConfirm: '' }}
                                 validationSchema={forgotPasswordSchema}
                                 onSubmit={handleChangePassword}
                             >
@@ -212,11 +211,11 @@ const ForgotPassword = () => {
                                             </Grid>
 
 
-                                            {errorState.isError &&
+                                            {'errorState.isError '&&
 
                                                 <Grid item>
 
-                                                    <Alert severity="error">{`${errorState.message}`}</Alert>
+                                                    <Alert severity="error">{`${'errorState.message'}`}</Alert>
                                                 </Grid>
                                             }
 
@@ -225,7 +224,7 @@ const ForgotPassword = () => {
                                                     <Button type="submit" color="primary" variant="contained" style={{ borderRadius: '8px' }}>Confirm password</Button>
 
                                                 </Grid>
-                                                {!errorState.isError &&
+                                                {!'errorState.isError '&&
 
 
                                                     <Grid item>

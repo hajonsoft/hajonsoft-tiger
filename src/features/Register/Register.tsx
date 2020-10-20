@@ -25,7 +25,6 @@ import * as yup from "yup";
 import logo_mobile from "../../images/logo_mobile.jpg";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 // import UserPool from "../SignIn/UserPool";
-import identityService from "./redux/saga/identityService";
 var AmazonCognitoIdentity = require("amazon-cognito-identity-js");
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +46,6 @@ const Register = () => {
   const mobileMedia = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
-  const identitySvc = identityService();
 
   let initialEmployee: {
     id: number;
@@ -68,26 +66,17 @@ const Register = () => {
     phone1_description: "",
     email: "",
   };
-  const [failCounter, setFailCounter] = useState(0);
   const [emp, setEmp] = useState(initialEmployee);
-  const [fpValue, setFPValue] = useState("");
-  const [regLocked, setRegLocked] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [regSubmit, setRegSubmit] = useState(false);
-  const [isSmsAlertOpen, setIsSmsAlertOpen] = useState(true);
+
+
 
   const handleSMSCheckboxClick = (values: any) => {
-    if (!values.is_opt) {
-      setIsSmsAlertOpen(true);
-    }
+
   };
 
-  const handleAlertClose = () => {
-    setAlertOpen(false);
-    history.push("/");
-  };
 
-  const [state, setState] = useState({
+
+  const [state] = useState({
     isRegistrationError: false,
     isCreatePasswordError: false,
     message: "",

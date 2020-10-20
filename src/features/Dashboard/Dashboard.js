@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { forwardRef } from "react";
+import Snackbar from '@material-ui/core/Snackbar';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -7,9 +6,8 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
@@ -17,14 +15,12 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import DetailsIcon from "@material-ui/icons/Details";
-import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import useUserState from "../SignIn/redux/useUserState";
+import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
-import _ from "lodash";
+import React, { forwardRef, useEffect } from "react";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
-import usePackageState from './redux/usePackageState'
+import useUserState from "../SignIn/redux/useUserState";
+import usePackageState from './redux/usePackageState';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -59,12 +55,12 @@ const Dashboard = ({ employee }) => {
   const { user } = useUserState({
     provider: process.env.REACT_APP_AUTHPROVIDER,
   });
-  const { packages, loading, error, fetchPackages } = usePackageState()
+  const { packages, error, fetchPackages } = usePackageState()
 
   useEffect(() => {
     fetchPackages({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: 'customer' })
 
-  }, [user])
+  })
 
   return (
     <React.Fragment>
