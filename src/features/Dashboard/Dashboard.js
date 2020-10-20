@@ -82,6 +82,9 @@ const Dashboard = ({ employee }) => {
             title={`Packages`}
             columns={[{ title: "Name", field: "name" }]}
             data={Object.keys(packages).map(x=> ({name: x}))}
+            detailPanel={rowData=> {
+              return (JSON.stringify(rowData, null, 2))
+            }}
             actions={[
               {
                 icon: tableIcons.Add,

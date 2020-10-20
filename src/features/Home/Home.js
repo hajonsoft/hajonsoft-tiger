@@ -8,7 +8,7 @@ import logo from '../../images/logo-dark.png';
 
 const useStyles = makeStyles((theme)=> ({
 container: {
-    background: `transparent linear-gradient(180deg, #005F90 0%, #0089C7 100%) 0% 0% no-repeat`, 
+    backgroundImage: 'linear-gradient(to bottom, #3e95dc, #74aae4, #9dc0ec, #c2d6f4, #e4edfc);', 
     opacity: '1', 
     color: '#fff', 
     height: '100vh'

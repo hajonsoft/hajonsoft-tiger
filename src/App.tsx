@@ -25,7 +25,7 @@ let defaultTheme = createMuiTheme({
       main: "#3E95DC", //summer sky
     },
     secondary: {
-      main: "#9e2b25", // auburn
+      main: "#57240F", // Seal brown
     },
     error: {
       main: "#ff5a5f", // sizzling red
@@ -37,7 +37,7 @@ let defaultTheme = createMuiTheme({
       main: "#9e2b25", // hunter green
     },
     info: {
-      main: "#033f63", //indigo
+      main: "#42F2F7", //Aqua
     },
   },
 });
@@ -68,6 +68,8 @@ function App() {
             <PublicRoute path="/logout" component={SignOut} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/profile" component={Profile} />
+            // TODO: Make this customers component
+            <PrivateRoute path="/package/:package/customers" component={Profile} />
           </Provider>
         </Router>
       </ThemeProvider>

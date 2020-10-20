@@ -1,6 +1,6 @@
 {
   "homepage": ".",
-  "name": "hajonsoft-web",
+  "name": "hajonsoft",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
