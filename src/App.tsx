@@ -8,7 +8,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
-import Dashboard from "./features/Dashboard/Dashboard";
+import Customers from "./features/customer";
+import Dashboard from "./features/Dashboard";
 import Home from "./features/Home/Home";
 import Profile from "./features/Profile/Profile";
 import Register from "./features/Register/Register";
@@ -68,8 +69,8 @@ function App() {
             <PublicRoute path="/logout" component={SignOut} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/profile" component={Profile} />
-            // TODO: Make this customers component
-            <PrivateRoute path="/package/:package/customers" component={Profile} />
+            {/* TODO: Make this customers component */}
+            <PrivateRoute path="/package/:packageName/customers" component={Customers} />
           </Provider>
         </Router>
       </ThemeProvider>

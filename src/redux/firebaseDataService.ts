@@ -8,7 +8,7 @@ import axios from 'axios';
 
 // var storage = firebase.storage();
 
-const firebaseDataService = {
+const dataService = {
     getExternalResponse: async (url: string) => {
         const importedRecords = await axios.get(url);
         return importedRecords;
@@ -32,8 +32,8 @@ const firebaseDataService = {
         const fbCustomer = await axios.get(`https://${projectId}.firebaseio.com/${folder}/${recordId}.json?auth=${fbUser.idToken}`);
         return fbCustomer;
     },
-    getRecords: async (fbUser: any, projectId: string, folder: string) => {
-        const result = await axios.get(`https://${projectId}.firebaseio.com/${folder}.json?auth=${fbUser.idToken}`);
+    getRecords: async ({ user, projectId, folder }) => {
+        const result = await axios.get(`https://${projectId}.firebaseio.com/${folder}.json?auth=${user.idToken}`);
         return result;
     },
     getRecordsShallow: async ({ user, projectId, folder }) => {
@@ -48,4 +48,4 @@ const firebaseDataService = {
 
 
 // export { storage, firebaseService as default };
-export { firebaseDataService as default };
+export { dataService as default };

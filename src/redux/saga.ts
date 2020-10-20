@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { authService } from './firebaseAuthService';
-import firebaseDataService from './firebaseDataService';
+import  dataService  from './firebaseDataService';
 
 function* sagas() {
     yield all([
@@ -41,7 +41,7 @@ function* loginSaga(action: any) {
 
 function* packagesSaga(action: any) {
     try {
-        const result = yield call(firebaseDataService.getRecordsShallow, action.payload);
+        const result = yield call(dataService.getRecordsShallow, action.payload);
         yield put({ type: 'PACKAGES_SUCCESS', payload: result });
 
     } catch (e) {
@@ -52,8 +52,7 @@ function* packagesSaga(action: any) {
 
 function* packageCustomersSaga(action: any) {
     try {
-// TODO: call the correct method
-        const result = yield call(authService.login, action.payload); 
+        const result = yield call(dataService.getRecords, action.payload); 
         yield put({ type: 'PACKAGECUSTOMERS_SUCCESS', payload: result });
 
     } catch (e) {

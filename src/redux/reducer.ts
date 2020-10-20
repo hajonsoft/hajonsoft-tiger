@@ -36,7 +36,7 @@ function reducer(state = initialState, action: any) {
             return { ...state, packageCustomers: failState(state.packageCustomers, action) };
 
         default:
-            return state;
+            return {...state};
     }
 }
 

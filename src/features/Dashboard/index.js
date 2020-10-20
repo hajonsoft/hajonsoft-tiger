@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -18,6 +19,7 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
 import React, { forwardRef, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
 import usePackageState from './redux/usePackageState';
@@ -52,6 +54,8 @@ const Dashboard = ({ employee }) => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
+
+  const history = useHistory();
   const { user } = useUserState({
     provider: process.env.REACT_APP_AUTHPROVIDER,
   });
@@ -60,8 +64,11 @@ const Dashboard = ({ employee }) => {
   useEffect(() => {
     fetchPackages({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: 'customer' })
 
-  })
+  },[])
 
+  const onGotoCustomers = (packageName) => {
+    history.push(`package/${packageName}/customers`)
+  }
   return (
     <React.Fragment>
       <div
@@ -77,9 +84,9 @@ const Dashboard = ({ employee }) => {
             icons={tableIcons}
             title={`Packages`}
             columns={[{ title: "Name", field: "name" }]}
-            data={Object.keys(packages).map(x=> ({name: x}))}
-            detailPanel={rowData=> {
-              return (JSON.stringify(rowData, null, 2))
+            data={Object.keys(packages).map(x => ({ name: x }))}
+            detailPanel={rowData => {
+              return (<Button color="primary" variant="outlined" onClick={() => onGotoCustomers(rowData.name)}>View customers for {rowData.name}</Button>)
             }}
             actions={[
               {
