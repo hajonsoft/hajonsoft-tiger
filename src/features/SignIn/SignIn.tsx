@@ -131,8 +131,8 @@ const SignIn = () => {
         <Grid item>
           <Formik
             initialValues={{
-              email: "ayali@hotmail.com",
-              password: "(Paris123)",
+              email: "",
+              password: "",
             }}
             validationSchema={loginSchema}
             onSubmit={handleLogin}

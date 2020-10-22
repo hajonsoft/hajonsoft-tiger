@@ -63,9 +63,12 @@ const Customers = ({ employee }) => {
   const { data: packageCustomers, error, loading, fetchPackageCustomers } = usePackageCustomerState()
   let { packageName } = useParams();
   useEffect(() => {
-    fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: `customer/${packageName}/` })
+    if (!packageCustomers){
 
-  },[])
+      fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: `customer/${packageName}/` })
+    }
+
+  },[fetchPackageCustomers,packageCustomers, packageName, user])
 
   if (loading) {
     return <CircularProgress />
