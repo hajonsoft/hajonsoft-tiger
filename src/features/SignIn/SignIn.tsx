@@ -47,6 +47,7 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setdrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [settings, setsettings] = useState({ webapiKey: 'AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo', projectId: 'hajj-mission-of-cote-de-ivoir' })
   const { fetchUser, error, isValid: isLoggedin } = useUserState({
     provider: process.env.REACT_APP_AUTHPROVIDER,
   });
@@ -68,19 +69,12 @@ const SignIn = () => {
       ),
   });
 
-  const webapiSchema = yup.object().shape({
-    webapikey: yup.string().required("Required"),
-    projectId: yup.string().required("Required"),
-  });
 
   const handleLogin = (values: any, actions: any) => {
-    fetchUser(values);
+    fetchUser({...values, ...settings});
     actions.setSubmitting(false);
   };
-  const handlewebapiKey = (values: any, actions: any) => {
-    setdrawerOpen(false);
-    actions.setSubmitting(false);
-  };
+
 
   if (isLoggedin) {
     history.push("/dashboard");
@@ -181,8 +175,8 @@ const SignIn = () => {
                                   {showPassword ? (
                                     <Visibility />
                                   ) : (
-                                    <VisibilityOff />
-                                  )}
+                                      <VisibilityOff />
+                                    )}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -255,69 +249,53 @@ const SignIn = () => {
       >
         <Card title="Database credentials">
           <CardContent>
-            <Formik
-              initialValues={{
-                webapikey: "",
-                projectId: "",
-              }}
-              validationSchema={webapiSchema}
-              onSubmit={handlewebapiKey}
-            >
-              {({ handleSubmit, isSubmitting }) => (
-                <Form>
-                  <Box p={2}>
-                    <Grid container direction="column" spacing={2}>
-                      <Grid item>
-                        <Typography variant="h6">Firebase information</Typography>
-                        </Grid>
-                      <Grid
-                        item
-                        container
-                        justify="space-between"
-                        spacing={2}
-                        alignItems="center"
-                      >
-                        <Grid item xs={12}>
-                          <Field
-                            name="webapikey"
-                            label="WebApi Key"
-                            as={TextField}
-                            variant="outlined"
-                            fullWidth
-                          ></Field>
+            <Box p={2}>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h6">Firebase information</Typography>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  justify="space-between"
+                  spacing={2}
+                  alignItems="center"
+                >
+                  <Grid item xs={12}>
+                    <TextField
+                      name="webapiKey"
+                      label="WebApi Key"
+                      variant="outlined"
+                      fullWidth
+                      value={settings.webapiKey}
+                      onChange={(e)=> setsettings(sett=> ({...sett, webapiKey: e.currentTarget.value}))}
+                    ></TextField>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="projectId"
+                      label="Project Id"
+                      fullWidth
+                      value={settings.projectId}
+                      onChange={(e)=> setsettings(sett=> ({...sett, projectId: e.currentTarget.value}))}
+                      variant="outlined"
+                    />
 
-                          <Box style={{ color: "#C13636" }}>
-                            <ErrorMessage name="webapikey" />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Field
-                            name="projectId"
-                            label="Project Id"
-                            as={TextField}
-                            fullWidth
-                            variant="outlined"
-                          />
-                          <Box style={{ color: "#C13636" }} mb={1}>
-                            <ErrorMessage name="projectId" />
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Box mt={2}>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        fullWidth
-                      >
-                        Done
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Box mt={2}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  fullWidth
+                >
+                  Done
                       </Button>
-                    </Box>
-                  </Box>
-                </Form>
-              )}
-            </Formik>
+              </Box>
+            </Box>
+
           </CardContent>
         </Card>
       </Popover>
