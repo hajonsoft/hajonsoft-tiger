@@ -17,6 +17,6 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAJONSOFT_TOPAZ }}'
           channelId: live
-          projectId: hajonsoft-topaz
+          projectId: hajj-mission-of-cote-de-ivoir
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
