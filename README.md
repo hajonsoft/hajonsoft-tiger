@@ -27,9 +27,10 @@ connect to any other firebase project as owner
     }
   }
 }
+```
 ![image](https://user-images.githubusercontent.com/9623964/96530553-885bfe00-123c-11eb-95f9-cacd2359cfb6.png)
 
-```
+
 
 **Production Mode** Full Access only to user folder
 
@@ -43,13 +44,8 @@ connect to any other firebase project as owner
     }
   }
 }
-
-
-![image](https://user-images.githubusercontent.com/9623964/96530929-5f883880-123d-11eb-9ec1-aedb913fae98.png)
-
-
 ```
-
+![image](https://user-images.githubusercontent.com/9623964/96530929-5f883880-123d-11eb-9ec1-aedb913fae98.png)
 
 # Credits
 
