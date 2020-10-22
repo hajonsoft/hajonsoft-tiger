@@ -20,8 +20,11 @@ import MaterialTable from "material-table";
 import React, { forwardRef, useEffect } from "react";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
-import useCustomerState from './redux/useCustomerState';
+import usePackageCustomerState from './redux/usePackageCustomerState';
 import {useParams} from 'react-router-dom'
+import { CircularProgress } from '@material-ui/core';
+import  CustomerDetail  from './components/CustomerDetail';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -47,7 +50,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
 };
-// TODO: show order history component here
+// TODO: show order history component here - PHASE II
 
 const Customers = ({ employee }) => {
   // const mobileMedia = useMediaQuery((theme: any) =>
@@ -56,12 +59,24 @@ const Customers = ({ employee }) => {
   const { user } = useUserState({
     provider: process.env.REACT_APP_AUTHPROVIDER,
   });
-  const { packageCustomer, error, fetchPackageCustomers } = useCustomerState()
+  const title = "Customer";
+  const { data: packageCustomers, error, loading, fetchPackageCustomers } = usePackageCustomerState()
   let { packageName } = useParams();
   useEffect(() => {
     fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: `customer/${packageName}/` })
 
   },[])
+
+  if (loading) {
+    return <CircularProgress />
+  }
+
+  const flatten = (data)=> {
+    if (!data) return;
+    const keys = Object.keys(data);
+    return keys.map(nat=> Object.keys(data[nat]).map(hajId=> ({...data[nat][hajId]})))[0]
+  
+  }
 
   return (
     <React.Fragment>
@@ -74,31 +89,52 @@ const Customers = ({ employee }) => {
       >
         <HajonsoftHeader />
         <div>
+          {/* //TODO : Breadcrum here would be amazing */}
           <MaterialTable
             icons={tableIcons}
-            title={`Customers`}
-            columns={[{ title: "Name", field: "name" }]}
+            title={`${packageName} ${title}s`}
+            columns={[{ title: "Name", field: "name" },
+            { title: "Gender", field: "gender" },
+            { title: "From", field: "nationality" },
+            { title: "Pass No", field: "passportNumber" },
+            { title: "Birth Date", field: "birthDate" },
+            { title: "Email", field: "email" },
+            {"CreateDt":"2020-05-12T23:47:04.880Z","birthDate":"1969-03-26T00:00:00.000Z","birthPlace":"COTE DIVOIRE","email":"","gender":"Male","idNumber":"19AA88765","idNumberExpireDate":"1900-01-01T00:00:00.000Z","idNumberIssueDate":"1900-01-01T00:00:00.000Z","mahramName":"","name":"ABDOULAYE BAKAYOKO","nameArabic":"ABDOULAYE BAKAYOKO","nationality":"Cote Divoire","onSoftId":2987010,"passExpireDt":"2025-02-06T00:00:00.000Z","passIssueDt":"2020-02-07T00:00:00.000Z","passPlaceOfIssue":"COTE DIVOIRE","passportNumber":"19AA88765","phone":"","preNationality":"Cote Divoire","profession":"","relationship":""},
+          ]}
             // data={Object.keys(packages).map(x => ({ name: x }))}
-            data={[]}
-            detailPanel={rowData => {
-              return (JSON.stringify(rowData, null, 2))
-            }}
+            data={flatten(packageCustomers)}
+            detailPanel={rowData => <CustomerDetail customer={rowData} />}
             actions={[
               {
                 icon: tableIcons.Add,
-                tooltip: "Add customer",
+                tooltip: `Add ${title}`,
                 isFreeAction: true,
                 // onClick: (event) => onAdd(),
               },
+              {
+                icon: () => <tableIcons.Edit color="action" />,
+                tooltip: `Edit ${title}`,
+                // onClick: (event, rowData) => {
+                //   onUpdate(rowData);
+                // }
+              },
+              {
+                icon: () => <tableIcons.Delete color="error" />,
+                tooltip: `Delete ${title}`,
+                // onClick: (event, rowData) => {
+                //   onDelete(rowData);
+                // }
+              }
             ]}
             options={{
               actionsColumnIndex: -1,
-              grouping: false,
+              grouping: true,
+              pageSize: 10,
               exportButton: true,
             }}
             localization={{
               body: {
-                emptyDataSourceMessage: `No customers to display, click + button above to add a new one`,
+                emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
               },
             }}
           />
@@ -112,5 +148,6 @@ const Customers = ({ employee }) => {
     </React.Fragment>
   );
 };
+
 
 export default Customers;
