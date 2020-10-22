@@ -6,13 +6,13 @@ import AppFooter from '../shared/components/AppFooter/AppFooter';
 import logo from '../../images/logo-dark.png';
 
 
-const useStyles = makeStyles((theme)=> ({
-container: {
-    backgroundImage: 'linear-gradient(to bottom, #3e95dc, #74aae4, #9dc0ec, #c2d6f4, #e4edfc);', 
-    opacity: '1', 
-    color: '#fff', 
-    height: '100vh'
-}
+const useStyles = makeStyles((theme) => ({
+    container: {
+        backgroundColor: '#d7f9f1',
+        opacity: '1',
+        color: '#fff',
+        height: '100vh'
+    }
 }))
 const Home = () => {
 
@@ -25,18 +25,22 @@ const Home = () => {
             <div className={classes.container}>
 
                 <Grid container direction="column" alignItems="center" justify="space-around" style={{ height: '100%' }}>
-                    <Grid item ><Typography alignItems="center" variant="h3">Welcome to</Typography></Grid>
+                    <Grid item ><Typography alignItems="center" variant="h3" color="textSecondary">Welcome to</Typography></Grid>
 
                     <Grid item container justify="center" alignItems="center">
                         <Zoom in={true} timeout={{ appear: 1000, enter: 3000, exit: 15000 }} mountOnEnter unmountOnExit style={{ width: '50%' }}>
-                            <Typography variant="h1" align="center" color="textPrimary">Haj On Soft</Typography>
+                            <React.Fragment>
+                                <Typography variant="h1" align="center" color="textPrimary">HAJ</Typography>
+                                <Typography variant="h4" color="textSecondary" >onSoft</Typography>
+                            </React.Fragment>
                         </Zoom>
 
                     </Grid>
 
                     <Grid item>
                         <Typography color="textSecondary" variant="h5">
-                            <Box letterSpacing={4}>Travel management software ...</Box>
+                            <Box align="center">the</Box>
+                            <Box letterSpacing={6} align="center">Travel management software ...</Box>
                         </Typography>
                     </Grid>
 
@@ -45,7 +49,7 @@ const Home = () => {
 
                             <Grid item xs={6} container direction="column" alignItems="center">
                                 <Grid item style={{ margin: '20px 0px' }}>
-                                    <Typography style={{ color: '#82D4F3' }} variant="caption">Have an account?</Typography>
+                                    <Typography color="textSecondary" variant="caption">Have an account?</Typography>
                                 </Grid>
                                 <Grid item>
 
@@ -54,7 +58,7 @@ const Home = () => {
                             </Grid>
                             <Grid item xs={6} container direction="column" alignItems="center">
                                 <Grid item style={{ margin: '20px 0px' }}>
-                                    <Typography style={{ color: '#82D4F3' }} variant="caption" >Need an account?</Typography>
+                                    <Typography color="textSecondary" variant="caption" >Need an account?</Typography>
                                 </Grid>
                                 <Grid item>
 
