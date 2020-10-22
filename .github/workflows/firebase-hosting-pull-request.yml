@@ -12,7 +12,9 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAJ_MISSION }}'
+          firebaseServiceAccount: >-
+            ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAJJ_MISSION_OF_COTE_DE_IVOIR
+            }}
           projectId: hajj-mission-of-cote-de-ivoir
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
