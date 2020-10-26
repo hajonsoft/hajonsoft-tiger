@@ -9,11 +9,11 @@ edit other looks up
 connect to any other firebase project as owner
 
 # Getting started 
-
-1- setup a firebase project 
+```
+1- setup a firebase project
 2- create database and storage use custom names as much as possible
-3- setup security rules after migration 
-
+3- setup security rules after migration https://firebase.google.com/docs/rules/insecure-rules#database
+```
 
 # security rule 
 **Testing Mode** Full Access
@@ -37,15 +37,14 @@ connect to any other firebase project as owner
 ```
 {
   "rules": {
-    "users": {
-      "$uid": {
-        ".write": "$uid === auth.uid"
-      }
-    }
+    ".read": "auth != null",
+    ".write": "auth != null"
   }
 }
 ```
-![image](https://user-images.githubusercontent.com/9623964/96530929-5f883880-123d-11eb-9ec1-aedb913fae98.png)
+![image](https://user-images.githubusercontent.com/9623964/97191219-e40a1800-1763-11eb-86ad-b1cd278ac793.png)
+
+![image](https://user-images.githubusercontent.com/9623964/97191402-13b92000-1764-11eb-8077-e8813c677bc9.png)
 
 # Credits
 
