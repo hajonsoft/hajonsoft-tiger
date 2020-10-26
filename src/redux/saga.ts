@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { authService } from './firebaseAuthService';
 import  dataService  from './firebaseDataService';
+import dogLogger from '../features/common/logger';
 
 function* sagas() {
     yield all([
@@ -43,9 +44,9 @@ function* packagesSaga(action: any) {
     try {
         const result = yield call(dataService.getRecordsShallow, action.payload);
         yield put({ type: 'PACKAGES_SUCCESS', payload: result });
-
     } catch (e) {
         yield put({ type: 'PACKAGES_FAIL', payload: e.message });
+        dogLogger.logger.error(`packageSaga: ${e.message} ${JSON.stringify(action.payload)}`);
     }
 
 }
