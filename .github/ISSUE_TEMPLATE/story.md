@@ -2,26 +2,31 @@
 name: Story
 about: Story template
 title: ''
-labels: ''
+labels: enhancement
 assignees: hajonsoft
 
 ---
 
-As a ??? to HAJonSoft I want to 
+As a USER to HAJonSoft I want to 
 
-This can be done when ???
+### Considerations 🎨 
+
+```
+Design considerations
+```
 
 ### Acceptance Criteria 🎯
-```
-1- performance
-2- security
-3- logging
-4- deployment
-5- marketing and customer education
-6- long term vision
-7- upwork outsourcing opprtunity
-8- community outsourcing opprtunity
-```
-🎗️ This should be helpful mainly to ???
 
-`After completing this issue, schedule remaining features in a low priority story`
+```
+- **Performance:** consideration
+- **Security:** consideration
+- **Logging:** consideration
+- **Deployment:** consideration
+- **Marketing and customer education:** consideration
+- **Long term vision:** consideration
+- **Upwork outsourcing opportunity:** consideration
+- **Community outsourcing opportunity:** consideration
+```
+🎗️ This should be helpful mainly to customers 
+
+`After completing this issue, schedule following features in a low priority stories`
