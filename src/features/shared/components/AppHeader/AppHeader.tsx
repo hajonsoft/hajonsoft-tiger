@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const classes = useStyles();
-  const { user, isValid: isloggedin } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
+  const { data: user, isValid: isloggedIn } = useUserState();
 
 
   let history = useHistory();
@@ -189,7 +189,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                 </Box>
               </Grid>
               <Grid item>
-                {isloggedin &&
+                {isloggedIn &&
                   config.buttons.map((b) => (
                     <React.Fragment key={`topButton/${b.name || b.title}`}>
                       <IconButton

@@ -62,7 +62,7 @@ const Profile = () => {
     email: ''
   };
 
-  const { user } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
+  const { data: user } = useUserState();
   const [employee, setEmployee] = useState(initialEmployee);
   const [isError, setIsError] = React.useState(false);
   const classes = useStyles();

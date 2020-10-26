@@ -56,9 +56,7 @@ const Customers = ({ employee }) => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
-  const { user } = useUserState({
-    provider: process.env.REACT_APP_AUTHPROVIDER,
-  });
+  const { data: user } = useUserState();
   const title = "Customer";
   const { data: packageCustomers, error, loading, fetchPackageCustomers } = usePackageCustomerState()
   let { packageName } = useParams();

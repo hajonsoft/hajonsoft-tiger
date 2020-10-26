@@ -48,9 +48,7 @@ const SignIn = () => {
   const [drawerOpen, setdrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [settings, setsettings] = useState({ webapiKey: 'AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo', projectId: 'hajj-mission-of-cote-de-ivoir' })
-  const { fetchUser, error, isValid: isLoggedin } = useUserState({
-    provider: process.env.REACT_APP_AUTHPROVIDER,
-  });
+  const { fetchData: fetchUser, error, isValid: isLoggedIn } = useUserState();
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -76,7 +74,7 @@ const SignIn = () => {
   };
 
 
-  if (isLoggedin) {
+  if (isLoggedIn) {
     history.push("/dashboard");
   }
   const handleMnuClick = (event) => {

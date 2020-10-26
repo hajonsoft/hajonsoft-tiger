@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import useUserState from './redux/useUserState';
 
 const PublicRoute = ({component: Component, restricted, ...rest}: any) => {
-const { isValid } = useUserState({provider: process.env.REACT_APP_AUTHPROVIDER});
+const { isValid } = useUserState();
 
     return (
         <Route {...rest} render={props => (

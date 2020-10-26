@@ -5,16 +5,15 @@ const usePackageState = (): any => {
 
     const dispatch = useDispatch();
 
-    const fetchPackages = (fetchInfo: any) => {
+    const fetchData = (fetchInfo: any) => {
         dispatch(packages({ ...fetchInfo }))
     }
 
-    // TODO: standardize state member based on site name
     return {
-        packages: useSelector((state: any) => state.packages.data),
+        data: useSelector((state: any) => state.packages.data),
         loading: useSelector((state: any) => state.packages.loading),
         error: useSelector((state: any) => state.packages.error),
-        fetchPackages
+        fetchData
     }
 }
 

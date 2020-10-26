@@ -69,7 +69,6 @@ function App() {
             <PublicRoute path="/logout" component={SignOut} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/profile" component={Profile} />
-            {/* TODO: Make this customers component */}
             <PrivateRoute path="/package/:packageName/customers" component={Customers} />
           </Provider>
         </Router>

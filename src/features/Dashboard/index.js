@@ -50,16 +50,14 @@ const tableIcons = {
 };
 // TODO: show order history component here
 
-const Dashboard = ({ employee }) => {
+const Dashboard = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
 
   const history = useHistory();
-  const { user } = useUserState({
-    provider: process.env.REACT_APP_AUTHPROVIDER,
-  });
-  const { packages, error, fetchPackages } = usePackageState()
+  const { data: user } = useUserState();
+  const { data: packages, error, fetchData: fetchPackages } = usePackageState()
 
   useEffect(() => {
     if ((!packages || Object.keys(packages).length === 0) && !error){

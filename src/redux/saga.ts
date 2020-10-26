@@ -40,6 +40,7 @@ function* loginSaga(action: any) {
 
 }
 
+// TODO: implement caching here so you do not go back to the database as long as the data is available in store.
 function* packagesSaga(action: any) {
     try {
         const result = yield call(dataService.getRecordsShallow, action.payload);
