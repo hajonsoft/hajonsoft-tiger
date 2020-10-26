@@ -62,10 +62,10 @@ const Dashboard = ({ employee }) => {
   const { packages, error, fetchPackages } = usePackageState()
 
   useEffect(() => {
-    if (!packages || Object.keys(packages).length === 0){
+    if ((!packages || Object.keys(packages).length === 0) && !error){
       fetchPackages({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: 'customer' })
     }
-  },[fetchPackages, packages, user])
+  },[fetchPackages, packages, user, error])
 
   const onGotoCustomers = (packageName) => {
     history.push(`package/${packageName}/customers`)
