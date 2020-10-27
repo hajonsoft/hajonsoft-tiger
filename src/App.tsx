@@ -1,12 +1,12 @@
 import {
   createMuiTheme,
   responsiveFontSizes,
-  ThemeProvider,
+  ThemeProvider
 } from "@material-ui/core";
+import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
@@ -45,15 +45,13 @@ let defaultTheme = createMuiTheme({
 
 defaultTheme = responsiveFontSizes(defaultTheme);
 const sagaMiddleware = createSagaMiddleware();
-const reduxDevtoolsCompose = (window as any)
-  .__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
-const composeEnhancers =
-  (reduxDevtoolsCompose && reduxDevtoolsCompose({ trace: true })) || compose;
-const store = createStore(
-  reducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware))
-);
 
+const store = configureStore({
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(sagaMiddleware),
+  devTools: process.env.NODE_ENV !== "production",
+});
 sagaMiddleware.run(sagas);
 
 function App() {
@@ -69,7 +67,10 @@ function App() {
             <PublicRoute path="/logout" component={SignOut} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/profile" component={Profile} />
-            <PrivateRoute path="/package/:packageName/customers" component={Customers} />
+            <PrivateRoute
+              path="/package/:packageName/customers"
+              component={Customers}
+            />
           </Provider>
         </Router>
       </ThemeProvider>

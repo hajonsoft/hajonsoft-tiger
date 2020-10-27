@@ -1,43 +1,58 @@
-const initialSlice = () => ({
+import { combineReducers, createSlice } from "@reduxjs/toolkit"
+
+const emptyState = {
     req: {},
     data: {},
     loading: false,
     error: ''
-})
-const initialState = {
-    user: initialSlice(),
-    packages: initialSlice(),
-    packageCustomers: []
 }
-const fetchState = (prevState: any, action: any) => ({ ...prevState, loading: true, req: action.payload })
-const successState = (prevState: any, action: any) => ({ ...prevState, loading: false, error: '', data: action.payload?.data })
-const failState = (prevState: any, action: any) => ({ ...prevState, loading: false, error: action.payload?.message || action.payload })
 
-function reducer(state = initialState, action: any) {
-    // TODO: create reducer functions instead of thinking about the logic every time. 
-    switch (action.type) {
-        case 'LOGIN':
-            return { ...state, user: fetchState(state.user, action) };
-        case 'LOGIN_SUCCESS':
-            return { ...state, user: successState(state.user, action) };
-        case 'LOGIN_FAIL':
-            return { ...state, user: failState(state.user, action) };
-        case 'PACKAGES':
-            return { ...state, packages: fetchState(state.packages, action) };
-        case 'PACKAGES_SUCCESS':
-            return { ...state, packages: successState(state.packages, action) };
-        case 'PACKAGES_FAIL':
-            return { ...state, packages: failState(state.packages, action) };
-        case 'PACKAGECUSTOMERS':
-            return { ...state, packageCustomers: fetchState(state.packageCustomers, action) };
-        case 'PACKAGECUSTOMERS_SUCCESS':
-            return { ...state, packageCustomers: successState(state.packageCustomers, action) };
-        case 'PACKAGECUSTOMERS_FAIL':
-            return { ...state, packageCustomers: failState(state.packageCustomers, action) };
 
-        default:
-            return {...state};
+const applyFetch = (state: any, action: any) => { state.loading = true; state.req = action.payload }
+const applySuccess = (state: any, action: any) => { state.loading = false; state.error = ''; state.data = action.payload?.data }
+const applyFail = (state: any, action: any) => { state.loading = false; state.error = action.payload?.message || action.payload }
+
+export const packagesSlice = createSlice({
+    name: 'packages',
+    initialState: emptyState,
+    reducers: {
+        fetch: (state, action) => applyFetch(state, action),
+        success: (state, action) => applySuccess(state, action),
+        fail: (state, action) => applyFail(state, action)
     }
-}
+})
+
+export const userSlice = createSlice({
+    name: 'user',
+    initialState: emptyState,
+    reducers: {
+        fetch: (state, action) => applyFetch(state, action),
+        success: (state, action) => applySuccess(state, action),
+        fail: (state, action) => applyFail(state, action)
+    }
+})
+
+export const packageCustomersSlice = createSlice({
+    name: 'packageCustomers',
+    initialState: emptyState,
+    reducers: {
+        fetch: (state, action) => applyFetch(state, action),
+        success: (state, action) => {
+            state.loading = false;
+            state.error = '';
+            if (action?.payload?.req?.packageName ){
+                if (!state.data) state.data = {};
+                state.data = {[action.payload.req.packageName]: action.payload.data}
+            }
+        },
+        fail: (state, action) => applyFail(state, action)
+    }
+})
+
+const reducer = combineReducers({
+    user: userSlice.reducer,
+    packages: packagesSlice.reducer,
+    packageCustomers: packageCustomersSlice.reducer,
+})
 
 export default reducer;

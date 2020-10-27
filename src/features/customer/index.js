@@ -58,25 +58,25 @@ const Customers = ({ employee }) => {
   // );
   const { data: user } = useUserState();
   const title = "Customer";
-  const { data: packageCustomers, error, loading, fetchPackageCustomers } = usePackageCustomerState()
+  const { data: packageCustomers, error, loading, fetchData: fetchPackageCustomers } = usePackageCustomerState()
   let { packageName } = useParams();
   useEffect(() => {
-    if (!packageCustomers){
-
-      fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: `customer/${packageName}/` })
+    if ((!packageCustomers || !packageCustomers[packageName]) && !loading){
+      fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, packageName, folder: `customer/${packageName}/` })
     }
 
-  },[fetchPackageCustomers,packageCustomers, packageName, user])
+  },[fetchPackageCustomers,packageCustomers, packageName, user, loading])
 
   if (loading) {
     return <CircularProgress />
   }
 
   const flatten = (data)=> {
-    if (!data) return;
-    const keys = Object.keys(data);
-    return keys.map(nat=> Object.keys(data[nat]).map(hajId=> ({...data[nat][hajId]})))[0]
-  
+    if (!data || !packageName) return;
+    const packageData = data[packageName];
+    if (!packageData) return;
+    const keys = Object.keys(packageData);
+    return keys.map(nat=> Object.keys(packageData[nat]).map(hajId=> ({...packageData[nat][hajId]})))[0]
   }
 
   return (

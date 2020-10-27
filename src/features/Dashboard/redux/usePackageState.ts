@@ -1,12 +1,14 @@
-import { packages } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { packagesSlice } from './../../../redux/reducer';
 // Using reducer and state from src\redux\reducer.ts  (^P)
 const usePackageState = (): any => {
 
     const dispatch = useDispatch();
+    const { fetch } = packagesSlice.actions;
+
 
     const fetchData = (fetchInfo: any) => {
-        dispatch(packages({ ...fetchInfo }))
+        dispatch(fetch({ ...fetchInfo }))
     }
 
     return {

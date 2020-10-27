@@ -1,5 +1,5 @@
-import { login } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { userSlice } from '../../../redux/reducer';
 // Using reducer from src\redux\reducer.ts
 const useUserState = (provider = 'firebase'): any => {
     const authProvider = provider ;
@@ -7,7 +7,7 @@ const useUserState = (provider = 'firebase'): any => {
     const dispatch = useDispatch();
 
     const fetchData = (user: any) => {
-        dispatch(login({...user, authProvider}))
+        dispatch(userSlice.actions.fetch({...user, authProvider}))
     }
 
     return {
