@@ -30,6 +30,7 @@
     "date-fns": "^2.16.1",
     "formik": "^2.1.5",
     "gh-pages": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "material-auto-rotating-carousel": "^3.0.2",
     "material-table": "^1.69.1",

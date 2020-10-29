@@ -1,3 +1,4 @@
+import { Breadcrumbs, Button, CircularProgress } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -11,6 +12,7 @@ import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
+import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
@@ -18,14 +20,11 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
 import React, { forwardRef, useEffect } from "react";
+import { useHistory, useParams } from 'react-router-dom';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
+import CustomerDetail from './components/CustomerDetail';
 import usePackageCustomerState from './redux/usePackageCustomerState';
-import {useParams} from 'react-router-dom'
-import { CircularProgress } from '@material-ui/core';
-import  CustomerDetail  from './components/CustomerDetail';
-
-
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -52,7 +51,7 @@ const tableIcons = {
 };
 // TODO: show order history component here - PHASE II
 
-const Customers = ({ employee }) => {
+const Customers = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
@@ -60,37 +59,46 @@ const Customers = ({ employee }) => {
   const title = "Customer";
   const { data: packageCustomers, error, loading, fetchData: fetchPackageCustomers } = usePackageCustomerState()
   let { packageName } = useParams();
-  useEffect(() => {
-    if ((!packageCustomers || !packageCustomers[packageName]) && !loading){
-      fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, packageName, folder: `customer/${packageName}/` })
-    }
+  const history = useHistory();
 
-  },[fetchPackageCustomers,packageCustomers, packageName, user, loading])
+  useEffect(() => {
+    fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, packageName, folder: `customer/${packageName}/` })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (loading) {
-    return <CircularProgress />
+    return <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}> <CircularProgress size={40} /> </div>
   }
 
-  const flatten = (data)=> {
+
+  const flatten = (data) => {
     if (!data || !packageName) return;
     const packageData = data[packageName];
     if (!packageData) return;
     const keys = Object.keys(packageData);
-    return keys.map(nat=> Object.keys(packageData[nat]).map(hajId=> ({...packageData[nat][hajId]})))[0]
+    return keys.map(nat => Object.keys(packageData[nat]).map(hajId => ({ ...packageData[nat][hajId] })))[0]
+  }
+
+  const handleGoback = () => {
+    history.goBack()
   }
 
   return (
     <React.Fragment>
       <div
         style={{
-          background:
-            "transparent linear-gradient(180deg, #005F90 0%, #0089C7 100%) 0% 0% no-repeat padding-box",
-          opacity: 1,
+          backgroundColor: 'snow'
         }}
       >
         <HajonsoftHeader />
         <div>
-          {/* //TODO : Breadcrum here would be amazing */}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64px' }}>
+
+            <Breadcrumbs>
+              <Button color="secondary" onClick={handleGoback}><LocalAirportIcon style={{ marginRight: '0.5rem', width: '20px', height: '20px' }} /> Packages </Button>
+            </Breadcrumbs>
+          </div>
           <MaterialTable
             icons={tableIcons}
             title={`${packageName} ${title}s`}
@@ -100,8 +108,8 @@ const Customers = ({ employee }) => {
             { title: "Pass No", field: "passportNumber" },
             { title: "Birth Date", field: "birthDate" },
             { title: "Email", field: "email" },
-            {"CreateDt":"2020-05-12T23:47:04.880Z","birthDate":"1969-03-26T00:00:00.000Z","birthPlace":"COTE DIVOIRE","email":"","gender":"Male","idNumber":"19AA88765","idNumberExpireDate":"1900-01-01T00:00:00.000Z","idNumberIssueDate":"1900-01-01T00:00:00.000Z","mahramName":"","name":"ABDOULAYE BAKAYOKO","nameArabic":"ABDOULAYE BAKAYOKO","nationality":"Cote Divoire","onSoftId":2987010,"passExpireDt":"2025-02-06T00:00:00.000Z","passIssueDt":"2020-02-07T00:00:00.000Z","passPlaceOfIssue":"COTE DIVOIRE","passportNumber":"19AA88765","phone":"","preNationality":"Cote Divoire","profession":"","relationship":""},
-          ]}
+            { "CreateDt": "2020-05-12T23:47:04.880Z", "birthDate": "1969-03-26T00:00:00.000Z", "birthPlace": "COTE DIVOIRE", "email": "", "gender": "Male", "idNumber": "19AA88765", "idNumberExpireDate": "1900-01-01T00:00:00.000Z", "idNumberIssueDate": "1900-01-01T00:00:00.000Z", "mahramName": "", "name": "ABDOULAYE BAKAYOKO", "nameArabic": "ABDOULAYE BAKAYOKO", "nationality": "Cote Divoire", "onSoftId": 2987010, "passExpireDt": "2025-02-06T00:00:00.000Z", "passIssueDt": "2020-02-07T00:00:00.000Z", "passPlaceOfIssue": "COTE DIVOIRE", "passportNumber": "19AA88765", "phone": "", "preNationality": "Cote Divoire", "profession": "", "relationship": "" },
+            ]}
             // data={Object.keys(packages).map(x => ({ name: x }))}
             data={flatten(packageCustomers)}
             detailPanel={rowData => <CustomerDetail customer={rowData} />}

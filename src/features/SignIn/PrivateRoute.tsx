@@ -1,18 +1,26 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import useUserState from './redux/useUserState';
+import React from "react";
+import { Redirect, Route } from "react-router-dom";
+import useUserState from "./redux/useUserState";
 
-
-const PrivateRoute = ({ component: Component, ...rest }: any) => {
-    const {isValid} = useUserState();
+function PrivateRoute({ children, ...rest }) {
+    const {data: user} = useUserState()
     return (
-
-        <Route {...rest} render={props => (
-            isValid ?
-                <Component {...props} />
-                : <Redirect to="/" />
-        )} />
+      <Route
+        {...rest}
+        render={({ location }) =>
+          user?.idToken ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: location }
+              }}
+            />
+          )
+        }
+      />
     );
-};
+  }
 
 export default PrivateRoute;

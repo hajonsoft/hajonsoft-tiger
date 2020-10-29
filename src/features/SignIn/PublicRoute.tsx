@@ -1,17 +1,8 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import useUserState from './redux/useUserState';
+import React from "react";
+import { Route } from "react-router-dom";
 
-const PublicRoute = ({component: Component, restricted, ...rest}: any) => {
-const { isValid } = useUserState();
-
-    return (
-        <Route {...rest} render={props => (
-            isValid && restricted ?
-                <Redirect to="/dashboard" />
-            : <Component {...props} />
-        )} />
-    );
+const PublicRoute = ({ component: Component, restricted, ...rest }: any) => {
+  return <Route {...rest} render={(props) => <Component {...props} />} />;
 };
 
 export default PublicRoute;

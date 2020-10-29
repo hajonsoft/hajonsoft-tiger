@@ -21,7 +21,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Alert from "@material-ui/lab/Alert";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import * as yup from "yup";
 import logo from "../../images/logo.jpg";
 import useUserState from "./redux/useUserState";
@@ -47,8 +47,11 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setdrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [settings, setsettings] = useState({ webapiKey: 'AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo', projectId: 'hajj-mission-of-cote-de-ivoir' })
-  const { fetchData: fetchUser, error, isValid: isLoggedIn } = useUserState();
+  const [settings, setsettings] = useState({
+    webapiKey: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo",
+    projectId: "hajj-mission-of-cote-de-ivoir",
+  });
+  const { data: user, fetchData: fetchUser, error } = useUserState();
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -67,16 +70,11 @@ const SignIn = () => {
       ),
   });
 
-
   const handleLogin = (values: any, actions: any) => {
-    fetchUser({...values, ...settings});
+    fetchUser({ ...values, ...settings });
     actions.setSubmitting(false);
   };
 
-
-  if (isLoggedIn) {
-    history.push("/dashboard");
-  }
   const handleMnuClick = (event) => {
     setAnchorEl(event.currentTarget);
     setdrawerOpen(true);
@@ -85,6 +83,10 @@ const SignIn = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (user?.idToken) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <div className={classes.container}>
       <Grid
@@ -123,8 +125,8 @@ const SignIn = () => {
         <Grid item>
           <Formik
             initialValues={{
-              email: "",
-              password: "",
+              email: "ost2210@gmail.com",
+              password: "(Paris123)",
             }}
             validationSchema={loginSchema}
             onSubmit={handleLogin}
@@ -173,8 +175,8 @@ const SignIn = () => {
                                   {showPassword ? (
                                     <Visibility />
                                   ) : (
-                                      <VisibilityOff />
-                                    )}
+                                    <VisibilityOff />
+                                  )}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -266,7 +268,12 @@ const SignIn = () => {
                       variant="outlined"
                       fullWidth
                       value={settings.webapiKey}
-                      onChange={(e)=> setsettings(sett=> ({...sett, webapiKey: e.currentTarget.value}))}
+                      onChange={(e) =>
+                        setsettings((sett) => ({
+                          ...sett,
+                          webapiKey: e.currentTarget.value,
+                        }))
+                      }
                     ></TextField>
                   </Grid>
                   <Grid item xs={12}>
@@ -275,10 +282,14 @@ const SignIn = () => {
                       label="Project Id"
                       fullWidth
                       value={settings.projectId}
-                      onChange={(e)=> setsettings(sett=> ({...sett, projectId: e.currentTarget.value}))}
+                      onChange={(e) =>
+                        setsettings((sett) => ({
+                          ...sett,
+                          projectId: e.currentTarget.value,
+                        }))
+                      }
                       variant="outlined"
                     />
-
                   </Grid>
                 </Grid>
               </Grid>
@@ -290,10 +301,9 @@ const SignIn = () => {
                   fullWidth
                 >
                   Done
-                      </Button>
+                </Button>
               </Box>
             </Box>
-
           </CardContent>
         </Card>
       </Popover>

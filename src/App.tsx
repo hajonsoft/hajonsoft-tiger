@@ -1,7 +1,7 @@
 import {
   createMuiTheme,
   responsiveFontSizes,
-  ThemeProvider
+  ThemeProvider,
 } from "@material-ui/core";
 import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
@@ -65,12 +65,15 @@ function App() {
             <PublicRoute path="/login" component={SignIn} />
             <PublicRoute path="/forgot-password" component={ForgotPassword} />
             <PublicRoute path="/logout" component={SignOut} />
-            <PrivateRoute path="/dashboard" component={Dashboard} />
-            <PrivateRoute path="/profile" component={Profile} />
-            <PrivateRoute
-              path="/package/:packageName/customers"
-              component={Customers}
-            />
+            <PrivateRoute path="/dashboard">
+              <Dashboard />
+            </PrivateRoute>
+            <PrivateRoute path="/profile">
+              <Profile />
+            </PrivateRoute>
+            <PrivateRoute path="/package/:packageName/customers">
+              <Customers />
+            </PrivateRoute>
           </Provider>
         </Router>
       </ThemeProvider>

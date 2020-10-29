@@ -1,5 +1,7 @@
-import { Button } from '@material-ui/core';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Typography } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
+import { LocalAirport } from '@material-ui/icons';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -19,9 +21,9 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
 import React, { forwardRef, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
+import PackageDetail from './components/packageDetail';
 import usePackageState from './redux/usePackageState';
 
 const tableIcons = {
@@ -55,38 +57,31 @@ const Dashboard = () => {
   //   theme.breakpoints.down("sm")
   // );
 
-  const history = useHistory();
   const { data: user } = useUserState();
-  const { data: packages, error, loading, fetchData: fetchPackages } = usePackageState()
+  const { data: packages, error, fetchData: fetchPackages } = usePackageState()
 
   useEffect(() => {
-    if ((!packages || Object.keys(packages).length === 0) && !error && !loading){
+    if (Object.keys(packages).length === 0) {
       fetchPackages({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: 'customer' })
     }
-  },[fetchPackages, packages, user, error, loading])
+  }, [])
 
-  const onGotoCustomers = (packageName) => {
-    history.push(`package/${packageName}/customers`)
-  }
+
   return (
     <React.Fragment>
       <div
         style={{
-          background:
-            "transparent linear-gradient(180deg, #005F90 0%, #0089C7 100%) 0% 0% no-repeat padding-box",
-          opacity: 1,
+          backgroundColor: 'snow'
         }}
       >
         <HajonsoftHeader />
         <div>
           <MaterialTable
             icons={tableIcons}
-            title={`Packages`}
+            title={<Typography variant="h6"> <LocalAirport color="secondary" style={{ margin: '5px 5px auto 5px' }} />  Packages</Typography>}
             columns={[{ title: "Name", field: "name" }]}
             data={Object.keys(packages).map(x => ({ name: x }))}
-            detailPanel={rowData => {
-              return (<Button color="primary" variant="outlined" onClick={() => onGotoCustomers(rowData.name)}>View customers for {rowData.name}</Button>)
-            }}
+            detailPanel={rowData => <PackageDetail data={rowData} />}
             actions={[
               {
                 icon: tableIcons.Add,

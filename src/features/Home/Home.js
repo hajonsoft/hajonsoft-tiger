@@ -4,6 +4,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import AppFooter from '../shared/components/AppFooter/AppFooter';
 import logo from '../../images/logo-dark.png';
+import useUserState from '../SignIn/redux/useUserState';
 // import background_image from '../../images/undraw_control_panel1_20gm.svg';
 
 
@@ -18,11 +19,13 @@ const Home = () => {
 
     const history = useHistory();
     const classes = useStyles();
+    const {data: user} = useUserState()
 
     return (
 
         <React.Fragment >
             <div className={classes.container} >
+                {JSON.stringify(user)}
                 <Grid container direction="column" alignItems="center" justify="space-around" style={{ height: '100%' }}>
                     <Grid item ><Typography alignItems="center" variant="h3" color="textSecondary">Welcome to</Typography></Grid>
 
