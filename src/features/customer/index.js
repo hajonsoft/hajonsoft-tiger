@@ -19,10 +19,11 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useHistory, useParams } from 'react-router-dom';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import useUserState from "../SignIn/redux/useUserState";
+import CoreForm from './components/CoreForm';
 import CustomerDetail from './components/CustomerDetail';
 import usePackageCustomerState from './redux/usePackageCustomerState';
 const tableIcons = {
@@ -49,15 +50,14 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
 };
-// TODO: show order history component here - PHASE II
-
 const Customers = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
   const { data: user } = useUserState();
-  const title = "Customer";
   const { data: packageCustomers, error, loading, fetchData: fetchPackageCustomers } = usePackageCustomerState()
+  const [state, setstate] = useState({mode: 'list', record: {}})
+  const title = "Customer";
   let { packageName } = useParams();
   const history = useHistory();
 
@@ -94,21 +94,25 @@ const Customers = () => {
         <HajonsoftHeader />
         <div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64px' }}>
-
             <Breadcrumbs>
               <Button color="secondary" onClick={handleGoback}><LocalAirportIcon style={{ marginRight: '0.5rem', width: '20px', height: '20px' }} /> Packages </Button>
             </Breadcrumbs>
           </div>
+          {state.mode !== 'list' && 
+          <CoreForm mode={state.mode} record={state.record} title={title} onClose={()=> setstate(st=> ({...st, mode: 'list'}))}/>
+          }
+
+          {state.mode === 'list' && 
           <MaterialTable
             icons={tableIcons}
             title={`${packageName} ${title}s`}
             columns={[{ title: "Name", field: "name" },
             { title: "Gender", field: "gender" },
             { title: "From", field: "nationality" },
-            { title: "Pass No", field: "passportNumber" },
+            { title: "Pass #", field: "passportNumber" },
             { title: "Birth Date", field: "birthDate" },
             { title: "Email", field: "email" },
-            { "CreateDt": "2020-05-12T23:47:04.880Z", "birthDate": "1969-03-26T00:00:00.000Z", "birthPlace": "COTE DIVOIRE", "email": "", "gender": "Male", "idNumber": "19AA88765", "idNumberExpireDate": "1900-01-01T00:00:00.000Z", "idNumberIssueDate": "1900-01-01T00:00:00.000Z", "mahramName": "", "name": "ABDOULAYE BAKAYOKO", "nameArabic": "ABDOULAYE BAKAYOKO", "nationality": "Cote Divoire", "onSoftId": 2987010, "passExpireDt": "2025-02-06T00:00:00.000Z", "passIssueDt": "2020-02-07T00:00:00.000Z", "passPlaceOfIssue": "COTE DIVOIRE", "passportNumber": "19AA88765", "phone": "", "preNationality": "Cote Divoire", "profession": "", "relationship": "" },
+            // { "CreateDt": "2020-05-12T23:47:04.880Z", "birthDate": "1969-03-26T00:00:00.000Z", "birthPlace": "COTE DIVOIRE", "email": "", "gender": "Male", "idNumber": "19AA88765", "idNumberExpireDate": "1900-01-01T00:00:00.000Z", "idNumberIssueDate": "1900-01-01T00:00:00.000Z", "mahramName": "", "name": "ABDOULAYE BAKAYOKO", "nameArabic": "ABDOULAYE BAKAYOKO", "nationality": "Cote Divoire", "onSoftId": 2987010, "passExpireDt": "2025-02-06T00:00:00.000Z", "passIssueDt": "2020-02-07T00:00:00.000Z", "passPlaceOfIssue": "COTE DIVOIRE", "passportNumber": "19AA88765", "phone": "", "preNationality": "Cote Divoire", "profession": "", "relationship": "" },
             ]}
             // data={Object.keys(packages).map(x => ({ name: x }))}
             data={flatten(packageCustomers)}
@@ -118,21 +122,19 @@ const Customers = () => {
                 icon: tableIcons.Add,
                 tooltip: `Add ${title}`,
                 isFreeAction: true,
-                // onClick: (event) => onAdd(),
+                onClick: (event) => setstate(st=> ({...st, mode: 'create'})),
               },
               {
                 icon: () => <tableIcons.Edit color="action" />,
                 tooltip: `Edit ${title}`,
-                // onClick: (event, rowData) => {
-                //   onUpdate(rowData);
-                // }
+                onClick: (event, rowData) => setstate(st=> ({...st, mode: 'update', record: rowData})),
+
               },
               {
                 icon: () => <tableIcons.Delete color="error" />,
                 tooltip: `Delete ${title}`,
-                // onClick: (event, rowData) => {
-                //   onDelete(rowData);
-                // }
+                onClick: (event, rowData) => setstate(st=> ({...st, mode: 'delete', record: rowData})),
+
               }
             ]}
             options={{
@@ -147,6 +149,8 @@ const Customers = () => {
               },
             }}
           />
+        }
+
         </div>
       </div>
       <Snackbar open={error} autoHideDuration={6000} >

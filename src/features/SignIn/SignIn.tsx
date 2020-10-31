@@ -92,6 +92,8 @@ const SignIn = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setdrawerOpen(false);
+
   };
 
 const handleGoogleSignin = ()=> {
@@ -107,7 +109,7 @@ const handleGoogleSignin = ()=> {
       <Grid
         container
         direction="column"
-        alignItems="stretch"
+        alignItems="center"
         justify="center"
         spacing={2}
         alignContent="center"
@@ -117,11 +119,11 @@ const handleGoogleSignin = ()=> {
         md={3}
         xs={12}
       >
-        <Grid item>
+        <Grid item style={{width: '100%'}}>
           <Grid container justify="flex-end">
             <Grid item>
               <IconButton onClick={(e) => handleMnuClick(e)}>
-                <MenuIcon color="secondary" />
+                <MenuIcon  />
               </IconButton>
             </Grid>
           </Grid>
@@ -135,7 +137,7 @@ const handleGoogleSignin = ()=> {
             <Box p={2}>WELCOME</Box>
           </Typography>
 
-          <Typography align="center">Login to continue to HajOnSoft</Typography>
+          <Typography align="center">Login to continue to HAJonSoft</Typography>
         </Grid>
         <Grid item>
           <Formik
@@ -241,7 +243,7 @@ const handleGoogleSignin = ()=> {
           <Grid item xs><Divider></Divider></Grid>
         </Grid>
         <Grid item>
-          <Button  fullWidth variant="outlined" onClick={handleGoogleSignin} startIcon={<FontAwesomeIcon icon={faGoogle} />}>Continue with Google</Button>
+          <Button  variant="outlined" onClick={handleGoogleSignin} style={{textTransform: 'none'}} startIcon={<FontAwesomeIcon icon={faGoogle} />}>Continue with Google</Button>
         </Grid>
 
         <Grid item>
@@ -319,6 +321,7 @@ const handleGoogleSignin = ()=> {
                   variant="contained"
                   color="secondary"
                   type="submit"
+                  onClick={handleClose} // TODO: call a method to persist to local storage
                   fullWidth
                 >
                   Done
