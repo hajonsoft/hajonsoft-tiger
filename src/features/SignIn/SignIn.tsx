@@ -25,6 +25,13 @@ import { Redirect, useHistory } from "react-router";
 import * as yup from "yup";
 import logo from "../../images/logo.jpg";
 import useUserState from "./redux/useUserState";
+import firebase from 'firebase'
+import {firebase_app} from '../../firebaseapp'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,6 +49,8 @@ const SignIn = () => {
   const mediaMobile = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
+  
+
   const classes = useStyles();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
@@ -52,6 +61,7 @@ const SignIn = () => {
     projectId: "hajj-mission-of-cote-de-ivoir",
   });
   const { data: user, fetchData: fetchUser, error } = useUserState();
+
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -84,6 +94,11 @@ const SignIn = () => {
     setAnchorEl(null);
   };
 
+const handleGoogleSignin = ()=> {
+  let provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope('email');
+  firebase_app.auth().signInWithPopup(provider)
+}
   if (user?.idToken) {
     return <Redirect to="/dashboard" />;
   }
@@ -220,9 +235,15 @@ const SignIn = () => {
             )}
           </Formik>
         </Grid>
-        <Grid item>
-          <Divider />
+        <Grid item container justify="center" alignItems="center" spacing={2}>
+          <Grid item xs><Divider /></Grid>
+          <Grid item >OR</Grid>
+          <Grid item xs><Divider></Divider></Grid>
         </Grid>
+        <Grid item>
+          <Button  fullWidth variant="outlined" onClick={handleGoogleSignin} startIcon={<FontAwesomeIcon icon={faGoogle} />}>Continue with Google</Button>
+        </Grid>
+
         <Grid item>
           <Typography align="center">
             <Box mb={4}>

@@ -62,7 +62,7 @@ const Customers = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetchPackageCustomers({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, packageName, folder: `customer/${packageName}/` })
+    fetchPackageCustomers({ user, projectId: process.env.REACT_APP_PROJECT_ID, packageName, folder: `customer/${packageName}/` })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

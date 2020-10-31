@@ -1,0 +1,8 @@
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo
+Content-Type: application/json
+
+{ 
+    "email": "ayali@hotmail.com", 
+"password": "(Paris123)", 
+"returnSecureToken": true 
+}

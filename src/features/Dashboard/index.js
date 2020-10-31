@@ -62,7 +62,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (Object.keys(packages).length === 0) {
-      fetchPackages({ user, projectId: process.env.REACT_APP_DEFAULT_PROJECTID, folder: 'customer' })
+      fetchPackages({ user, projectId: process.env.REACT_APP_PROJECT_ID, folder: 'customer' })
     }
   }, [])
 

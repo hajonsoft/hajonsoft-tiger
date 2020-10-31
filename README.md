@@ -64,5 +64,6 @@ private, restricted routes https://medium.com/@thanhbinh.tran93/private-route-pu
 
 Firebase Rest https://firebase.google.com/docs/reference/rest/database
 
-Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js
+Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js 
 
+Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
