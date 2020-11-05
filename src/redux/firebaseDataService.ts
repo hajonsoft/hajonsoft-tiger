@@ -13,16 +13,16 @@ const dataService = {
         const importedRecords = await axios.get(url);
         return importedRecords;
     },
-    createRecord: async (fbUser: any, projectId: string, folder: string, record: any) => {
-        const fbCustomer = await axios.post(`https://${projectId}.firebaseio.com/${folder}.json?auth=${fbUser.idToken}`, record);
+    createRecord: async ({ user, projectId, folder, record }) => {
+        const fbCustomer = await axios.post(`https://${projectId}.firebaseio.com/${folder}.json?auth=${user.idToken}`, record);
         return fbCustomer;
     },
-    updateRecord: async (fbUser: any, projectId: string, folder: string, recordId: string, record: any) => {
-        await axios.put(`https://${projectId}.firebaseio.com/${folder}/${recordId}.json?auth=${fbUser.idToken}`, record);
+    updateRecord: async ({ user, projectId, folder, record , recordId}) => {
+        await axios.put(`https://${projectId}.firebaseio.com/${folder}/${recordId}.json?auth=${user.idToken}`, record);
         return { ...record, id: recordId };
     },
-    deleteRecord: async (fbUser: any, projectId: string, folder: string, recordId: string) => {
-        await axios.delete(`https://${projectId}.firebaseio.com/${folder}/${recordId}.json?auth=${fbUser.idToken}`);
+    deleteRecord: async ({ user, projectId, folder, recordId}) => {
+        await axios.delete(`https://${projectId}.firebaseio.com/${folder}/${recordId}.json?auth=${user.idToken}`);
         return { id: recordId };
     },
     deleteTable: async (fbUser: any, projectId: string, folder: string) => {

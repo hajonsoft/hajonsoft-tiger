@@ -142,8 +142,8 @@ const handleGoogleSignin = ()=> {
         <Grid item>
           <Formik
             initialValues={{
-              email: "ost2210@gmail.com",
-              password: "(Paris123)",
+              email: "",
+              password: "",
             }}
             validationSchema={loginSchema}
             onSubmit={handleLogin}

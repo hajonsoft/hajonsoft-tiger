@@ -76,8 +76,13 @@ const Customers = () => {
     if (!data || !packageName) return;
     const packageData = data[packageName];
     if (!packageData) return;
-    const keys = Object.keys(packageData);
-    return keys.map(nat => Object.keys(packageData[nat]).map(hajId => ({ ...packageData[nat][hajId] })))[0]
+    const output = [];
+    const nationalityKeys = Object.keys(packageData);
+    nationalityKeys.forEach(nat => {
+      const natCustomerIds = Object.keys(packageData[nat]);
+      natCustomerIds.forEach(id=> output.push({ ...packageData[nat][id], id }))
+    });
+    return output;
   }
 
   const handleGoback = () => {

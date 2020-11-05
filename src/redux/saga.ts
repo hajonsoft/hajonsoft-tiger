@@ -8,7 +8,10 @@ function* sagas() {
     yield all([
         loginFlow(),
         packagesFlow(),
-        packageCustomersFlow(),
+        retrievePackageCustomersFlow(),
+        createPackageCustomersFlow(),
+        updatePackageCustomersFlow(),
+        deletePackageCustomersFlow(),
     ])
 
 }
@@ -20,9 +23,51 @@ function* packagesFlow() {
     yield takeLatest(packagesSlice.actions.fetch, packagesSaga);
 }
 
-function* packageCustomersFlow() {
-    yield takeLatest(packageCustomersSlice.actions.fetch, packageCustomersSaga);
+function* retrievePackageCustomersFlow() {
+    yield takeLatest(packageCustomersSlice.actions.fetch, retrievePackageCustomersSaga);
 }
+function* createPackageCustomersFlow() {
+    yield takeLatest(packageCustomersSlice.actions.create, createPackageCustomersSaga);
+}
+function* updatePackageCustomersFlow() {
+    yield takeLatest(packageCustomersSlice.actions.update, updatePackageCustomersSaga);
+}
+function* deletePackageCustomersFlow() {
+    yield takeLatest(packageCustomersSlice.actions.delete, deletePackageCustomersSaga);
+}
+function* retrievePackageCustomersSaga(action: any) {
+    try {
+        const result = yield call(dataService.getRecords, action.payload);
+        yield put(packageCustomersSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packageCustomersSlice.actions.fail(e.message));
+    }
+}
+function* createPackageCustomersSaga(action: any) {
+    try {
+        const result = yield call(dataService.createRecord, action.payload);
+        yield put(packageCustomersSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packageCustomersSlice.actions.fail(e.message));
+    }
+}
+function* updatePackageCustomersSaga(action: any) {
+    try {
+        const result = yield call(dataService.updateRecord, action.payload);
+        yield put(packageCustomersSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packageCustomersSlice.actions.fail(e.message));
+    }
+}
+function* deletePackageCustomersSaga(action: any) {
+    try {
+        const result = yield call(dataService.deleteRecord, action.payload);
+        yield put(packageCustomersSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packageCustomersSlice.actions.fail(e.message));
+    }
+}
+
 function* loginSaga(action: any) {
     try {
         const result = yield call(authService.login, action.payload);
@@ -44,15 +89,6 @@ function* packagesSaga(action: any) {
     } catch (e) {
         yield put(packagesSlice.actions.fail(e.message));
         dogLogger.logger.error(`packageSaga: ${e.message} ${JSON.stringify(action.payload)}`);
-    }
-}
-
-function* packageCustomersSaga(action: any) {
-    try {
-        const result = yield call(dataService.getRecords, action.payload);
-        yield put(packageCustomersSlice.actions.success({...result, req: action.payload}));
-    } catch (e) {
-        yield put(packageCustomersSlice.actions.fail(e.message));
     }
 }
 

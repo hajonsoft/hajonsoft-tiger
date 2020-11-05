@@ -4,6 +4,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
+import {  useParams } from 'react-router-dom';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
@@ -12,8 +14,10 @@ import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import { Form, Formik } from 'formik';
 import _ from 'lodash';
 import React from 'react';
+import usePackageCustomerState from '../redux/usePackageCustomerState';
 import CoreImage from './CoreImage';
 import CoreTextField from './CoreTextField';
+import useUserState from '../../SignIn/redux/useUserState';
 const useStyles = makeStyles((theme) => ({
     formContainer: {
         width: '90%',
@@ -46,17 +50,36 @@ const CoreForm = ({ mode, record, title, onClose }) => {
 
 
     const classes = useStyles();
+    const {createData, updateData, deleteData } = usePackageCustomerState();
+    const { data: user } = useUserState();
+    let { packageName } = useParams();
 
     // const handleImageChange = ()=> {
     //     // TODO: when image changes store it to the database using the record key and its field name
     // }
+
     const handleSubmitForm = (values, actions) => {
-        alert(values, actions);
+        switch (mode) {
+            case 'create':
+                createData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}` });
+                break;
+            case 'update':
+                updateData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}`, recordId: record.id});
+                break;
+
+            case 'delete':
+                deleteData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}`,  recordId: record.id});
+                break;
+
+            default:
+                console.log('unknown mode')
+        }
+        onclose()
     }
     return (
         <React.Fragment>
             <Formik
-                initialValues={record}
+                initialValues={mode === 'create' ? {} : record}
                 onSubmit={handleSubmitForm}
             >
                 {({
@@ -73,6 +96,7 @@ const CoreForm = ({ mode, record, title, onClose }) => {
                         <Card raised className={classes.formContainer}>
                             <CardHeader className={classes.cardTitle}
                                 title={_.startCase(mode + ' ' + title)}
+                                subheader={record.id}
                                 action={
                                     <CancelOutlinedIcon color='secondary' onClick={onClose} />
                                 }
@@ -89,7 +113,7 @@ const CoreForm = ({ mode, record, title, onClose }) => {
                                                 <CoreTextField name="nameArabic" label="الاسم العربي في جواز السفر" mode={mode} xsWidth={6} />
                                             </Grid>
                                             <Grid item container justify="space-between" spacing={4}>
-                                                <CoreTextField name="phone" mode={mode} xsWidth={6} />
+                                                <CoreTextField name="nationality" mode={mode} xsWidth={6} />
                                                 <CoreTextField name="email" mode={mode} xsWidth={6} />
                                             </Grid>
                                             <Grid item container justify="space-between" spacing={4}>
@@ -110,6 +134,8 @@ const CoreForm = ({ mode, record, title, onClose }) => {
                                     <CoreTextField name="CreateDt" mode={mode} />
                                     <CoreTextField name="mahramName" label="Mahram" mode={mode} />
                                     <CoreTextField name="relationship" mode={mode} />
+                                    <CoreTextField name="phone" mode={mode} xsWidth={6} />
+
                                 </Grid>
 
                             </CardContent>
