@@ -1,8 +1,12 @@
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
+  CardHeader,
   CircularProgress,
   Divider,
   Grid,
@@ -13,25 +17,19 @@ import {
   Popover,
   TextField,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import MenuIcon from "@material-ui/icons/Menu";
 import Alert from "@material-ui/lab/Alert";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Redirect, useHistory } from "react-router";
 import * as yup from "yup";
+import firebase from "../../firebaseapp";
+import firebase_img from "../../images/firebase_28dp.png";
 import logo from "../../images/logo.jpg";
-import useUserState from "./redux/useUserState";
-import firebase from 'firebase'
-import {firebase_app} from '../../firebaseapp'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,19 +47,19 @@ const SignIn = () => {
   const mediaMobile = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
-  
 
   const classes = useStyles();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setdrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [settings, setsettings] = useState({
+  //TODO: create the authDomain and all other vars using the project Id and webApikey or ask user to paste the entire object.
+  const [firebaseConfig, setFirebaseConfig] = useState({
     webapiKey: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo",
     projectId: "hajj-mission-of-cote-de-ivoir",
   });
-  const { data: user, fetchData: fetchUser, error } = useUserState();
 
+  const [user, error] = useAuthState(firebase.auth());
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -81,27 +79,31 @@ const SignIn = () => {
   });
 
   const handleLogin = (values: any, actions: any) => {
-    fetchUser({ ...values, ...settings });
+    // fetchUser({ ...values, ...firebaseConfig });
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(values.email, values.password);
     actions.setSubmitting(false);
   };
 
-  const handleMnuClick = (event) => {
+  const handleFirebaseClick = (event) => {
     setAnchorEl(event.currentTarget);
     setdrawerOpen(true);
   };
 
-  const handleClose = () => {
+  const handleFirebaseClose = () => {
     setAnchorEl(null);
+    localStorage.setItem("firebaseConfig", JSON.stringify(firebaseConfig));
     setdrawerOpen(false);
-
   };
 
-const handleGoogleSignin = ()=> {
-  let provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope('email');
-  firebase_app.auth().signInWithPopup(provider)
-}
-  if (user?.idToken) {
+  const handleGoogleSignin = () => {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope("email");
+    firebase.auth().signInWithPopup(provider);
+  };
+  // if (user?.idToken) {
+  if (user) {
     return <Redirect to="/dashboard" />;
   }
   return (
@@ -119,11 +121,12 @@ const handleGoogleSignin = ()=> {
         md={3}
         xs={12}
       >
-        <Grid item style={{width: '100%'}}>
+        <Grid item style={{ width: "100%" }}>
           <Grid container justify="flex-end">
             <Grid item>
-              <IconButton onClick={(e) => handleMnuClick(e)}>
-                <MenuIcon  />
+              <IconButton onClick={(e) => handleFirebaseClick(e)}>
+                Connect your database
+                <img src={firebase_img} alt="firebase" />
               </IconButton>
             </Grid>
           </Grid>
@@ -142,8 +145,8 @@ const handleGoogleSignin = ()=> {
         <Grid item>
           <Formik
             initialValues={{
-              email: "",
-              password: "",
+              email: "alialiayman@gmail.com",
+              password: "(Paris123)",
             }}
             validationSchema={loginSchema}
             onSubmit={handleLogin}
@@ -238,12 +241,23 @@ const handleGoogleSignin = ()=> {
           </Formik>
         </Grid>
         <Grid item container justify="center" alignItems="center" spacing={2}>
-          <Grid item xs><Divider /></Grid>
-          <Grid item >OR</Grid>
-          <Grid item xs><Divider></Divider></Grid>
+          <Grid item xs>
+            <Divider />
+          </Grid>
+          <Grid item>OR</Grid>
+          <Grid item xs>
+            <Divider></Divider>
+          </Grid>
         </Grid>
         <Grid item>
-          <Button  variant="outlined" onClick={handleGoogleSignin} style={{textTransform: 'none'}} startIcon={<FontAwesomeIcon icon={faGoogle} />}>Continue with Google</Button>
+          <Button
+            variant="outlined"
+            onClick={handleGoogleSignin}
+            style={{ textTransform: "none" }}
+            startIcon={<FontAwesomeIcon icon={faGoogle} />}
+          >
+            Continue with Google
+          </Button>
         </Grid>
 
         <Grid item>
@@ -259,75 +273,74 @@ const handleGoogleSignin = ()=> {
 
       <Popover
         open={drawerOpen}
-        onClose={handleClose}
+        onClose={handleFirebaseClose}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "right",
         }}
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
         }}
       >
-        <Card title="Database credentials">
+        <Card>
+          <CardHeader
+            title="Connect your firebase"
+            subheader="Enter information from your firebase account"
+          ></CardHeader>
           <CardContent>
-            <Box p={2}>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <Typography variant="h6">Firebase information</Typography>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                container
+                justify="space-between"
+                spacing={2}
+                alignItems="center"
+              >
+                <Grid item xs={12}>
+                  <TextField
+                    name="projectId"
+                    label="Project Id"
+                    fullWidth
+                    value={firebaseConfig.projectId}
+                    onChange={(e) =>
+                      setFirebaseConfig((sett) => ({
+                        ...sett,
+                        projectId: e.currentTarget.value,
+                      }))
+                    }
+                    variant="outlined"
+                  />
                 </Grid>
-                <Grid
-                  item
-                  container
-                  justify="space-between"
-                  spacing={2}
-                  alignItems="center"
-                >
-                  <Grid item xs={12}>
-                    <TextField
-                      name="webapiKey"
-                      label="WebApi Key"
-                      variant="outlined"
-                      fullWidth
-                      value={settings.webapiKey}
-                      onChange={(e) =>
-                        setsettings((sett) => ({
-                          ...sett,
-                          webapiKey: e.currentTarget.value,
-                        }))
-                      }
-                    ></TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      name="projectId"
-                      label="Project Id"
-                      fullWidth
-                      value={settings.projectId}
-                      onChange={(e) =>
-                        setsettings((sett) => ({
-                          ...sett,
-                          projectId: e.currentTarget.value,
-                        }))
-                      }
-                      variant="outlined"
-                    />
-                  </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    name="webapiKey"
+                    label="WebApi Key"
+                    variant="outlined"
+                    fullWidth
+                    value={firebaseConfig.webapiKey}
+                    onChange={(e) =>
+                      setFirebaseConfig((sett) => ({
+                        ...sett,
+                        webapiKey: e.currentTarget.value,
+                      }))
+                    }
+                  ></TextField>
                 </Grid>
               </Grid>
-              <Box mt={2}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  type="submit"
-                  onClick={handleClose} // TODO: call a method to persist to local storage
-                  fullWidth
-                >
-                  Done
-                </Button>
-              </Box>
-            </Box>
+            </Grid>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                type="submit"
+                onClick={handleFirebaseClose}
+              >
+                Done
+              </Button>
+            </CardActions>
           </CardContent>
         </Card>
       </Popover>

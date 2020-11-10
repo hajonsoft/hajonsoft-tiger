@@ -19,13 +19,13 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useState } from "react";
+import { useList } from 'react-firebase-hooks/database';
 import { useHistory, useParams } from 'react-router-dom';
+import firebase from '../../firebaseapp';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
-import useUserState from "../SignIn/redux/useUserState";
 import CoreForm from './components/CoreForm';
 import CustomerDetail from './components/CustomerDetail';
-import usePackageCustomerState from './redux/usePackageCustomerState';
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -54,36 +54,20 @@ const Customers = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
   //   theme.breakpoints.down("sm")
   // );
-  const { data: user } = useUserState();
-  const { data: packageCustomers, error, loading, fetchData: fetchPackageCustomers } = usePackageCustomerState()
-  const [state, setstate] = useState({mode: 'list', record: {}})
-  const title = "Customer";
   let { packageName } = useParams();
+
+  const [snapshots, loading, error] = useList(firebase.database().ref('customer/' + packageName));
+
+  const [state, setstate] = useState({ mode: 'list', record: {}, customerKey: 0 })
+  const title = "Customer";
   const history = useHistory();
 
-  useEffect(() => {
-    fetchPackageCustomers({ user, projectId: process.env.REACT_APP_PROJECT_ID, packageName, folder: `customer/${packageName}/` })
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   if (loading) {
     return <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}> <CircularProgress size={40} /> </div>
   }
 
-
-  const flatten = (data) => {
-    if (!data || !packageName) return;
-    const packageData = data[packageName];
-    if (!packageData) return;
-    const output = [];
-    const nationalityKeys = Object.keys(packageData);
-    nationalityKeys.forEach(nat => {
-      const natCustomerIds = Object.keys(packageData[nat]);
-      natCustomerIds.forEach(id=> output.push({ ...packageData[nat][id], id }))
-    });
-    return output;
-  }
 
   const handleGoback = () => {
     history.goBack()
@@ -103,58 +87,56 @@ const Customers = () => {
               <Button color="secondary" onClick={handleGoback}><LocalAirportIcon style={{ marginRight: '0.5rem', width: '20px', height: '20px' }} /> Packages </Button>
             </Breadcrumbs>
           </div>
-          {state.mode !== 'list' && 
-          <CoreForm mode={state.mode} record={state.record} title={title} onClose={()=> setstate(st=> ({...st, mode: 'list'}))}/>
+          {state.mode !== 'list' &&
+            <CoreForm mode={state.mode} record={state.record} title={title} customerKey={state.customerKey} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
 
-          {state.mode === 'list' && 
-          <MaterialTable
-            icons={tableIcons}
-            title={`${packageName} ${title}s`}
-            columns={[{ title: "Name", field: "name" },
-            { title: "Gender", field: "gender" },
-            { title: "From", field: "nationality" },
-            { title: "Pass #", field: "passportNumber" },
-            { title: "Birth Date", field: "birthDate" },
-            { title: "Email", field: "email" },
-            // { "CreateDt": "2020-05-12T23:47:04.880Z", "birthDate": "1969-03-26T00:00:00.000Z", "birthPlace": "COTE DIVOIRE", "email": "", "gender": "Male", "idNumber": "19AA88765", "idNumberExpireDate": "1900-01-01T00:00:00.000Z", "idNumberIssueDate": "1900-01-01T00:00:00.000Z", "mahramName": "", "name": "ABDOULAYE BAKAYOKO", "nameArabic": "ABDOULAYE BAKAYOKO", "nationality": "Cote Divoire", "onSoftId": 2987010, "passExpireDt": "2025-02-06T00:00:00.000Z", "passIssueDt": "2020-02-07T00:00:00.000Z", "passPlaceOfIssue": "COTE DIVOIRE", "passportNumber": "19AA88765", "phone": "", "preNationality": "Cote Divoire", "profession": "", "relationship": "" },
-            ]}
-            // data={Object.keys(packages).map(x => ({ name: x }))}
-            data={flatten(packageCustomers)}
-            detailPanel={rowData => <CustomerDetail customer={rowData} />}
-            actions={[
-              {
-                icon: tableIcons.Add,
-                tooltip: `Add ${title}`,
-                isFreeAction: true,
-                onClick: (event) => setstate(st=> ({...st, mode: 'create'})),
-              },
-              {
-                icon: () => <tableIcons.Edit color="action" />,
-                tooltip: `Edit ${title}`,
-                onClick: (event, rowData) => setstate(st=> ({...st, mode: 'update', record: rowData})),
+          {state.mode === 'list' &&
+            <MaterialTable
+              icons={tableIcons}
+              title={`${packageName} ${title}s`}
+              columns={[{ title: "Name", field: "name" },
+              { title: "Gender", field: "gender" },
+              { title: "From", field: "nationality" },
+              { title: "Pass #", field: "passportNumber" },
+              { title: "Birth Date", field: "birthDate" },
+              { title: "Email", field: "email" },
+              ]}
+              data={snapshots.map(s => s.val())}
+              detailPanel={rowData => <CustomerDetail customer={rowData} customerKey={snapshots.map(s => s.key)[rowData.tableData.id]} />}
+              actions={[
+                {
+                  icon: tableIcons.Add,
+                  tooltip: `Add ${title}`,
+                  isFreeAction: true,
+                  onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
+                },
+                {
+                  icon: () => <tableIcons.Edit color="action" />,
+                  tooltip: `Edit ${title}`,
+                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'update', record: rowData, customerKey: snapshots.map(s => s.key)[rowData.tableData.id] })),
 
-              },
-              {
-                icon: () => <tableIcons.Delete color="error" />,
-                tooltip: `Delete ${title}`,
-                onClick: (event, rowData) => setstate(st=> ({...st, mode: 'delete', record: rowData})),
+                },
+                {
+                  icon: () => <tableIcons.Delete color="error" />,
+                  tooltip: `Delete ${title}`,
+                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData, customerKey: snapshots.map(s => s.key)[rowData.tableData.id] })),
 
-              }
-            ]}
-            options={{
-              actionsColumnIndex: -1,
-              grouping: true,
-              pageSize: 10,
-              exportButton: true,
-            }}
-            localization={{
-              body: {
-                emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
-              },
-            }}
-          />
-        }
+                }
+              ]}
+              options={{
+                actionsColumnIndex: -1,
+                grouping: true,
+                pageSize: 10,
+                exportButton: true,
+              }}
+              localization={{
+                body: {
+                  emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
+                },
+              }}
+            />
+          }
 
         </div>
       </div>

@@ -4,8 +4,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
-import {  useParams } from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
@@ -14,10 +12,11 @@ import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import { Form, Formik } from 'formik';
 import _ from 'lodash';
 import React from 'react';
-import usePackageCustomerState from '../redux/usePackageCustomerState';
+import { useParams } from 'react-router-dom';
+import firebase from '../../../firebaseapp';
 import CoreImage from './CoreImage';
 import CoreTextField from './CoreTextField';
-import useUserState from '../../SignIn/redux/useUserState';
+
 const useStyles = makeStyles((theme) => ({
     formContainer: {
         width: '90%',
@@ -46,13 +45,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const CoreForm = ({ mode, record, title, onClose }) => {
+const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
 
 
     const classes = useStyles();
-    const {createData, updateData, deleteData } = usePackageCustomerState();
-    const { data: user } = useUserState();
     let { packageName } = useParams();
+
 
     // const handleImageChange = ()=> {
     //     // TODO: when image changes store it to the database using the record key and its field name
@@ -61,20 +59,24 @@ const CoreForm = ({ mode, record, title, onClose }) => {
     const handleSubmitForm = (values, actions) => {
         switch (mode) {
             case 'create':
-                createData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}` });
+                const customerRef = firebase.database().ref(`customer/${packageName}`);
+                customerRef.push(values);
                 break;
             case 'update':
-                updateData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}`, recordId: record.id});
+                const updateRef = firebase.database().ref(`customer/${packageName}`);
+                delete values.tableData;
+                updateRef.child(customerKey).update(values);
                 break;
 
             case 'delete':
-                deleteData({ record: values, user, projectId: process.env.REACT_APP_PROJECT_ID, folder: `customer/${packageName}/${values.nationality}`,  recordId: record.id});
+                const removeRef = firebase.database().ref(`customer/${packageName}`);
+                removeRef.child(customerKey).remove();
                 break;
 
             default:
                 console.log('unknown mode')
         }
-        onclose()
+        onClose()
     }
     return (
         <React.Fragment>
@@ -92,70 +94,73 @@ const CoreForm = ({ mode, record, title, onClose }) => {
                     isSubmitting,
                     /* and other goodies */
                 }) => (
-                    <Form>
-                        <Card raised className={classes.formContainer}>
-                            <CardHeader className={classes.cardTitle}
-                                title={_.startCase(mode + ' ' + title)}
-                                subheader={record.id}
-                                action={
-                                    <CancelOutlinedIcon color='secondary' onClick={onClose} />
-                                }
-                            />
-                            <CardContent>
-                                <Grid container spacing={4}>
-                                    <Grid item container>
-                                        <Grid item xs={4}>
-                                            <CoreImage record={record} />
+                        <Form>
+                            <Card raised className={classes.formContainer}>
+                                <CardHeader className={classes.cardTitle}
+                                    title={_.startCase(mode + ' ' + title)}
+                                    subheader={customerKey}
+                                    action={
+                                        <CancelOutlinedIcon color='secondary' onClick={onClose} />
+                                    }
+                                />
+                                <CardContent>
+                                    <Grid container spacing={4}>
+                                        <Grid item container>
+                                            <Grid item xs={4}>
+                                                <CoreImage record={record} />
+                                            </Grid>
+                                            <Grid item xs={8} container direction="column" justify="space-around">
+                                                <Grid item container justify="space-between" spacing={4}>
+                                                    <CoreTextField name="name" mode={mode} xsWidth={6} autoFocus />
+                                                    <CoreTextField name="nameArabic" label="الاسم العربي في جواز السفر" mode={mode} xsWidth={6} />
+                                                </Grid>
+                                                <Grid item container justify="space-between" spacing={4}>
+                                                    <CoreTextField name="nationality" mode={mode} xsWidth={6} />
+                                                    <CoreTextField name="gender" mode={mode} xsWidth={6} />
+                                                </Grid>
+                                                <Grid item container justify="space-between" spacing={4}>
+                                                    <CoreTextField name="passportNumber" mode={mode} xsWidth={6} />
+                                                    <CoreTextField name="passExpireDt" mode={mode} xsWidth={6} />
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={8} container direction="column" justify="space-around">
-                                            <Grid item container justify="space-between" spacing={4}>
-                                                <CoreTextField name="name" mode={mode} xsWidth={6} autoFocus />
-                                                <CoreTextField name="nameArabic" label="الاسم العربي في جواز السفر" mode={mode} xsWidth={6} />
-                                            </Grid>
-                                            <Grid item container justify="space-between" spacing={4}>
-                                                <CoreTextField name="nationality" mode={mode} xsWidth={6} />
-                                                <CoreTextField name="email" mode={mode} xsWidth={6} />
-                                            </Grid>
-                                            <Grid item container justify="space-between" spacing={4}>
-                                                <CoreTextField name="passportNumber" mode={mode} xsWidth={6} />
-                                                <CoreTextField name="passExpireDt" mode={mode} xsWidth={6} />
-                                            </Grid>
-                                        </Grid>
+
+                                        <CoreTextField name="birthDate" mode={mode} />
+                                        <CoreTextField name="birthPlace" mode={mode} />
+                                        <CoreTextField name="passPlaceOfIssue" mode={mode} />
+                                        <CoreTextField name="idNumber" mode={mode} />
+                                        <CoreTextField name="idNumberIssueDate" mode={mode} />
+                                        <CoreTextField name="idNumberExpireDate" mode={mode} />
+                                        <CoreTextField name="passIssueDt" mode={mode} />
+                                        <CoreTextField name="profession" mode={mode} />
+                                        <CoreTextField name="CreateDt" mode={mode} />
+                                        <CoreTextField name="mahramName" label="Mahram" mode={mode} />
+                                        <CoreTextField name="relationship" mode={mode} />
+                                        <CoreTextField name="phone" mode={mode} />
+                                        <CoreTextField name="email" mode={mode}  />
+
+
                                     </Grid>
 
-                                    <CoreTextField name="birthDate" mode={mode} />
-                                    <CoreTextField name="birthPlace" mode={mode} />
-                                    <CoreTextField name="passPlaceOfIssue" mode={mode} />
-                                    <CoreTextField name="idNumber" mode={mode} />
-                                    <CoreTextField name="idNumberIssueDate" mode={mode} />
-                                    <CoreTextField name="idNumberExpireDate" mode={mode} />
-                                    <CoreTextField name="passIssueDt" mode={mode} />
-                                    <CoreTextField name="profession" mode={mode} />
-                                    <CoreTextField name="CreateDt" mode={mode} />
-                                    <CoreTextField name="mahramName" label="Mahram" mode={mode} />
-                                    <CoreTextField name="relationship" mode={mode} />
-                                    <CoreTextField name="phone" mode={mode} xsWidth={6} />
-
-                                </Grid>
-
-                            </CardContent>
-                            <CardActions className={classes.actionsContainer}>
-                                {/* <div>
+                                </CardContent>
+                                <CardActions className={classes.actionsContainer}>
+                                    {/* <div>
                                         <Button type="button" disabled={isSubmitting} color='secondary' onClick={() => SetState({ ...state, importJSONOpen: true })} >Import JSON</Button>
                                         <Button type="button" disabled={isSubmitting} color='secondary' onClick={() => SetState({ ...state, importDMLOpen: true })} >Import DML</Button>
                                     </div> */}
 
 
-                                <div>
-                                    <Button style={{ marginRight: '1rem' }} type="button" disabled={isSubmitting} variant="contained" color='secondary' onClick={onClose} startIcon={<CancelOutlinedIcon />}>Cancel</Button>
-                                    {(mode === 'create') && <Button type="submit" disabled={isSubmitting} variant="contained" color='primary' startIcon={<AddOutlinedIcon />}>Create</Button>}
-                                    {(mode === 'delete') && <Button type="submit" disabled={isSubmitting} variant="contained" color='secondary' startIcon={<DeleteOutlinedIcon />}>Delete</Button>}
-                                    {(mode === 'update') && <Button type="submit" disabled={isSubmitting} variant="contained" color='primary' startIcon={<SaveOutlinedIcon />}>Save</Button>}
-                                </div>
-                            </CardActions>
-                        </Card>
-                    </Form>
-                )}
+                                    <Grid container justify="flex-end" spacing={2}>
+
+                                        <Grid item><Button type="button" disabled={isSubmitting} variant="contained" color='secondary' onClick={onClose} startIcon={<CancelOutlinedIcon />}>Cancel</Button></Grid>
+                                        {(mode === 'create') && <Grid item><Button type="submit" disabled={isSubmitting} variant="contained" color='primary' startIcon={<AddOutlinedIcon />}>Create</Button></Grid>}
+                                        {(mode === 'delete') && <Grid item><Button type="submit" disabled={isSubmitting} variant="contained" color='secondary' startIcon={<DeleteOutlinedIcon />}>Delete</Button></Grid>}
+                                        {(mode === 'update') && <Grid item><Button type="submit" disabled={isSubmitting} variant="contained" color='primary' startIcon={<SaveOutlinedIcon />}>Save</Button></Grid>}
+                                    </Grid>
+                                </CardActions>
+                            </Card>
+                        </Form>
+                    )}
 
             </Formik>
         </React.Fragment>

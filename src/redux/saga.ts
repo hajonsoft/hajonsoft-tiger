@@ -7,7 +7,10 @@ import { packageCustomersSlice, packagesSlice, userSlice } from './reducer';
 function* sagas() {
     yield all([
         loginFlow(),
-        packagesFlow(),
+        retrievePackagesFlow(),
+        createPackageFlow(),
+        updatePackageFlow(),
+        deletePackageFlow(),
         retrievePackageCustomersFlow(),
         createPackageCustomersFlow(),
         updatePackageCustomersFlow(),
@@ -19,12 +22,53 @@ function* loginFlow() {
     yield takeLatest(userSlice.actions.fetch, loginSaga);
 }
 
-function* packagesFlow() {
-    yield takeLatest(packagesSlice.actions.fetch, packagesSaga);
+function* retrievePackagesFlow() {
+    yield takeLatest(packagesSlice.actions.fetch, retrievePackagesSaga);
 }
-
+function* createPackageFlow() {
+    yield takeLatest(packagesSlice.actions.create, createPackageSaga);
+}
+function* updatePackageFlow() {
+    yield takeLatest(packagesSlice.actions.update, updatePackageSaga);
+}
+function* deletePackageFlow() {
+    yield takeLatest(packagesSlice.actions.delete, deletePackageSaga);
+}
+function* retrievePackagesSaga(action: any) {
+    try {
+        const result = yield call(dataService.getRecordsShallow, action.payload);
+        yield put(packagesSlice.actions.success(result));
+    } catch (e) {
+        yield put(packagesSlice.actions.fail(e.message));
+        dogLogger.logger.error(`packageSaga: ${e.message} ${JSON.stringify(action.payload)}`);
+    }
+}
+function* createPackageSaga(action: any) {
+    try {
+        const result = yield call(dataService.createRecord, action.payload);
+        yield put(packagesSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packagesSlice.actions.fail(e.message));
+    }
+}
+function* updatePackageSaga(action: any) {
+    try {
+        const result = yield call(dataService.updateRecord, action.payload);
+        yield put(packagesSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packagesSlice.actions.fail(e.message));
+    }
+}
+function* deletePackageSaga(action: any) {
+    try {
+        const result = yield call(dataService.deleteRecord, action.payload);
+        yield put(packagesSlice.actions.success({...result, req: action.payload}));
+    } catch (e) {
+        yield put(packagesSlice.actions.fail(e.message));
+    }
+}
 function* retrievePackageCustomersFlow() {
-    yield takeLatest(packageCustomersSlice.actions.fetch, retrievePackageCustomersSaga);
+    yield takeLatest(packagesSlice.actions.fetch, retrievePackageCustomersSaga);
 }
 function* createPackageCustomersFlow() {
     yield takeLatest(packageCustomersSlice.actions.create, createPackageCustomersSaga);
@@ -81,16 +125,7 @@ function* loginSaga(action: any) {
     }
 }
 
-// TODO: implement caching here so you do not go back to the database as long as the data is available in store.
-function* packagesSaga(action: any) {
-    try {
-        const result = yield call(dataService.getRecordsShallow, action.payload);
-        yield put(packagesSlice.actions.success(result));
-    } catch (e) {
-        yield put(packagesSlice.actions.fail(e.message));
-        dogLogger.logger.error(`packageSaga: ${e.message} ${JSON.stringify(action.payload)}`);
-    }
-}
+
 
 
 export default sagas;

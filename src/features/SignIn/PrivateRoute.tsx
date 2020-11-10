@@ -1,14 +1,14 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import useUserState from "./redux/useUserState";
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from '../../firebaseapp'
 function PrivateRoute({ children, ...rest }) {
-    const {data: user} = useUserState()
+  const [user] = useAuthState(firebase.auth());
     return (
       <Route
         {...rest}
         render={({ location }) =>
-          user?.idToken ? (
+        user && user.uid ? (
             children
           ) : (
             <Redirect

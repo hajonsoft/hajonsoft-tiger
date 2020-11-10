@@ -11,7 +11,7 @@ const {
     REACT_APP_MEASUREMENT_ID,
 } = process.env;
 
-export const firebaseConfig = {
+let firebaseConfig = {
     apiKey: REACT_APP_FIREBASE_API_KEY,
     authDomain: REACT_APP_AUTH_DOMAIN,
     databaseURL: REACT_APP_DATABASE_URL,
@@ -22,4 +22,15 @@ export const firebaseConfig = {
     measurementId: REACT_APP_MEASUREMENT_ID,
 };
 
-export const firebase_app = firebase.initializeApp(firebaseConfig);
+
+const localConfig = localStorage.getItem('firebaseConfig');
+if (localConfig){
+    const config = JSON.parse(localConfig)
+    config.authDomain = config.authDomain || `${config.projectId}.firebaseapp.com`
+    config.databaseURL = config.databaseURL || `${config.projectId}.firebaseio.com`
+    config.storageBucket = config.storageBucket || `${config.projectId}.appspot.com`
+    config.apiKey = config.webapiKey
+    firebaseConfig = config;
+}
+firebase.initializeApp(firebaseConfig);
+export default firebase;

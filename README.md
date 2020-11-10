@@ -62,6 +62,8 @@ Database Rules https://firebase.google.com/docs/database/security/
 
 private, restricted routes https://medium.com/@thanhbinh.tran93/private-route-public-route-and-restricted-route-with-react-router-d50b27c15f5e
 
+Firebase hooks https://www.npmjs.com/package/react-firebase-hooks
+
 Firebase Rest https://firebase.google.com/docs/reference/rest/database
 
 Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js 

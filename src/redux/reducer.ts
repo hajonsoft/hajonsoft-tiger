@@ -17,6 +17,9 @@ export const packagesSlice = createSlice({
     initialState: emptyState,
     reducers: {
         fetch: (state, action) => applyStart(state, action),
+        create: (state, action) => applyStart(state, action),
+        update: (state, action) => applyStart(state, action),
+        delete: (state, action) => applyStart(state, action),
         success: (state, action) => applySuccess(state, action),
         fail: (state, action) => applyFail(state, action)
     }
@@ -44,9 +47,9 @@ export const packageCustomersSlice = createSlice({
             state.loading = false;
             state.error = '';
             // TODO: Respond to update and delete and update or delete in store as well
-            if (action?.payload?.req?.packageName ){
+            if (action?.payload?.req?.packageName) {
                 if (!state.data) state.data = {};
-                state.data = {[action.payload.req.packageName]: action.payload.data}
+                state.data = { [action.payload.req.packageName]: action.payload.data }
             }
         },
         fail: (state, action) => applyFail(state, action)

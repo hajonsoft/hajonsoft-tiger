@@ -1,10 +1,8 @@
 import {
   AppBar,
-
-
-  Box, Button,
+  Box,
+  Button,
   Card,
-
   CardContent,
   CardHeader,
   ClickAwayListener,
@@ -23,7 +21,7 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-  useScrollTrigger
+  useScrollTrigger,
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { blue } from "@material-ui/core/colors";
@@ -32,8 +30,9 @@ import ArrowForwardOutlinedIcon from "@material-ui/icons/ArrowForwardOutlined";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router-dom";
-import useUserState from "../../../SignIn/redux/useUserState";
+import firebase from "../../../../firebaseapp";
 import { IButtonState, IHeaderConfig, IMenuItem } from "../interfaces";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: theme.palette.common.white,
   },
   root: {
-    height: '100%',
+    height: "100%",
   },
   rootList: {
     width: "100%",
@@ -103,11 +102,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const classes = useStyles();
-  const { data: user } = useUserState();
-
+  const [user] = useAuthState(firebase.auth());
 
   let history = useHistory();
   const mobileMedia = useMediaQuery((theme: any) =>
@@ -169,7 +166,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   };
 
   const handleLogout = (e: any, mi: any, b: any) => {
-
+    firebase.auth().signOut();
     handleButtonItemClick(e, mi, b);
   };
 
@@ -182,14 +179,15 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
               <Grid item xs>
                 <Box p={2}>
                   <img
-                  style={{maxHeight: '48px'}}
+                    style={{ maxHeight: "48px" }}
                     src={mobileMedia ? config.smallLogo : config.logo}
                     alt="HajOnSoft"
                   />
                 </Box>
               </Grid>
               <Grid item>
-                {user?.data?.idToken &&
+                {user &&
+                  user.uid &&
                   config.buttons.map((b) => (
                     <React.Fragment key={`topButton/${b.name || b.title}`}>
                       <IconButton
@@ -286,7 +284,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                       )}
                     </React.Fragment>
                   ))}
-                {user && user.idToken && (
+                {user && user.uid && (
                   <React.Fragment key={`profile`}>
                     <IconButton
                       onClick={(e) =>
@@ -342,7 +340,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                                       variant="rounded"
                                       className={classes.rounded}
                                     >
-                                      {`${user?.displayName || user?.email}`} 
+                                      {`${user?.displayName || user?.email}`}
                                     </Avatar>
                                   </Grid>
                                   <Grid
@@ -353,9 +351,9 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                                     direction="column"
                                   >
                                     <Grid item>
-                                      <Typography
-                                        gutterBottom
-                                      > {`${user?.displayName || user?.email}`} 
+                                      <Typography gutterBottom>
+                                        {" "}
+                                        {`${user?.displayName || user?.email}`}
                                       </Typography>
                                     </Grid>
                                     <Grid item>
@@ -373,7 +371,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                                 <List component="nav">
                                   <React.Fragment>
                                     <ListItem
-                                      key={`logout`}
+                                      key={`/logout`}
                                       button
                                       style={{ color: "#0089C7" }}
                                       onClick={(e) =>
@@ -402,7 +400,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
                   </React.Fragment>
                 )}
 
-                {(!user || !user.idToken) && !mobileMedia && (
+                {(!user || !user.uid) && !mobileMedia && (
                   <Box p={2}>
                     <Button
                       type="submit"

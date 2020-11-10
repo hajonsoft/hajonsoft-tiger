@@ -45,6 +45,7 @@
     "pluralize": "^8.0.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",
+    "react-firebase-hooks": "^2.2.0",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-material-ui-carousel": "^1.5.1",
     "react-number-format": "^4.4.1",

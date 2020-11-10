@@ -20,12 +20,14 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
-import React, { forwardRef, useState } from "react";
-import { useListKeys } from 'react-firebase-hooks/database';
+import React, { forwardRef, useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from '../../firebaseapp';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
+import usePackageState from './redux/usePackageState';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -58,11 +60,17 @@ const Dashboard = () => {
   //   theme.breakpoints.down("sm")
   // );
 
-  const [values, error] = useListKeys(firebase.database().ref('customer'));
-
-
+  // const { data: user } = useUserState();
+  const [user, loading] = useAuthState(firebase.auth());
+  const { data: packages, error, fetchData: fetchPackages } = usePackageState()
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const title = "Package";
+
+  // useEffect(() => {
+  //   if (Object.keys(packages).length === 0) {
+  //     fetchPackages({ user, projectId: process.env.REACT_APP_PROJECT_ID, folder: 'customer' })
+  //   }
+  // }, [])
 
 
   return (
@@ -81,9 +89,9 @@ const Dashboard = () => {
 
             <MaterialTable
               icons={tableIcons}
-              title={<Typography variant="h6"> <LocalAirport color="secondary" style={{ margin: '5px 5px auto 5px' }} />Packages</Typography>}
+              title={<Typography variant="h6"> <LocalAirport color="secondary" style={{ margin: '5px 5px auto 5px' }} />  Packages</Typography>}
               columns={[{ title: "Name", field: "name" }]}
-              data={values.map(v => ({ name: v }))}
+              data={Object.keys(packages).map(x => ({ name: x }))}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
                 {
@@ -93,9 +101,16 @@ const Dashboard = () => {
                   onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
                 },
                 {
+                  icon: () => <tableIcons.Edit color="action" />,
+                  tooltip: `Edit ${title}`,
+                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'update', record: rowData })),
+
+                },
+                {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
                   onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData })),
+
                 }
               ]}
               options={{
