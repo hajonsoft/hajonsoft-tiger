@@ -1,36 +1,16 @@
 import firebase from 'firebase';
-
-const {
-    REACT_APP_FIREBASE_API_KEY,
-    REACT_APP_AUTH_DOMAIN,
-    REACT_APP_DATABASE_URL,
-    REACT_APP_PROJECT_ID,
-    REACT_APP_STORAGE_BUCKET,
-    REACT_APP_MESSAGING_SENDER_ID,
-    REACT_APP_APP_ID,
-    REACT_APP_MEASUREMENT_ID,
-} = process.env;
-
-let firebaseConfig = {
-    apiKey: REACT_APP_FIREBASE_API_KEY,
-    authDomain: REACT_APP_AUTH_DOMAIN,
-    databaseURL: REACT_APP_DATABASE_URL,
-    projectId: REACT_APP_PROJECT_ID,
-    storageBucket: REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: REACT_APP_MESSAGING_SENDER_ID,
-    appId: REACT_APP_APP_ID,
-    measurementId: REACT_APP_MEASUREMENT_ID,
-};
-
-
+let firebaseConfig = {apiKey: process.env.REACT_APP_FIREBASE_API_KEY, projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID};
 const localConfig = localStorage.getItem('firebaseConfig');
-if (localConfig){
+if (localConfig) {
     const config = JSON.parse(localConfig)
-    config.authDomain = config.authDomain || `${config.projectId}.firebaseapp.com`
-    config.databaseURL = config.databaseURL || `${config.projectId}.firebaseio.com`
-    config.storageBucket = config.storageBucket || `${config.projectId}.appspot.com`
-    config.apiKey = config.webapiKey
-    firebaseConfig = config;
+    firebaseConfig.projectId = config.projectId
+    firebaseConfig.apiKey = config.apiKey
+} else {
+    localStorage.setItem('firebaseConfig', JSON.stringify(firebaseConfig));
 }
+
+firebaseConfig.authDomain = `${firebaseConfig.projectId}.firebaseapp.com`
+firebaseConfig.databaseURL = `${firebaseConfig.projectId}.firebaseio.com`
+firebaseConfig.storageBucket = `${firebaseConfig.projectId}.appspot.com`
 firebase.initializeApp(firebaseConfig);
 export default firebase;

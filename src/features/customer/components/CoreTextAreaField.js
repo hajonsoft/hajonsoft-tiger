@@ -12,9 +12,11 @@ const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
             <Field as={TextField}
                 fullWidth
                 name={name}
+                type="textarea"
                 autoFocus={autoFocus}
                 label={label || _.startCase(name)}
                 disabled={mode === 'delete'}
+                rowsMax={4}
                 autoComplete="off"
             />
             <ErrorMessage name={name} component="div" />
@@ -25,4 +27,3 @@ const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
 }
 
 export default CoreTextField;
-

@@ -4,7 +4,7 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import _ from 'lodash'
 
-const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) => {
+const CoreDateField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) => {
 
 
     return (
@@ -12,10 +12,14 @@ const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
             <Field as={TextField}
                 fullWidth
                 name={name}
+                type="date"
                 autoFocus={autoFocus}
                 label={label || _.startCase(name)}
                 disabled={mode === 'delete'}
                 autoComplete="off"
+                InputLabelProps={{
+                    shrink: true,
+                }}
             />
             <ErrorMessage name={name} component="div" />
         </Grid>
@@ -24,5 +28,6 @@ const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
     )
 }
 
-export default CoreTextField;
+export default CoreDateField;
+
 

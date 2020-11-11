@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import { LocalAirport } from '@material-ui/icons';
 import AddBox from "@material-ui/icons/AddBox";
@@ -26,6 +26,7 @@ import firebase from '../../firebaseapp';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
+import pluralize from 'pluralize'
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -51,7 +52,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
 };
-// TODO: show order history component here
 
 const Dashboard = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
@@ -64,6 +64,12 @@ const Dashboard = () => {
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const title = "Package";
 
+  const Title = ()=> {
+
+    return (
+      <Grid container spacing={2} alignItems="center"><Grid item><LocalAirport /></Grid><Grid item><Typography variant="h6">{pluralize(title)}</Typography></Grid></Grid>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -81,7 +87,7 @@ const Dashboard = () => {
 
             <MaterialTable
               icons={tableIcons}
-              title={<Typography variant="h6"> <LocalAirport color="secondary" style={{ margin: '5px 5px auto 5px' }} />Packages</Typography>}
+              title={<Title />}
               columns={[{ title: "Name", field: "name" }]}
               data={values.map(v => ({ name: v }))}
               detailPanel={rowData => <PackageDetail data={rowData} />}
@@ -121,5 +127,6 @@ const Dashboard = () => {
     </React.Fragment>
   );
 };
+
 
 export default Dashboard;

@@ -1,7 +1,7 @@
 import { Card, CardContent, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
-
+import firebase from '../../../firebaseapp'
 
 
 const useStyles = makeStyles({
@@ -35,50 +35,50 @@ const useStyles = makeStyles({
     }
 });
 
-const CoreImage = ({record, onUrlChanged}) => {
-    const [photoUrl] = useState('https://firebasestorage.googleapis.com/v0/b/hajj-mission-of-cote-de-ivoir.appspot.com/o/' + encodeURIComponent( record.nationality + '/' + record.passportNumber) + '?alt=media' );
-    // const [progress, setProgress] = useState('');
+const CoreImage = ({ record }) => {
+    const [url, setUrl] = useState('');
+    const [progress, setProgress] = useState('');
     const [isMouseOver, setIsMouseOver] = useState(false);
     const classes = useStyles();
 
-    // const handleFileOnChange = (event) => {
-    //     if (event.target.files[0]) {
-    //         const selectedFile = event.target.files[0];
-    //         setFBUrl('');
-    //         const uploadTask = storage.ref(`images/${selectedFile.name}`).put(selectedFile);
-    //         uploadTask.on('state_changed',
-    //             (snapshot) => {
-    //                 const percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) + '%';
-    //                 setProgress(percentage);
-    //                 if (percentage === '100%') {
-    //                     setTimeout(() => {
-    //                         setProgress('')
-    //                     }, 2000);
-    //                 }
-    //             },
-    //             (error) => {
-    //                 console.log('error');
-    //                 console.log(error);
-    //             },
-    //             () => {
-    //                 storage.ref('images').child(selectedFile.name).getDownloadURL().then(url => {
-    //                     setFBUrl(url);
-    //                     // onUrlChanged(url);
-    //                 })
-    //             }
-    //         )
-    //     }
-    // }
+    const handleFileOnChange = (event) => {
+        if (event.target.files[0]) {
+            const selectedFile = event.target.files[0];
+            const storageRef = firebase.storage().ref();
+            const metadata = {
+                contentType: 'image/jpeg',
+            };
+            const uploadTask = storageRef.child(`${[record.nationality || ''].join('/')}/${record.passportNumber}.jpg`).put(selectedFile, metadata);
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) + '%';
+                    setProgress(percentage);
+                    if (percentage === '100%') {
+                        setTimeout(() => {
+                            setProgress('')
+                        }, 500);
+                    }
+                },
+                (error) => {
+                    setProgress(error.message)
+                },
+                () => {
+                    storageRef.child(`${[record.nationality || ''].join('/')}/${record.passportNumber}.jpg`).getDownloadURL().then(url => {
+                        setUrl(url);
+                    })
+                }
+            )
+        }
+    }
 
-    const handleFileOnChange = () => { };
-    let _fileInput;
+    let _fileInput = React.createRef();
     return (
         <React.Fragment>
             <Card className={classes.mainContainer} onMouseOver={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)} >
                 <CardContent>
-                    <img src={photoUrl} alt={'Customer'} className={classes.imgContainer} style={{ display: photoUrl ? 'block' : 'none' }}></img>
+                    <img src={url} alt={'Customer'} className={classes.imgContainer} style={{ display: url ? 'block' : 'none' }}></img>
                     <Link href="#" className={classes.pickImage} style={{ display: isMouseOver ? 'block' : 'none' }} onClick={() => _fileInput.click()}>Change Image</Link>
-                    {/* <div className={classes.progress} style={{ display: progress ? 'block' : 'none' }}>{progress}</div> */}
+                    <div className={classes.progress} style={{ display: progress ? 'block' : 'none' }}>{progress}</div>
 
                 </CardContent>
             </Card>

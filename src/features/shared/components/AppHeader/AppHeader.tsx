@@ -167,7 +167,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
 
   const handleLogout = (e: any, mi: any, b: any) => {
     firebase.auth().signOut();
-    handleButtonItemClick(e, mi, b);
+    history.push('/logout')
   };
 
   return (

@@ -42,7 +42,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
 }));
-
+const localFirebaseConfig = ()=> {
+  const config = localStorage.getItem('firebaseConfig');
+  if (config) {
+    return JSON.parse(config)
+  } else {
+    return {apiKey: '', projectId: ''}
+  }
+} 
 const SignIn = () => {
   const mediaMobile = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
@@ -53,13 +60,13 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [drawerOpen, setdrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  //TODO: create the authDomain and all other vars using the project Id and webApikey or ask user to paste the entire object.
-  const [firebaseConfig, setFirebaseConfig] = useState({
-    webapiKey: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo",
-    projectId: "hajj-mission-of-cote-de-ivoir",
-  });
 
-  const [user, error] = useAuthState(firebase.auth());
+
+
+  const [firebaseConfig, setFirebaseConfig] = useState(localFirebaseConfig);
+
+  const [user] = useAuthState(firebase.auth());
+  const [errorMessage, setErrorMessage] = useState('')
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -79,11 +86,14 @@ const SignIn = () => {
   });
 
   const handleLogin = (values: any, actions: any) => {
-    // fetchUser({ ...values, ...firebaseConfig });
     firebase
       .auth()
-      .signInWithEmailAndPassword(values.email, values.password);
+      .signInWithEmailAndPassword(values.email, values.password).catch(function(error) {
+        setErrorMessage(error.message);
+
+      });
     actions.setSubmitting(false);
+
   };
 
   const handleFirebaseClick = (event) => {
@@ -93,7 +103,7 @@ const SignIn = () => {
 
   const handleFirebaseClose = () => {
     setAnchorEl(null);
-    localStorage.setItem("firebaseConfig", JSON.stringify(firebaseConfig));
+    localStorage.setItem("firebaseConfig", JSON.stringify({apiKey: firebaseConfig.apiKey, projectId: firebaseConfig.projectId}));
     setdrawerOpen(false);
   };
 
@@ -133,7 +143,7 @@ const SignIn = () => {
         </Grid>
         <Grid item>
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
-            <img src={logo} alt="HajOnSoft logo"></img>
+            <img src={logo} alt="HajOnSoft"></img>
           </Box>
 
           <Typography color="primary" variant="h6" gutterBottom align="center">
@@ -214,9 +224,9 @@ const SignIn = () => {
                         </Link>
                       </Grid>
                     </Grid>
-                    {error && (
+                    {errorMessage && (
                       <Grid item>
-                        <Alert severity="error">{`${error}`}</Alert>
+                        <Alert severity="error">{`${errorMessage}`}</Alert>
                       </Grid>
                     )}
                   </Grid>
@@ -316,15 +326,15 @@ const SignIn = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    name="webapiKey"
+                    name="apiKey"
                     label="WebApi Key"
                     variant="outlined"
                     fullWidth
-                    value={firebaseConfig.webapiKey}
+                    value={firebaseConfig.apiKey}
                     onChange={(e) =>
                       setFirebaseConfig((sett) => ({
                         ...sett,
-                        webapiKey: e.currentTarget.value,
+                        apiKey: e.currentTarget.value,
                       }))
                     }
                   ></TextField>

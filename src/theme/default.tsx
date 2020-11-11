@@ -9,13 +9,13 @@ const defaultTheme = createMuiTheme({
         main: "#3E95DC", //summer sky
       },
       secondary: {
-        main: "#dc3e95", // Seal brown
+        main: "#FFC000", // Amber
       },
       error: {
-        main: "#ff5a5f", // sizzling red
+        main: "#ff1f00", // Scarlet
       },
       warning: {
-        main: "#033f63", //Inch worm
+        main: "#ffa800", //Orange
       },
       success: {
         main: "#9e2b25", // hunter green

@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import firebase from '../../../firebaseapp';
 import CoreImage from './CoreImage';
 import CoreTextField from './CoreTextField';
+import CoreDateField from './CoreDateField';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -120,7 +121,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                                                 </Grid>
                                                 <Grid item container justify="space-between" spacing={4}>
                                                     <CoreTextField name="passportNumber" mode={mode} xsWidth={6} />
-                                                    <CoreTextField name="passExpireDt" mode={mode} xsWidth={6} />
+                                                    <CoreDateField name="passExpireDt" mode={mode} xsWidth={6} />
                                                 </Grid>
                                             </Grid>
                                         </Grid>
@@ -129,11 +130,11 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                                         <CoreTextField name="birthPlace" mode={mode} />
                                         <CoreTextField name="passPlaceOfIssue" mode={mode} />
                                         <CoreTextField name="idNumber" mode={mode} />
-                                        <CoreTextField name="idNumberIssueDate" mode={mode} />
-                                        <CoreTextField name="idNumberExpireDate" mode={mode} />
-                                        <CoreTextField name="passIssueDt" mode={mode} />
+                                        <CoreDateField name="idNumberIssueDate" mode={mode} />
+                                        <CoreDateField name="idNumberExpireDate" mode={mode} />
+                                        <CoreDateField name="passIssueDt" mode={mode} />
                                         <CoreTextField name="profession" mode={mode} />
-                                        <CoreTextField name="CreateDt" mode={mode} />
+                                        <CoreDateField name="CreateDt" mode={mode} />
                                         <CoreTextField name="mahramName" label="Mahram" mode={mode} />
                                         <CoreTextField name="relationship" mode={mode} />
                                         <CoreTextField name="phone" mode={mode} />

@@ -1,4 +1,5 @@
-import { Breadcrumbs, Button, CircularProgress } from '@material-ui/core';
+import { Breadcrumbs, CircularProgress, Typography } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -11,14 +12,15 @@ import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
+import HomeIcon from '@material-ui/icons/Home';
 import LastPage from "@material-ui/icons/LastPage";
-import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
+import pluralize from 'pluralize';
 import React, { forwardRef, useState } from "react";
 import { useList } from 'react-firebase-hooks/database';
 import { useHistory, useParams } from 'react-router-dom';
@@ -73,6 +75,22 @@ const Customers = () => {
     history.goBack()
   }
 
+  const Title = () => {
+
+    return (
+      <div style={{ width: '500px' }} >
+        <Breadcrumbs>
+          <Link color="inherit" href="/" onClick={handleGoback} style={{ display: 'flex', alignItems: 'center' }}>
+            <HomeIcon />
+            <Typography >Home</Typography>
+          </Link>
+          <Typography >{`${packageName} ${pluralize(title)}`}</Typography>
+        </Breadcrumbs>
+
+
+      </div>
+    )
+  }
   return (
     <React.Fragment>
       <div
@@ -82,11 +100,6 @@ const Customers = () => {
       >
         <HajonsoftHeader />
         <div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64px' }}>
-            <Breadcrumbs>
-              <Button color="secondary" onClick={handleGoback}><LocalAirportIcon style={{ marginRight: '0.5rem', width: '20px', height: '20px' }} /> Packages </Button>
-            </Breadcrumbs>
-          </div>
           {state.mode !== 'list' &&
             <CoreForm mode={state.mode} record={state.record} title={title} customerKey={state.customerKey} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
@@ -94,7 +107,7 @@ const Customers = () => {
           {state.mode === 'list' &&
             <MaterialTable
               icons={tableIcons}
-              title={`${packageName} ${title}s`}
+              title={<Title />}
               columns={[{ title: "Name", field: "name" },
               { title: "Gender", field: "gender" },
               { title: "From", field: "nationality" },
