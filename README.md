@@ -42,6 +42,9 @@ connect to any other firebase project as owner
   }
 }
 ```
+
+Disable email notification about insecure rules. 
+
 ![image](https://user-images.githubusercontent.com/9623964/97191219-e40a1800-1763-11eb-86ad-b1cd278ac793.png)
 
 ![image](https://user-images.githubusercontent.com/9623964/97191402-13b92000-1764-11eb-8077-e8813c677bc9.png)
