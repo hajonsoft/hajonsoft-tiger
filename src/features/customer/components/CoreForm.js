@@ -11,14 +11,13 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import firebase from "../../../firebaseapp";
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
 import CoreDateField from "./CoreDateField";
 import Dropzone from "./Dropzone";
-import { current } from "@reduxjs/toolkit";
 
 const storage = firebase.storage();
 
@@ -53,19 +52,16 @@ const useStyles = makeStyles((theme) => ({
 const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
   let { packageName } = useParams();
-  const [currentImport, setCurrentImport] = useState(null);
   // const handleImageChange = ()=> {
   //     // TODO: when image changes store it to the database using the record key and its field name
   // }
   const handleSubmitForm = async (values, actions, callback = onClose) => {
-    let recordKey = customerKey;
     let image = values.image;
     delete values["image"];
     switch (mode) {
       case "create":
         const customerRef = firebase.database().ref(`customer/${packageName}`);
-        let snap = await customerRef.push(values);
-        recordKey = snap.key;
+        customerRef.push(values);
         break;
       case "update":
         const updateRef = firebase.database().ref(`customer/${packageName}`);
@@ -85,27 +81,21 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
       const metadata = {
         contentType: "image/jpeg",
       };
-      let ref = storage.ref(`${packageName}/${recordKey}.jpg`);
-      ref
-        .put(image, metadata)
-        .then((snap) => {
-          callback({ success: true });
-        })
-        .catch((error) => {
-          callback({ error });
-        });
-    } else {
-      callback();
+      const fileName = `${[values.nationality || ""].join("/")}/${values.passportNumber}.jpg`;
+      let ref = storage.ref(fileName);
+      ref.put(image, metadata);
     }
+    onClose();
   };
   return (
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={currentImport ? currentImport : mode === "create" ? {} : record}
+        initialValues={mode === "create" ? {} : record}
         onSubmit={handleSubmitForm}
       >
         {({
+          setFieldValue,
           values,
           errors,
           touched,
@@ -128,14 +118,16 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                   <Grid item container>
                     <Grid item xs={4}>
                       <CoreImage
+                        setImage={(img) => setFieldValue("image", img)}
                         packageName={packageName}
                         customerKey={customerKey}
-                        record={currentImport ? currentImport : record}
+                        record={record}
                       />
                     </Grid>
                     <Grid item xs={8} container direction="column" justify="space-around">
                       <Grid item container justify="space-between" spacing={4}>
                         <CoreTextField
+                          required
                           name="name"
                           mode={mode}
                           xsWidth={6}
@@ -152,15 +144,22 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       </Grid>
                       <Grid item container justify="space-between" spacing={4}>
                         <CoreTextField
+                          required
                           name="nationality"
                           mode={mode}
                           xsWidth={6}
                           value={values.nationality || ""}
                         />
-                        <CoreTextField name="gender" mode={mode} xsWidth={6} />
+                        <CoreTextField
+                          value={values.gender || ""}
+                          name="gender"
+                          mode={mode}
+                          xsWidth={6}
+                        />
                       </Grid>
                       <Grid item container justify="space-between" spacing={4}>
                         <CoreTextField
+                          required
                           name="passportNumber"
                           mode={mode}
                           xsWidth={6}
@@ -224,7 +223,6 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                         onClose={onClose}
                         saveToFirebase={handleSubmitForm}
                         packageName={packageName}
-                        setCurrentImport={setCurrentImport}
                       ></Dropzone>
                     )}
                   </Grid>

@@ -75,7 +75,7 @@ function parseDetailsFromTxt(file) {
       string.replace(/(\r\n|\n|\r)/gm, ""); // I don't know why this doesn't work.
       let mrz1 = string.substring(0, 44),
         mrz2 = string.substring(45, 89);
-      let record;
+      let record = {};
       try {
         let parsed = parse([mrz1, mrz2]);
         record = parsed.fields;
@@ -100,12 +100,8 @@ async function getRecords(ComboFiles, ThreeMFiles) {
     }
     for (let key of Object.keys(ThreeMFiles)) {
       let record = {};
-      let detailsFile = ThreeMFiles[key].find((x) =>
-        x.name.includes("CODELINE")
-      );
-      let imageFile = ThreeMFiles[key].find((x) =>
-        x.name.includes("IMAGEPHOTO")
-      );
+      let detailsFile = ThreeMFiles[key].find((x) => x.name.includes("CODELINE"));
+      let imageFile = ThreeMFiles[key].find((x) => x.name.includes("IMAGEPHOTO"));
       if (detailsFile) {
         record = await parseDetailsFromTxt(detailsFile);
       } else {
@@ -148,10 +144,7 @@ onmessage = async (msg) => {
   let ComboFiles = [];
   postMessage("labas");
   for (const file of files) {
-    if (
-      file.type === "application/x-zip-compressed" ||
-      file.type === "application/zip"
-    ) {
+    if (file.type === "application/x-zip-compressed" || file.type === "application/zip") {
       postMessage({ type: "debug", data: file });
       ComboFiles.push(file);
     } else {

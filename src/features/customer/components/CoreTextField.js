@@ -11,10 +11,12 @@ const CoreTextField = ({
   xsWidth = 4,
   autoFocus = false,
   value,
+  required = false,
 }) => {
   return (
     <Grid item xs={xsWidth}>
       <Field
+        required={required}
         as={TextField}
         fullWidth
         name={name}

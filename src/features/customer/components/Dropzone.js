@@ -1,13 +1,53 @@
 import React, { useEffect, useState, useRef } from "react";
 import Dropzone from "react-dropzone";
 import CloudUpload from "@material-ui/icons/CloudUpload";
+import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
+import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import Worker from "../../../workers/parser.worker";
 import CustomerImportCard from "./CustomerImportCard";
 import { Grid } from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Alert from "@material-ui/lab/Alert";
+import firebase from "../../../firebaseapp";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import { makeStyles } from "@material-ui/core/styles";
 
-function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
+const storage = firebase.storage();
+const saveCustomerToFirebase = async (values, packageName, callback) => {
+  let image = values.image;
+  delete values["image"];
+
+  const customerRef = firebase.database().ref(`customer/${packageName}`);
+  customerRef.push(values);
+
+  if (image) {
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+    const fileName = `${[values.nationality || ""].join("/")}/${values.passportNumber}.jpg`;
+    let ref = storage.ref(fileName);
+    ref
+      .put(image, metadata)
+      .then((snap) => {
+        callback({ success: true });
+      })
+      .catch((error) => {
+        callback({ error });
+      });
+  } else {
+    callback({ success: true });
+  }
+};
+
+const useStyles = makeStyles((theme) => ({
+  progressBarContainer: {
+    padding: "20px",
+  },
+}));
+
+function Basic({ packageName, onClose }) {
+  const classes = useStyles();
   const [imports, setImports] = useState({});
   const [isImported, setIsImported] = useState(false);
   const [workerInitialized, setWorkerInitialized] = useState(false);
@@ -31,10 +71,9 @@ function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
 
       setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
     } else if (event.data.type === "import prepared") {
-      setCurrentImport(event.data.import);
       let record = { ...imports[event.data.id] };
 
-      saveToFirebase(event.data.import, null, (res) => {
+      saveCustomerToFirebase(event.data.import, packageName, (res) => {
         record.status = !res || res.success ? "imported" : "failed";
         setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
       });
@@ -63,9 +102,10 @@ function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
     worker.current.postMessage({ files: acceptedFiles, packageName });
   };
 
+  const importsLength = Object.keys(imports).length;
+
   const progress =
-    (Object.values(imports).filter((x) => x.status !== "not imported yet").length /
-      Object.keys(imports).length) *
+    (Object.values(imports).filter((x) => x.status !== "not imported yet").length / importsLength) *
     100;
 
   const failed = Object.values(imports).filter((x) => x.status === "failed");
@@ -73,12 +113,7 @@ function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
   if (progress === 100) {
     setTimeout(() => {
       setIsImported(true);
-      setCurrentImport({});
     }, 1000);
-  }
-
-  if (isImported && failed.length === 0) {
-    onClose();
   }
 
   return (
@@ -88,18 +123,38 @@ function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
           {Object.keys(imports).length ? (
             isImported ? (
               <Grid container xs={12} spacing={1}>
-                <Grid item xs={12}>
-                  <Alert severity="success" color="info">{`${Object.keys(imports).length -
-                    failed.length} customers imported`}</Alert>
-                </Grid>
+                {importsLength - failed.length ? (
+                  <Grid item xs={12}>
+                    <Alert severity="success" color="info">{`${importsLength -
+                      failed.length} customers imported`}</Alert>
+                  </Grid>
+                ) : (
+                  ""
+                )}
                 {failed.map((x, i) => (
                   <Grid item xs={12} key={`customer-import-${i}`}>
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
+                <Grid item container xs={12} justify="flex-end">
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      setIsImported(false);
+                      setImports({});
+                    }}
+                    startIcon={<RefreshOutlined />}
+                  >
+                    Import again
+                  </Button>
+                </Grid>
               </Grid>
             ) : (
-              <LinearProgress variant="determinate" value={progress}></LinearProgress>
+              <Card className={classes.progressBarContainer}>
+                <LinearProgress variant="determinate" value={progress}></LinearProgress>
+              </Card>
             )
           ) : (
             <div
@@ -117,7 +172,7 @@ function Basic({ packageName, setCurrentImport, saveToFirebase, onClose }) {
               <input {...getInputProps()} />
               <div>
                 <div style={{ textAlign: "center" }}>
-                  <CloudUpload></CloudUpload>
+                  <SaveAltOutlined></SaveAltOutlined>
                 </div>
                 <div>Drop your files here</div>
               </div>

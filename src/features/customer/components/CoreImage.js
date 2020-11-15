@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CoreImage = ({ record, customerKey, packageName }) => {
+const CoreImage = ({ record, customerKey, packageName, setImage }) => {
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -43,45 +43,40 @@ const CoreImage = ({ record, customerKey, packageName }) => {
   const handleFileOnChange = (event) => {
     if (event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      const storageRef = firebase.storage().ref();
-      const metadata = {
-        contentType: "image/jpeg",
-      };
-      const uploadTask = storageRef
-        .child(
-          `${[record.nationality || ""].join("/")}/${record.passportNumber}.jpg`
-        )
-        .put(selectedFile, metadata);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const percentage =
-            Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            ) + "%";
-          setProgress(percentage);
-          if (percentage === "100%") {
-            setTimeout(() => {
-              setProgress("");
-            }, 500);
-          }
-        },
-        (error) => {
-          setProgress(error.message);
-        },
-        () => {
-          storageRef
-            .child(
-              `${[record.nationality || ""].join("/")}/${
-                record.passportNumber
-              }.jpg`
-            )
-            .getDownloadURL()
-            .then((url) => {
-              setUrl(url);
-            });
-        }
-      );
+      setImage(selectedFile);
+      setUrl(URL.createObjectURL(selectedFile));
+      //   const storageRef = firebase.storage().ref();
+      //   const metadata = {
+      //     contentType: "image/jpeg",
+      //   };
+      //   const fileName = `${[record.nationality || ""].join("/")}/${record.passportNumber}.jpg`;
+      //   console.log("filename", fileName);
+      //   const uploadTask = storageRef.child(fileName).put(selectedFile, metadata);
+      //   uploadTask.on(
+      //     "state_changed",
+      //     (snapshot) => {
+      //       const percentage =
+      //         Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) + "%";
+      //       setProgress(percentage);
+      //       if (percentage === "100%") {
+      //         setTimeout(() => {
+      //           setProgress("");
+      //         }, 500);
+      //       }
+      //     },
+      //     (error) => {
+      //       setProgress(error.message);
+      //     },
+      //     () => {
+      //       storageRef
+      //         .child(`${[record.nationality || ""].join("/")}/${record.passportNumber}.jpg`)
+      //         .getDownloadURL()
+      //         .then((url) => {
+      //           setUrl(url);
+      //         });
+      //     }
+      //   );
+      // }
     }
   };
 
@@ -96,7 +91,7 @@ const CoreImage = ({ record, customerKey, packageName }) => {
       if (customerKey) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${packageName}/${customerKey}.jpg`)
+          .ref(`${record.nationality}/${record.passportNumber}.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);
@@ -129,10 +124,7 @@ const CoreImage = ({ record, customerKey, packageName }) => {
           >
             Change Image
           </Link>
-          <div
-            className={classes.progress}
-            style={{ display: progress ? "block" : "none" }}
-          >
+          <div className={classes.progress} style={{ display: progress ? "block" : "none" }}>
             {progress}
           </div>
         </CardContent>
