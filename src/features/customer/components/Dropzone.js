@@ -9,15 +9,8 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
-import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import Alert from "@material-ui/lab/Alert";
-import React, { useEffect, useRef, useState } from "react";
-import Dropzone from "react-dropzone";
 import firebase from "../../../firebaseapp";
-import Worker from "../../../workers/parser.worker";
-import CustomerImportCard from "./CustomerImportCard";
-
 const storage = firebase.storage();
 const saveCustomerToFirebase = async (values, packageName, callback) => {
   let image = values.image;
