@@ -11,7 +11,7 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import firebase from "../../../firebaseapp";
 import CoreImage from "./CoreImage";
