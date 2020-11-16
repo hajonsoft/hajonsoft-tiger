@@ -77,88 +77,88 @@ const CoreForm = ({ mode, record, title, onClose }) => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form>
-            <Card raised className={classes.formContainer}>
-              <CardHeader
-                className={classes.cardTitle}
-                title={_.startCase(mode + " " + title)}
-                subheader={record.id}
-                action={
-                  <CancelOutlinedIcon color="secondary" onClick={onClose} />
-                }
-              />
-              <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item container>
-                    <CoreTextField
-                      name="name"
-                      value={values.name}
-                      mode={mode}
-                      xsWidth={12}
-                      required
-                      autoFocus
-                    />
-                  </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <Grid container justify="flex-end" spacing={2}>
-                  <Grid item>
-                    <Button
-                      type="button"
-                      disabled={isSubmitting}
-                      variant="contained"
-                      color="secondary"
-                      onClick={onClose}
-                      startIcon={<CancelOutlinedIcon />}
-                    >
-                      Cancel
-                    </Button>
-                  </Grid>
-                  {mode === "create" && (
-                    <Grid item>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<AddOutlinedIcon />}
-                      >
-                        Create
-                      </Button>
+            <Form>
+              <Card raised className={classes.formContainer}>
+                <CardHeader
+                  className={classes.cardTitle}
+                  title={_.startCase(mode + " " + title)}
+                  subheader={record.id}
+                  action={
+                    <CancelOutlinedIcon color="secondary" onClick={onClose} />
+                  }
+                />
+                <CardContent>
+                  <Grid container spacing={4}>
+                    <Grid item container>
+                      <CoreTextField
+                        name="name"
+                        value={values.name}
+                        mode={mode}
+                        xsWidth={12}
+                        required
+                        autoFocus
+                      />
                     </Grid>
-                  )}
-                  {mode === "delete" && (
+                  </Grid>
+                </CardContent>
+                <CardActions>
+                  <Grid container justify="flex-end" spacing={2}>
                     <Grid item>
                       <Button
-                        type="submit"
+                        type="button"
                         disabled={isSubmitting}
                         variant="contained"
                         color="secondary"
-                        startIcon={<DeleteOutlinedIcon />}
+                        onClick={onClose}
+                        startIcon={<CancelOutlinedIcon />}
                       >
-                        Delete
-                      </Button>
+                        Cancel
+                    </Button>
                     </Grid>
-                  )}
-                  {mode === "update" && (
-                    <Grid item>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<SaveOutlinedIcon />}
-                      >
-                        Save
+                    {mode === "create" && (
+                      <Grid item>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="primary"
+                          startIcon={<AddOutlinedIcon />}
+                        >
+                          Create
                       </Button>
-                    </Grid>
-                  )}
-                </Grid>
-              </CardActions>
-            </Card>
-          </Form>
-        )}
+                      </Grid>
+                    )}
+                    {mode === "delete" && (
+                      <Grid item>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="secondary"
+                          startIcon={<DeleteOutlinedIcon />}
+                        >
+                          Delete
+                      </Button>
+                      </Grid>
+                    )}
+                    {mode === "update" && (
+                      <Grid item>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="primary"
+                          startIcon={<SaveOutlinedIcon />}
+                        >
+                          Save
+                      </Button>
+                      </Grid>
+                    )}
+                  </Grid>
+                </CardActions>
+              </Card>
+            </Form>
+          )}
       </Formik>
     </React.Fragment>
   );
