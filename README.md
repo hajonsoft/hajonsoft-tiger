@@ -72,3 +72,5 @@ Firebase Rest https://firebase.google.com/docs/reference/rest/database
 Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js 
 
 Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
+
+Web Automation https://github.com/puppeteer/recorder
