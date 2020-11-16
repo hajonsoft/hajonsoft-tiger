@@ -1,3 +1,9 @@
+import React, { useEffect, useState, useRef } from "react";
+import Dropzone from "react-dropzone";
+import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
+import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
+import Worker from "../../../workers/parser.worker";
+import CustomerImportCard from "./CustomerImportCard";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -52,34 +58,34 @@ function Basic({ packageName, onClose }) {
   const [workerInitialized, setWorkerInitialized] = useState(false);
   const worker = useRef(null);
 
-  const handleWorkerMessages = async (event) => {
-    if (event.data.type === "debug") {
-    } else if (event.data.type === "found different customers") {
-      let obj = {};
-      event.data.data.forEach((x) => {
-        obj[x] = {
-          status: "not imported yet",
-          progress: 0,
-          id: x,
-        };
-      });
-      setImports((prev) => Object.assign({}, prev, obj));
-    } else if (event.data.type === "record failed") {
-      let record = { ...imports[event.data.id] };
-      record.status = "failed";
-
-      setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
-    } else if (event.data.type === "import prepared") {
-      let record = { ...imports[event.data.id] };
-
-      saveCustomerToFirebase(event.data.import, packageName, (res) => {
-        record.status = !res || res.success ? "imported" : "failed";
-        setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
-      });
-    }
-  };
-
   useEffect(() => {
+    const handleWorkerMessages = async (event) => {
+      if (event.data.type === "debug") {
+      } else if (event.data.type === "found different customers") {
+        let obj = {};
+        event.data.data.forEach((x) => {
+          obj[x] = {
+            status: "not imported yet",
+            progress: 0,
+            id: x,
+          };
+        });
+        setImports((prev) => Object.assign({}, prev, obj));
+      } else if (event.data.type === "record failed") {
+        let record = { ...imports[event.data.id] };
+        record.status = "failed";
+
+        setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+      } else if (event.data.type === "import prepared") {
+        let record = { ...imports[event.data.id] };
+
+        saveCustomerToFirebase(event.data.import, packageName, (res) => {
+          record.status = !res || res.success ? "imported" : "failed";
+          setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+        });
+      }
+    };
+
     if (workerInitialized) {
       worker.current.addEventListener("message", handleWorkerMessages);
     }
@@ -87,7 +93,7 @@ function Basic({ packageName, onClose }) {
     return () => {
       worker.current.removeEventListener("message", handleWorkerMessages);
     };
-  }, [imports, workerInitialized]);
+  }, [workerInitialized, imports, packageName]);
 
   useEffect(() => {
     worker.current = new Worker();

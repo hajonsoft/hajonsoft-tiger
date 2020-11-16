@@ -36,7 +36,6 @@ const useStyles = makeStyles({
 
 const CoreImage = ({ record, customerKey, packageName, setImage }) => {
   const [url, setUrl] = useState("");
-  const [progress, setProgress] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
 
@@ -45,38 +44,6 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
       const selectedFile = event.target.files[0];
       setImage(selectedFile);
       setUrl(URL.createObjectURL(selectedFile));
-      //   const storageRef = firebase.storage().ref();
-      //   const metadata = {
-      //     contentType: "image/jpeg",
-      //   };
-      //   const fileName = `${[record.nationality || ""].join("/")}/${record.passportNumber}.jpg`;
-      //   console.log("filename", fileName);
-      //   const uploadTask = storageRef.child(fileName).put(selectedFile, metadata);
-      //   uploadTask.on(
-      //     "state_changed",
-      //     (snapshot) => {
-      //       const percentage =
-      //         Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) + "%";
-      //       setProgress(percentage);
-      //       if (percentage === "100%") {
-      //         setTimeout(() => {
-      //           setProgress("");
-      //         }, 500);
-      //       }
-      //     },
-      //     (error) => {
-      //       setProgress(error.message);
-      //     },
-      //     () => {
-      //       storageRef
-      //         .child(`${[record.nationality || ""].join("/")}/${record.passportNumber}.jpg`)
-      //         .getDownloadURL()
-      //         .then((url) => {
-      //           setUrl(url);
-      //         });
-      //     }
-      //   );
-      // }
     }
   };
 
@@ -88,7 +55,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
 
   useEffect(() => {
     async function getImage() {
-      if (customerKey) {
+      if (record) {
         let imgUrl = await firebase
           .storage()
           .ref(`${record.nationality}/${record.passportNumber}.jpg`)
@@ -99,7 +66,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
       }
     }
     getImage();
-  }, [customerKey, packageName]);
+  }, [record]);
 
   let _fileInput = React.createRef();
   return (
@@ -124,9 +91,6 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
           >
             Change Image
           </Link>
-          <div className={classes.progress} style={{ display: progress ? "block" : "none" }}>
-            {progress}
-          </div>
         </CardContent>
       </Card>
       <input
