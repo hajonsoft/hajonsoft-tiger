@@ -1,6 +1,6 @@
-import { Breadcrumbs, CircularProgress, Typography } from '@material-ui/core';
-import Link from '@material-ui/core/Link';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
+import Link from "@material-ui/core/Link";
+import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -12,39 +12,35 @@ import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
-import HomeIcon from '@material-ui/icons/Home';
+import HomeIcon from "@material-ui/icons/Home";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
-import pluralize from 'pluralize';
+import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
-import { useList } from 'react-firebase-hooks/database';
-import { useHistory, useParams } from 'react-router-dom';
-import firebase from '../../firebaseapp';
+import { useList } from "react-firebase-hooks/database";
+import { useHistory, useParams } from "react-router-dom";
+import firebase from "../../firebaseapp";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
-import CoreForm from './components/CoreForm';
-import CustomerDetail from './components/CustomerDetail';
+import CoreForm from "./components/CoreForm";
+import CustomerDetail from "./components/CustomerDetail";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
@@ -58,84 +54,123 @@ const Customers = () => {
   // );
   let { packageName } = useParams();
 
-  const [snapshots, loading, error] = useList(firebase.database().ref('customer/' + packageName));
+  const [snapshots, loading, error] = useList(firebase.database().ref("customer/" + packageName));
 
-  const [state, setstate] = useState({ mode: 'list', record: {}, customerKey: 0 })
+  const [state, setstate] = useState({
+    mode: "list",
+    record: {},
+    customerKey: 0,
+  });
   const title = "Customer";
   const history = useHistory();
 
-
-
   if (loading) {
-    return <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}> <CircularProgress size={40} /> </div>
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {" "}
+        <CircularProgress size={40} />{" "}
+      </div>
+    );
   }
-
 
   const handleGoback = () => {
-    history.goBack()
-  }
+    history.goBack();
+  };
 
   const Title = () => {
-
     return (
-      <div style={{ width: '500px' }} >
+      <div style={{ width: "500px" }}>
         <Breadcrumbs>
-          <Link color="inherit" href="/" onClick={handleGoback} style={{ display: 'flex', alignItems: 'center' }}>
+          <Link
+            color="inherit"
+            href="/"
+            onClick={handleGoback}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <HomeIcon />
-            <Typography >Home</Typography>
+            <Typography>Home</Typography>
           </Link>
-          <Typography >{`${packageName} ${pluralize(title)}`}</Typography>
+          <Typography>{`${packageName} ${pluralize(title)}`}</Typography>
         </Breadcrumbs>
-
-
       </div>
-    )
-  }
+    );
+  };
   return (
     <React.Fragment>
       <div
         style={{
-          backgroundColor: 'snow'
+          backgroundColor: "snow",
         }}
       >
         <HajonsoftHeader />
         <div>
-          {state.mode !== 'list' &&
-            <CoreForm mode={state.mode} record={state.record} title={title} customerKey={state.customerKey} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
-          }
+          {state.mode !== "list" && (
+            <CoreForm
+              mode={state.mode}
+              record={state.record}
+              title={title}
+              customerKey={state.customerKey}
+              onClose={() =>
+                setstate((st) => ({ ...st, mode: "list", record: {}, customerKey: 0 }))
+              }
+            />
+          )}
 
-          {state.mode === 'list' &&
+          {state.mode === "list" && (
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
-              columns={[{ title: "Name", field: "name" },
-              { title: "Gender", field: "gender" },
-              { title: "From", field: "nationality" },
-              { title: "Pass #", field: "passportNumber" },
-              { title: "Birth Date", field: "birthDate" },
-              { title: "Email", field: "email" },
+              columns={[
+                { title: "Name", field: "name" },
+                { title: "Gender", field: "gender" },
+                { title: "From", field: "nationality" },
+                { title: "Pass #", field: "passportNumber" },
+                { title: "Birth Date", field: "birthDate" },
+                { title: "Email", field: "email" },
               ]}
-              data={snapshots.map(s => s.val())}
-              detailPanel={rowData => <CustomerDetail customer={rowData} customerKey={snapshots.map(s => s.key)[rowData.tableData.id]} />}
+              data={snapshots.map((s) => s.val())}
+              detailPanel={(rowData) => (
+                <CustomerDetail
+                  customer={rowData}
+                  customerKey={snapshots.map((s) => s.key)[rowData.tableData.id]}
+                />
+              )}
               actions={[
                 {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
-                  onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
+                  onClick: (event) => setstate((st) => ({ ...st, mode: "create" })),
                 },
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
-                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'update', record: rowData, customerKey: snapshots.map(s => s.key)[rowData.tableData.id] })),
-
+                  onClick: (event, rowData) =>
+                    setstate((st) => ({
+                      ...st,
+                      mode: "update",
+                      record: rowData,
+                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
+                    })),
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData, customerKey: snapshots.map(s => s.key)[rowData.tableData.id] })),
-
-                }
+                  onClick: (event, rowData) =>
+                    setstate((st) => ({
+                      ...st,
+                      mode: "delete",
+                      record: rowData,
+                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
+                    })),
+                },
               ]}
               options={{
                 actionsColumnIndex: -1,
@@ -149,18 +184,14 @@ const Customers = () => {
                 },
               }}
             />
-          }
-
+          )}
         </div>
       </div>
-      <Snackbar open={error} autoHideDuration={6000} >
-        <Alert severity="error">
-          {error}
-        </Alert>
+      <Snackbar open={error} autoHideDuration={6000}>
+        <Alert severity="error">{error}</Alert>
       </Snackbar>
     </React.Fragment>
   );
 };
-
 
 export default Customers;
