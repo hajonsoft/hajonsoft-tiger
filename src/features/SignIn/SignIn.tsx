@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
+
+
+
+
   CircularProgress,
   Divider,
   Grid,
@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Link,
   Paper,
-  Popover,
+
   TextField,
   Typography,
   useMediaQuery
@@ -28,7 +28,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Redirect, useHistory } from "react-router";
 import * as yup from "yup";
 import firebase from "../../firebaseapp";
-import firebase_img from "../../images/firebase_28dp.png";
 import logo from "../../images/logo.jpg";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
 }));
-const localFirebaseConfig = ()=> {
-  const config = localStorage.getItem('firebaseConfig');
-  if (config) {
-    return JSON.parse(config)
-  } else {
-    return {apiKey: '', projectId: ''}
-  }
-} 
+// const localFirebaseConfig = ()=> {
+//   const config = localStorage.getItem('firebaseConfig');
+//   if (config) {
+//     return JSON.parse(config)
+//   } else {
+//     return {apiKey: '', projectId: ''}
+//   }
+// } 
 const SignIn = () => {
   const mediaMobile = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
@@ -58,12 +57,9 @@ const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
-  const [drawerOpen, setdrawerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-
-
-  const [firebaseConfig, setFirebaseConfig] = useState(localFirebaseConfig);
+  // const [drawerOpen, setdrawerOpen] = useState(false);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [firebaseConfig, setFirebaseConfig] = useState(localFirebaseConfig);
 
   const [user] = useAuthState(firebase.auth());
   const [errorMessage, setErrorMessage] = useState('')
@@ -96,16 +92,16 @@ const SignIn = () => {
 
   };
 
-  const handleFirebaseClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    setdrawerOpen(true);
-  };
+  // const handleFirebaseClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  //   setdrawerOpen(true);
+  // };
 
-  const handleFirebaseClose = () => {
-    setAnchorEl(null);
-    localStorage.setItem("firebaseConfig", JSON.stringify({apiKey: firebaseConfig.apiKey, projectId: firebaseConfig.projectId}));
-    setdrawerOpen(false);
-  };
+  // const handleFirebaseClose = () => {
+  //   setAnchorEl(null);
+  //   localStorage.setItem("firebaseConfig", JSON.stringify({apiKey: firebaseConfig.apiKey, projectId: firebaseConfig.projectId}));
+  //   setdrawerOpen(false);
+  // };
 
   const handleGoogleSignin = () => {
     let provider = new firebase.auth.GoogleAuthProvider();
