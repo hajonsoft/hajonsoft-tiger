@@ -58,7 +58,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
       if (record) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${record.nationality}/${record.passportNumber}.jpg`)
+          .ref(`${customerKey}.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);
@@ -66,7 +66,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
       }
     }
     getImage();
-  }, [record]);
+  }, [customerKey, record]);
 
   let _fileInput = React.createRef();
   return (

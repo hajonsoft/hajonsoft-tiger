@@ -58,13 +58,13 @@ const Dashboard = () => {
   //   theme.breakpoints.down("sm")
   // );
 
-  const [values, error] = useListKeys(firebase.database().ref('customer'));
+  const [values, loading, error] = useListKeys(firebase.database().ref('customer'));
 
 
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const title = "Package";
 
-  const Title = ()=> {
+  const Title = () => {
 
     return (
       <Grid container spacing={2} alignItems="center"><Grid item><LocalAirport /></Grid><Grid item><Typography variant="h6">{pluralize(title)}</Typography></Grid></Grid>
@@ -80,10 +80,11 @@ const Dashboard = () => {
       >
         <HajonsoftHeader />
         <div>
-          {state.mode !== 'list' &&
+          {loading && <div>Loading ... </div>}
+          {!loading && state.mode !== 'list' &&
             <CoreForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
-          {state.mode === 'list' &&
+          {!loading && state.mode === 'list' &&
 
             <MaterialTable
               icons={tableIcons}

@@ -81,7 +81,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
       const metadata = {
         contentType: "image/jpeg",
       };
-      const fileName = `${[values.nationality || ""].join("/")}/${values.passportNumber}.jpg`;
+      const fileName = `${customerKey}.jpg`;
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }

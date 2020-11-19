@@ -1,6 +1,4 @@
-import {
-  ThemeProvider
-} from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
 import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider } from "react-redux";
@@ -18,9 +16,7 @@ import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
-import defaultTheme from './theme/default';
-import { firebaseConfig } from './firebaseConfig';
-
+import defaultTheme from "./theme/default";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -34,29 +30,26 @@ sagaMiddleware.run(sagas);
 
 function App() {
   return (
-    <div>
-      {JSON.stringify(firebaseConfig)}
-      <ThemeProvider theme={defaultTheme}>
-        <Router>
-          <Provider store={store}>
-            <PublicRoute exact path="/" component={Home} />
-            <PublicRoute path="/register" component={Register} />
-            <PublicRoute path="/login" component={SignIn} />
-            <PublicRoute path="/forgot-password" component={ForgotPassword} />
-            <PublicRoute path="/logout" component={SignOut} />
-            <PrivateRoute path="/dashboard">
-              <Dashboard />
-            </PrivateRoute>
-            <PrivateRoute path="/profile">
-              <Profile />
-            </PrivateRoute>
-            <PrivateRoute path="/:packageName/customers">
-              <Customers />
-            </PrivateRoute>
-          </Provider>
-        </Router>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Router>
+        <Provider store={store}>
+          <PublicRoute exact path="/" component={Home} />
+          <PublicRoute path="/register" component={Register} />
+          <PublicRoute path="/login" component={SignIn} />
+          <PublicRoute path="/forgot-password" component={ForgotPassword} />
+          <PublicRoute path="/logout" component={SignOut} />
+          <PrivateRoute path="/dashboard">
+            <Dashboard />
+          </PrivateRoute>
+          <PrivateRoute path="/profile">
+            <Profile />
+          </PrivateRoute>
+          <PrivateRoute path="/:packageName/customers">
+            <Customers />
+          </PrivateRoute>
+        </Provider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

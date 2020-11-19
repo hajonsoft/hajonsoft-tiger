@@ -70,6 +70,11 @@ Firebase hooks https://www.npmjs.com/package/react-firebase-hooks
 Firebase Rest https://firebase.google.com/docs/reference/rest/database
 
 Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js 
+```
+delete firebaserc, .firebasefolder firebase login, firebase init, 
+
+```
+
 
 Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
 
