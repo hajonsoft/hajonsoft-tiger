@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: `echo 'export const firebaseConfig = { apiKey: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo", authDomain: "hajj-mission-of-cote-de-ivoir.firebaseapp.com", databaseURL: "https://hajj-mission-of-cote-de-ivoir.firebaseio.com", projectId: "hajj-mission-of-cote-de-ivoir", storageBucket: "hajj-mission-of-cote-de-ivoir.appspot.com", messagingSenderId: "140613751017", appId: "1:140613751017:web:4dd1f64e4b6fc55c2fa078" };' > src/firebaseConfig.js`
+      - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
         shell: bash
         env:
-          FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAJJ_MISSION_OF_COTE_DE_IVOIR}}
+          EXPORT_FIREBASE_CONFIG: 'export const firebaseConfig = { apiKey: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo", authDomain: "hajj-mission-of-cote-de-ivoir.firebaseapp.com", databaseURL: "https://hajj-mission-of-cote-de-ivoir.firebaseio.com", projectId: "hajj-mission-of-cote-de-ivoir", storageBucket: "hajj-mission-of-cote-de-ivoir.appspot.com", messagingSenderId: "140613751017", appId: "1:140613751017:web:4dd1f64e4b6fc55c2fa078" };'
       - run: 'echo $FIREBASE_CONFIG'
         shell: bash
         env:
