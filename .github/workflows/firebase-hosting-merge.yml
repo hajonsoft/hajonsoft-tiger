@@ -16,12 +16,6 @@ jobs:
         with:
           find: "hajj-mission-of-cote-de-ivoir"
           replace: "breno1-81c45"
-          find: "AIzaSyBsDMoODcVcS0SB-hHrsbevrHG7x45wpjo"
-          replace: "AIzaSyDfbYiKtFPRzxJbOZHdvrVibtcqVUhfzlo"
-          find: "140613751017"
-          replace: "413195855317"
-          find: "1:140613751017:web:4dd1f64e4b6fc55c2fa078"
-          replace: "1:413195855317:web:6f916414b9970d3534095c"
           include: "firebaseapp.js"
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
