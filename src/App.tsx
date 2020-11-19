@@ -19,6 +19,7 @@ import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from './theme/default';
+import { firebaseConfig } from './firebaseConfig';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -34,6 +35,7 @@ sagaMiddleware.run(sagas);
 function App() {
   return (
     <div>
+      {JSON.stringify(firebaseConfig)}
       <ThemeProvider theme={defaultTheme}>
         <Router>
           <Provider store={store}>
