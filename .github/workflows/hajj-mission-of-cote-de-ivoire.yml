@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@master
+      - name: overwrite firebaseConfig
+        uses: DamianReeves/write-file-action
         with:
-          find: "hajj-mission-of-cote-de-ivoir"
-          replace: "breno1-81c45"
-          include: "firebaseapp.js"
+          path: "src/firebaseConfig.js"
+          contents: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAJJ_MISSION_OF_COTE_DE_IVOIR}}
+          write-mode: overwrite 
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
