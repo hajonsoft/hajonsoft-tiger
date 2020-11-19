@@ -131,7 +131,7 @@ const SignIn = () => {
         md={3}
         xs={12}
       >
-        <Grid item style={{ width: "100%" }}>
+        {/* <Grid item style={{ width: "100%" }}>
           <Grid container justify="flex-end">
             <Grid item>
               <IconButton onClick={(e) => handleFirebaseClick(e)}>
@@ -140,7 +140,7 @@ const SignIn = () => {
               </IconButton>
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item>
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
             <img src={logo} alt="HajOnSoft"></img>
@@ -281,7 +281,7 @@ const SignIn = () => {
         </Grid>
       </Grid>
 
-      <Popover
+      {/* <Popover
         open={drawerOpen}
         onClose={handleFirebaseClose}
         anchorEl={anchorEl}
@@ -353,7 +353,7 @@ const SignIn = () => {
             </CardActions>
           </CardContent>
         </Card>
-      </Popover>
+      </Popover> */}
     </div>
   );
 };
