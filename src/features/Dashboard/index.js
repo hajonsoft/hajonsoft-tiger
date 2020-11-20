@@ -27,6 +27,7 @@ import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
 import pluralize from 'pluralize'
+import { CircularProgress } from '@material-ui/core';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -59,13 +60,10 @@ const Dashboard = () => {
   // );
 
   const [values, loading, error] = useListKeys(firebase.database().ref('customer'));
-
-
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const title = "Package";
 
   const Title = () => {
-
     return (
       <Grid container spacing={2} alignItems="center"><Grid item><LocalAirport /></Grid><Grid item><Typography variant="h6">{pluralize(title)}</Typography></Grid></Grid>
     )
@@ -80,7 +78,7 @@ const Dashboard = () => {
       >
         <HajonsoftHeader />
         <div>
-          {loading && <div>Loading ... </div>}
+          {loading && <Grid container justify="center" alignItems="center" style={{height: '100vh'}}><Grid item><CircularProgress size={60} />Loading packages ...</Grid></Grid>}
           {!loading && state.mode !== 'list' &&
             <CoreForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
@@ -109,6 +107,7 @@ const Dashboard = () => {
                 actionsColumnIndex: -1,
                 grouping: false,
                 exportButton: true,
+                pageSize: 10
               }}
               localization={{
                 body: {

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -132,7 +133,7 @@ const Customers = () => {
                 { title: "Gender", field: "gender" },
                 { title: "From", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
-                { title: "Birth Date", field: "birthDate" },
+                { title: "Birth Date", field: "birthDate", render: (rowData)=> `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate,'years')}]`},
                 { title: "Email", field: "email" },
               ]}
               data={snapshots.map((s) => s.val())}

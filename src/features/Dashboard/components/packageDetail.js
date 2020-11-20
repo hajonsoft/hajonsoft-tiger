@@ -1,27 +1,41 @@
+import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Container } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import React from 'react'
-import { Grid, Button, Container } from '@material-ui/core'
-import { useHistory } from 'react-router-dom'
-import Alert from '@material-ui/lab/Alert';
+import React from 'react';
+import { useListVals } from 'react-firebase-hooks/database';
+import { useHistory } from 'react-router-dom';
+import firebase from '../../../firebaseapp';
+import Statistics from './Statistics';
+import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
+import { faPassport } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const PackageDetail = ({ data }) => {
     const history = useHistory()
+    const [values, loading, error] = useListVals(firebase.database().ref('customer/' + data.name));
 
     const onGotoCustomers = () => {
         history.push(`${data.name}/customers`)
     }
     return (
         <Container style={{ padding: '1rem' }}>
-            <Grid container justify="space-between" alignItems="center">
-                <Grid item xs={11}>
-                    <Alert severity="info">Under Construction: Stats, gender, Nationality, Tags, etc...</Alert>
-                </Grid>
-                <Grid item xs={1}>
-                    <Button color="primary" variant="outlined" endIcon={<NavigateNextIcon />}
+            <Card>
+                <CardHeader title={`Package ${data.name}`} subheader={values && `${values.length} travellers`}></CardHeader>
+                <CardContent>
+                    {loading && <CircularProgress />}
+                    {error}
+                    {!loading && <Statistics data={values} />}
+                </CardContent>
+                <CardActions>
+                    <Button color="primary" variant="contained" endIcon={<NavigateNextIcon />}
                         onClick={onGotoCustomers}> Customers</Button>
-                </Grid>
-            </Grid>
 
+                    <Button color="secondary" variant="outlined" endIcon={<FontAwesomeIcon icon={faPassport} />}
+                    > Apply for visa</Button>
+
+                    <Button color="secondary" variant="outlined" endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
+                    > Help me</Button>
+                </CardActions>
+            </Card>
 
         </Container>
     )

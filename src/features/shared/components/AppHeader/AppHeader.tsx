@@ -167,25 +167,22 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
 
   const handleLogout = (e: any, mi: any, b: any) => {
     firebase.auth().signOut();
-    history.push('/logout')
+    history.push("/logout");
   };
 
   return (
     <HideOnScroll>
       <div>
-        <AppBar position="sticky" color="inherit">
+        <AppBar position="static">
           <Toolbar>
             <Grid container justify="space-between" alignItems="center">
-              <Grid item xs>
-                <Box p={2}>
-                  <img
-                    style={{ maxHeight: "48px" }}
-                    src={mobileMedia ? config.smallLogo : config.logo}
-                    alt="HajOnSoft"
-                  />
-                </Box>
+              <Grid item xs container >
+                <Typography align="center" color="textPrimary">
+                  HAJ
+                </Typography>
+                <Typography color="textSecondary">onSoft</Typography>
               </Grid>
-              <Grid item>
+              <Grid item aria-label="header buttons">
                 {user &&
                   user.uid &&
                   config.buttons.map((b) => (

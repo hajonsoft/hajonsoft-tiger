@@ -7,7 +7,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import StorageOutlinedIcon from '@material-ui/icons/StorageOutlined';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import React from 'react';
-import logo from '../../images/logo.jpg';
+import logo from '../../images/icon_logo_png.png';
 import smallLogo from '../../images/logo_mobile.jpg';
 import AppHeader from '../shared/components/AppHeader/AppHeader';
 import { IHeaderConfig } from '../shared/components/interfaces';
@@ -54,7 +54,9 @@ const HajonsoftHeader: React.FC = () => {
         menuItems: [{ title: "Firebase", icon: StorageOutlinedIcon }],
       },
     ],
-    bookmarks: [],
+    // bookmarks: [
+    //   {title: 'Help', name: 'help'}
+    // ],
   };
 
   return <AppHeader config={config} />;

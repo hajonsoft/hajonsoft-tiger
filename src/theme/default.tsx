@@ -2,27 +2,16 @@ import {
   createMuiTheme,
   responsiveFontSizes
 } from "@material-ui/core";
+import { amber, blue, lightBlue, lightGreen, orange, red } from "@material-ui/core/colors";
 
 const defaultTheme = createMuiTheme({
     palette: {
-      primary: {
-        main: "#3E95DC", //summer sky
-      },
-      secondary: {
-        main: "#FFC000", // Amber
-      },
-      error: {
-        main: "#ff1f00", // Scarlet
-      },
-      warning: {
-        main: "#ffa800", //Orange
-      },
-      success: {
-        main: "#9e2b25", // hunter green
-      },
-      info: {
-        main: "#42F2F7", //Aqua
-      },
+      primary: lightBlue, //name for 500 is DeepSkyBlue
+      secondary: orange, //name for 500 is Orange Peel
+      error: red, //name for 500 is red orange f44336
+      warning: amber, //name for 500 is amber ffc107
+      success: lightGreen, // name for 500 is Mantis 8bc34a
+      info: blue, //name for 500 is Dodger Blue 2196f3
     },
   });
   
