@@ -10,23 +10,23 @@ const Statistics = ({ data }) => {
         <div>
             <Grid container spacing={4} justify="center">
                 <Grid item aria-label="Male">
-                    <FontAwesomeIcon icon={faMale} /> <Typography color="textSecondary">{data.filter(f => f.gender.startsWith('M')).length} </Typography>
+                    <FontAwesomeIcon icon={faMale} color="silver" size="2x"/> <Typography color="textSecondary" align="center">{data.filter(f => f.gender.startsWith('M')).length} </Typography>
                 </Grid>
 
                 <Grid item aria-label="Female">
-                    <FontAwesomeIcon icon={faFemale} /> <Typography color="textSecondary">{data.filter(f => f.gender.startsWith('F')).length} </Typography>
+                    <FontAwesomeIcon icon={faFemale} color="silver" size="2x"/> <Typography color="textSecondary" align="center">{data.filter(f => f.gender.startsWith('F')).length} </Typography>
                 </Grid>
                 <Grid item aria-label="adults">
-                    <FontAwesomeIcon icon={faUser} /> <Typography color="textSecondary">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') > 18).length} </Typography>
+                    <FontAwesomeIcon icon={faUser}  color="silver" size="2x" /> <Typography color="textSecondary" align="center">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') > 18).length} </Typography>
                 </Grid>
                 <Grid item aria-label="Children">
-                    <FontAwesomeIcon icon={faChild}  size="lg" /> <Typography color="textSecondary">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') < 18 && moment().diff(f.birthDate, 'years') > 2).length} </Typography>
+                    <FontAwesomeIcon icon={faChild}  color="silver" size="2x" /> <Typography color="textSecondary" align="center">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') < 18 && moment().diff(f.birthDate, 'years') > 2).length} </Typography>
                 </Grid>
                 <Grid item aria-label="Infants">
-                    <FontAwesomeIcon icon={faBabyCarriage} /> <Typography color="textSecondary">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') < 2).length} </Typography>
+                    <FontAwesomeIcon icon={faBabyCarriage} color="silver" size="2x"/> <Typography color="textSecondary" align="center">{data.filter(f => f.birthDate && moment().diff(f.birthDate, 'years') < 2).length} </Typography>
                 </Grid>
                 <Grid item aria-label="Nationalities">
-                    <FontAwesomeIcon icon={faMapMarked} /> <Typography color="textSecondary">{Object.keys(_.groupBy(data, 'nationality')).map(k=> <div>{`${k}: ${Math.round((data.filter(x=> x.nationality === k).length /data.length) * 100)}%`}</div>)} </Typography>
+                    <FontAwesomeIcon icon={faMapMarked} color="silver" size="2x"/> <Typography color="textSecondary" align="center">{Object.keys(_.groupBy(data, 'nationality')).map(k=> <div>{`${k}: ${Math.round((data.filter(x=> x.nationality === k).length /data.length) * 100)}%`}</div>)} </Typography>
                 </Grid>
             </Grid>
         </div>

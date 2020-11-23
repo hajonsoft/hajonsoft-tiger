@@ -28,7 +28,7 @@ import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
 import pluralize from 'pluralize'
 import { CircularProgress } from '@material-ui/core';
-
+import { useHistory } from 'react-router-dom';
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -61,6 +61,7 @@ const Dashboard = () => {
 
   const [values, loading, error] = useListKeys(firebase.database().ref('customer'));
   const [state, setstate] = useState({ mode: 'list', record: {} })
+  const history = useHistory()
   const title = "Package";
 
   const Title = () => {
@@ -96,6 +97,12 @@ const Dashboard = () => {
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
                   onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
+                },
+                {
+                  icon: tableIcons.MoreDetails,
+                  tooltip: `Travellers`,
+                  isFreeAction: false,
+                  onClick: (event,rowData) => history.push(`${rowData.name}/customers`),
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,

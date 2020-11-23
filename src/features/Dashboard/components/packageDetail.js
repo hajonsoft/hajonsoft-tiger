@@ -5,6 +5,7 @@ import { useListVals } from 'react-firebase-hooks/database';
 import { useHistory } from 'react-router-dom';
 import firebase from '../../../firebaseapp';
 import Statistics from './Statistics';
+import { faShareSquare } from '@fortawesome/free-solid-svg-icons';
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
 import { faPassport } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,10 +30,13 @@ const PackageDetail = ({ data }) => {
                     <Button color="primary" variant="contained" endIcon={<NavigateNextIcon />}
                         onClick={onGotoCustomers}> Customers</Button>
 
-                    <Button color="secondary" variant="outlined" endIcon={<FontAwesomeIcon icon={faPassport} />}
+                    <Button  variant="outlined" endIcon={<FontAwesomeIcon icon={faPassport}/>}
                     > Apply for visa</Button>
 
-                    <Button color="secondary" variant="outlined" endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
+                    <Button  variant="outlined" endIcon={<FontAwesomeIcon icon={faShareSquare} />}
+                    > Share</Button>
+
+                    <Button  variant="outlined" endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
                     > Help me</Button>
                 </CardActions>
             </Card>
