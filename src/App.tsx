@@ -17,6 +17,7 @@ import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
+import CustomerHome from './features/Home/CustomerHome';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -33,7 +34,8 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <Router>
         <Provider store={store}>
-          <PublicRoute exact path="/" component={Home} />
+          <PublicRoute exact path="/" component={CustomerHome} />
+          <PublicRoute exact path="/admin" component={Home} />
           <PublicRoute path="/register" component={Register} />
           <PublicRoute path="/login" component={SignIn} />
           <PublicRoute path="/forgot-password" component={ForgotPassword} />

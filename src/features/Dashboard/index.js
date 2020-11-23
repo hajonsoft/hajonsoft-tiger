@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Typography, Grid } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import { LocalAirport } from '@material-ui/icons';
 import AddBox from "@material-ui/icons/AddBox";
@@ -20,15 +20,14 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
+import pluralize from 'pluralize';
 import React, { forwardRef, useState } from "react";
 import { useListKeys } from 'react-firebase-hooks/database';
+import { useHistory } from 'react-router-dom';
 import firebase from '../../firebaseapp';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
-import pluralize from 'pluralize'
-import { CircularProgress } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -79,7 +78,7 @@ const Dashboard = () => {
       >
         <HajonsoftHeader />
         <div>
-          {loading && <Grid container justify="center" alignItems="center" style={{height: '100vh'}}><Grid item><CircularProgress size={60} />Loading packages ...</Grid></Grid>}
+          {loading && <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}><Grid item><CircularProgress size={60} />Loading packages ...</Grid></Grid>}
           {!loading && state.mode !== 'list' &&
             <CoreForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
@@ -88,7 +87,7 @@ const Dashboard = () => {
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
-              columns={[{ title: "Name", field: "name" }]}
+              columns={[{ title: "Name", field: "name" }, { title: 'online' }]}
               data={values.map(v => ({ name: v }))}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
@@ -102,7 +101,7 @@ const Dashboard = () => {
                   icon: tableIcons.MoreDetails,
                   tooltip: `Travellers`,
                   isFreeAction: false,
-                  onClick: (event,rowData) => history.push(`${rowData.name}/customers`),
+                  onClick: (event, rowData) => history.push(`${rowData.name}/customers`),
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,
