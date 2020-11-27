@@ -55,10 +55,10 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
 
   useEffect(() => {
     async function getImage() {
-      if (record) {
+      if (record && record.nationality && record.passportNumber) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${customerKey}.jpg`)
+          .ref(`${record.nationality}/${record.passportNumber}.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);

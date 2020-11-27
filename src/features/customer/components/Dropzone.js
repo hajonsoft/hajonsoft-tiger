@@ -17,14 +17,13 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   delete values["image"];
 
   const customerRef = firebase.database().ref(`customer/${packageName}`);
-  values.passportExpireDate = values.passExpireDt;
   customerRef.push(values);
 
   if (image) {
     const metadata = {
       contentType: "image/jpeg",
     };
-    const fileName = `${customerRef.key}.jpg`;
+    const fileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}.jpg`;
     let ref = storage.ref(fileName);
     ref
       .put(image, metadata)

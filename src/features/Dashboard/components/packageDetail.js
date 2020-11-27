@@ -1,6 +1,6 @@
 import { faHandsHelping, faPassport, faPrint, faShareSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, CardContent, CardHeader, CircularProgress, Container, Grid } from '@material-ui/core';
+import { Button, CircularProgress, Container, Divider, Grid, Paper, Typography } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import React from 'react';
 import { useListVals } from 'react-firebase-hooks/database';
@@ -17,51 +17,55 @@ const PackageDetail = ({ data }) => {
     }
     return (
         <Container style={{ padding: '1rem' }} fixed>
-            <Card>
-                <CardHeader title={`Package ${data.name}`} subheader={values && `${values.length} travellers`}></CardHeader>
-                <CardContent>
-                    {loading && <CircularProgress />}
-                    {error}
-                    {!loading &&
-                        <Grid container >
-                            <Grid item xs>
-                                <Statistics data={values} />
-                            </Grid>
-                            <Grid item xs={2} container spacing={2}>
+            <Paper elevation={2} style={{ padding: '2rem', borderTop: '2px solid black' }}>
+                <Grid container justify="space-between" alignItems="center">
+                    <Grid item xs={10}>
+                        <Typography component="span" variant="h6">{data.name}</Typography>
+                    </Grid>
+                    <Grid item xs={2} >
+                        <Button style={{ width: '100%' }} color="secondary" variant="contained" endIcon={<NavigateNextIcon />}
+                            onClick={onGotoCustomers}>Customers</Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider style={{marginBottom: '2rem'}}/>
+                    </Grid>
+                    <Grid item xs={10} >
+                        {loading && <CircularProgress />}
+                        {error}
+                        {!loading && <Statistics data={values} />}
+                    </Grid>
+                    <Grid item xs={2} container direction="column" spacing={2}>
+                        <Grid item>
 
-                                <Grid item>
-                                    <Button color="primary" variant="contained" endIcon={<NavigateNextIcon />}
-                                        onClick={onGotoCustomers}>Customers</Button>
-                                </Grid>
+                            <Button style={{ width: '100%' }} variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faPassport} />}>Apply for visa</Button>
 
-                                <Grid item>
-                                    <Button variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faPassport} />}>Apply for visa</Button>
-                                </Grid >
-
-                                <Grid item>
-                                    <Button variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faShareSquare} />}
-                                    > Share</Button>
-                                </Grid>
-
-
-                                <Grid item>
-                                    <Button variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faPrint} />}
-                                    > Reports</Button>
-                                </Grid>
-
-                                <Grid item>
-                                    <Button variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
-                                    > Assist</Button>
-                                </Grid>
-                            </Grid>
                         </Grid>
 
-                    }
-                </CardContent>
+                        <Grid item>
+                            <Button style={{ width: '100%' }} variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faShareSquare} />}
+                            > Share</Button>
 
-            </Card>
+                        </Grid>
 
-        </Container>
+                        <Grid item>
+                            <Button style={{ width: '100%' }} variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faPrint} />}
+                            > Reports</Button>
+
+                        </Grid>
+
+                        <Grid item>
+                            <Button style={{ width: '100%' }} variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
+                            > Assist</Button>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+
+
+
+            </Paper>
+
+        </Container >
     )
 }
 

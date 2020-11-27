@@ -7,24 +7,25 @@ assignees: ''
 
 ---
 
-As a USER/TRAVELLER/ADMIN to HAJonSoft I want to 
+As USER/TRAVELLER/ADMIN to HAJonSoft I want to 
 
 ### Considerations ✍
 
 ```
-Design considerations here including initial design or available ideas ...
+Initial design 
+Available ideas 
 ```
 
 ### Acceptance Criteria 👍
 
 ```
-- **Performance:** Display progress when processing takes longer than the standard 3 second wait duration.
-- **Security:** All calls to the backend must use a token
-- **Logging and Analytics:** Log errors to data dog and analytics to google analytics
-- **Deployment:** Automatic deployment using GitHub Actions
-- **Marketing and customer education:** create a video for the feature and place the multi-language video as close to the customer as possible
-- **Long term vision:** consideration
-- **Community outsourcing opportunity:** explore opportunity 
+- Performance: Display progress when processing takes longer than the standard 3 second wait duration.
+- Security: All calls to the backend must use a token
+- Logging and Analytics: Log errors to data dog and analytics to google analytics
+- Deployment: Automatic deployment using GitHub Actions
+- Marketing and customer education: create a video for the feature and place the multi-language video as close to the customer as possible
+- Long term vision: consideration
+- Community outsourcing opportunity: explore opportunity 
 ```
 ❤ This should be helpful mainly to USER/TRAVELLER/ADMIN in doing ...
 
@@ -98,4 +99,5 @@ You are welcome to share your github username as well.
 ```
 
 
-` ⌘ After completing this issue, schedule following features in a low priority stories`
+` ⌘ After completing this issue, schedule the following features in a low priority stories`
+- 

@@ -75,7 +75,6 @@ const Customers = () => {
           alignItems: "center",
         }}
       >
-        {" "}
         <CircularProgress size={40} />{" "}
       </div>
     );
@@ -91,7 +90,6 @@ const Customers = () => {
         <Breadcrumbs>
           <Link
             color="inherit"
-            href="/"
             onClick={handleGoback}
             style={{ display: "flex", alignItems: "center" }}
           >
