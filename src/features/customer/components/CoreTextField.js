@@ -12,6 +12,7 @@ const CoreTextField = ({
   autoFocus = false,
   value,
   required = false,
+  maxLength=60
 }) => {
   return (
     <Grid item xs={xsWidth}>
@@ -24,6 +25,7 @@ const CoreTextField = ({
         label={label || _.startCase(name)}
         disabled={mode === "delete"}
         autoComplete="off"
+        maxLength={maxLength}
         value={value || ""}
       />
       <ErrorMessage name={name} component="div" />

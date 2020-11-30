@@ -75,6 +75,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
         className={classes.mainContainer}
         onMouseOver={() => setIsMouseOver(true)}
         onMouseLeave={() => setIsMouseOver(false)}
+        disabled
       >
         <CardContent>
           <img
@@ -88,6 +89,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
             className={classes.pickImage}
             style={{ display: isMouseOver ? "block" : "none" }}
             onClick={() => _fileInput.click()}
+            disabled={!record.nationality || !record.passportNumber}
           >
             Change Image
           </Link>

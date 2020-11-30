@@ -163,6 +163,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             name="passportNumber"
                             mode={mode}
                             xsWidth={6}
+                            maxLength={9}
                             value={values.passportNumber || ""}
                           />
                           <CoreTextField value={values.birthDate || ""} xsWidth={6} name="passExpireDt" mode={mode} />
@@ -171,13 +172,14 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     </Grid>
 
                     <CoreTextField value={values.birthDate || ""} name="birthDate" mode={mode} />
-                    <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} />
+                    <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} maxLength={25} />
                     <CoreTextField
                       value={values.passPlaceOfIssue || ""}
                       name="passPlaceOfIssue"
+                      maxLength={25}
                       mode={mode}
                     />
-                    <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} />
+                    <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20}/>
                     <CoreDateField
                       value={values.idNumberIssueDate || ""}
                       name="idNumberIssueDate"
@@ -189,7 +191,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       mode={mode}
                     />
                     <CoreDateField value={values.passIssueDt || ""} name="passIssueDt" mode={mode} />
-                    <CoreTextField value={values.profession || ""} name="profession" mode={mode} />
+                    <CoreTextField value={values.profession || ""} name="profession" mode={mode} maxLength={25} />
                     <CoreDateField value={values.CreateDt || ""} name="CreateDt" mode={mode} />
                     <CoreTextField
                       value={values.mahramName || ""}

@@ -1,8 +1,18 @@
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography, Button } from '@material-ui/core';
 import React from 'react';
 import { firebaseConfig } from '../../firebaseConfig';
+import firebase from '../../firebaseapp';
 
 const CustomerHome = () => {
+
+
+    const handleDoit = () => {
+        const storage = firebase.storage();
+        var listRef = storage.ref('');
+        listRef.listAll().then(function (res) {
+            res.items.forEach(i => alert(i))
+        });
+    }
 
     return (
         <div style={{ padding: '4rem', height: '60vh' }}>
@@ -16,6 +26,7 @@ const CustomerHome = () => {
                     </Grid>
                 </Grid>
             </Paper>
+            <Button onClick={handleDoit}>Do it</Button>
         </div>
     )
 };

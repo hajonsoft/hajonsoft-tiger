@@ -1,12 +1,4 @@
 import axios from 'axios';
-// import firebase from 'firebase/app'
-// import 'firebase/storage';
-
-
-
-// firebase.initializeApp(firebaseConfig);
-
-// var storage = firebase.storage();
 
 const dataService = {
     getExternalResponse: async (url: string) => {
@@ -46,6 +38,4 @@ const dataService = {
     // }
 }
 
-
-// export { storage, firebaseService as default };
 export { dataService as default };
