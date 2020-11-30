@@ -61,8 +61,7 @@ when PR is merged=No
 Edit the new yml file after - uses: actions/checkout@v2 take from hajmission
 edit  EXPORT_FIREBASE_CONFIG by copying from firebase config from firebase
 edit FIREBASE_CONFIG take the new secret from github
-
-
+channelId: live
 
 ```
 
