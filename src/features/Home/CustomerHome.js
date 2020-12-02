@@ -1,7 +1,6 @@
-import { Grid, Paper, Typography, Button } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { firebaseConfig } from '../../firebaseConfig';
-import firebase from '../../firebaseapp';
 
 const CustomerHome = () => {
 

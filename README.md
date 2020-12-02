@@ -18,6 +18,12 @@ To signup a new customer (a.k.a travel agent)
 - setup security rules after migration https://firebase.google.com/docs/rules/insecure-rules#database
 - migration customer data and images from sql server to firebase
 - Setup github action to deploy and share the address with customer
+
+// TODO: //Review the following requirements
+- Document steps required to sign up for a new firebase account
+- Document migration of customer data from sql server to firebase
+- Document migration of customer photos from sql server to firebase
+- Document deployment and storage of the google account/passport for the customer
 ```
 
 # security rule 
@@ -101,3 +107,7 @@ delete firebaserc, .firebasefolder firebase login, firebase init,
 Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
 
 Web Automation https://github.com/puppeteer/recorder
+
+
+
+

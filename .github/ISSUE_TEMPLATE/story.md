@@ -27,7 +27,7 @@ Available ideas
 - Long term vision: consideration
 - Community outsourcing opportunity: explore opportunity 
 ```
-❤ This should be helpful mainly to USER/TRAVELLER/ADMIN in doing ...
+❤ When done it will be used by ADMIN/TRAVELLER/USER as follows
 
 
 ## Outsourcing notes ☎
@@ -99,5 +99,5 @@ You are welcome to share your github username as well.
 ```
 
 
-` ⌘ After completing this issue, schedule the following features in a low priority stories`
+` ⌘ New work discovered - stories to be created`
 - 
