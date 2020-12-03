@@ -206,6 +206,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     />
                     <CoreTextField value={values.phone || ""} name="phone" mode={mode} />
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
+                    <CoreTextField value={values.comments || ""} name="comments" mode={mode} />
                   </Grid>
                 </CardContent>
                 <CardActions className={classes.actionsContainer}>
