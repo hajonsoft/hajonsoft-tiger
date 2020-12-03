@@ -4,6 +4,7 @@ To signup a new customer (a.k.a travel agent)
 
 ### Create firebase account
 
+```
 - Create a new gmail account for the customer. password companyname2hajonsoft all small
 - login to firebase.google.com
 - create new project, make sure the name is readable and record the name ex. hajonsoft2020
@@ -12,9 +13,11 @@ To signup a new customer (a.k.a travel agent)
 - storage: sign up and then change the security rules to true
 - click project overview and change public facing name
 - create an app, web app  and state at this page to copy the values into github YML
+```
 
 ### Setup github actions
 
+```
 firebase logout
 del firebase.json .firebaserc
 firebase login
@@ -26,22 +29,21 @@ firebase init
         rename the new yml file with company name. ex hajonsoft 
         change the name inside the file
         after actions/checkout@v2 (line 13) paste this
-        ```
         - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
-        shell: bash
-        env:
-          EXPORT_FIREBASE_CONFIG: 'export const firebaseConfig = { apiKey: "API-KEY-HERE", authDomain: "AUTH-DOMAIN-HERE", databaseURL: "DATABASE-URL-HERE", projectId: "PROJ-ID-HERE", storageBucket: "STORAGEBUCKET-HERE", messagingSenderId: "MESSAGE-SENDER-ID-HERE", appId: "APP-ID-HERE" };'
-      - run: 'echo $FIREBASE_CONFIG'
-        shell: bash
-        env:
-          FIREBASE_CONFIG: ${{ secrets.SECRET-HERE}}
-      ```
-      replace all HERE variables with the correct ones
+          shell: bash
+          env:
+            EXPORT_FIREBASE_CONFIG: 'export const firebaseConfig = { apiKey: "API-KEY-HERE", authDomain: "AUTH-DOMAIN-HERE", databaseURL: "DATABASE-URL-HERE", projectId: "PROJ-ID-HERE", storageBucket: "STORAGEBUCKET-HERE", messagingSenderId: "MESSAGE-SENDER-ID-HERE", appId: "APP-ID-HERE" };'
+        - run: 'echo $FIREBASE_CONFIG'
+          shell: bash
+          env:
+            FIREBASE_CONFIG: ${{ secrets.SECRET-HERE}}
+
+      replace all HERE variables with the correct ones and make sure indentation is correct otherwise deployment will fail
       edit FIREBASE_CONFIG take the new secret key 5 lines below
       make sure channelId: live
 
-push changes to master
-
+push changes to master make sure action runs successfully and get the deployment url 
+```
 ### Migrate data from sql server
 make sure sql server is running
 script from 

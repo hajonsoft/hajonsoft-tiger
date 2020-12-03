@@ -12,6 +12,8 @@ connect to any other firebase project as owner
 
 To signup a new customer (a.k.a travel agent) see SIGNUP.md
 
+https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+
 # Credits
 
 Favicon Generator https://realfavicongenerator.net/
