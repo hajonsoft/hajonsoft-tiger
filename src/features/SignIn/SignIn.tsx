@@ -62,12 +62,12 @@ const SignIn = () => {
       .string()
       .required("Required")
       .matches(/[a-z]/, "At least one lower case character")
-      .matches(/[A-Z]/, "At least one upper case character")
+      // .matches(/[A-Z]/, "At least one upper case character")
       .matches(/[0-9]/, "At least one number")
-      .matches(
-        /[!@#$%^&*)()]/,
-        "At least one keyboard special character ex. !@#$%^&*()"
-      ),
+      // .matches(
+      //   /[!@#$%^&*)()]/,
+      //   "At least one keyboard special character ex. !@#$%^&*()"
+      // ),
   });
 
   const handleLogin = (values: any, actions: any) => {

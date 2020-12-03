@@ -42,7 +42,8 @@ firebase init
       edit FIREBASE_CONFIG take the new secret key 5 lines below
       make sure channelId: live
 
-push changes to master make sure action runs successfully and get the deployment url 
+push changes to master make sure action runs successfully and get the deployment url which should be 
+projectId.web.app 
 ```
 ### Migrate data from sql server
 make sure sql server is running
