@@ -1,3 +1,8 @@
+"""Migrate specific travel agent photos from sql server data base on localhost to the travel agent specified by the firebaseConfig, 
+Edit the sql statement to retrieve photos for specific travel agent
+photos will be uploaded directly to storage and a copy will be placed under c:\temp
+"""
+
 import pyrebase
 import os
 import pyodbc
@@ -48,3 +53,4 @@ for row in cursor:
         storage.child(nationality).child(passportnumber + ".jpg").put(fileName)
     except Exception as ex:
         print("Oops!  Error ", ex)
+
