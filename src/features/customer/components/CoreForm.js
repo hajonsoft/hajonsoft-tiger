@@ -18,6 +18,10 @@ import CoreDateField from "./CoreDateField";
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
 import Dropzone from "./Dropzone";
+import CustomerName from './CustomerName';
+import CustomerNationality from './CustomerNationality';
+import CustomerGender from './CustomerGender';
+import CustomerPassportNumber from './CustomerPassportNumber';
 
 const storage = firebase.storage();
 
@@ -81,7 +85,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
       const metadata = {
         contentType: "image/jpeg",
       };
-      const fileName = `${customerKey}.jpg`;
+      const fileName = `${values.nationality}/${values.passportNumber}.jpg`;
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }
@@ -126,12 +130,8 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       </Grid>
                       <Grid item xs={8} container direction="column" justify="space-around">
                         <Grid item container justify="space-between" spacing={4}>
-                          <CoreTextField
-                            required
-                            name="name"
+                          <CustomerName
                             mode={mode}
-                            xsWidth={6}
-                            autoFocus
                             value={values.name || ""}
                           />
                           <CoreTextField
@@ -143,27 +143,19 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           />
                         </Grid>
                         <Grid item container justify="space-between" spacing={4}>
-                          <CoreTextField
-                            required
-                            name="nationality"
+                          <CustomerNationality
                             mode={mode}
-                            xsWidth={6}
                             value={values.nationality || ""}
                           />
-                          <CoreTextField
+                          <CustomerGender
                             value={values.gender || ""}
-                            name="gender"
                             mode={mode}
                             xsWidth={6}
                           />
                         </Grid>
                         <Grid item container justify="space-between" spacing={4}>
-                          <CoreTextField
-                            required
-                            name="passportNumber"
+                          <CustomerPassportNumber
                             mode={mode}
-                            xsWidth={6}
-                            maxLength={9}
                             value={values.passportNumber || ""}
                           />
                           <CoreTextField value={values.birthDate || ""} xsWidth={6} name="passExpireDt" mode={mode} />
