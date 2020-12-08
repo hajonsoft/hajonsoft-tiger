@@ -4,7 +4,7 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import _ from 'lodash'
 
-const CoreDateField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) => {
+const CoreDateField = ({ value,name, mode, label, xsWidth = 4, autoFocus = false }) => {
 
 
     return (
@@ -17,6 +17,7 @@ const CoreDateField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
                 label={label || _.startCase(name)}
                 disabled={mode === 'delete'}
                 autoComplete="off"
+                value={value || ""}
                 InputLabelProps={{
                     shrink: true,
                 }}

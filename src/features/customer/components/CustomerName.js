@@ -66,7 +66,8 @@ const CustomerName = ({
                   aria-label="search name on facebook"
                   onClick={handleFacebookClick}
                 >
-                  <FacebookIcon style={{color: '#4267B2'}}/>
+                  {/* <FacebookIcon style={{color: '#4267B2'}}/> */}
+                  <FacebookIcon />
                 </IconButton>
               </Box>
               <Box>
@@ -74,7 +75,8 @@ const CustomerName = ({
                   aria-label="search name on twitter"
                   onClick={handleTwitterClick}
                 >
-                  <TwitterIcon style={{color: '#1DA1F2'}}/>
+                  {/* <TwitterIcon style={{color: '#1DA1F2'}}/> */}
+                  <TwitterIcon />
                 </IconButton>
               </Box>
               <Box>
@@ -82,7 +84,8 @@ const CustomerName = ({
                   aria-label="search name on twitter"
                   onClick={handleGoogleClick}
                 >
-                  <FontAwesomeIcon icon={faGoogle} style={{color: '#4285F4'}}/>
+                  {/* <FontAwesomeIcon icon={faGoogle} style={{color: '#4285F4'}}/> */}
+                  <FontAwesomeIcon icon={faGoogle} />
                 </IconButton>
               </Box>
             </InputAdornment>

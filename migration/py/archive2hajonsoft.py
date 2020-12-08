@@ -52,7 +52,7 @@ def merge(data):
             if ('email' in company):
                 newCompany['email'] = company['email']
             if ('CreateDt' in company):
-                newCompany['CreateDt'] = company['CreateDt']
+                newCompany['createDt'] = company['CreateDt']
             if ('contact' in company):
                 newCompany['mahramName'] = company['contact']
             if ('logo' in company):

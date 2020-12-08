@@ -37,7 +37,7 @@ function mapper(record) {
             passIssueDt: record.PassportIssueDate,
             passExpireDt: record.PassportExireDate,
             birthPlace: record.PlaceOfBirth,
-            CreateDt: record.CreateDt,
+            createDt: record.CreateDt,
             profession: record.Occupation,
             passPlaceOfIssue: record.PassportIssuePlace,
             mahramName: record.MuhramName,

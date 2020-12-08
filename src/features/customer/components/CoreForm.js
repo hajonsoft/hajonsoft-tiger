@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,18 +12,23 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
+import moment from 'moment';
 import React from "react";
 import { useParams } from "react-router-dom";
 import firebase from "../../../firebaseapp";
-import CoreDateField from "./CoreDateField";
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
-import Dropzone from "./Dropzone";
+import CustomerBirthDate from './CustomerBirthDate';
+import CustomerComments from './CustomerComments';
+import CustomerGender from './CustomerGender';
+import CustomerIdExpireDate from './CustomerIdExpireDate';
+import CustomerIdIssueDate from './CustomerIdIssueDate';
 import CustomerName from './CustomerName';
 import CustomerNationality from './CustomerNationality';
-import CustomerGender from './CustomerGender';
+import CustomerPassportExpireDate from './CustomerPassportExpireDate';
+import CustomerPassportIssueDate from './CustomerPassportIssueDate';
 import CustomerPassportNumber from './CustomerPassportNumber';
-
+import Dropzone from "./Dropzone";
 const storage = firebase.storage();
 
 const useStyles = makeStyles((theme) => ({
@@ -118,7 +124,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                   action={<CancelOutlinedIcon color="secondary" onClick={onClose} />}
                 />
                 <CardContent>
-                  <Grid container spacing={4}>
+                  <Grid container spacing={2}>
                     <Grid item container>
                       <Grid item xs={4}>
                         <CoreImage
@@ -153,44 +159,52 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             xsWidth={6}
                           />
                         </Grid>
-                        <Grid item container justify="space-between" spacing={4}>
+                        <Grid item container justify="space-between" alignItems="center" spacing={4}>
                           <CustomerPassportNumber
                             mode={mode}
                             value={values.passportNumber || ""}
                           />
-                          <CoreTextField value={values.birthDate || ""} xsWidth={6} name="passExpireDt" mode={mode} />
+                          <CustomerPassportExpireDate value={values.passExpireDt} mode={mode} setFieldValue={setFieldValue} />
                         </Grid>
                       </Grid>
                     </Grid>
 
-                    <CoreTextField value={values.birthDate || ""} name="birthDate" mode={mode} />
-                    <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} maxLength={25} />
-                    <CoreTextField
-                      value={values.passPlaceOfIssue || ""}
-                      name="passPlaceOfIssue"
-                      maxLength={25}
+                    <Grid item container alignItems="center" spacing={4}>
+                      <CustomerBirthDate value={values.birthDate} mode={mode} setFieldValue={setFieldValue} />
+                      <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} maxLength={25} />
+                      <CoreTextField
+                        value={values.passPlaceOfIssue || ""}
+                        name="passPlaceOfIssue"
+                        maxLength={25}
+                        mode={mode}
+                      />
+                    </Grid>
+                    <Grid item container alignItems="center" spacing={4}>
+
+                    <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20} />
+                    <CustomerIdIssueDate
+                      value={values.idNumberIssueDate}
                       mode={mode}
+                      setFieldValue={setFieldValue}
                     />
-                    <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20}/>
-                    <CoreDateField
-                      value={values.idNumberIssueDate || ""}
-                      name="idNumberIssueDate"
+                    <CustomerIdExpireDate
+                      value={values.idNumberExpireDate}
                       mode={mode}
+                      setFieldValue={setFieldValue}
                     />
-                    <CoreDateField
-                      value={values.idNumberExpireDate || ""}
-                      name="idNumberExpireDate"
-                      mode={mode}
-                    />
-                    <CoreDateField value={values.passIssueDt || ""} name="passIssueDt" mode={mode} />
+                    </Grid>
+
+                    <Grid item container alignItems="center" spacing={4}>
+
+                    <CustomerPassportIssueDate value={values.passIssueDt} mode={mode} setFieldValue={setFieldValue} />
                     <CoreTextField value={values.profession || ""} name="profession" mode={mode} maxLength={25} />
-                    <CoreDateField value={values.CreateDt || ""} name="CreateDt" mode={mode} />
                     <CoreTextField
                       value={values.mahramName || ""}
                       name="mahramName"
                       label="Mahram"
                       mode={mode}
                     />
+                    </Grid>
                     <CoreTextField
                       value={values.relationship || ""}
                       name="relationship"
@@ -198,7 +212,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     />
                     <CoreTextField value={values.phone || ""} name="phone" mode={mode} />
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
-                    <CoreTextField value={values.comments || ""} name="comments" mode={mode} />
+                    <CustomerComments value={values.comments || ""} name="comments" mode={mode} />
                   </Grid>
                 </CardContent>
                 <CardActions className={classes.actionsContainer}>
@@ -207,15 +221,20 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                                         <Button type="button" disabled={isSubmitting} color='secondary' onClick={() => SetState({ ...state, importDMLOpen: true })} >Import DML</Button>
                                     </div> */}
                   <Grid container spacing={2}>
-                    <Grid container item xs>
-                      {mode === "create" && (
+                    {mode === "create" && (
+                      <Grid container item xs>
                         <Dropzone
                           onClose={onClose}
                           saveToFirebase={handleSubmitForm}
                           packageName={packageName}
                         ></Dropzone>
-                      )}
-                    </Grid>
+                      </Grid>
+                    )}
+                    {mode !== "create" &&
+                      <Grid container item xs>
+                        <Typography variant="body2" color="textSecondary">{`Created: ${moment(values.createDt).format('LLLL')} ${moment(values.createDt).fromNow()}`}</Typography>
+                      </Grid>
+                    }
                     <Grid item spacing={2}>
                       <Grid container spacing={2}>
                         <Grid item>

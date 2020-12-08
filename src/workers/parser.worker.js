@@ -132,8 +132,9 @@ function formatRecord(record) {
     gender: record.sex === "female" ? "Female" : "Male",
     passPlaceOfIssue: getNationality(record.issuingState),
     passportNumber: record.documentNumber,
-    passExpireDt: moment(record.expirationDate, "YYMMDD").format(),
-    CreateDt: moment().format(),
+    passExpireDt: moment(record.expirationDate, "YYMMDD").format(), //TODO: //Make sure expire date makes sense 
+    //TODO: //Calculate the defaults issue date, place of birth, place of issue. make sure there is a flag indicating if it has been reviewed or it is still the calculated value
+    createDt: moment().format(),
   };
 }
 
