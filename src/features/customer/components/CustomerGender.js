@@ -5,8 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 
-const Male = () => <Grid container spacing={2} alignItems="center"><Grid item><FontAwesomeIcon size="2x" icon={faMale} style={{ color: '#1976d2' }} /></Grid><Grid item><Typography>Male</Typography></Grid></Grid>;
-const Female = () => <Grid container spacing={2} alignItems="center"><Grid item><FontAwesomeIcon size="2x" icon={faFemale} style={{ color: '#c2185b' }} /></Grid><Grid item><Typography>Female</Typography></Grid></Grid>;
+const Male = () => <Grid container spacing={2} alignItems="center"><Grid item><FontAwesomeIcon size="2x" icon={faMale} color="#757575" /></Grid><Grid item><Typography>Male</Typography></Grid></Grid>;
+const Female = () => <Grid container spacing={2} alignItems="center"><Grid item><FontAwesomeIcon size="2x" icon={faFemale} color="#757575"  /></Grid><Grid item><Typography>Female</Typography></Grid></Grid>;
 const CustomerGender = ({
   name,
   mode,
