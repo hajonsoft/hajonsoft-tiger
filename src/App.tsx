@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
+import CustomerHome from "./features/Home/CustomerHome";
 import Home from "./features/Home/Home";
 import Profile from "./features/Profile/Profile";
 import Register from "./features/Register/Register";
@@ -17,7 +18,6 @@ import SignOut from "./features/SignIn/SignOut";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-import CustomerHome from './features/Home/CustomerHome';
 
 const sagaMiddleware = createSagaMiddleware();
 

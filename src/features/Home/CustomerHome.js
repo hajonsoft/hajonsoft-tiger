@@ -1,5 +1,6 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import React from 'react';
+import { Helmet } from "react-helmet";
 import { firebaseConfig } from '../../firebaseConfig';
 
 const CustomerHome = () => {
@@ -14,7 +15,11 @@ const CustomerHome = () => {
     // }
 
     return (
+
         <div style={{ padding: '4rem', height: '60vh' }}>
+            <Helmet>
+                <title>{firebaseConfig.projectId}</title>
+            </Helmet>
             <Paper elevation={4} style={{ padding: '4rem', height: '60vh' }}>
                 <Grid container justify="center" alignItems="center">
                     <Grid item>
