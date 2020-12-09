@@ -29,7 +29,7 @@ firebase init
         when PR is merged=No
         rename the new yml file with company name. ex hajonsoft 
         change the name inside the file
-        after actions/checkout@v2 (line 13) paste this
+        after actions/checkout@v2 (line 10) paste this
         - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
           shell: bash
           env:
@@ -40,8 +40,8 @@ firebase init
             FIREBASE_CONFIG: ${{ secrets.SECRET-HERE}}
 
       replace all HERE variables with the correct ones and make sure indentation is correct otherwise deployment will fail
-      edit FIREBASE_CONFIG take the new secret key 5 lines below
-      make sure channelId: live
+      edit FIREBASE_CONFIG now in line 18 take the new secret key 5 lines below line 23
+      make sure channelId: live is in line 24 just above projectId
 
 push changes to master make sure action runs successfully and get the deployment url which should be 
 projectId.web.app 
