@@ -14,7 +14,7 @@ jobs:
       - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
         shell: bash
         env:
-          EXPORT_FIREBASE_CONFIG: 'import firebaseConfig from './firebaseConfigs/forhajjnow'; export default firebaseConfig;'
+          EXPORT_FIREBASE_CONFIG: "import firebaseConfig from './firebaseConfigs/forhajjnow'; export default firebaseConfig;""
       - run: 'echo $FIREBASE_CONFIG'
         shell: bash
         env:
