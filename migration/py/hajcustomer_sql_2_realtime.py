@@ -50,7 +50,7 @@ db = firebase.database()
 conn = pyodbc.connect(cnxn_str)
 def getRecords(companyId):
     cursor = conn.cursor()
-    query="""SELECT top 4 HajId
+    query="""SELECT HajId
       ,FullName
       ,PackageName
       ,Comments

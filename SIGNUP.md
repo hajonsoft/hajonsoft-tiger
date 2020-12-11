@@ -20,7 +20,7 @@ To signup a new customer (a.k.a travel agent)
 
 ```
 firebase logout
-del firebase.json .firebaserc
+<!-- del firebase.json .firebaserc -->
 firebase login
 firebase init   
         answers public=build, configure as single-page-app=yes, setup automatic builds=yes, overwrite build/index.html=N
@@ -48,12 +48,14 @@ projectId.web.app
 ```
 ### Migrate data from sql server
 make sure sql server is running
-script from 
-enter company id
-get customers
-get images
+relax database and storage rules using Testing mode below 
+configure migration/py/hajcustomer_sql_2_realtime.py (sql and firebase)
+run migration/py/hajcustomer_sql_2_realtime.py companyid
+configure migration/py/photos_sql_2_storage
+configure migration/py/photos_sql_2_storage companyid
 
-
+Test customers using the command
+firebase database:get --shallow --pretty --limit-to-first=3 /customer
 ### edit security rules for production mode
 
 setup security rules after migration https://firebase.google.com/docs/rules/insecure-rules#database
@@ -75,10 +77,8 @@ setup security rules after migration https://firebase.google.com/docs/rules/inse
 ```
 {
   "rules": {
-    "customer": {
     ".read": "auth != null",
-    ".write": "auth != null"
-    },
+    ".write": "auth != null",
     "$uid" : {
       ".read" : "auth != null && auth.uid == $uid",
       ".write" : "auth != null && auth.uid == $uid"

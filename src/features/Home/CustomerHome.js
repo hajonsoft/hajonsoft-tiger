@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { Helmet } from "react-helmet";
-import { firebaseConfig } from '../../firebaseConfig';
+import  firebaseConfig  from '../../firebaseConfig';
 
 const CustomerHome = () => {
 

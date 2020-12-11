@@ -38,6 +38,8 @@ Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js
 
 Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
 
+firebase CLI https://firebase.google.com/docs/cli
+
 Web Automation https://github.com/puppeteer/recorder
 
 
