@@ -18,12 +18,22 @@
 //     appId: "1:140613751017:web:4dd1f64e4b6fc55c2fa078"
 //   };
 
+// export const firebaseConfig = {
+//     apiKey: "AIzaSyC9qB4VUiNl4GuI2_ABEJ8KPA71rBV2tZw",
+//     authDomain: "hajonsoft2020.firebaseapp.com",
+//     databaseURL: "https://hajonsoft2020-default-rtdb.firebaseio.com",
+//     projectId: "hajonsoft2020",
+//     storageBucket: "hajonsoft2020.appspot.com",
+//     messagingSenderId: "309798473169",
+//     appId: "1:309798473169:web:a7e58104d84b8e08d0a4f0"
+//   };
+
 export const firebaseConfig = {
-    apiKey: "AIzaSyC9qB4VUiNl4GuI2_ABEJ8KPA71rBV2tZw",
-    authDomain: "hajonsoft2020.firebaseapp.com",
-    databaseURL: "https://hajonsoft2020-default-rtdb.firebaseio.com",
-    projectId: "hajonsoft2020",
-    storageBucket: "hajonsoft2020.appspot.com",
-    messagingSenderId: "309798473169",
-    appId: "1:309798473169:web:a7e58104d84b8e08d0a4f0"
-  };
+  apiKey: "AIzaSyA0Qw2E_ZtjtOzVXZpiK-6Y54bsjgPPVwM",
+  authDomain: "forhajjnow.firebaseapp.com",
+  databaseURL: "https://forhajjnow-default-rtdb.firebaseio.com",
+  projectId: "forhajjnow",
+  storageBucket: "forhajjnow.appspot.com",
+  messagingSenderId: "532600289334",
+  appId: "1:532600289334:web:acb29de5b7e0e86ba44097"
+};
