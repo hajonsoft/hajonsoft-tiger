@@ -135,7 +135,7 @@ const OnlinePackage = () => {
                 { title: "Checkout", field: "checkoutDate", render: (rowData) => `${moment(rowData.checkoutDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.checkoutDate, 'days')}]` },
                 { title: "Return", field: "returnDate", render: (rowData) => `${moment(rowData.returnDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.returnDate, 'days')}]` },
               ]}
-              data={snapshots.map((s) => s.val())}
+              data={snapshots && snapshots.map((s) => s.val())}
               // detailPanel={(rowData) => (
               //   <CustomerDetail
               //     customer={rowData}

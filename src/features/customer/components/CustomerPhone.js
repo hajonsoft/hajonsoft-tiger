@@ -31,6 +31,7 @@ const CustomerPhone = ({
               <Box>
                 <IconButton
                   aria-label="send whatsapp message"
+                  disabled={!value || value.length < 9 || mode === 'delete'}
                   onClick={handleWhatsappClick}
                 >
                   <WhatsAppIcon />

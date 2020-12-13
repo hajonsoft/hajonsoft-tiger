@@ -16,6 +16,10 @@ Initial design
 Available ideas 
 ```
 
+⌘ New work discovered - stories to be created
+- 
+
+
 ### Acceptance Criteria 👍
 
 ```
@@ -97,7 +101,3 @@ In your proposal, please share a brief summary of your experience and tell us ab
 You are welcome to share your github username as well.
 
 ```
-
-
-` ⌘ New work discovered - stories to be created`
-- 

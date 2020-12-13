@@ -175,7 +175,7 @@ const Customers = () => {
               options={{
                 actionsColumnIndex: -1,
                 grouping: true,
-                pageSize: 10,
+                pageSize: 20,
                 exportButton: true,
               }}
               localization={{
