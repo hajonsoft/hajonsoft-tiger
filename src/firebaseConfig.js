@@ -1,1 +1,1 @@
-import firebaseConfig from './firebaseConfigs/forhajjnow'; export default firebaseConfig;
+import firebaseConfig from './firebaseConfigs/hajonsoft2020'; export default firebaseConfig;

@@ -6,8 +6,8 @@ import { amber, blue, lightBlue, lightGreen, orange, red } from "@material-ui/co
 
 const defaultTheme = createMuiTheme({
     palette: {
-      primary: lightBlue, //name for 500 is DeepSkyBlue
-      secondary: orange, //name for 500 is Orange Peel
+      primary: lightBlue, //name for 500 is DeepSkyBlue 2196f3
+      secondary: orange, //name for 500 is Orange Peel ff9800
       error: red, //name for 500 is red orange f44336
       warning: amber, //name for 500 is amber ffc107
       success: lightGreen, // name for 500 is Mantis 8bc34a

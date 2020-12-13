@@ -87,7 +87,7 @@ const Dashboard = () => {
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
-              columns={[{ title: "Name", field: "name" }, { title: 'online' }]}
+              columns={[{ title: "Name", field: "name" }]}
               data={values.map(v => ({ name: v }))}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
@@ -113,7 +113,7 @@ const Dashboard = () => {
                 actionsColumnIndex: -1,
                 grouping: false,
                 exportButton: true,
-                pageSize: 10
+                pageSize: 20
               }}
               localization={{
                 body: {

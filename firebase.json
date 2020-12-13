@@ -1,4 +1,5 @@
 {
+  "rulesFile": "database.rules.json",
   "hosting": {
     "public": "build",
     "ignore": [
@@ -12,5 +13,8 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

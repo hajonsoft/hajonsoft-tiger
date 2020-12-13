@@ -15,6 +15,8 @@ import PrivateRoute from "./features/SignIn/PrivateRoute";
 import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
+import OnlinePackages from "./features/onlinePackage";
+
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
@@ -42,6 +44,9 @@ function App() {
           <PublicRoute path="/logout" component={SignOut} />
           <PrivateRoute path="/dashboard">
             <Dashboard />
+          </PrivateRoute>
+          <PrivateRoute path="/online">
+            <OnlinePackages />
           </PrivateRoute>
           <PrivateRoute path="/profile">
             <Profile />

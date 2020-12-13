@@ -3,26 +3,26 @@ import TextField from "@material-ui/core/TextField";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 
-const CustomerPassportNumber = ({
+const PackageDetail = ({
   mode,
   value,
 }) => {
   return (
-    <Grid item xs={6}>
+    <Grid item xs={12}>
       <Field
-        required
         as={TextField}
         fullWidth
-        name="passportNumber"
-        label="Passport number"
+        name="description"
+        multiline
+        label="Detail"
         disabled={mode === "delete"}
-        FormHelperText
         autoComplete="off"
+        rowsMax={4}
         value={value || ""}
       />
-      <ErrorMessage name="passportNumber" component="div" />
+      <ErrorMessage name="description" component="div" />
     </Grid>
   );
 };
 
-export default CustomerPassportNumber;
+export default PackageDetail;

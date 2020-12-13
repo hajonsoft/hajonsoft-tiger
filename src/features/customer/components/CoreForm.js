@@ -29,6 +29,7 @@ import CustomerPassportExpireDate from './CustomerPassportExpireDate';
 import CustomerPassportIssueDate from './CustomerPassportIssueDate';
 import CustomerPassportNumber from './CustomerPassportNumber';
 import Dropzone from "./Dropzone";
+import CustomerPhone from './CustomerPhone';
 const storage = firebase.storage();
 
 const useStyles = makeStyles((theme) => ({
@@ -210,7 +211,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       name="relationship"
                       mode={mode}
                     />
-                    <CoreTextField value={values.phone || ""} name="phone" mode={mode} />
+                    <CustomerPhone value={values.phone} mode={mode} />
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
                     <CustomerComments value={values.comments || ""} name="comments" mode={mode} />
                   </Grid>

@@ -140,7 +140,7 @@ function formatRecord(record) {
 
 onmessage = async (msg) => {
   let files = msg.data.files;
-  let packageName = msg.data.packageName;
+  // let packageName = msg.data.packageName;
   let ThreeMFiles = {};
   let ComboFiles = [];
   postMessage("labas");
@@ -170,11 +170,11 @@ onmessage = async (msg) => {
     if (record.failed) {
       postMessage({ type: "record failed", id: record.id });
     } else {
-      let formatedRecord = formatRecord(record);
-      formatedRecord.image = record.image;
+      let formattedRecord = formatRecord(record);
+      formattedRecord.image = record.image;
       postMessage({
         type: "import prepared",
-        import: formatedRecord,
+        import: formattedRecord,
         id: record.id,
       });
     }
