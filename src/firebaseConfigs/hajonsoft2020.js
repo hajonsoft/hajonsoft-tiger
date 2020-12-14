@@ -10,4 +10,4 @@ const firebaseConfig = {
 
 export default firebaseConfig;
 
-//hajonsoft@gmail.com
+// hajonsoft@gmail.com
