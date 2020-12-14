@@ -88,7 +88,7 @@ const SignIn = () => {
   };
   // if (user?.idToken) {
   if (user) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/groups" />;
   }
   return (
     <div className={classes.container}>
