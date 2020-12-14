@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
-import { LocalAirport } from '@material-ui/icons';
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -13,6 +12,7 @@ import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
+import GroupIcon from '@material-ui/icons/Group';
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
@@ -61,11 +61,11 @@ const Dashboard = () => {
   const [values, loading, error] = useListKeys(firebase.database().ref('customer'));
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const history = useHistory()
-  const title = "Package";
+  const title = "Group";
 
   const Title = () => {
     return (
-      <Grid container spacing={2} alignItems="center"><Grid item><LocalAirport /></Grid><Grid item><Typography variant="h6">{pluralize(title)}</Typography></Grid></Grid>
+      <Grid container spacing={2} alignItems="center"><Grid item><GroupIcon /></Grid><Grid item><Typography variant="h6">{pluralize(title)}</Typography></Grid></Grid>
     )
   }
 
@@ -73,7 +73,7 @@ const Dashboard = () => {
     <React.Fragment>
       <div
         style={{
-          backgroundColor: 'snow'
+          backgroundColor: '#e3f2fd'
         }}
       >
         <HajonsoftHeader />
@@ -87,7 +87,13 @@ const Dashboard = () => {
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
-              columns={[{ title: "Name", field: "name" }]}
+              columns={[
+                {
+                  title: "Name",
+                  field: "name",
+                  render: rowData => <Button href="" color="primary" onClick={() => history.push(`${rowData.name}/customers`)} style={{textTransform: 'none'}}> {rowData.name} </Button>
+                }
+              ]}
               data={values.map(v => ({ name: v }))}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
@@ -96,12 +102,6 @@ const Dashboard = () => {
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
                   onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
-                },
-                {
-                  icon: tableIcons.MoreDetails,
-                  tooltip: `Travellers`,
-                  isFreeAction: false,
-                  onClick: (event, rowData) => history.push(`${rowData.name}/customers`),
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,

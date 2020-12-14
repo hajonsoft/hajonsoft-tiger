@@ -29,6 +29,9 @@ const CoreDateField = ({ value, mode, name, xsWidth = 4, setFieldValue }) => {
                         onChange={val => {
                             setFieldValue(name, val);
                         }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                     <FormHelperText>{helperText()}</FormHelperText>
 

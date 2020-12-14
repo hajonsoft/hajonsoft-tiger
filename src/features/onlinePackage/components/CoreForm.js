@@ -56,17 +56,17 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
     delete values["image"];
     switch (mode) {
       case "create":
-        const customerRef = firebase.database().ref(`onlinePackage`);
+        const customerRef = firebase.database().ref(`public/onlinePackage`);
         customerRef.push(values);
         break;
       case "update":
-        const updateRef = firebase.database().ref(`onlinePackage`);
+        const updateRef = firebase.database().ref(`public/onlinePackage`);
         delete values.tableData;
         updateRef.child(customerKey).update(values);
         break;
 
       case "delete":
-        const removeRef = firebase.database().ref(`onlinePackage`);
+        const removeRef = firebase.database().ref(`public/onlinePackage`);
         removeRef.child(customerKey).remove();
         break;
 
@@ -119,7 +119,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     <PackageDetail mode={mode} value={values.description} />
                     <CoreTextField value={values.departureAirport || ""} name="departureAirport" mode={mode} xsWidth={3} />
                     <CoreTextField value={values.departureFlight || ""} name="departureFlight" mode={mode} xsWidth={3} />
-                    <CoreDateField  setFieldValue={setFieldValue} value={values.departureDate || ""} name="departureDate" mode={mode} xsWidth={3} />
+                    <CoreDateField  setFieldValue={setFieldValue} value={values.departureDate} name="departureDate" mode={mode} xsWidth={3} />
                     <CoreTextField value={values.arrivalAirport || ""} name="arrivalAirport" mode={mode} xsWidth={3} />
                     <Grid item xs={12} container spacing={2} justify="space-between" alignItems="center">
                       <Grid item xs={3}>

@@ -23,7 +23,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
             <Typography variant="h6">HAJonSoft</Typography>
           </Grid>
           <Grid item xs={7}>
-            <Button style={{ color: "#fff", textTransform: 'none' }} onClick={()=> history.push('/dashboard')}>Dashboard</Button>
+            <Button style={{ color: "#fff", textTransform: 'none' }} onClick={()=> history.push('/groups')}>Groups</Button>
             <Button style={{ color: "#fff", textTransform: 'none' }} onClick={()=> history.push('/online')}>Online</Button>
             <Button style={{ color: "#fff", textTransform: 'none' }} onClick={()=> history.push('/news')}>News</Button>
             <Button style={{ color: "#fff", textTransform: 'none' }} onClick={()=> history.push('/hotels')}>Hotels</Button>

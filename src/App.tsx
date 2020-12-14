@@ -42,7 +42,7 @@ function App() {
           <PublicRoute path="/login" component={SignIn} />
           <PublicRoute path="/forgot-password" component={ForgotPassword} />
           <PublicRoute path="/logout" component={SignOut} />
-          <PrivateRoute path="/dashboard">
+          <PrivateRoute path="/groups">
             <Dashboard />
           </PrivateRoute>
           <PrivateRoute path="/online">
