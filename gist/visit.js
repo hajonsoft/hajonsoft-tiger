@@ -96,14 +96,19 @@ async function automate() {
 
 async function onContentLoaded(res) {
     let currentUrl = (await page.url()).toLowerCase()
+    currentUrl = currentUrl.split('=')[0]
     if (currentUrl.includes('https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase())) {
         currentUrl = 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase()
     } else if (currentUrl.includes('https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase())) {
         currentUrl = 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase()
     } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/Terms'.toLowerCase())) {
         currentUrl = 'https://visa.visitsaudi.com/Visa/Terms'.toLowerCase()
+    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/Review'.toLowerCase())){
+        currentUrl = 'https://visa.visitsaudi.com/Visa/Review'.toLowerCase()
+    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/PersonalInfo?gid')){
+        currentUrl = 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName'
     }
-    currentUrl = currentUrl.split('=')[0]
+
     currentUrl = currentUrl.toLowerCase();
     const pageConfig = config.find(x => x.url.toLowerCase().includes(currentUrl))
     if (!pageConfig) {
@@ -182,6 +187,8 @@ async function onContentLoaded(res) {
             await fileChooser.accept(['./' + 'photo' + '.jpg']);
             await page.waitForSelector('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
             await page.click('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
+
+            //#btnNext
             break;
         case 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase():
             await commit(pageConfig.details, data[counter])
@@ -200,24 +207,24 @@ async function onContentLoaded(res) {
             })
             await page.type('#PassportExpiryDate', '01/01/2023')
 
-            var entryDate = new Date();
-            entryDate.setDate(entryDate.getDate() + 3); 
+            // var entryDate = new Date();
+            // entryDate.setDate(entryDate.getDate() + 3); 
 
-            await page.waitForSelector('#ExpectedDateOfEntry')
-            await page.$eval('#ExpectedDateOfEntry', e => {
-                e.removeAttribute("readonly");
-                e.removeAttribute("disabled");
-            })
-            await page.type('#ExpectedDateOfEntry', entryDate.toLocaleDateString())
+            // await page.waitForSelector('#ExpectedDateOfEntry')
+            // await page.$eval('#ExpectedDateOfEntry', e => {
+            //     e.removeAttribute("readonly");
+            //     e.removeAttribute("disabled");
+            // })
+            // await page.type('#ExpectedDateOfEntry', entryDate.toLocaleDateString())
 
-            var returnDate = new Date();
-            returnDate.setDate(returnDate.getDate() + 10); 
-            await page.waitForSelector('#ExpectedDateOfLeave')
-            await page.$eval('#ExpectedDateOfLeave', e => {
-                e.removeAttribute("readonly");
-                e.removeAttribute("disabled");
-            })
-            await page.type('#ExpectedDateOfLeave', returnDate.toLocaleDateString())
+            // var returnDate = new Date();
+            // returnDate.setDate(returnDate.getDate() + 10); 
+            // await page.waitForSelector('#ExpectedDateOfLeave')
+            // await page.$eval('#ExpectedDateOfLeave', e => {
+            //     e.removeAttribute("readonly");
+            //     e.removeAttribute("disabled");
+            // })
+            // await page.type('#ExpectedDateOfLeave', returnDate.toLocaleDateString())
             break;
         case 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase():
             await page.waitForSelector('#chkInsurance')
@@ -228,9 +235,13 @@ async function onContentLoaded(res) {
             await page.waitForSelector('#chkSelectDeselectAll')
             await page.click('#chkSelectDeselectAll')
             await page.click('#btnNext')
+            break;
+        case 'https://visa.visitsaudi.com/Visa/Review'.toLowerCase():
             if (data.length > counter + 1)
             {
                 counter = counter + 1
+                await page.waitForSelector('#btnAddMoreToGroup')
+                await page.click('#btnAddMoreToGroup')
             }
             break;
         default:
