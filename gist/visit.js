@@ -5,7 +5,7 @@ let page;
 let emailPage;
 let email;
 let data;
-
+let counter = 0;
 const config = [
     {
         url: 'https://visa.visitsaudi.com/Registration/Verify',
@@ -42,24 +42,41 @@ const config = [
     {
         url: 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName',
         details: [
-            {selector: '#FirstNameEnglish', value: (row)=> row.firstName},
-            {selector: '#LastNameEnglish', value: (row)=> row.lastName},
-            {selector: '#Gender', value: (row)=> row.gender},
-            {selector: '#SocialStatus', value: (row)=> '1'},
-            {selector: '#DateOfBirth', value: (row)=> row.dob},
-            {selector: '#Nationality', value: (row)=> row.nationality},
-            {selector: '#CountryOfBirth', value: (row)=> row.nationality},
-            {selector: '#Country', value: (row)=> row.nationality},
-            {selector: '#CityOfBirth', value: (row)=> row.birthPlace},
-            {selector: '#Profession', value: (row)=> row.profession},
-            {selector: '#City', value: (row)=> row.nationality},
-            {selector: '#PostalCode', value: (row)=> '11821'},
-            {selector: '#Address', value: (row)=> row.nationality},
+            { selector: '#FirstNameEnglish', value: (row) => row.firstName },
+            { selector: '#LastNameEnglish', value: (row) => row.lastName },
+            { selector: '#FatherNameEnglish', value: (row) => row.middleName },
+            { selector: '#Gender', value: (row) => row.gender },
+            { selector: '#SocialStatus', value: () => '5' },
+            { selector: '#Nationality', value: (row) => row.nationality },
+            { selector: '#CountryOfBirth', value: (row) => row.nationality },
+            { selector: '#Country', value: (row) => row.nationality },
+            { selector: '#CityOfBirth', value: (row) => row.birthPlace },
+            { selector: '#Profession', value: (row) => row.profession },
+            { selector: '#City', value: (row) => row.address },
+            { selector: '#PostalCode', value: (row) => '11821' },
+            { selector: '#Address', value: (row) => row.address },
         ]
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/PassportInfo',
+        details: [
+            { selector: '#PassportNumber', value: (row) => row.passportNumber },
+            { selector: '#PassportIssuePlace', value: (row) => row.placeOfIssue },
+            { selector: '#PlaceOfResidence', value: (row) => 'friend' },
+            { selector: '#CityId', value: (row) => '33' },
+            { selector: '#Address1', value: (row) => 'address in madinah' },
+        ]
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Insurance/ChooseInsurance',
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/Terms',
     }
 
 ]
 
+getEmailAddress()
 automate();
 
 async function automate() {
@@ -79,7 +96,15 @@ async function automate() {
 
 async function onContentLoaded(res) {
     let currentUrl = (await page.url()).toLowerCase()
+    if (currentUrl.includes('https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase())) {
+        currentUrl = 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase()
+    } else if (currentUrl.includes('https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase())) {
+        currentUrl = 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase()
+    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/Terms'.toLowerCase())) {
+        currentUrl = 'https://visa.visitsaudi.com/Visa/Terms'.toLowerCase()
+    }
     currentUrl = currentUrl.split('=')[0]
+    currentUrl = currentUrl.toLowerCase();
     const pageConfig = config.find(x => x.url.toLowerCase().includes(currentUrl))
     if (!pageConfig) {
         return;
@@ -94,7 +119,6 @@ async function onContentLoaded(res) {
             await page.click('#btnVerify')
             break;
         case 'https://visa.visitsaudi.com/Registration/Add'.toLowerCase():
-            await getEmailAddress()
             await commit(pageConfig.details, data[0])
             await page.waitForSelector('#Email')
             await page.type('#Email', email)
@@ -139,15 +163,75 @@ async function onContentLoaded(res) {
             await page.type('#txtGroupName', data[0].firstName + data[0].lastName + data[0].nationality + data[0].mobileNumber)
             await page.click('#btnCreateGroup');
             break;
-        case 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName='.toLowerCase():
+        case 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName'.toLowerCase():
+        case 'https://visa.visitsaudi.com/Visa/PersonalInfo?gid'.toLowerCase():
             await page.waitForSelector('#ApplyingVisaForSomeoneElseYes')
             await page.click('#ApplyingVisaForSomeoneElseYes');
-            await commit(pageConfig.details)
-            // let futureFileChooser = page.waitForFileChooser();
-            // await page.waitForSelector('#AttachmentPersonalPicture')
-            // await page.evaluate(() => document.querySelector('#AttachmentPersonalPicture').click())
-            // let fileChooser = await futureFileChooser;
-            // await fileChooser.accept(['./' + thisMutamer.HajId + '.jpg']);
+            await commit(pageConfig.details, data[0])
+            await page.waitForSelector('#DateOfBirth')
+            await page.$eval('#DateOfBirth', e => {
+                e.removeAttribute("readonly");
+                e.removeAttribute("disabled");
+            })
+            await page.type('#DateOfBirth', '01/01/1993')
+
+            let futureFileChooser = page.waitForFileChooser();
+            await page.waitForSelector('#AttachmentPersonalPicture')
+            await page.evaluate(() => document.querySelector('#AttachmentPersonalPicture').click())
+            let fileChooser = await futureFileChooser;
+            await fileChooser.accept(['./' + 'photo' + '.jpg']);
+            await page.waitForSelector('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
+            await page.click('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
+            break;
+        case 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase():
+            await commit(pageConfig.details, data[counter])
+            await page.click('#chk_4')
+            await page.waitForSelector('#PassportIssueDate')
+            await page.$eval('#PassportIssueDate', e => {
+                e.removeAttribute("readonly");
+                e.removeAttribute("disabled");
+            })
+            await page.type('#PassportIssueDate', '01/01/2019')
+
+            await page.waitForSelector('#PassportExpiryDate')
+            await page.$eval('#PassportExpiryDate', e => {
+                e.removeAttribute("readonly");
+                e.removeAttribute("disabled");
+            })
+            await page.type('#PassportExpiryDate', '01/01/2023')
+
+            var entryDate = new Date();
+            entryDate.setDate(entryDate.getDate() + 3); 
+
+            await page.waitForSelector('#ExpectedDateOfEntry')
+            await page.$eval('#ExpectedDateOfEntry', e => {
+                e.removeAttribute("readonly");
+                e.removeAttribute("disabled");
+            })
+            await page.type('#ExpectedDateOfEntry', entryDate.toLocaleDateString())
+
+            var returnDate = new Date();
+            returnDate.setDate(returnDate.getDate() + 10); 
+            await page.waitForSelector('#ExpectedDateOfLeave')
+            await page.$eval('#ExpectedDateOfLeave', e => {
+                e.removeAttribute("readonly");
+                e.removeAttribute("disabled");
+            })
+            await page.type('#ExpectedDateOfLeave', returnDate.toLocaleDateString())
+            break;
+        case 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase():
+            await page.waitForSelector('#chkInsurance')
+            await page.click('#chkInsurance')
+            await page.click('#btnNext')
+            break;
+        case 'https://visa.visitsaudi.com/Visa/Terms'.toLowerCase():
+            await page.waitForSelector('#chkSelectDeselectAll')
+            await page.click('#chkSelectDeselectAll')
+            await page.click('#btnNext')
+            if (data.length > counter + 1)
+            {
+                counter = counter + 1
+            }
             break;
         default:
             break;
@@ -245,23 +329,6 @@ async function movetoPreviousMutamer() {
     }
     fs.writeFileSync('./Mutamers.json', JSON.stringify(mutamersObject));
     await displayButtons(mutamersObject);
-}
-
-async function typeDate(selector, value) {
-    const inputArray = [];
-    inputArray.push(selector);
-    inputArray.push(value);
-    try {
-        await page.waitForSelector(selector);
-        await page.evaluate((p) => {
-            let element = document.querySelector(p[0]);
-            element.removeAttribute("readonly");
-            element.removeAttribute("disabled");
-            return element;
-        }, inputArray);
-        await page.$eval(selector, el => el.value = '');
-        await typeText(selector, value);
-    } catch (ex) { console.log(ex); }
 }
 
 async function enableAllDateButtons() {

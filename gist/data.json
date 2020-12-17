@@ -1,3 +1,4 @@
 [
-    {"nationality": "210", "firstName": "John", "lastName": "Doe", "mobileNumber": "9493231289", "gender":  "1", "dob": "2000-01-01", "birthPlace": "Cairo", "profession": "Employee"}
+    {"nationality": "210", "firstName": "John", "lastName": "Doe", "middleName": "middle", "mobileNumber": "9493231289", "gender":  "1", "dob": "01/01/1990", "birthPlace": "Cairo", "profession": "Employee", 
+        "address": "123 street, city state", "passportNumber": "01A90920", "placeOfIssue": "london" }
 ]
