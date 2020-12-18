@@ -18,7 +18,7 @@ async function getZipEntries(file) {
   return new Promise(async (resolve, reject) => {
     let files = [];
     let zip = await JSZip.loadAsync(file);
-    zip.forEach(function(relativePath, zipEntry) {
+    zip.forEach(function (relativePath, zipEntry) {
       files.push(zipEntry);
     });
     resolve(files);
@@ -27,7 +27,7 @@ async function getZipEntries(file) {
 
 function ParseXmlString(xml) {
   return new Promise((resolve, reject) => {
-    parseString(xml, function(err, result) {
+    parseString(xml, function (err, result) {
       resolve(result);
     });
   });
@@ -123,7 +123,14 @@ function formatRecord(record) {
   if (birthDate.isAfter(moment())) {
     birthDate = birthDate.subtract(100, "years");
   }
+  let passExpireDt = moment(record.expirationDate, "YYMMDD");
+  if (passExpireDt.isBefore(moment())) {
+    passExpireDt = birthDate.add(100, "years");
+  }
+  let passIssueDt = defaultIssueDate(record);
 
+  passExpireDt = passExpireDt.format();
+  passIssueDt = passIssueDt.format();
   return {
     name: record.firstName + " " + record.lastName,
     codeLine: record.codeLine,
@@ -132,12 +139,84 @@ function formatRecord(record) {
     gender: record.sex === "female" ? "Female" : "Male",
     passPlaceOfIssue: getNationality(record.issuingState),
     passportNumber: record.documentNumber,
-    passExpireDt: moment(record.expirationDate, "YYMMDD").format(), //TODO: //Make sure expire date makes sense 
-    //TODO: //Calculate the defaults issue date, place of birth, place of issue. make sure there is a flag indicating if it has been reviewed or it is still the calculated value
+    passExpireDt,
+    passIssueDt,
     createDt: moment().format(),
   };
 }
 
+function defaultIssueDate(record) {
+  let issueDate = record.passExpireDt.subtract(10, 'years').add(1, 'days');
+  const age = moment().diff(record.birthDate, 'years')
+
+  switch (getNationality(record.nationality)) {
+    case "United States":
+    case "France":
+    case "Italy":
+    case "India":
+    case "Austria":
+    case "South Africa":
+    case "Algeria":
+
+      if (age < 19 && age > 0) {
+        issueDate = record.passExpireDt.subtract(5, 'years').add(1, 'days');
+      }
+
+      break;
+
+
+    case "Canada":
+      issueDate = record.passExpireDt.subtract(5, 'years')
+      if (issueDate.isAfter(moment())) {
+        issueDate = record.passExpireDt.subtract(10, 'years')
+      }
+
+      break;
+    case "Thailand":
+    case "Palestine":
+    case "Jordan":
+    case "Nigeria":
+    case "Tunisia":
+    case "Belgium":
+    case "Brunei":
+      issueDate = record.passExpireDt.subtract(5, 'years').add(1, 'days');
+      break;
+    case "Egypt":
+    case "EGY":
+      issueDate = record.passExpireDt.subtract(7, 'years').add(1, 'days');
+      break;
+
+    case "Morocco":
+    case "Maldives":
+    case "Malaysia":
+      issueDate = record.passExpireDt.subtract(5, 'years')
+      break;
+
+    case "Pakistan":
+      issueDate = record.passExpireDt.subtract(5, 'years').add(1, 'days');
+      break;
+
+    case "Iraq":
+      issueDate = record.passExpireDt.subtract(8, 'years').add(1, 'days');
+      break;
+    case "Azerbaijan":
+      break;
+    default:
+      if (age > 10) {
+        issueDate = record.passExpireDt.subtract(10, 'years');
+      }
+      else if (age > 5) {
+        issueDate = record.passExpireDt.subtract(5, 'years');
+      }
+      else {
+        issueDate = record.passExpireDt.subtract(3, 'years');
+      }
+
+      break;
+  }
+
+  return issueDate;
+}
 onmessage = async (msg) => {
   let files = msg.data.files;
   // let packageName = msg.data.packageName;
