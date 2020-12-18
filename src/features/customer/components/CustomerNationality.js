@@ -38,7 +38,7 @@ const CustomerNationality = ({
                     value={value || ""}
                 >
                     {_.sortBy(nationalities, ['name']).map(n =>
-                        <MenuItem value={n.name}>{n.name}</MenuItem>
+                        <MenuItem value={n.name} key={`k${n.name}`}>{n.name}</MenuItem>
                     )}
 
                 </Field>

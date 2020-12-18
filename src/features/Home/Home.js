@@ -1,5 +1,4 @@
 import { Box, Button, Grid, makeStyles, Typography } from '@material-ui/core';
-import Zoom from '@material-ui/core/Zoom';
 import React from 'react';
 import { useHistory } from 'react-router';
 import logo from '../../images/logo-dark.png';
@@ -23,14 +22,10 @@ const Home = () => {
         <React.Fragment >
             <div className={classes.container} >
                 <Grid container direction="column" alignItems="center" justify="space-around" style={{ height: '100%' }}>
-                    <Grid item ><Typography alignItems="center" variant="h3" className={classes.welcomeTo}>Welcome to ...</Typography></Grid>
+                    <Grid item ><Typography align="center" variant="h3" className={classes.welcomeTo}>Welcome to ...</Typography></Grid>
                     <Grid item container justify="center" alignItems="center">
-                        <Zoom in={true} timeout={{ appear: 1000, enter: 3000, exit: 15000 }} mountOnEnter unmountOnExit style={{ width: '50%' }}>
-                            <React.Fragment>
-                                <Typography variant="h1" align="center" color="textPrimary">HAJ</Typography>
-                                <Typography variant="h2" color="textSecondary">onSoft</Typography>
-                            </React.Fragment>
-                        </Zoom>
+                        <Typography variant="h1" align="center" color="textPrimary">HAJ</Typography>
+                        <Typography variant="h2" color="textSecondary">onSoft</Typography>
                     </Grid>
                     <Grid item>
                         <Typography color="textSecondary" variant="h3">

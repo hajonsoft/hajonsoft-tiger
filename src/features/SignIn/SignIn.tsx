@@ -3,10 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
   Button,
-
-
-
-
   CircularProgress,
   Divider,
   Grid,
@@ -14,10 +10,9 @@ import {
   InputAdornment,
   Link,
   Paper,
-
   TextField,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
@@ -51,7 +46,7 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [user] = useAuthState(firebase.auth());
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -63,22 +58,21 @@ const SignIn = () => {
       .required("Required")
       .matches(/[a-z]/, "At least one lower case character")
       // .matches(/[A-Z]/, "At least one upper case character")
-      .matches(/[0-9]/, "At least one number")
-      // .matches(
-      //   /[!@#$%^&*)()]/,
-      //   "At least one keyboard special character ex. !@#$%^&*()"
-      // ),
+      .matches(/[0-9]/, "At least one number"),
+    // .matches(
+    //   /[!@#$%^&*)()]/,
+    //   "At least one keyboard special character ex. !@#$%^&*()"
+    // ),
   });
 
   const handleLogin = (values: any, actions: any) => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(values.email, values.password).catch(function(error) {
+      .signInWithEmailAndPassword(values.email, values.password)
+      .catch(function(error) {
         setErrorMessage(error.message);
-
       });
     actions.setSubmitting(false);
-
   };
 
   const handleGoogleSignin = () => {
@@ -102,8 +96,6 @@ const SignIn = () => {
         component={Paper}
         elevation={4}
         style={{ height: mediaMobile ? "100%" : "auto" }}
-        md={3}
-        xs={12}
       >
         <Grid item>
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
@@ -235,13 +227,11 @@ const SignIn = () => {
         </Grid>
 
         <Grid item>
-          <Typography align="center">
-            <Box mb={4}>
-              <Link href="#" onClick={() => history.push("register")}>
-                Need to Register?
-              </Link>
-            </Box>
-          </Typography>
+          <Box mb={4}>
+            <Link href="#" onClick={() => history.push("register")}>
+              Need to Register?
+            </Link>
+          </Box>
         </Grid>
       </Grid>
     </div>

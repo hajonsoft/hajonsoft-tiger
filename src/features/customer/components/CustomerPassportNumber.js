@@ -16,7 +16,6 @@ const CustomerPassportNumber = ({
         name="passportNumber"
         label="Passport number"
         disabled={mode === "delete"}
-        FormHelperText
         autoComplete="off"
         value={value || ""}
       />
