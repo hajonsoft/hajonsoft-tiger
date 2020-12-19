@@ -31,6 +31,6 @@ jobs:
       - name: Deploy every thing to firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy 
+          args: deploy breno1-81c45
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BRENO1_81C45 }}
