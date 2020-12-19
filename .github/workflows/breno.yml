@@ -28,7 +28,6 @@ jobs:
           projectId: breno1-81c45
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
-            - name: Deploy to Firebase
       - name: Deploy every thing to firebase
         uses: w9jds/firebase-action@master
         with:
