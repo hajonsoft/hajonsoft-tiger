@@ -29,7 +29,8 @@ jobs:
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
             - name: Deploy to Firebase
-      - uses: w9jds/firebase-action@master
+      - name: Deploy every thing to firebase
+        uses: w9jds/firebase-action@master
         with:
           args: deploy 
         env:
