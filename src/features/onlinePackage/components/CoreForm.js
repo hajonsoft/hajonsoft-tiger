@@ -56,17 +56,17 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
     delete values["image"];
     switch (mode) {
       case "create":
-        const customerRef = firebase.database().ref(`public/onlinePackage`);
+        const customerRef = firebase.database().ref(`protected/onlinePackage`);
         customerRef.push(values);
         break;
       case "update":
-        const updateRef = firebase.database().ref(`public/onlinePackage`);
+        const updateRef = firebase.database().ref(`protected/onlinePackage`);
         delete values.tableData;
         updateRef.child(customerKey).update(values);
         break;
 
       case "delete":
-        const removeRef = firebase.database().ref(`public/onlinePackage`);
+        const removeRef = firebase.database().ref(`protected/onlinePackage`);
         removeRef.child(customerKey).remove();
         break;
 

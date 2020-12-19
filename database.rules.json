@@ -9,6 +9,9 @@
     "public": {
       ".read": true,
       ".write": true
+    },
+    "protected": {
+      ".read": true
     }
   }
 }
