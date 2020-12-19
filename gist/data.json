@@ -1,0 +1,30 @@
+[
+  {
+    "nationality": "210",
+    "firstName": "John",
+    "lastName": "Doe",
+    "middleName": "middle",
+    "mobileNumber": "9493231289",
+    "gender": "1",
+    "dob": "01/01/1990",
+    "birthPlace": "Cairo",
+    "profession": "Employee",
+    "address": "123 street, city state",
+    "passportNumber": "01A90920",
+    "placeOfIssue": "london"
+  },
+  {
+    "nationality": "210",
+    "firstName": "newJohn",
+    "lastName": "newDoe",
+    "middleName": "middle",
+    "mobileNumber": "9493231289",
+    "gender": "1",
+    "dob": "01/01/1990",
+    "birthPlace": "Cairo",
+    "profession": "Employee",
+    "address": "123 street, city state",
+    "passportNumber": "02A90920",
+    "placeOfIssue": "london"
+  }
+]

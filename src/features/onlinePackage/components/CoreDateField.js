@@ -27,7 +27,7 @@ const CoreDateField = ({ value, mode, name, xsWidth = 4, setFieldValue }) => {
                         disabled={mode === 'delete'}
                         value={value}
                         onChange={val => {
-                            setFieldValue(name, val);
+                            setFieldValue(name, moment(val).format());
                         }}
                         InputLabelProps={{
                             shrink: true,

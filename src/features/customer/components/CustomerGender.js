@@ -23,7 +23,6 @@ const CustomerGender = ({
         <FormLabel component="legend">Gender</FormLabel>
         <Field
           as={RadioGroup}
-          fullWidth
           name="gender"
           disabled={mode === "delete"}
           value={value || ""}

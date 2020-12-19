@@ -236,7 +236,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                         <Typography variant="body2" color="textSecondary">{`Created: ${moment(values.createDt).format('LLLL')} ${moment(values.createDt).fromNow()}`}</Typography>
                       </Grid>
                     }
-                    <Grid item spacing={2}>
+                    <Grid item >
                       <Grid container spacing={2}>
                         <Grid item>
                           <Button

@@ -7,6 +7,7 @@ import pyrebase
 import os
 import pyodbc
 import sys
+from pprint import pprint as pp
 
 localhost_cnxn_str = ("Driver={SQL Server Native Client 11.0};"
                       "Server=USCBD-JS7B163,1433;"
@@ -71,15 +72,15 @@ def savePhotos(cursor):
             file1 = open(fileName, "wb")
             file1.write(imageData)
             counter = counter + 1
-            print(fileName, passportnumber, companyName, counter , customerName)
+            pp(fileName, passportnumber, companyName, counter , customerName)
             file1.close()
             storage.child(nationality).child(passportnumber + ".jpg").put(fileName)
         except Exception as ex:
-            print("Oops!  Error ", ex)
+            pp("Oops!  Error ", ex)
 
 if __name__ == '__main__':
     cursor = getRecords(sys.argv[1])
-    print('company id: ' + sys.argv[1])
+    pp('company id: ' + sys.argv[1])
     savePhotos(cursor)
 
 
