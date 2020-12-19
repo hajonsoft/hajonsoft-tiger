@@ -152,24 +152,30 @@ const Customers = () => {
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
-                  onClick: (event, rowData) =>
+                  onClick: (event, rowData) =>{
+                    if (Array.isArray(rowData)){
+                      return; //TODO process multiple selection edits
+                    }
                     setstate((st) => ({
                       ...st,
                       mode: "update",
                       record: rowData,
                       customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
-                    })),
+                    }))},
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) =>
+                  onClick: (event, rowData) =>{
+                    if (Array.isArray(rowData)){
+                      return; //TODO process multiple selection deletes
+                    }
                     setstate((st) => ({
                       ...st,
                       mode: "delete",
                       record: rowData,
                       customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
-                    })),
+                    }))},
                 },
               ]}
               options={{

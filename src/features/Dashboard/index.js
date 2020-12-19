@@ -113,7 +113,7 @@ const Dashboard = () => {
                 actionsColumnIndex: -1,
                 grouping: false,
                 exportButton: true,
-                pageSize: 20
+                pageSize: 20,
               }}
               localization={{
                 body: {

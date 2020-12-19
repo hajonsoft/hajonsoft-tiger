@@ -123,6 +123,7 @@ const CoreList = ({ model, records, onAdd, onDelete, onUpdate, onImport, importM
           actionsColumnIndex: -1,
           grouping: false,
           exportButton: true,
+          selection:true
         }}
         localization={{
           body: {
