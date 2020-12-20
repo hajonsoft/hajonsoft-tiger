@@ -13,12 +13,14 @@ import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
 import moment from 'moment';
+import {todayHijraDate, eventsNearby} from '../../../util/hijri'
 import React from "react";
 import firebase from "../../../firebaseapp";
 import Gender from "../../customer/components/Gender";
 import CoreDateField from './CoreDateField';
 import CoreTextField from "./CoreTextField";
 import PackageDetail from './PackageDetail';
+
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -50,9 +52,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
-  // const handleImageChange = ()=> {
-  //     // TODO: when image changes store it to the database using the record key and its field name
-  // }
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     switch (mode) {
@@ -98,7 +97,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                 <CardHeader
                   className={classes.cardTitle}
                   title={_.startCase(mode + " " + title)}
-                  subheader={customerKey}
+                  subheader={`${todayHijraDate()} : ${eventsNearby(values.departureDate)}`}
                   action={<CancelOutlinedIcon color="secondary" onClick={onClose} />}
                 />
                 <CardContent>

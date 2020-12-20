@@ -43,6 +43,7 @@
     "material-auto-rotating-carousel": "^3.0.2",
     "material-table": "^1.69.1",
     "moment": "^2.27.0",
+    "moment-hijri": "^2.1.2",
     "mrz": "^3.1.0",
     "node-fetch": "^2.6.1",
     "node-sass": "^4.14.1",
