@@ -20,7 +20,7 @@ import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
 import CustomerBirthDate from './CustomerBirthDate';
 import CustomerComments from './CustomerComments';
-import CustomerGender from './CustomerGender';
+import Gender from './Gender';
 import CustomerIdExpireDate from './CustomerIdExpireDate';
 import CustomerIdIssueDate from './CustomerIdIssueDate';
 import CustomerName from './CustomerName';
@@ -154,7 +154,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             mode={mode}
                             value={values.nationality || ""}
                           />
-                          <CustomerGender
+                          <Gender
                             value={values.gender || ""}
                             mode={mode}
                             xsWidth={6}

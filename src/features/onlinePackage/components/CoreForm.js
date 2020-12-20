@@ -15,6 +15,7 @@ import _ from "lodash";
 import moment from 'moment';
 import React from "react";
 import firebase from "../../../firebaseapp";
+import Gender from "../../customer/components/Gender";
 import CoreDateField from './CoreDateField';
 import CoreTextField from "./CoreTextField";
 import PackageDetail from './PackageDetail';
@@ -107,7 +108,14 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       name="name"
                       label="Name"
                       mode={mode}
-                      xsWidth={9}
+                      xsWidth={5}
+                    />
+                    <Gender
+                      value={values.gender}
+                      name="gender"
+                      label="Nature"
+                      mode={mode}
+                      xsWidth={4}
                     />
                     <CoreTextField
                       value={values.headline}
