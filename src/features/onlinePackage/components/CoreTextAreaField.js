@@ -4,7 +4,7 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import _ from 'lodash'
 
-const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) => {
+const CoreTextAreaField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) => {
 
 
     return (
@@ -26,4 +26,4 @@ const CoreTextField = ({ name, mode, label, xsWidth = 4, autoFocus = false }) =>
     )
 }
 
-export default CoreTextField;
+export default CoreTextAreaField;

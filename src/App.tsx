@@ -20,6 +20,7 @@ import OnlinePackages from "./features/onlinePackage";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
+import Reserve from './features/onlinePackage/components/Reserve';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -42,6 +43,7 @@ function App() {
           <PublicRoute path="/login" component={SignIn} />
           <PublicRoute path="/forgot-password" component={ForgotPassword} />
           <PublicRoute path="/logout" component={SignOut} />
+          <PublicRoute path="/reserve/:packageName" component={Reserve} />
           <PrivateRoute path="/groups">
             <Dashboard />
           </PrivateRoute>
