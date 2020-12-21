@@ -16,7 +16,8 @@ import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import OnlinePackages from "./features/onlinePackage";
-
+import PackageCardM3li from './features/onlinePackage/components/PackageCardM3li'
+import PackageDetailCardM3li from './features/onlinePackage/components/PackageDetailCardM3li'
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
@@ -44,6 +45,12 @@ function App() {
           <PublicRoute path="/forgot-password" component={ForgotPassword} />
           <PublicRoute path="/logout" component={SignOut} />
           <PublicRoute path="/reserve/:packageName" component={Reserve} />
+          <PublicRoute exact path="/packages" >
+            <PackageCardM3li />
+          </PublicRoute>
+          <PublicRoute exact path="/package/detail/:packageName" >
+            <PackageDetailCardM3li />
+          </PublicRoute>
           <PrivateRoute path="/groups">
             <Dashboard />
           </PrivateRoute>
