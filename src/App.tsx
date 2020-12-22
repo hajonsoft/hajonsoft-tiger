@@ -8,7 +8,7 @@ import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
 import CustomerHome from "./features/Home/CustomerHome";
 import Home from "./features/Home/Home";
-import Profile from "./features/Profile/Profile";
+import Profile from "./features/Profile";
 import Register from "./features/Register/Register";
 import ForgotPassword from "./features/SignIn/ForgotPassword";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
@@ -16,7 +16,9 @@ import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import OnlinePackages from "./features/onlinePackage";
-import PackageCardM3li from './features/onlinePackage/components/PackageCardM3li'
+import HajjPackagesContainer from './features/onlinePackage/components/HajjPackagesContainer'
+import UmrahPackagesContainer from './features/onlinePackage/components/UmrahPackagesContainer'
+import TourPackagesContainer from './features/onlinePackage/components/TourPackagesContainer'
 import PackageDetailCardM3li from './features/onlinePackage/components/PackageDetailCardM3li'
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
@@ -45,8 +47,14 @@ function App() {
           <PublicRoute path="/forgot-password" component={ForgotPassword} />
           <PublicRoute path="/logout" component={SignOut} />
           <PublicRoute path="/reserve/:packageName" component={Reserve} />
-          <PublicRoute exact path="/packages" >
-            <PackageCardM3li />
+          <PublicRoute exact path="/hajj-packages" >
+            <HajjPackagesContainer />
+          </PublicRoute>
+          <PublicRoute exact path="/umrah-packages" >
+            <UmrahPackagesContainer />
+          </PublicRoute>
+          <PublicRoute exact path="/tours" >
+            <TourPackagesContainer />
           </PublicRoute>
           <PublicRoute exact path="/package/detail/:packageName" >
             <PackageDetailCardM3li />

@@ -10,11 +10,11 @@ import NearMeIcon from '@material-ui/icons/NearMe';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
-import packagePlaceholder from '../../../images/package-placeholder.jpg';
+import { packageImage } from './../../../util/packageImage';
 
 
 
-const PackageCard = ({ detail, image = packagePlaceholder }) => {
+const PackageCard = ({ detail, index }) => {
     const history = useHistory();
     if (!detail) {
         return null;
@@ -29,7 +29,7 @@ const PackageCard = ({ detail, image = packagePlaceholder }) => {
                 <CardMedia
                     component="img"
                     alt={detail.name}
-                    image={image}
+                    image={packageImage(detail.gender, index)}
                     title={detail.name}
                 />
                 <CardContent>

@@ -1,39 +1,39 @@
-import { Container, Link, Box, Typography } from '@material-ui/core';
+import { Box, Link, Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import packagePlaceholder from '../../../images/package-placeholder.jpg';
-import PackageFeatures from './PackageFeatures';
-import PackageSchedule from './PackageSchedule';
 import { useParams } from 'react-router-dom';
 import firebase from "../../../firebaseapp";
-import { useEffect } from 'react';
-import { useState } from 'react';
+import packagePlaceholder from '../../../images/package-placeholder.jpg';
+import CustomerHeader from '../../Header/CustomerHeader';
+import PackageFeatures from './PackageFeatures';
+import PackageSchedule from './PackageSchedule';
 
 const PackageDetailCardM3li = () => {
 
-    const {packageName} = useParams();
-    const [detail,setDetail] = useState({})
+    const { packageName } = useParams();
+    const [detail, setDetail] = useState({})
 
-    useEffect(()=> {
+    useEffect(() => {
 
-        firebase.database().ref("protected/onlinePackage").once('value', (snapshot)=> {
+        firebase.database().ref("protected/onlinePackage").once('value', (snapshot) => {
 
-            setDetail(Object.values(snapshot.toJSON()).find(x=> x.name === packageName))
+            setDetail(Object.values(snapshot.toJSON()).find(x => x.name === packageName))
 
         })
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
-        <Container>
+        <div>
             <Helmet>
                 <title>{`${detail.name}`}</title>
             </Helmet>
-            <Box mt={8}>
+            <CustomerHeader />
+            <Box mx={2} mt={2}>
                 <Grid Container>
                     <Breadcrumbs aria-label="breadcrumb" style={{ borderBottom: 'solid 1px green ' }}>
                         <Link color="inherit" href="/Home" >Home</Link>
@@ -73,7 +73,7 @@ const PackageDetailCardM3li = () => {
                 </Grid>
 
             </Box>
-        </Container>
+        </div>
 
 
     )

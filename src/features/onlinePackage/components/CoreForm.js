@@ -16,7 +16,7 @@ import moment from 'moment';
 import {todayHijraDate, eventsNearby} from '../../../util/hijri'
 import React from "react";
 import firebase from "../../../firebaseapp";
-import Gender from "../../customer/components/Gender";
+import Gender from "./CustomerGender";
 import CoreDateField from './CoreDateField';
 import CoreTextField from "./CoreTextField";
 import PackageDetail from './PackageDetail';
@@ -75,6 +75,8 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
     }
     onClose();
   };
+
+  const defaultDescription = `Spiritual experience led by an amazing group of scholars designed to provide the best in customer service, hospitality and comfort. Commemorate the legacy of Islam with uplifting lectures and tours of historical sites. We are dedicated to help you have a great experience with personalized services and peace of mind.`
   return (
     <React.Fragment>
       <Formik
@@ -123,7 +125,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       mode={mode}
                       xsWidth={3}
                     />
-                    <PackageDetail mode={mode} value={values.description} />
+                    <PackageDetail mode={mode} value={values.description || defaultDescription} />
                     <CoreTextField value={values.departureAirport || ""} name="departureAirport" mode={mode} xsWidth={3} />
                     <CoreTextField value={values.departureFlight || ""} name="departureFlight" mode={mode} xsWidth={3} />
                     <CoreDateField setFieldValue={setFieldValue} value={values.departureDate} name="departureDate" mode={mode} xsWidth={3} />

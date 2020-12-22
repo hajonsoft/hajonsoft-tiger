@@ -182,29 +182,35 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     </Grid>
                     <Grid item container alignItems="center" spacing={4}>
 
-                    <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20} />
-                    <CustomerIdIssueDate
-                      value={values.idNumberIssueDate}
-                      mode={mode}
-                      setFieldValue={setFieldValue}
-                    />
-                    <CustomerIdExpireDate
-                      value={values.idNumberExpireDate}
-                      mode={mode}
-                      setFieldValue={setFieldValue}
-                    />
+                      <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20} />
+                      {values.idNumber ?
+                        <CustomerIdIssueDate
+                          value={values.idNumberIssueDate}
+                          mode={mode}
+                          setFieldValue={setFieldValue}
+                        /> :
+                        <Grid item xs={4}> </Grid>
+                      }
+                      {values.idNumber ?
+                        <CustomerIdExpireDate
+                          value={values.idNumberExpireDate}
+                          mode={mode}
+                          setFieldValue={setFieldValue}
+                        /> :
+                        <Grid item xs={4}> </Grid>
+                      }
                     </Grid>
 
                     <Grid item container alignItems="center" spacing={4}>
 
-                    <CustomerPassportIssueDate value={values.passIssueDt} mode={mode} setFieldValue={setFieldValue} />
-                    <CoreTextField value={values.profession || ""} name="profession" mode={mode} maxLength={25} />
-                    <CoreTextField
-                      value={values.mahramName || ""}
-                      name="mahramName"
-                      label="Mahram"
-                      mode={mode}
-                    />
+                      <CustomerPassportIssueDate value={values.passIssueDt} mode={mode} setFieldValue={setFieldValue} />
+                      <CoreTextField value={values.profession || ""} name="profession" mode={mode} maxLength={25} />
+                      <CoreTextField
+                        value={values.mahramName || ""}
+                        name="mahramName"
+                        label="Mahram"
+                        mode={mode}
+                      />
                     </Grid>
                     <CoreTextField
                       value={values.relationship || ""}

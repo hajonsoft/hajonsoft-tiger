@@ -33,9 +33,9 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
           </Grid>
           <Grid item xs={3} container spacing={2} alignItems="center" justify="flex-end" aria-label="Sign out" >
               <Grid item>
-                <Typography variant="body2" style={{ color: "#fff" }}>
-                  {user.email}
-                </Typography>
+                <Button  onClick={()=> history.push('/profile')} style={{ color: "#fff", textTransform: 'none' }}>
+                {user.email}
+                </Button>
               </Grid>
 
               <Grid item>
