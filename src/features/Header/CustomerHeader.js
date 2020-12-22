@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { AppBar, Toolbar, Grid, Typography, Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import firebaseConfig from '../../firebaseConfig';
@@ -9,18 +9,21 @@ import firebase from './../../firebaseapp';
 const CustomerHeader = () => {
     const projectName = `${_.startCase(firebaseConfig.projectId.replace(/[0-9]/g, '').replace(/-/g, ' '))}`;
     const history = useHistory()
-    const [profile, setProfile] = useState({})
+    const [profile, setProfile] = useState({ name: projectName, tel: 'xxx-xxx-xxxx' })
+
     useEffect(() => {
-      firebase.database().ref("protected/profile").once('value', snapshot => {
-        setProfile(snapshot.toJSON())
-      })
-    }, [])
-  
+        firebase.database().ref("protected/profile").once('value', snapshot => {
+            if (snapshot.toJSON()) {
+                setProfile(snapshot.toJSON())
+            }
+        })
+    }, [profile])
+
     return (
         <AppBar position="static" style={{ backgroundColor: '#4caf50' }}>
             <Toolbar>
                 <Grid container justify="space-between" alignItems="center">
-                    <Grid item><Typography variant="h4" align="center">{profile?.name || projectName}</Typography></Grid>
+                    <Grid item><Typography variant="h4" align="center">{profile.name}</Typography></Grid>
                     <Grid item >
                         <Grid container spacing={4} justify="center">
                             <Grid item><Button onClick={() => history.push('/')}>home</Button></Grid>
@@ -31,7 +34,7 @@ const CustomerHeader = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Typography variant="body1">{`Call us ${profile?.tel || 'xxx-xxx-xxxx'}`}</Typography>
+                        <Typography variant="body1">{`Call us ${profile.tel}`}</Typography>
                     </Grid>
                 </Grid>
             </Toolbar>

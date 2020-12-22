@@ -40,13 +40,13 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <Router>
         <Provider store={store}>
-          <PublicRoute exact path="/" component={CustomerHome} />
-          <PublicRoute exact path="/admin" component={Home} />
-          <PublicRoute path="/register" component={Register} />
-          <PublicRoute path="/login" component={SignIn} />
-          <PublicRoute path="/forgot-password" component={ForgotPassword} />
-          <PublicRoute path="/logout" component={SignOut} />
-          <PublicRoute path="/reserve/:packageName" component={Reserve} />
+          <PublicRoute exact path="/" > <CustomerHome /> </PublicRoute>
+          <PublicRoute exact path="/admin" > <Home /> </PublicRoute>
+          <PublicRoute path="/register" > <Register /></PublicRoute>
+          <PublicRoute path="/login"> <SignIn /> </PublicRoute>
+          <PublicRoute path="/forgot-password"> <ForgotPassword /> </PublicRoute>
+          <PublicRoute path="/logout"> <SignOut /> </PublicRoute>
+          <PublicRoute path="/reserve/:packageName"> <Reserve /> </PublicRoute>
           <PublicRoute exact path="/hajj-packages" >
             <HajjPackagesContainer />
           </PublicRoute>

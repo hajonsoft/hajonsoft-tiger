@@ -13,7 +13,9 @@ const PackagesContainer = () => {
   const [onlinePackages, setOnlinePackages] = useState([])
   useEffect(() => {
     firebase.database().ref("protected/onlinePackage").once('value', snapshot => {
-      setOnlinePackages(Object.values(snapshot.toJSON()))
+      if (snapshot.toJSON()) {
+        setOnlinePackages(Object.values(snapshot.toJSON()))
+      }
     })
   }, [])
 
@@ -37,10 +39,10 @@ const PackagesContainer = () => {
   return (
     <div>
       <Grid container spacing={3} justify="space-around" alignItems="center">
-        {onlinePackages && onlinePackages.map((p,i) => isCurrent(p) &&
+        {onlinePackages && onlinePackages.map((p, i) => isCurrent(p) &&
           <Grid item xs={12} lg={4} sm={12} md={6} >
             <Animated animationIn="bounceInLeft" isVisible={true}>
-              <PackageCard detail={p} key={p.name} index={i}/>
+              <PackageCard detail={p} key={p.name} index={i} />
             </Animated>
           </Grid>
         )}
