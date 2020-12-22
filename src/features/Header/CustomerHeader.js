@@ -20,7 +20,7 @@ const CustomerHeader = () => {
         <AppBar position="static" style={{ backgroundColor: '#4caf50' }}>
             <Toolbar>
                 <Grid container justify="space-between" alignItems="center">
-                    <Grid item><Typography variant="h4" align="center">{profile.name || projectName}</Typography></Grid>
+                    <Grid item><Typography variant="h4" align="center">{profile?.name || projectName}</Typography></Grid>
                     <Grid item >
                         <Grid container spacing={4} justify="center">
                             <Grid item><Button onClick={() => history.push('/')}>home</Button></Grid>
@@ -31,7 +31,7 @@ const CustomerHeader = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Typography variant="body1">{`Call us ${profile.tel || 'xxx-xxx-xxxx'}`}</Typography>
+                        <Typography variant="body1">{`Call us ${profile?.tel || 'xxx-xxx-xxxx'}`}</Typography>
                     </Grid>
                 </Grid>
             </Toolbar>
