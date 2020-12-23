@@ -29,6 +29,8 @@ import firebase from "../../firebaseapp";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from "./components/CoreForm";
 import CustomerDetail from "./components/CustomerDetail";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -48,6 +50,8 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
+  Favorite: forwardRef((props, ref) => <FavoriteIcon {...props} ref={ref} />),
+  NoFavorite: forwardRef((props, ref) => <FavoriteBorderIcon {...props} ref={ref} />),
 };
 const Customers = () => {
   // const mobileMedia = useMediaQuery((theme: any) =>
@@ -149,6 +153,16 @@ const Customers = () => {
                   isFreeAction: true,
                   onClick: (event) => setstate((st) => ({ ...st, mode: "create" })),
                 },
+                rowData => ({
+                  icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
+                  tooltip: rowData.favorite ? `un-favor ${title}` : `Favor ${title}`,
+                  onClick: (event, rowData) =>{
+                    if (Array.isArray(rowData)){
+                      return; //TODO process multiple selection edits
+                    }
+                    //TODO: Make the customer a favorite customer and update the global redux store so that it shows in the header
+                },
+                }),
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
