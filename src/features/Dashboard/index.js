@@ -22,9 +22,8 @@ import Alert from '@material-ui/lab/Alert';
 import MaterialTable from "material-table";
 import pluralize from 'pluralize';
 import React, { forwardRef, useState } from "react";
-import { useListKeys } from 'react-firebase-hooks/database';
 import { useHistory } from 'react-router-dom';
-import firebase from '../../firebaseapp';
+import useTravellerState from './redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from './components/CoreForm';
 import PackageDetail from './components/packageDetail';
@@ -54,11 +53,8 @@ const tableIcons = {
 };
 
 const Dashboard = () => {
-  // const mobileMedia = useMediaQuery((theme: any) =>
-  //   theme.breakpoints.down("sm")
-  // );
 
-  const [values, loading, error] = useListKeys(firebase.database().ref('customer'));
+  const { data: travellers, loading, error } = useTravellerState()
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const history = useHistory()
   const title = "Group";
@@ -78,7 +74,7 @@ const Dashboard = () => {
       >
         <HajonsoftHeader />
         <div>
-          {loading && <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}><Grid item><CircularProgress size={60} />Loading packages ...</Grid></Grid>}
+          {loading && <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}><Grid item><CircularProgress size={60} />{`Loading ${pluralize(title)} ...`}</Grid></Grid>}
           {!loading && state.mode !== 'list' &&
             <CoreForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
@@ -91,10 +87,14 @@ const Dashboard = () => {
                 {
                   title: "Name",
                   field: "name",
-                  render: rowData => <Button href="" color="primary" onClick={() => history.push(`${rowData.name}/customers`)} style={{textTransform: 'none'}}> {rowData.name} </Button>
+                  render: rowData => <Button href="" color="primary" onClick={() => history.push(`${rowData.name}/customers`)} style={{ textTransform: 'none' }}> {rowData.name} </Button>
+                },
+                {
+                  title: "Total",
+                  field: 'total'
                 }
               ]}
-              data={values.map(v => ({ name: v }))}
+              data={travellers ? Object.keys(travellers).map(v => ({ name: v, total: Object.keys(travellers[v]).length })) : []}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
                 {
@@ -117,7 +117,7 @@ const Dashboard = () => {
               }}
               localization={{
                 body: {
-                  emptyDataSourceMessage: `No packages to display, click + button above to add a package`,
+                  emptyDataSourceMessage: `No ${pluralize(title)} to display, click + button above to add a ${title}`,
                 },
               }}
             />
@@ -125,7 +125,7 @@ const Dashboard = () => {
 
         </div>
       </div>
-      <Snackbar open={error} autoHideDuration={6000} >
+      <Snackbar open={!!error} autoHideDuration={6000} >
         <Alert severity="error">
           {error}
         </Alert>

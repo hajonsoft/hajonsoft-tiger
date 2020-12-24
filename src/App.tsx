@@ -16,14 +16,14 @@ import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import OnlinePackages from "./features/onlinePackage";
-import HajjPackagesContainer from './features/onlinePackage/components/HajjPackagesContainer'
-import UmrahPackagesContainer from './features/onlinePackage/components/UmrahPackagesContainer'
-import TourPackagesContainer from './features/onlinePackage/components/TourPackagesContainer'
-import PackageDetailCardM3li from './features/onlinePackage/components/PackageDetailCardM3li'
+import HajjPackagesContainer from "./features/onlinePackage/components/HajjPackagesContainer";
+import UmrahPackagesContainer from "./features/onlinePackage/components/UmrahPackagesContainer";
+import TourPackagesContainer from "./features/onlinePackage/components/TourPackagesContainer";
+import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-import Reserve from './features/onlinePackage/components/Reserve';
+import Reserve from "./features/onlinePackage/components/Reserve";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -40,23 +40,37 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <Router>
         <Provider store={store}>
-          <PublicRoute exact path="/" > <CustomerHome /> </PublicRoute>
-          <PublicRoute exact path="/admin" > <Home /> </PublicRoute>
-          <PublicRoute path="/register" > <Register /></PublicRoute>
-          <PublicRoute path="/login"> <SignIn /> </PublicRoute>
-          <PublicRoute path="/forgot-password"> <ForgotPassword /> </PublicRoute>
-          <PublicRoute path="/logout"> <SignOut /> </PublicRoute>
-          <PublicRoute path="/reserve/:packageName"> <Reserve /> </PublicRoute>
-          <PublicRoute exact path="/hajj-packages" >
+          <PublicRoute exact path="/">
+            <CustomerHome />
+          </PublicRoute>
+          <PublicRoute exact path="/admin">
+            <Home />
+          </PublicRoute>
+          <PublicRoute path="/register">
+            <Register />
+          </PublicRoute>
+          <PublicRoute path="/login">
+            <SignIn />
+          </PublicRoute>
+          <PublicRoute path="/forgot-password">
+            <ForgotPassword />
+          </PublicRoute>
+          <PublicRoute path="/logout">
+            <SignOut />
+          </PublicRoute>
+          <PublicRoute path="/reserve/:packageName">
+            <Reserve />
+          </PublicRoute>
+          <PublicRoute exact path="/hajj-packages">
             <HajjPackagesContainer />
           </PublicRoute>
-          <PublicRoute exact path="/umrah-packages" >
+          <PublicRoute exact path="/umrah-packages">
             <UmrahPackagesContainer />
           </PublicRoute>
-          <PublicRoute exact path="/tours" >
+          <PublicRoute exact path="/tours">
             <TourPackagesContainer />
           </PublicRoute>
-          <PublicRoute exact path="/package/detail/:packageName" >
+          <PublicRoute exact path="/package/detail/:packageName">
             <PackageDetailCardM3li />
           </PublicRoute>
           <PrivateRoute path="/groups">

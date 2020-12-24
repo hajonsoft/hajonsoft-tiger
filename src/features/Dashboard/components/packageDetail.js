@@ -2,13 +2,12 @@ import { faHandsHelping, faPassport, faPrint, faShareSquare } from '@fortawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, CircularProgress, Container, Grid, Paper } from '@material-ui/core';
 import React from 'react';
-import { useListVals } from 'react-firebase-hooks/database';
-import firebase from '../../../firebaseapp';
+import useTravellerState from '../redux/useTravellerState';
 import BioStatistics from './BioStatistics';
 import NationalityStatistics from './NationalityStatistics';
 
 const PackageDetail = ({ data }) => {
-    const [values, loading, error] = useListVals(firebase.database().ref('customer/' + data.name));
+    const { data: values, loading, error } = useTravellerState()
 
     return (
         <Container style={{ padding: '1rem' }} fixed>
@@ -17,12 +16,12 @@ const PackageDetail = ({ data }) => {
                     <Grid item>
                         {loading && <CircularProgress />}
                         {error}
-                        {!loading && <BioStatistics data={values} />}
+                        {!loading && <BioStatistics data={Object.values(values[data.name])} />}
                     </Grid>
                     <Grid item>
                         {loading && <CircularProgress />}
                         {error}
-                        {!loading && <NationalityStatistics data={values} />}
+                        {!loading && <NationalityStatistics data={Object.values(values[data.name])} />}
                     </Grid>
                     <Grid item >
                         <Grid container direction="column" spacing={2}>

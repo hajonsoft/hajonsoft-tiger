@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -11,6 +10,8 @@ import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import HomeIcon from "@material-ui/icons/Home";
@@ -21,16 +22,15 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
+import moment from 'moment';
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
-import { useList } from "react-firebase-hooks/database";
 import { useHistory, useParams } from "react-router-dom";
-import firebase from "../../firebaseapp";
+import useTravellerState from '../Dashboard/redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CoreForm from "./components/CoreForm";
 import CustomerDetail from "./components/CustomerDetail";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -54,12 +54,10 @@ const tableIcons = {
   NoFavorite: forwardRef((props, ref) => <FavoriteBorderIcon {...props} ref={ref} />),
 };
 const Customers = () => {
-  // const mobileMedia = useMediaQuery((theme: any) =>
-  //   theme.breakpoints.down("sm")
-  // );
+
   let { packageName } = useParams();
 
-  const [snapshots, loading, error] = useList(firebase.database().ref("customer/" + packageName));
+  const { data: travellers, loading, error } = useTravellerState();
 
   const [state, setstate] = useState({
     mode: "list",
@@ -126,7 +124,6 @@ const Customers = () => {
               }
             />
           )}
-
           {state.mode === "list" && (
             <MaterialTable
               icons={tableIcons}
@@ -136,14 +133,14 @@ const Customers = () => {
                 { title: "Gender", field: "gender" },
                 { title: "From", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
-                { title: "Birth Date", field: "birthDate", render: (rowData)=> `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate,'years')}]`},
+                { title: "Birth Date", field: "birthDate", render: (rowData) => `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate, 'years')}]` },
                 { title: "Email", field: "email" },
               ]}
-              data={snapshots.map((s) => s.val())}
+              data={Object.values(travellers[packageName])}
               detailPanel={(rowData) => (
                 <CustomerDetail
                   customer={rowData}
-                  customerKey={snapshots.map((s) => s.key)[rowData.tableData.id]}
+                  customerKey={travellers.map((s) => s.key)[rowData.tableData.id]}
                 />
               )}
               actions={[
@@ -156,40 +153,42 @@ const Customers = () => {
                 rowData => ({
                   icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
                   tooltip: rowData.favorite ? `un-favor ${title}` : `Favor ${title}`,
-                  onClick: (event, rowData) =>{
-                    if (Array.isArray(rowData)){
+                  onClick: (event, rowData) => {
+                    if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
                     //TODO: Make the customer a favorite customer and update the global redux store so that it shows in the header
-                },
+                  },
                 }),
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
-                  onClick: (event, rowData) =>{
-                    if (Array.isArray(rowData)){
+                  onClick: (event, rowData) => {
+                    if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
                     setstate((st) => ({
                       ...st,
                       mode: "update",
                       record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
-                    }))},
+                      // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
+                    }))
+                  },
                 },
                 {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) =>{
-                    if (Array.isArray(rowData)){
+                  onClick: (event, rowData) => {
+                    if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection deletes
                     }
                     setstate((st) => ({
                       ...st,
                       mode: "delete",
                       record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
-                    }))},
+                      // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
+                    }))
+                  },
                 },
               ]}
               options={{
@@ -207,7 +206,7 @@ const Customers = () => {
           )}
         </div>
       </div>
-      <Snackbar open={error} autoHideDuration={6000}>
+      <Snackbar open={!!error} autoHideDuration={6000}>
         <Alert severity="error">{error}</Alert>
       </Snackbar>
     </React.Fragment>
