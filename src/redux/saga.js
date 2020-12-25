@@ -1,16 +1,17 @@
+import _ from 'lodash';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import travellerService from '../features/Dashboard/redux/travellerService';
 import { authService } from './firebaseAuthService';
-import dataService from './firebaseDataService';
 import { travellerSlice, userSlice } from './reducer';
 
+//reducer from src\redux\reducer.ts ^p
 function* sagas() {
     yield all([
         loginFlow(),
         retrieveTravellersFlow(),
-        createPackageFlow(),
-        updatePackageFlow(),
-        deletePackageFlow(),
+        createTravellerFlow(),
+        updateTravellerFlow(),
+        deleteTravellerFlow(),
     ])
 
 }
@@ -21,43 +22,44 @@ function* loginFlow() {
 function* retrieveTravellersFlow() {
     yield takeLatest(travellerSlice.actions.fetch, retrieveTravellersSaga);
 }
-function* createPackageFlow() {
-    yield takeLatest(travellerSlice.actions.create, createPackageSaga);
+function* createTravellerFlow() {
+    yield takeLatest(travellerSlice.actions.create, createTravellerSaga);
 }
-function* updatePackageFlow() {
-    yield takeLatest(travellerSlice.actions.update, updatePackageSaga);
+function* updateTravellerFlow() {
+    yield takeLatest(travellerSlice.actions.update, updateTravellerSaga);
 }
-function* deletePackageFlow() {
-    yield takeLatest(travellerSlice.actions.delete, deletePackageSaga);
+function* deleteTravellerFlow() {
+    yield takeLatest(travellerSlice.actions.delete, deleteTravellerSaga);
 }
 function* retrieveTravellersSaga(action) {
     try {
         const result = yield call(travellerService.getTravellers, action.payload);
-        yield put(travellerSlice.actions.success(result));
+        yield put(travellerSlice.actions.fetchSuccess(result));
     } catch (e) {
         yield put(travellerSlice.actions.fail(e.message));
     }
 }
-function* createPackageSaga(action) {
+function* createTravellerSaga(action) {
     try {
-        const result = yield call(dataService.createRecord, action.payload);
-        yield put(travellerSlice.actions.success({ ...result, req: action.payload }));
+        const result = yield call(travellerService.createTraveller, action.payload);
+        const groupName = _.last(action.payload.path.split('/'))
+        yield put(travellerSlice.actions.createSuccess({ [groupName]: {[result._fid]: [{...result}]} }));
     } catch (e) {
         yield put(travellerSlice.actions.fail(e.message));
     }
 }
-function* updatePackageSaga(action) {
+function* updateTravellerSaga(action) {
     try {
-        const result = yield call(dataService.updateRecord, action.payload);
-        yield put(travellerSlice.actions.success({ ...result, req: action.payload }));
+        yield call(travellerService.updateTraveller, action.payload);
+        yield put(travellerSlice.actions.updateSuccess(action.payload));
     } catch (e) {
         yield put(travellerSlice.actions.fail(e.message));
     }
 }
-function* deletePackageSaga(action) {
+function* deleteTravellerSaga(action) {
     try {
-        const result = yield call(dataService.deleteRecord, action.payload);
-        yield put(travellerSlice.actions.success({ ...result, req: action.payload }));
+        yield call(travellerService.deleteTraveller, action.payload);
+        yield put(travellerSlice.actions.deleteSuccess(action.payload));
     } catch (e) {
         yield put(travellerSlice.actions.fail(e.message));
     }

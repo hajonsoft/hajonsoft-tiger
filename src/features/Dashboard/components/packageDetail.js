@@ -6,6 +6,7 @@ import useTravellerState from '../redux/useTravellerState';
 import BioStatistics from './BioStatistics';
 import NationalityStatistics from './NationalityStatistics';
 
+//TODO: Redesign, talk to customers to get feedback
 const PackageDetail = ({ data }) => {
     const { data: values, loading, error } = useTravellerState()
 

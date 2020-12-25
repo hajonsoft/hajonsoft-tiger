@@ -3,6 +3,8 @@ import React from 'react';
 import qibla from '../../images/qibla-bg.jpg';
 import PackagesContainer from '../onlinePackage/components/PackagesContainer';
 import CustomerHeader from './../Header/CustomerHeader';
+import ImportantDates from './components/importantDates';
+
 const CustomerHome = () => {
 
     return (
@@ -10,10 +12,11 @@ const CustomerHome = () => {
         <div style={{ backgroundImage: "url(" + qibla + ")", backgroundAttachment: 'fixed', backgroundSize: 'cover' }}>
             <CustomerHeader />
             <Box m={8} mt={50}>
+                <ImportantDates />
                 <PackagesContainer />
             </Box>
             <Box m={4}>
-                <Typography variant="body1" align="center" style={{ color: '#fff' }}>If you are an admin, <a style={{ color: '#fff' }} href="/admin">click here to login.</a></Typography>
+                <Typography variant="body1" align="center" style={{ color: '#ffdabf' }}>If you are an admin, <a style={{ color: '#ff80d9' }} href="/admin">click here to login.</a></Typography>
             </Box>
 
         </div >

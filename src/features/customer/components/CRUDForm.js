@@ -30,6 +30,7 @@ import CustomerPassportIssueDate from './CustomerPassportIssueDate';
 import CustomerPassportNumber from './CustomerPassportNumber';
 import Dropzone from "./Dropzone";
 import CustomerPhone from './CustomerPhone';
+import useTravellerState from '../../Dashboard/redux/useTravellerState'
 const storage = firebase.storage();
 
 const useStyles = makeStyles((theme) => ({
@@ -60,29 +61,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
+const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
   let { packageName } = useParams();
-  // const handleImageChange = ()=> {
-  //     // TODO: when image changes store it to the database using the record key and its field name
-  // }
+  const {createData: createTraveller, updateData: updateTraveller, deleteData: deleteTraveller} = useTravellerState();
+
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     let image = values.image;
     delete values["image"];
     switch (mode) {
       case "create":
-        const customerRef = firebase.database().ref(`customer/${packageName}`);
-        customerRef.push(values);
+        createTraveller({path: `customer/${packageName}`, data: values})
         break;
       case "update":
-        const updateRef = firebase.database().ref(`customer/${packageName}`);
         delete values.tableData;
-        updateRef.child(customerKey).update(values);
+        updateTraveller({path: `customer/${packageName}/${record._fid}`, data: values})
         break;
-
       case "delete":
-        const removeRef = firebase.database().ref(`customer/${packageName}`);
-        removeRef.child(customerKey).remove();
+        deleteTraveller({path: `customer/${packageName}/${record._fid}`})
         break;
 
       default:
@@ -307,4 +303,4 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
   );
 };
 
-export default CoreForm;
+export default CRUDForm;

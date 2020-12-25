@@ -28,7 +28,7 @@ import React, { forwardRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useTravellerState from '../Dashboard/redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
-import CoreForm from "./components/CoreForm";
+import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
 
 const tableIcons = {
@@ -64,7 +64,7 @@ const Customers = () => {
     record: {},
     customerKey: 0,
   });
-  const title = "Customer";
+  const title = "Traveller";
   const history = useHistory();
 
   if (loading) {
@@ -77,7 +77,7 @@ const Customers = () => {
           alignItems: "center",
         }}
       >
-        <CircularProgress size={40} />{" "}
+        <CircularProgress size={40} />
       </div>
     );
   }
@@ -114,13 +114,12 @@ const Customers = () => {
         <HajonsoftHeader />
         <div>
           {state.mode !== "list" && (
-            <CoreForm
+            <CRUDForm
               mode={state.mode}
               record={state.record}
               title={title}
-              customerKey={state.customerKey}
               onClose={() =>
-                setstate((st) => ({ ...st, mode: "list", record: {}, customerKey: 0 }))
+                setstate((st) => ({ ...st, mode: "list", record: {} }))
               }
             />
           )}
@@ -131,12 +130,12 @@ const Customers = () => {
               columns={[
                 { title: "Name", field: "name" },
                 { title: "Gender", field: "gender" },
-                { title: "From", field: "nationality" },
+                { title: "Nationality", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
                 { title: "Birth Date", field: "birthDate", render: (rowData) => `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate, 'years')}]` },
                 { title: "Email", field: "email" },
               ]}
-              data={Object.values(travellers[packageName])}
+              data={travellers[packageName] ? travellers[packageName] : []}
               detailPanel={(rowData) => (
                 <CustomerDetail
                   customer={rowData}
@@ -152,7 +151,7 @@ const Customers = () => {
                 },
                 rowData => ({
                   icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
-                  tooltip: rowData.favorite ? `un-favor ${title}` : `Favor ${title}`,
+                  tooltip: rowData.favorite ? `un-favor ${title}` : `favor ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
@@ -199,7 +198,7 @@ const Customers = () => {
               }}
               localization={{
                 body: {
-                  emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
+                  emptyDataSourceMessage: `No ${title} to display, click + button above to add a new ${title}`,
                 },
               }}
             />

@@ -25,8 +25,9 @@ import React, { forwardRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import useTravellerState from './redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
-import CoreForm from './components/CoreForm';
+import CRUDForm from './components/CRUDForm';
 import PackageDetail from './components/packageDetail';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -76,7 +77,7 @@ const Dashboard = () => {
         <div>
           {loading && <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}><Grid item><CircularProgress size={60} />{`Loading ${pluralize(title)} ...`}</Grid></Grid>}
           {!loading && state.mode !== 'list' &&
-            <CoreForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
+            <CRUDForm mode={state.mode} record={state.record} title={title} onClose={() => setstate(st => ({ ...st, mode: 'list' }))} />
           }
           {!loading && state.mode === 'list' &&
 
@@ -94,7 +95,7 @@ const Dashboard = () => {
                   field: 'total'
                 }
               ]}
-              data={travellers ? Object.keys(travellers).map(v => ({ name: v, total: Object.keys(travellers[v]).length })) : []}
+              data={travellers ? Object.keys(travellers).map(v => ({ name: v, total: travellers[v].length })) : []}
               detailPanel={rowData => <PackageDetail data={rowData} />}
               actions={[
                 {
