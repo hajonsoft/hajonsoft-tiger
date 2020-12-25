@@ -24,6 +24,7 @@ import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
 import Reserve from "./features/onlinePackage/components/Reserve";
+import Favorite from './features/favorite';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -84,6 +85,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute path="/:packageName/customers">
             <Customers />
+          </PrivateRoute>
+          <PrivateRoute path="/favorite">
+            <Favorite />
           </PrivateRoute>
         </Provider>
       </Router>

@@ -25,7 +25,7 @@ import MaterialTable from "material-table";
 import moment from 'moment';
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useTravellerState from '../Dashboard/redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CRUDForm from "./components/CRUDForm";
@@ -53,9 +53,7 @@ const tableIcons = {
   Favorite: forwardRef((props, ref) => <FavoriteIcon {...props} ref={ref} />),
   NoFavorite: forwardRef((props, ref) => <FavoriteBorderIcon {...props} ref={ref} />),
 };
-const Customers = () => {
-
-  let { packageName } = useParams();
+const Favorite = () => {
 
   const { data: travellers, updateData: updateTraveller, loading, error } = useTravellerState();
 
@@ -99,11 +97,22 @@ const Customers = () => {
             <HomeIcon />
             <Typography>Home</Typography>
           </Link>
-          <Typography>{`${packageName} ${pluralize(title)}`}</Typography>
+          <Typography>{`Favorite ${pluralize(title)}`}</Typography>
         </Breadcrumbs>
       </div>
     );
   };
+  const favoriteData = ()=> {
+    const keys = Object.keys(travellers);
+    let output = [];
+    keys.forEach(k=> {
+      const values = travellers[k].filter(x=> x.favorite);
+      values.forEach(v=> v._groupName = k);
+      output = output.concat(values);
+    })
+
+    return output;
+  }
   return (
     <React.Fragment>
       <div
@@ -135,7 +144,7 @@ const Customers = () => {
                 { title: "Birth Date", field: "birthDate", render: (rowData) => `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate, 'years')}]` },
                 { title: "Email", field: "email" },
               ]}
-              data={travellers[packageName] ? travellers[packageName] : []}
+              data={favoriteData()}
               detailPanel={(rowData) => (
                 <CustomerDetail
                   customer={rowData}
@@ -143,12 +152,6 @@ const Customers = () => {
                 />
               )}
               actions={[
-                {
-                  icon: tableIcons.Add,
-                  tooltip: `Add ${title}`,
-                  isFreeAction: true,
-                  onClick: (event) => setstate((st) => ({ ...st, mode: "create" })),
-                },
                 rowData => ({
                   icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
                   tooltip: rowData.favorite ? `un-favor ${title}` : `favor ${title}`,
@@ -156,7 +159,7 @@ const Customers = () => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    updateTraveller({ path: `customer/${packageName}/${rowData._fid}`, data: { ...rowData, favorite: !rowData.favorite } })
+                    updateTraveller({ path: `customer/${rowData._groupName}/${rowData._fid}`, data: { ...rowData, favorite: !rowData.favorite } })
                   },
                 }),
                 {
@@ -169,21 +172,6 @@ const Customers = () => {
                     setstate((st) => ({
                       ...st,
                       mode: "update",
-                      record: rowData,
-                      // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
-                    }))
-                  },
-                },
-                {
-                  icon: () => <tableIcons.Delete color="error" />,
-                  tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) => {
-                    if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection deletes
-                    }
-                    setstate((st) => ({
-                      ...st,
-                      mode: "delete",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
                     }))
@@ -212,4 +200,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Favorite;
