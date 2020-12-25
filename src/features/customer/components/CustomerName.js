@@ -1,12 +1,12 @@
-import { Box, IconButton, InputAdornment } from '@material-ui/core';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconButton } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { ErrorMessage, Field } from "formik";
 import React from "react";
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CustomerName = ({
   mode,
@@ -14,11 +14,12 @@ const CustomerName = ({
 }) => {
 
   const helperText = () => {
+    if (!value) return ''
 
     const nameArray = value.split(' ');
     switch (nameArray.length) {
       case 1:
-        return 'invalid';
+        return 'invalid name';
       case 2:
         return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}`
       case 3:
@@ -46,52 +47,53 @@ const CustomerName = ({
   }
   return (
     <Grid item xs={6}>
-      <Field
-        required
-        as={TextField}
-        fullWidth
-        name="name"
-        autoFocus
-        label="Name"
-        disabled={mode === "delete"}
-        autoComplete="off"
-        maxLength={60}
-        value={value || ""}
-        helperText={helperText()}
-        InputProps={{
-          endAdornment:
-            <InputAdornment position="end">
-              <Box>
-                <IconButton
-                  aria-label="search name on facebook"
-                  onClick={handleFacebookClick}
-                >
-                  {/* <FacebookIcon style={{color: '#4267B2'}}/> */}
-                  <FacebookIcon />
-                </IconButton>
-              </Box>
-              <Box>
-                <IconButton
-                  aria-label="search name on twitter"
-                  onClick={handleTwitterClick}
-                >
-                  {/* <TwitterIcon style={{color: '#1DA1F2'}}/> */}
-                  <TwitterIcon />
-                </IconButton>
-              </Box>
-              <Box>
-                <IconButton
-                  aria-label="search name on twitter"
-                  onClick={handleGoogleClick}
-                >
-                  {/* <FontAwesomeIcon icon={faGoogle} style={{color: '#4285F4'}}/> */}
-                  <FontAwesomeIcon icon={faGoogle} />
-                </IconButton>
-              </Box>
-            </InputAdornment>
-        }}
-      />
-      <ErrorMessage name="name" component="div" />
+      <Grid container justify="space-between" alignItems="center">
+        <Grid item xs={9}>
+          <Field
+            required
+            as={TextField}
+            fullWidth
+            name="name"
+            autoFocus
+            label="Name"
+            disabled={mode === "delete"}
+            autoComplete="off"
+            maxLength={60}
+            helperText={helperText()}
+          />
+        </Grid>
+        <Grid item container xs={3} alignItems="center" justify="flex-end">
+          <Grid item>
+            <IconButton size="small"
+              aria-label="search name on facebook"
+              onClick={handleFacebookClick}
+            >
+              <FacebookIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton size="small"
+              aria-label="search name on twitter"
+              onClick={handleTwitterClick}
+            >
+              <TwitterIcon />
+            </IconButton>
+          </Grid>
+
+          <Grid item>
+            <IconButton size="small"
+              aria-label="search name on twitter"
+              onClick={handleGoogleClick}
+            >
+              <FontAwesomeIcon icon={faGoogle} />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <ErrorMessage name="name" component="div" />
+        </Grid>
+      </Grid>
+
     </Grid>
   );
 };

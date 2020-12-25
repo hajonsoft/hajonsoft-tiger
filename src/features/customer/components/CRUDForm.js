@@ -30,7 +30,9 @@ import CustomerPassportIssueDate from './CustomerPassportIssueDate';
 import CustomerPassportNumber from './CustomerPassportNumber';
 import Dropzone from "./Dropzone";
 import CustomerPhone from './CustomerPhone';
-import useTravellerState from '../../Dashboard/redux/useTravellerState'
+import useTravellerState from '../../Dashboard/redux/useTravellerState';
+import * as yup from 'yup';
+
 const storage = firebase.storage();
 
 const useStyles = makeStyles((theme) => ({
@@ -94,23 +96,22 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     }
     onClose();
   };
+
+  const validSchema = yup.object().shape({
+    name: yup.string().required('Required'),
+  });
   return (
     <React.Fragment>
       <Formik
         enableReinitialize
         initialValues={mode === "create" ? {} : record}
+        validationSchema={validSchema}
         onSubmit={handleSubmitForm}
       >
         {({
           setFieldValue,
           values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
           isSubmitting,
-          /* and other goodies */
         }) => (
             <Form>
               <Card raised className={classes.formContainer}>
@@ -135,7 +136,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         <Grid item container justify="space-between" spacing={4}>
                           <CustomerName
                             mode={mode}
-                            value={values.name || ""}
+                            value={values.name}
                           />
                           <CoreTextField
                             value={values.nameArabic || ""}
@@ -165,7 +166,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         </Grid>
                       </Grid>
                     </Grid>
-
                     <Grid item container alignItems="center" spacing={4}>
                       <CustomerBirthDate value={values.birthDate} mode={mode} setFieldValue={setFieldValue} />
                       <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} maxLength={25} />
@@ -177,7 +177,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                       />
                     </Grid>
                     <Grid item container alignItems="center" spacing={4}>
-
                       <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20} />
                       {values.idNumber ?
                         <CustomerIdIssueDate
@@ -198,7 +197,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     </Grid>
 
                     <Grid item container alignItems="center" spacing={4}>
-
                       <CustomerPassportIssueDate value={values.passIssueDt} mode={mode} setFieldValue={setFieldValue} />
                       <CoreTextField value={values.profession || ""} name="profession" mode={mode} maxLength={25} />
                       <CoreTextField

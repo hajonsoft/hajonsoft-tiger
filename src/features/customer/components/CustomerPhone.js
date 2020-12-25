@@ -17,7 +17,6 @@ const CustomerPhone = ({
   return (
     <Grid item xs={4}>
       <Field
-        required
         as={TextField}
         type="tel"
         fullWidth
