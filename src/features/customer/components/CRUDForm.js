@@ -112,23 +112,31 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
       });
       return popularNationality;
     }
-
   }
+
   const validSchema = yup.object().shape({
     name: yup.string().required('Required'),
+    nationality: yup.string().required('Required'),
     gender: yup.string().required('Required'),
+    passportNumber: yup.string().required('Required').min(8, 'Too short!').max(9, 'Too long!'),
+    passExpireDt: yup.date().required('Required').min(moment().add('6', 'month'), 'at least in 6 month').max(moment().add(20, 'year'), 'Too far!'),
+    passIssueDt: yup.date().required('Required').max(moment(), 'Future Date!').min(moment().subtract(15, 'year'), 'Too old!'),
+    birthDate: yup.date().required('Required').max(new Date(), 'Too young!'),
+    birthPlace: yup.string().required('Required').max(25, 'Too long!'),
+    passPlaceOfIssue: yup.string().required('Required').max(25, 'Too long!'),
   });
   return (
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={mode === "create" ? {} : record}
+        initialValues={mode === "create" ? {nationality: popularNationality(), passExpireDt: moment().add(6,'month'), passIssueDt: moment().subtract(7,'days'), birthDate: moment().subtract(7,'days')} : record}
         validationSchema={validSchema}
         onSubmit={handleSubmitForm}
       >
         {({
           setFieldValue,
           values,
+          errors,
           isSubmitting,
         }) => (
             <Form>
@@ -230,6 +238,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     <CustomerPhone value={values.phone} mode={mode} />
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
                     <CustomerComments value={values.comments || ""} name="comments" mode={mode} />
+                    <Grid item xs={12}>
+                      <Typography variant="body2" align="center"  style={{color: '#f44336'}}>{JSON.stringify(errors).replace(/"/g,'')}</Typography>
+                    </Grid>
                   </Grid>
                 </CardContent>
                 <CardActions className={classes.actionsContainer}>

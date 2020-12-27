@@ -8,6 +8,8 @@ import { ErrorMessage } from 'formik';
 import moment from 'moment';
 import React from 'react';
 
+const name = "birthDate"
+
 const CustomerBirthDate = ({ value, mode , setFieldValue}) => {
     const helperText = () => {
         return moment(value).fromNow()
@@ -18,19 +20,19 @@ const CustomerBirthDate = ({ value, mode , setFieldValue}) => {
                 <FormControl fullWidth>
                     <KeyboardDatePicker
                         margin="normal"
-                        name="birthDate"
+                        name={name}
                         format="dd-MMM-yyyy"
                         label="Birth Date"
                         disabled={mode === 'delete'}
                         value={value}
                         onChange={val => {
-                            setFieldValue("birthDate", val);
+                            setFieldValue(name, val);
                         }}
                     />
                     <FormHelperText>{helperText()}</FormHelperText>
 
                 </FormControl>
-                <ErrorMessage name="birthDate" component="div" />
+                <ErrorMessage name={name} component="div"   style={{color: '#f44336'}}/>
             </Grid>
         </MuiPickersUtilsProvider>
 

@@ -1,5 +1,7 @@
 import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -132,14 +134,16 @@ const Customers = () => {
                 { title: "Gender", field: "gender" },
                 { title: "Nationality", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
-                { title: "Birth Date", field: "birthDate", render: (rowData) => `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate, 'years')}]` },
+                {
+                  title: "Birth Date", field: "birthDate", render: (rowData) =>
+                    rowData.birthDate && <Chip avatar={<Avatar>{moment().diff(rowData.birthDate, 'years')}</Avatar>} label={moment(rowData.birthDate).format('DD-MMM-yyyy')} />
+                },
                 { title: "Email", field: "email" },
               ]}
               data={travellers[packageName] ? travellers[packageName] : []}
               detailPanel={(rowData) => (
                 <CustomerDetail
                   customer={rowData}
-                  customerKey={travellers.map((s) => s.key)[rowData.tableData.id]}
                 />
               )}
               actions={[
@@ -194,7 +198,9 @@ const Customers = () => {
                 actionsColumnIndex: -1,
                 grouping: true,
                 pageSize: 20,
+                exportFileName: packageName,
                 exportButton: true,
+                columnsButton: true,
               }}
               localization={{
                 body: {

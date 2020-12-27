@@ -47,7 +47,6 @@ const CustomerName = ({
   return (
     <Grid item xs={6}>
       <Field
-        required
         as={TextField}
         fullWidth
         name="name"

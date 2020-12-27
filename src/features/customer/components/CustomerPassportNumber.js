@@ -27,7 +27,7 @@ const CustomerPassportNumber = ({
           }
         }}
       />
-      <ErrorMessage name={name} component="div" />
+      <ErrorMessage name={name} component="div"  style={{color: '#f44336'}}/>
     </Grid>
   );
 };

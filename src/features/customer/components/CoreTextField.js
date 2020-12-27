@@ -28,7 +28,7 @@ const CoreTextField = ({
         maxLength={maxLength}
         value={value || ""}
       />
-      <ErrorMessage name={name} component="div" />
+      <ErrorMessage name={name} component="div"   style={{color: '#f44336'}}/>
     </Grid>
   );
 };

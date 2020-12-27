@@ -3,6 +3,9 @@ import {TextField, InputAdornment, Box, IconButton} from "@material-ui/core";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+
+const name = "phone";
+
 const CustomerPhone = ({
   mode,
   value,
@@ -20,7 +23,7 @@ const CustomerPhone = ({
         as={TextField}
         type="tel"
         fullWidth
-        name="phone"
+        name={name}
         label="Phone"
         disabled={mode === "delete"}
         autoComplete="off"
@@ -39,7 +42,7 @@ const CustomerPhone = ({
             </InputAdornment>
         }}
       />
-      <ErrorMessage name="passportNumber" component="div" />
+      <ErrorMessage name={name} component="div" />
     </Grid>
   );
 };

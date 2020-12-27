@@ -100,7 +100,7 @@ const CustomerName = ({
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <ErrorMessage name={name} component="div" />
+          <ErrorMessage name={name} component="div" style={{color: '#f44336'}}/>
         </Grid>
       </Grid>
 
