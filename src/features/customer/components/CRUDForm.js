@@ -15,12 +15,14 @@ import _ from "lodash";
 import moment from 'moment';
 import React from "react";
 import { useParams } from "react-router-dom";
+import * as yup from 'yup';
 import firebase from "../../../firebaseapp";
+import useTravellerState from '../../Dashboard/redux/useTravellerState';
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
+import CustomerArabicName from './CustomerArabicName';
 import CustomerBirthDate from './CustomerBirthDate';
 import CustomerComments from './CustomerComments';
-import Gender from './Gender';
 import CustomerIdExpireDate from './CustomerIdExpireDate';
 import CustomerIdIssueDate from './CustomerIdIssueDate';
 import CustomerName from './CustomerName';
@@ -28,10 +30,10 @@ import CustomerNationality from './CustomerNationality';
 import CustomerPassportExpireDate from './CustomerPassportExpireDate';
 import CustomerPassportIssueDate from './CustomerPassportIssueDate';
 import CustomerPassportNumber from './CustomerPassportNumber';
-import Dropzone from "./Dropzone";
 import CustomerPhone from './CustomerPhone';
-import useTravellerState from '../../Dashboard/redux/useTravellerState';
-import * as yup from 'yup';
+import Dropzone from "./Dropzone";
+import Gender from './Gender';
+
 
 const storage = firebase.storage();
 
@@ -66,21 +68,21 @@ const useStyles = makeStyles((theme) => ({
 const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
   let { packageName } = useParams();
-  const {createData: createTraveller, updateData: updateTraveller, deleteData: deleteTraveller} = useTravellerState();
+  const { data: travellers, createData: createTraveller, updateData: updateTraveller, deleteData: deleteTraveller } = useTravellerState();
 
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     let image = values.image;
     delete values["image"];
     switch (mode) {
       case "create":
-        createTraveller({path: `customer/${packageName}`, data: values})
+        createTraveller({ path: `customer/${packageName}`, data: values })
         break;
       case "update":
         delete values.tableData;
-        updateTraveller({path: `customer/${packageName}/${record._fid}`, data: values})
+        updateTraveller({ path: `customer/${packageName}/${record._fid}`, data: values })
         break;
       case "delete":
-        deleteTraveller({path: `customer/${packageName}/${record._fid}`})
+        deleteTraveller({ path: `customer/${packageName}/${record._fid}` })
         break;
 
       default:
@@ -97,8 +99,24 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     onClose();
   };
 
+  const popularNationality = () => {
+    if (travellers) {
+      const grouped = _.groupBy(travellers[packageName], 'nationality');
+      let count = 0;
+      let popularNationality = '';
+      Object.keys(grouped).forEach(k => {
+        if (grouped[k].length > count) {
+          count = grouped.length;
+          popularNationality = k;
+        }
+      });
+      return popularNationality;
+    }
+
+  }
   const validSchema = yup.object().shape({
     name: yup.string().required('Required'),
+    gender: yup.string().required('Required'),
   });
   return (
     <React.Fragment>
@@ -127,9 +145,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                       <Grid item xs={4}>
                         <CoreImage
                           setImage={(img) => setFieldValue("image", img)}
-                          packageName={packageName}
-                          customerKey={customerKey}
-                          record={record}
+                          record={values}
                         />
                       </Grid>
                       <Grid item xs={8} container direction="column" justify="space-around">
@@ -137,19 +153,18 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                           <CustomerName
                             mode={mode}
                             value={values.name}
+                            setFieldValue={setFieldValue}
                           />
-                          <CoreTextField
-                            value={values.nameArabic || ""}
-                            name="nameArabic"
-                            label="الاسم العربي في جواز السفر"
+                          <CustomerArabicName
                             mode={mode}
-                            xsWidth={6}
+                            value={values.nameArabic}
+                            setFieldValue={setFieldValue}
                           />
                         </Grid>
                         <Grid item container justify="space-between" spacing={4}>
                           <CustomerNationality
                             mode={mode}
-                            value={values.nationality || ""}
+                            value={values.nationality || popularNationality()}
                           />
                           <Gender
                             value={values.gender || ""}
@@ -161,6 +176,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                           <CustomerPassportNumber
                             mode={mode}
                             value={values.passportNumber || ""}
+                            setFieldValue={setFieldValue}
                           />
                           <CustomerPassportExpireDate value={values.passExpireDt} mode={mode} setFieldValue={setFieldValue} />
                         </Grid>
@@ -217,10 +233,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                   </Grid>
                 </CardContent>
                 <CardActions className={classes.actionsContainer}>
-                  {/* <div>
-                                        <Button type="button" disabled={isSubmitting} color='secondary' onClick={() => SetState({ ...state, importJSONOpen: true })} >Import JSON</Button>
-                                        <Button type="button" disabled={isSubmitting} color='secondary' onClick={() => SetState({ ...state, importDMLOpen: true })} >Import DML</Button>
-                                    </div> */}
                   <Grid container spacing={2}>
                     {mode === "create" && (
                       <Grid container item xs>

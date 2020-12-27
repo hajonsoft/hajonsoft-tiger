@@ -7,17 +7,21 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { ErrorMessage, Field } from "formik";
 import React from "react";
+import _ from 'lodash';
 
 const CustomerName = ({
   mode,
   value,
+  setFieldValue
 }) => {
 
+  const name = "name";
   const helperText = () => {
     if (!value) return ''
 
     const nameArray = value.split(' ');
     switch (nameArray.length) {
+      case 0:
       case 1:
         return 'invalid name';
       case 2:
@@ -27,7 +31,8 @@ const CustomerName = ({
       case 4:
         return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}/${nameArray[2].replace(/-/g, ' ')}/${nameArray[3].replace(/-/g, ' ')}`
       default:
-        return ''
+        return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}/${nameArray.slice(2,nameArray.length - 1).join(' ').replace(/-/g, ' ')}/${_.last(nameArray).replace(/-/g, ' ')}`
+
     }
   }
 
@@ -53,19 +58,24 @@ const CustomerName = ({
             required
             as={TextField}
             fullWidth
-            name="name"
+            name={name}
             autoFocus
-            label="Name"
+            label={_.startCase(name)}
             disabled={mode === "delete"}
             autoComplete="off"
-            maxLength={60}
+            onChange={(event) => {
+              const regex = /^([-a-zA-Z ]){1,60}$/i;
+              if (event.target.value === '' || regex.test(event.target.value)) {
+                setFieldValue(name, event.target.value.toUpperCase());
+              }
+            }}
             helperText={helperText()}
           />
         </Grid>
         <Grid item container xs={3} alignItems="center" justify="flex-end">
           <Grid item>
             <IconButton size="small"
-              aria-label="search name on facebook"
+              aria-label="search facebook"
               onClick={handleFacebookClick}
             >
               <FacebookIcon />
@@ -73,7 +83,7 @@ const CustomerName = ({
           </Grid>
           <Grid item>
             <IconButton size="small"
-              aria-label="search name on twitter"
+              aria-label="search twitter"
               onClick={handleTwitterClick}
             >
               <TwitterIcon />
@@ -82,7 +92,7 @@ const CustomerName = ({
 
           <Grid item>
             <IconButton size="small"
-              aria-label="search name on twitter"
+              aria-label="search twitter"
               onClick={handleGoogleClick}
             >
               <FontAwesomeIcon icon={faGoogle} />
@@ -90,7 +100,7 @@ const CustomerName = ({
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <ErrorMessage name="name" component="div" />
+          <ErrorMessage name={name} component="div" />
         </Grid>
       </Grid>
 

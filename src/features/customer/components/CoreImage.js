@@ -1,6 +1,6 @@
 import { Card, CardContent, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "../../../firebaseapp";
 
 const useStyles = makeStyles({
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CoreImage = ({ record, customerKey, packageName, setImage }) => {
+const CoreImage = ({ record, setImage }) => {
   const [url, setUrl] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
@@ -66,7 +66,7 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
       }
     }
     getImage();
-  }, [customerKey, record]);
+  }, [record]);
 
   let _fileInput = React.createRef();
   return (
@@ -75,7 +75,6 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
         className={classes.mainContainer}
         onMouseOver={() => setIsMouseOver(true)}
         onMouseLeave={() => setIsMouseOver(false)}
-        disabled
       >
         <CardContent>
           <img
@@ -87,9 +86,8 @@ const CoreImage = ({ record, customerKey, packageName, setImage }) => {
           <Link
             href="#"
             className={classes.pickImage}
-            style={{ display: isMouseOver ? "block" : "none" }}
+            style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
             onClick={() => _fileInput.click()}
-            disabled={!record.nationality || !record.passportNumber}
           >
             Change Image
           </Link>

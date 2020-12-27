@@ -1,26 +1,20 @@
-import { MenuItem, Select, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import { ErrorMessage, Field } from "formik";
 import _ from "lodash";
 import React from "react";
 import { nationalities } from '../../../data/nationality';
 
+const name = "nationality";
 
 const CustomerNationality = ({
-    name,
     mode,
-    label,
-    xsWidth = 4,
-    autoFocus = false,
     value,
-    required = false,
-    maxLength = 60
 }) => {
 
     const helperText = () => {
         const nationality = nationalities.find(n => n.name === value);
         if (nationality) {
-
             return nationality.code;
         }
     }
@@ -29,9 +23,8 @@ const CustomerNationality = ({
             <FormControl fullWidth >
                 <InputLabel id="nationality">Nationality</InputLabel>
                 <Field
-                    required
                     as={Select}
-                    name="nationality"
+                    name={name}
                     label="Nationality"
                     disabled={mode === "delete"}
                     autoComplete="off"
@@ -44,7 +37,7 @@ const CustomerNationality = ({
                 </Field>
                 <FormHelperText>{helperText()}</FormHelperText>
             </FormControl>
-            <ErrorMessage name="nationality" component="div" />
+            <ErrorMessage name={name} component="div" />
         </Grid>
     );
 };
