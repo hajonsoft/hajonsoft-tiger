@@ -33,6 +33,8 @@ import CustomerPassportNumber from './CustomerPassportNumber';
 import CustomerPhone from './CustomerPhone';
 import Dropzone from "./Dropzone";
 import Gender from './Gender';
+import BirthPlace from './BirthPlace';
+import PassportPlaceOfIssue from './PassportPlaceOfIssue';
 
 
 const storage = firebase.storage();
@@ -129,7 +131,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={mode === "create" ? {nationality: popularNationality(), passExpireDt: moment().add(6,'month'), passIssueDt: moment().subtract(7,'days'), birthDate: moment().subtract(7,'days')} : record}
+        initialValues={mode === "create" ? { nationality: popularNationality(), passExpireDt: moment().add(6, 'month'), passIssueDt: moment().subtract(7, 'days'), birthDate: moment().subtract(7, 'days') } : record}
         validationSchema={validSchema}
         onSubmit={handleSubmitForm}
       >
@@ -192,13 +194,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     </Grid>
                     <Grid item container alignItems="center" spacing={4}>
                       <CustomerBirthDate value={values.birthDate} mode={mode} setFieldValue={setFieldValue} />
-                      <CoreTextField value={values.birthPlace || ""} name="birthPlace" mode={mode} maxLength={25} />
-                      <CoreTextField
+                      <BirthPlace mode={mode}
+                        value={values.birthPlace || ""}
+                        setFieldValue={setFieldValue} />
+                      <PassportPlaceOfIssue mode={mode}
                         value={values.passPlaceOfIssue || ""}
-                        name="passPlaceOfIssue"
-                        maxLength={25}
-                        mode={mode}
-                      />
+                        setFieldValue={setFieldValue} />
                     </Grid>
                     <Grid item container alignItems="center" spacing={4}>
                       <CoreTextField value={values.idNumber || ""} name="idNumber" mode={mode} maxLength={20} />
@@ -239,7 +240,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
                     <CustomerComments value={values.comments || ""} name="comments" mode={mode} />
                     <Grid item xs={12}>
-                      <Typography variant="body2" align="center"  style={{color: '#f44336'}}>{JSON.stringify(errors).replace(/"/g,'')}</Typography>
+                      <Typography variant="body2" align="center" style={{ color: '#f44336' }}>{JSON.stringify(errors).replace(/"/g, '')}</Typography>
                     </Grid>
                   </Grid>
                 </CardContent>

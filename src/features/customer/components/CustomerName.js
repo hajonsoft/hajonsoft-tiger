@@ -9,13 +9,13 @@ import { ErrorMessage, Field } from "formik";
 import React from "react";
 import _ from 'lodash';
 
+const name = "name";
 const CustomerName = ({
   mode,
   value,
   setFieldValue
 }) => {
 
-  const name = "name";
   const helperText = () => {
     if (!value) return ''
 
