@@ -26,7 +26,7 @@ const BioStatistics = ({ data }) => {
                     <ListItemIcon>
                         <FontAwesomeIcon icon={faUser} color="silver" size="2x" />
                     </ListItemIcon>
-                    <ListItemText primary={`${data.filter(f => f.birthDate && f.birthDate && moment().diff(f.birthDate, 'years') > 18).length} Youth`} />
+                    <ListItemText primary={`${data.filter(f => f.birthDate && f.birthDate && moment().diff(f.birthDate, 'years') > 18 && moment().diff(f.birthDate, 'years') < 50).length} between 18 and 50 years old`} />
                 </ListItem>
             </List>
         </div>

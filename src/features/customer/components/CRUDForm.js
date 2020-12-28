@@ -239,6 +239,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     <CustomerPhone value={values.phone} mode={mode} />
                     <CoreTextField value={values.email || ""} name="email" mode={mode} />
                     <CustomerComments value={values.comments || ""} name="comments" mode={mode} />
+                    <CoreTextField value={values.codeline || ""} name="codeline" mode={mode} xsWidth={12}/>
                     <Grid item xs={12}>
                       <Typography variant="body2" align="center" style={{ color: '#f44336' }}>{JSON.stringify(errors).replace(/"/g, '')}</Typography>
                     </Grid>

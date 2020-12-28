@@ -1,30 +1,112 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-
-
 let page;
-let mutamers;
-let currentMutamer;
-let pax;
-let currentMutamerIndex = 0;
+let emailPage;
+let email;
+let data;
+let counter = 0;
+
+const config = [
+    {
+        step: 'login',
+        url: 'http://app2.babalumra.com/Security/login.aspx',
+        details: [
+            { selector: '#txtUserName', value: () => 'ea42685' },
+            { selector: '#txtPassword', value: () => 'ea42685' },
+        ]
+    },
+    {
+        step: 'main',
+        url: 'http://app2.babalumra.com/Security/MainPage.aspx',
+    },
+    {
+        step: 'create-group',
+        url: 'http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1',
+        details: [
+            { selector: '#ctl00_ContentHolder_TxtGroupName', value: (row) => (row.firstName + row.lastName + row.passportNumber).replace(/ /g, '') },
+            { selector: '#ctl00_ContentHolder_TxtNotes', value: () => (new Date()).toString() },
+            { selector: '#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput', value: () => '01/01/2021' },
+        ]
+    },
+    {
+        step: 'create-mutamer',
+        regex: 'http://app2.babalumra.com/Groups/EditMutamerNew.aspx\\?GroupId=\\d+',
+        url: 'http://app2.babalumra.com/Groups/EditMutamerNew.aspx?GroupId=654',
+        details: [
+            { selector: '#ctl00_ContentHolder_LstTitle', value: (row) => '99' },
+            { selector: '#ctl00_ContentHolder_txtMutamerOcc', value: (row) => decodeURI(row.profession) },
+            { selector: '#ctl00_ContentHolder_LstSocialState', value: (row) => '99' },
+            { selector: '#ctl00_ContentHolder_LstEducation', value: (row) => '99' },
+            { selector: '#ctl00_ContentHolder_TxtBirthCity', value: (row) => decodeURI(row.birthPlace) },
+            { selector: '#ctl00_ContentHolder_TxtAddressCity', value: (row) => decodeURI(row.birthPlace) },
+            { selector: '#ctl00_ContentHolder_TxtAltFirstName', value: (row) => row.firstNameArabic },
+            { selector: '#ctl00_ContentHolder_TxtAltLastName', value: (row) => row.lastNameArabic },
+            { selector: '#ctl00_ContentHolder_TxtAltGrandFatherName', value: (row) => row.middleNameArabic },
+            { selector: '#ctl00_ContentHolder_TxtAltSecondName', value: (row) => row.additionalNameArabic },
+            { selector: '#ctl00_ContentHolder_calPassIssue_dateInput', value: (row) => row.passIssueDt },
+            { selector: '#ctl00_ContentHolder_TxtCityIssuedAt', value: (row) => decodeURI(row.placeOfIssue) },
+
+
+        ]
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/Index',
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName',
+        details: [
+            { selector: '#FirstNameEnglish', value: (row) => row.firstName },
+            { selector: '#LastNameEnglish', value: (row) => row.lastName },
+            { selector: '#FatherNameEnglish', value: (row) => row.middleName },
+            { selector: '#Gender', value: (row) => row.gender },
+            { selector: '#SocialStatus', value: () => '5' },
+            { selector: '#Nationality', value: (row) => row.nationality },
+            { selector: '#CountryOfBirth', value: (row) => row.nationality },
+            { selector: '#Country', value: (row) => row.nationality },
+            { selector: '#CityOfBirth', value: (row) => row.birthPlace },
+            { selector: '#Profession', value: (row) => row.profession },
+            { selector: '#City', value: (row) => row.address },
+            { selector: '#PostalCode', value: (row) => '11821' },
+            { selector: '#Address', value: (row) => row.address },
+        ]
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/PassportInfo',
+        details: [
+            { selector: '#PassportNumber', value: (row) => row.passportNumber },
+            { selector: '#PassportIssuePlace', value: (row) => row.placeOfIssue },
+            { selector: '#PlaceOfResidence', value: (row) => 'friend' },
+            { selector: '#CityId', value: (row) => '33' },
+            { selector: '#Address1', value: (row) => 'address in madinah' },
+        ]
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Insurance/ChooseInsurance',
+    },
+    {
+        url: 'https://visa.visitsaudi.com/Visa/Terms',
+    }
+
+]
+
 const displayButtonsContainer = '#aspnetForm > div.container-fluid.body-content > div.page-header';
 automate();
 
 async function automate() {
+    if (!fs.existsSync(__dirname + '/data.json')) {
+        console.log('Data file does not exist')
+        process.exit(1);
+    }
+    const content = fs.readFileSync(__dirname + '/data.json', 'utf8');
+    data = JSON.parse(content)
     const browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ['--start-maximized'] });
     page = await browser.newPage();
     await page.bringToFront();
     page.on('domcontentloaded', onContentLoaded);
     await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+    await page.goto(config[0].url, { waitUntil: 'domcontentloaded' });
 
-    // if (!mutamers) {
-    //     fs.readFile('./Mutamers.json', (err, data) => {
-    //         if (err) throw err;
-    //         mutamers = JSON.parse(data);
-    //         pax = parseInt(mutamers.pax);
-    //     });
-    // }
     // await page.exposeFunction('pasteCurrentMutamer', async (currentMutamer) => {
     //     try {
     //         scanCurrentMutamer();
@@ -57,154 +139,106 @@ async function automate() {
     //     }
 
     // });
-     await page.goto('http://app2.babalumra.com/Security/login.aspx', { waitUntil: 'domcontentloaded' });
-    // await login();
-    // await createGroup();
 };
 
 
-async function login() {
-    const usernameElement = await page.$('#txtUserName');
-    if (usernameElement && mutamers.bauUsername) {
-        await typeText('#txtUserName', mutamers.bauUsername);
-    }
-    const passwordElement = await page.$('#txtPassword');
-    if (passwordElement && mutamers.bauPassword) {
-        await typeText('#txtPassword', mutamers.bauPassword);
-    }
-    // if (usernameElement && mutamers.bauUsername && passwordElement && mutamers.bauPassword) {
-    //     await page.click('#lnkLogin');
-    //     await page.waitForNavigation();
-    // }
-}
-
-async function createGroup(res) {
-    const tripDate = DateTime.local().plus({ days: 10 });
-    const url = await page.url();
-
-    if (url.includes('/Security/MainPage.aspx')) {
-        await page.goto('http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1', { waitUntil: 'domcontentloaded' });
-    } else if (url.includes('http://app2.babalumra.com/Groups/AddNewGroup.aspx')) {
-        const groupnameElement = await page.$('#ctl00_ContentHolder_TxtGroupName');
-        if (groupnameElement) {
-            await typeText('#ctl00_ContentHolder_TxtGroupName', decodeURI(mutamers.packageName));
-            await page.type('#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput', mutamers.travelDate);
-            const embassies = await page.evaluate(() => {
-                const embassiesSelect = document.querySelectorAll('#ctl00_ContentHolder_LstConsulate > option');
-                const embassyCodes = [];
-                for (i = 0; i < embassiesSelect.length; i++) {
-                    const embassyCode = embassiesSelect[i].value;
-                    if (embassyCode && embassyCode !== '-1') {
-                        embassyCodes.push(embassyCode);
-                    }
-                }
-                return embassyCodes;
-            });
-            if (embassies) {
-                if (embassies.includes(mutamers.embassy)) {
-                    await page.select('#ctl00_ContentHolder_LstConsulate', mutamers.embassy);
-                } else {
-                    await page.select('#ctl00_ContentHolder_LstConsulate', embassies[0]);
-                }
-                if (embassies.length === 1) {
-                    await page.click('#ctl00_ContentHolder_btnCreate');
-                }
-            }
-        }
-    }
-}
 
 async function onContentLoaded(res) {
-    const url = await page.url();
+    const currentConfig = stepConfig(await page.url())
+    switch (currentConfig.step) {
+        case 'login':
+            await commit(currentConfig.details)
+            await page.waitForSelector('#rdCap_CaptchaTextBox')
+            await page.focus('#rdCap_CaptchaTextBox')
+            await page.waitForFunction("document.querySelector('#rdCap_CaptchaTextBox').value.length === 5")
+            await page.click('#lnkLogin')
+            break;
+        case 'main':
+            await page.goto('http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1');
+            break;
+        case 'create-group':
+            await commit(currentConfig.details, data[0])
+            await page.evaluate(() => {
+                const consulate = document.querySelector('#ctl00_ContentHolder_LstConsulate');
+                const consulateOptions = consulate.querySelectorAll('option');
+                const consulateOptionsCount = [...consulateOptions].length;
+                if (consulateOptionsCount === 2) {
+                    consulateOptions[1].selected = true;
+                }
+            });
+            await page.click('#ctl00_ContentHolder_btnCreate')
+            break;
+        case 'create-mutamer':
+            const passportNumber = await page.$eval('#ctl00_ContentHolder_TxtNumber', (e) => e.value);
+            if (passportNumber) {
+                return;
+            }
 
-    if (url.includes('com/Groups/EditMutamerNew.aspx')) {
-        const data = fs.readFileSync('./Mutamers.json');
-        const mutamersObject = JSON.parse(data);
-        if (!mutamersObject.mutamerIndex) {
-            mutamersObject.mutamerIndex = 0;
-        }
-        if (mutamersObject.mutamerIndex >= mutamersObject.pax) {
-            mutamersObject.mutamerIndex = mutamersObject.pax - 1;
-        }
-        const thisMutamer = mutamersObject.mutamers[mutamersObject.mutamerIndex];
-        await displayButtons(mutamersObject, displayButtonsContainer);
-        await page.evaluate(() => {
+            await page.waitFor(2000);
+            await page.evaluate(() => {
+                const divBtn = document.querySelector('#btnclick');
+                if (divBtn) {
+                    divBtn.click();
+                }
+            })
 
-            let createButton = document.querySelector('#aspnetForm > div.container-fluid.body-content > div.row > div > div:nth-child(9) > div');
-            createButton.innerHTML = createButton.innerHTML + `<div style="height: 500px">Extra space</div>`;
-        });
-    } else if (url.includes('http://app2.babalumra.com/Security/login.aspx')) {
-        await login();
-    } else if (url.includes('http://app2.babalumra.com/Security/MainPage.aspx')) {
-        createGroup();
-    } else if (url.includes('http://app2.babalumra.com/Groups/AddNewGroup.aspx')) {
-        createGroup();
+            await page.waitForSelector('#ctl00_ContentHolder_btngetValues');
+            await page.type('#ctl00_ContentHolder_btngetValues', data[0].codeline, { delay: 0 });
+
+            await page.waitFor(2000);
+            await commit(currentConfig.details, data[0])
+
+
+
+
+            let futureFileChooser = page.waitForFileChooser();
+            await page.waitForSelector('#ctl00_ContentHolder_imgSelectedFile')
+            await page.evaluate(() => document.querySelector('#ctl00_ContentHolder_ImageUploaderControl').click())
+            let fileChooser = await futureFileChooser;
+            await fileChooser.accept(['./photo.jpg']);
+            let passportFile = './passport.jpg';
+            // if (useBlur) {
+            //     passportFile = './' + thisMutamer.HajId + '_MRZ2.jpg';
+            // }
+            if (fs.existsSync(passportFile)) {
+                futureFileChooser = page.waitForFileChooser();
+                await page.evaluate(() => document.querySelector('#ctl00_ContentHolder_ImageUploaderControlPassport').click())
+                fileChooser = await futureFileChooser;
+                await fileChooser.accept([passportFile]);
+            }
+            await page.waitForSelector('#ctl00_ContentHolder_rdCap_CaptchaTextBox')
+            await page.focus('#ctl00_ContentHolder_rdCap_CaptchaTextBox')
+            await page.waitForFunction("document.querySelector('#ctl00_ContentHolder_rdCap_CaptchaTextBox').value.length === 5")
+            await page.click('#ctl00_ContentHolder_BtnEdit')
+            break;
+        default:
+            break;
     }
 
 }
 
-async function scanCurrentMutamer(useBlur) {
-    const data = fs.readFileSync('./Mutamers.json');
-    const mutamersObject = JSON.parse(data);
-    if (!mutamersObject.mutamerIndex) {
-        mutamersObject.mutamerIndex = 0;
-    }
-    const thisMutamer = mutamersObject.mutamers[mutamersObject.mutamerIndex];
-    await typeText('#ctl00_ContentHolder_txtMutamerOcc', decodeURI(thisMutamer.Occupation));
-
-    await selectByValue('#ctl00_ContentHolder_LstSocialState', '99');
-    await selectByValue('#ctl00_ContentHolder_LstEducation', '99');
-    await typeText('#ctl00_ContentHolder_TxtBirthCity', decodeURI(thisMutamer.PlaceOfBirth));
-    await typeText('#ctl00_ContentHolder_TxtAddressCity', decodeURI(thisMutamer.PlaceOfBirth));
-    await typeText('#ctl00_ContentHolder_calPassIssue_dateInput', thisMutamer.IssueDate);
-    await typeText('#ctl00_ContentHolder_TxtCityIssuedAt', decodeURI(thisMutamer.IssuePlace));
-
-    const content = await page.content();
-    let isArabicInterface = false;
-    if (!content.includes('Mutamer Birth Infromation')) {
-        isArabicInterface = true;
-    }
-    if (thisMutamer.ArabicFirstName) {
-        isArabicInterface ? await typeText('#ctl00_ContentHolder_TxtFirstName', decodeURI(thisMutamer.ArabicFirstName)) : await typeText('#ctl00_ContentHolder_TxtAltFirstName', decodeURI(thisMutamer.ArabicFirstName));
-
-    }
-    if (thisMutamer.ArabicLastName) {
-
-        isArabicInterface ? await typeText('#ctl00_ContentHolder_TxtLastName', decodeURI(thisMutamer.ArabicLastName)) : await typeText('#ctl00_ContentHolder_TxtAltLastName', decodeURI(thisMutamer.ArabicLastName));
-    }
-    if (thisMutamer.ArabicGrandName) {
-
-        isArabicInterface ? await typeText('#ctl00_ContentHolder_TxtGrandFatherName', decodeURI(thisMutamer.ArabicGrandName)) : await typeText('#ctl00_ContentHolder_TxtAltGrandFatherName', decodeURI(thisMutamer.ArabicGrandName));
-    }
-    if (thisMutamer.ArabicFatherName) {
-
-        isArabicInterface ? await typeText('#ctl00_ContentHolder_TxtSecondName', decodeURI(thisMutamer.ArabicFatherName)) : await typeText('#ctl00_ContentHolder_TxtAltSecondName', decodeURI(thisMutamer.ArabicFatherName));
+async function commit(structure, info) {
+    for (const element of structure) {
+        await page.waitForSelector(element.selector)
+        let value;
+        if (element.value) {
+            value = element.value(info)
+        }
+        const elementType = await page.$eval(element.selector, e => e.outerHTML.match(/<(.*?) /g)[0].replace(/</g, '').replace(/ /g, '').toLowerCase())
+        switch (elementType) {
+            case 'input':
+                await page.type(element.selector, value)
+                break;
+            case 'select':
+                await page.select(element.selector, value)
+                break;
+            default:
+                break;
+        }
     }
 
-    await page.click('#btnclick');
-    await page.waitForSelector('#ctl00_ContentHolder_btngetValues');
-    await typeText('#ctl00_ContentHolder_btngetValues', thisMutamer.CodeLine, { delay: 0 });
-    await page.waitForNavigation();
-
-    if (thisMutamer.Relationship) {
-        await selectByValue('#ctl00_ContentHolder_LstCompRelationship', thisMutamer.Relationship);
-    }
-    let futureFileChooser = page.waitForFileChooser();
-    await page.waitForSelector('#ctl00_ContentHolder_imgSelectedFile')
-    await page.evaluate(() => document.querySelector('#ctl00_ContentHolder_ImageUploaderControl').click())
-    let fileChooser = await futureFileChooser;
-    await fileChooser.accept(['./' + thisMutamer.HajId + '.jpg']);
-    let passportFile = './' + thisMutamer.HajId + '_MRZ1.jpg';
-    if (useBlur) {
-        passportFile = './' + thisMutamer.HajId + '_MRZ2.jpg';
-    }
-    if (fs.existsSync(passportFile)) {
-        futureFileChooser = page.waitForFileChooser();
-        await page.evaluate(() => document.querySelector('#ctl00_ContentHolder_ImageUploaderControlPassport').click())
-        fileChooser = await futureFileChooser;
-        await fileChooser.accept([passportFile]);
-    }
 }
+
 
 async function movetoNextMutamer() {
     const data = fs.readFileSync('./Mutamers.json');
@@ -228,43 +262,6 @@ async function movetoPreviousMutamer() {
     }
     fs.writeFileSync('./Mutamers.json', JSON.stringify(mutamersObject));
     await displayButtons(mutamersObject, displayButtonsContainer);
-}
-async function typeText(selector, value) {
-    await page.waitForSelector(selector);
-    await page.focus(selector);
-    await page.$eval(selector, el => el.value = '');
-    await page.type(selector, value);
-}
-async function selectByValue(selector, value) {
-    try {
-        await page.waitForSelector(selector);
-        await page.select(selector, value);
-    } catch  { };
-}
-async function selectByText(selector, value) {
-    try {
-        const textValueId = await page.evaluate((p) => {
-            try {
-                const options = document.querySelectorAll(p[0] + ' > option');
-                for (i = 0; i < options.length; i++) {
-                    if (options[i].innerText === p[1]) {
-                        return options[i].value;
-                    }
-
-                }
-                return '';
-            } catch (ex) {
-                console.log(ex);
-            }
-        }, [selector, value]);
-
-        if (textValueId) {
-            await page.waitForSelector(selector);
-            await page.select(selector, textValueId);
-        }
-    } catch (ex) {
-        console.log(ex);
-    }
 }
 
 
@@ -298,4 +295,13 @@ async function displayButtons(mutamersObject, selector) {
         let children = '';
         buttonsDiv.innerHTML = children + `<div style="display: flex; width: 100%; justify-content: center">` + previousButton + currentButton + nextButton + '</div>';
     }, [mutamersObject, selector]);
+}
+
+function stepConfig(url) {
+    let lowerUrl = url.toLowerCase();
+    const urlConfig = config.find(x => x.url.toLowerCase() === lowerUrl || (x.regex && RegExp(x.regex.toLowerCase()).test(lowerUrl)));
+    if (urlConfig) {
+        return urlConfig;
+    }
+    return {}
 }

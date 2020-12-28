@@ -8,6 +8,7 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import _ from 'lodash';
+import {nameParts} from '../../../util/nameParts'
 
 const name = "name";
 const CustomerName = ({
@@ -17,23 +18,7 @@ const CustomerName = ({
 }) => {
 
   const helperText = () => {
-    if (!value) return ''
-
-    const nameArray = value.split(' ');
-    switch (nameArray.length) {
-      case 0:
-      case 1:
-        return 'invalid name';
-      case 2:
-        return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}`
-      case 3:
-        return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}//${nameArray[2].replace(/-/g, ' ')}`
-      case 4:
-        return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}/${nameArray[2].replace(/-/g, ' ')}/${nameArray[3].replace(/-/g, ' ')}`
-      default:
-        return `${nameArray[0].replace(/-/g, ' ')}/${nameArray[1].replace(/-/g, ' ')}/${nameArray.slice(2,nameArray.length - 1).join(' ').replace(/-/g, ' ')}/${_.last(nameArray).replace(/-/g, ' ')}`
-
-    }
+    return nameParts(value).join('/')
   }
 
   const handleFacebookClick = () => {
