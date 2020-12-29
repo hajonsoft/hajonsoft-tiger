@@ -61,11 +61,12 @@ const Customers = () => {
 
   const { data: travellers, updateData: updateTraveller, loading, error } = useTravellerState();
 
-  const [state, setstate] = useState({
+  const [state, setState] = useState({
     mode: "list",
     record: {},
     customerKey: 0,
   });
+
   const title = "Traveller";
   const history = useHistory();
 
@@ -121,7 +122,7 @@ const Customers = () => {
               record={state.record}
               title={title}
               onClose={() =>
-                setstate((st) => ({ ...st, mode: "list", record: {} }))
+                setState((st) => ({ ...st, mode: "list", record: {} }))
               }
             />
           )}
@@ -151,7 +152,7 @@ const Customers = () => {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
-                  onClick: (event) => setstate((st) => ({ ...st, mode: "create" })),
+                  onClick: (event) => setState((st) => ({ ...st, mode: "create" })),
                 },
                 rowData => ({
                   icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
@@ -170,7 +171,7 @@ const Customers = () => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    setstate((st) => ({
+                    setState((st) => ({
                       ...st,
                       mode: "update",
                       record: rowData,
@@ -185,7 +186,7 @@ const Customers = () => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection deletes
                     }
-                    setstate((st) => ({
+                    setState((st) => ({
                       ...st,
                       mode: "delete",
                       record: rowData,
@@ -197,10 +198,14 @@ const Customers = () => {
               options={{
                 actionsColumnIndex: -1,
                 grouping: true,
-                pageSize: 20,
+                exportAllData: true,
+                pageSize: 50,
+                pageSizeOptions: [10,50,100],
+                initialPage: 0,
                 exportFileName: packageName,
                 exportButton: true,
                 columnsButton: true,
+                searchAutoFocus: true
               }}
               localization={{
                 body: {

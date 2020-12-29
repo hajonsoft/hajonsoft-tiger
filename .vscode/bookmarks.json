@@ -1,0 +1,62 @@
+[
+	{
+		"path": "$ROOTPATH$\\migration\\py\\hajcustomer_sql_2_realtime.py",
+		"bookmarks": [
+			{
+				"line": 114,
+				"column": 47,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\gist\\visit.js",
+		"bookmarks": [
+			{
+				"line": 226,
+				"column": 18,
+				"label": ""
+			},
+			{
+				"line": 236,
+				"column": 14,
+				"label": ""
+			},
+			{
+				"line": 104,
+				"column": 1,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\src\\features\\onlinePackage\\components\\PackageDetailCardM3li.js",
+		"bookmarks": [
+			{
+				"line": 24,
+				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\src\\features\\onlinePackage\\components\\PackageFeatures.js",
+		"bookmarks": [
+			{
+				"line": 73,
+				"column": 111,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\src\\features\\onlinePackage\\components\\PackageCard.js",
+		"bookmarks": [
+			{
+				"line": 33,
+				"column": 35,
+				"label": ""
+			}
+		]
+	}
+]
