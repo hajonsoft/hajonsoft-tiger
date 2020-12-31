@@ -1,9 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-
+const moment = require('moment')
 let page;
-let emailPage;
-let email;
 let data;
 let counter = 0;
 
@@ -24,9 +22,9 @@ const config = [
         step: 'create-group',
         url: 'http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1',
         details: [
-            { selector: '#ctl00_ContentHolder_TxtGroupName', value: (row) => (row.firstName + row.lastName + row.passportNumber).replace(/ /g, '') },
+            { selector: '#ctl00_ContentHolder_TxtGroupName', value: (row) => (row.name.full + row.passportNumber).replace(/ /g, '') },
             { selector: '#ctl00_ContentHolder_TxtNotes', value: () => (new Date()).toString() },
-            { selector: '#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput', value: () => '01/01/2021' },
+            { selector: '#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput', value: () => moment().add(7,'days').format('DD/MM/YYYY') },
         ]
     },
     {
@@ -40,53 +38,16 @@ const config = [
             { selector: '#ctl00_ContentHolder_LstEducation', value: (row) => '99' },
             { selector: '#ctl00_ContentHolder_TxtBirthCity', value: (row) => decodeURI(row.birthPlace) },
             { selector: '#ctl00_ContentHolder_TxtAddressCity', value: (row) => decodeURI(row.birthPlace) },
-            { selector: '#ctl00_ContentHolder_TxtAltFirstName', value: (row) => row.firstNameArabic },
-            { selector: '#ctl00_ContentHolder_TxtAltLastName', value: (row) => row.lastNameArabic },
-            { selector: '#ctl00_ContentHolder_TxtAltGrandFatherName', value: (row) => row.middleNameArabic },
-            { selector: '#ctl00_ContentHolder_TxtAltSecondName', value: (row) => row.additionalNameArabic },
-            { selector: '#ctl00_ContentHolder_calPassIssue_dateInput', value: (row) => row.passIssueDt },
+            { selector: '#ctl00_ContentHolder_TxtAltFirstName', value: (row) => row.nameArabic.first },
+            { selector: '#ctl00_ContentHolder_TxtAltLastName', value: (row) => row.nameArabic.last },
+            { selector: '#ctl00_ContentHolder_TxtAltGrandFatherName', value: (row) => row.nameArabic.grand },
+            { selector: '#ctl00_ContentHolder_TxtAltSecondName', value: (row) => row.nameArabic.father },
+            { selector: '#ctl00_ContentHolder_calPassIssue_dateInput', value: (row) => row.passIssueDt.dmy },
             { selector: '#ctl00_ContentHolder_TxtCityIssuedAt', value: (row) => decodeURI(row.placeOfIssue) },
 
 
         ]
     },
-    {
-        url: 'https://visa.visitsaudi.com/Visa/Index',
-    },
-    {
-        url: 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName',
-        details: [
-            { selector: '#FirstNameEnglish', value: (row) => row.firstName },
-            { selector: '#LastNameEnglish', value: (row) => row.lastName },
-            { selector: '#FatherNameEnglish', value: (row) => row.middleName },
-            { selector: '#Gender', value: (row) => row.gender },
-            { selector: '#SocialStatus', value: () => '5' },
-            { selector: '#Nationality', value: (row) => row.nationality },
-            { selector: '#CountryOfBirth', value: (row) => row.nationality },
-            { selector: '#Country', value: (row) => row.nationality },
-            { selector: '#CityOfBirth', value: (row) => row.birthPlace },
-            { selector: '#Profession', value: (row) => row.profession },
-            { selector: '#City', value: (row) => row.address },
-            { selector: '#PostalCode', value: (row) => '11821' },
-            { selector: '#Address', value: (row) => row.address },
-        ]
-    },
-    {
-        url: 'https://visa.visitsaudi.com/Visa/PassportInfo',
-        details: [
-            { selector: '#PassportNumber', value: (row) => row.passportNumber },
-            { selector: '#PassportIssuePlace', value: (row) => row.placeOfIssue },
-            { selector: '#PlaceOfResidence', value: (row) => 'friend' },
-            { selector: '#CityId', value: (row) => '33' },
-            { selector: '#Address1', value: (row) => 'address in madinah' },
-        ]
-    },
-    {
-        url: 'https://visa.visitsaudi.com/Insurance/ChooseInsurance',
-    },
-    {
-        url: 'https://visa.visitsaudi.com/Visa/Terms',
-    }
 
 ]
 
@@ -100,11 +61,13 @@ async function automate() {
     }
     const content = fs.readFileSync(__dirname + '/data.json', 'utf8');
     data = JSON.parse(content)
-    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ['--start-maximized'] });
+    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ['--start-maximized', '--incognito'] });
     page = await browser.newPage();
     await page.bringToFront();
     page.on('domcontentloaded', onContentLoaded);
-    await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+    // await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+    await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1');
+   
     await page.goto(config[0].url, { waitUntil: 'domcontentloaded' });
 
     // await page.exposeFunction('pasteCurrentMutamer', async (currentMutamer) => {
@@ -174,7 +137,8 @@ async function onContentLoaded(res) {
                 return;
             }
 
-            await page.waitFor(2000);
+            await page.waitFor(5000);
+            await page.waitForSelector('#btnclick')
             await page.evaluate(() => {
                 const divBtn = document.querySelector('#btnclick');
                 if (divBtn) {
@@ -195,8 +159,8 @@ async function onContentLoaded(res) {
             await page.waitForSelector('#ctl00_ContentHolder_imgSelectedFile')
             await page.evaluate(() => document.querySelector('#ctl00_ContentHolder_ImageUploaderControl').click())
             let fileChooser = await futureFileChooser;
-            await fileChooser.accept(['./photo.jpg']);
-            let passportFile = './passport.jpg';
+            await fileChooser.accept(['./images/photos/521560678.jpg']);
+            let passportFile = './images/passports/521560678.jpg';
             // if (useBlur) {
             //     passportFile = './' + thisMutamer.HajId + '_MRZ2.jpg';
             // }

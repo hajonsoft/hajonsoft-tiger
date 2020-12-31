@@ -1,13 +1,16 @@
 import { faHandsHelping, faPassport, faPrint, faShareSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, CircularProgress, Grid, Paper } from '@material-ui/core';
+import moment from 'moment';
 import React from 'react';
+import { nameParts } from '../../../util/nameParts';
 import useTravellerState from '../redux/useTravellerState';
 import BioStatistics from './BioStatistics';
 import NationalityStatistics from './NationalityStatistics';
-import {nameParts} from '../../../util/nameParts'
-import moment from 'moment'
+
 //TODO: Redesign, talk to customers to get feedback
+
+// const storage = firebase.storage();
 const PackageDetail = ({ data }) => {
     const { data: travellers, loading, error } = useTravellerState()
 
@@ -15,27 +18,24 @@ const PackageDetail = ({ data }) => {
         // create the data.json 
         const mapped = travellers[data.name].map(t => {
             const _nameParts = nameParts(t.name);
-            const _nameArabicParts = nameParts(t.nameArabic);
+            let _nameArabicParts = nameParts(t.nameArabic);
+            if (_nameArabicParts[0] === 'invalid'){
+                _nameArabicParts = ['','','','']
+            }
             return {
-                nationality: t.nationality,
-                firstName: _nameParts[0],
-                lastName: _nameParts[3],
-                middleName: _nameParts[1],
-                additionalName: _nameParts[2],
-                firstNameArabic: _nameArabicParts[0],
-                lastNameArabic: _nameArabicParts[3],
-                middleNameArabic: _nameArabicParts[1],
-                additionalNameArabic: _nameArabicParts[2],
+                nationality: {name: t.nationality},
+                name: {full: t.name, first: _nameParts[0], last: _nameParts[3], father: _nameParts[1], grand: _nameParts[2]},
+                nameArabic: {full: t.nameArabic, first: _nameArabicParts[0], last: _nameArabicParts[3], father: _nameArabicParts[1], grand: _nameArabicParts[2]},
                 mobileNumber: t.phone,
                 gender: t.gender,
-                dob: moment(t.birthDate).format('DD/MM/YYYY'),
-                passIssueDt: moment(t.passIssueDt).format('DD/MM/YYYY'),
-                passExpireDt: moment(t.passExpireDt).format('DD/MM/YYYY'),
+                dob: {dmy: moment(t.birthDate).format('DD/MM/YYYY')},
+                passIssueDt: {dmy: moment(t.passIssueDt).format('DD/MM/YYYY')},
+                passExpireDt: {dmy: moment(t.passExpireDt).format('DD/MM/YYYY')},
                 birthPlace: t.birthPlace,
                 profession: t.profession,
                 address: t.address,
                 passportNumber: t.passportNumber,
-                placeOfIssue: t.placeOfIssue,
+                placeOfIssue: t.passPlaceOfIssue,
                 codeline: t.codeline
             }
         })
@@ -46,6 +46,28 @@ const PackageDetail = ({ data }) => {
         tempLink.href = csvURL;
         tempLink.setAttribute('download', 'data.json');
         tempLink.click();
+    }
+
+    const handleShareImagesClick = async () => {
+
+        // var zip = new JSZip();
+        // zip.file("Hello.txt", "Hello World\n");
+        // var img = zip.folder("images");
+        // const pathReference = storage.ref('United Kingdom/521560678.jpg');
+        // const imgData = await pathReference.getBytes(1024 * 1024);
+        // img.file("smile.gif", imgData, {base64: true});
+        // zip.generateAsync({type:"blob"})
+        // .then(function(content) {
+        //     // see FileSaver.js
+        //     const newFile = new Blob([content], { type: 'application/zip' });
+        //     var csvURL = window.URL.createObjectURL(newFile);
+        //     const tempLink = document.createElement('a');
+        //     tempLink.href = csvURL;
+        //     tempLink.setAttribute('download', 'images.zip');
+        //     tempLink.click();
+        // });
+
+
     }
 
     return (
@@ -69,6 +91,10 @@ const PackageDetail = ({ data }) => {
                         <Grid item xs={12}>
                             <Button style={{ width: '100%' }} variant="outlined" color="primary" onClick={handleShareClick} endIcon={<FontAwesomeIcon icon={faShareSquare} />}
                             > Share</Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button style={{ width: '100%' }} variant="outlined" color="primary" onClick={handleShareImagesClick} endIcon={<FontAwesomeIcon icon={faShareSquare} />}
+                            > Share Images</Button>
                         </Grid>
                         <Grid item xs={12}>
                             <Button style={{ width: '100%' }} variant="outlined" color="primary" endIcon={<FontAwesomeIcon icon={faPrint} />}

@@ -7,15 +7,14 @@ const useStyles = makeStyles({
   mainContainer: {
     borderRadius: "8px",
     position: "relative",
-    width: "210px",
+    width: "90%",
     height: "210px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "10px",
   },
   imgContainer: {
-    width: "200px",
+    width: "100%",
     height: "200px",
   },
   pickImage: {
@@ -34,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CoreImage = ({ record, setImage }) => {
+const CorePassportImage = ({ record, setImage }) => {
   const [url, setUrl] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
@@ -48,17 +47,17 @@ const CoreImage = ({ record, setImage }) => {
   };
 
   useEffect(() => {
-    if (record.image) {
-      setUrl(URL.createObjectURL(record.image));
+    if (record.passportImage) {
+      setUrl(URL.createObjectURL(record.passportImage));
     }
-  }, [record.image]);
+  }, [record.passportImage]);
 
   useEffect(() => {
     async function getImage() {
       if (record && record.nationality && record.passportNumber) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${record.nationality}/${record.passportNumber}.jpg`)
+          .ref(`${record.nationality}/${record.passportNumber}_passport.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);
@@ -79,7 +78,7 @@ const CoreImage = ({ record, setImage }) => {
         <CardContent>
           <img
             src={url}
-            alt={"customer"}
+            alt={"passport"}
             className={classes.imgContainer}
             style={{ display: url ? "block" : "none" }}
           ></img>
@@ -103,4 +102,4 @@ const CoreImage = ({ record, setImage }) => {
   );
 };
 
-export default CoreImage;
+export default CorePassportImage;

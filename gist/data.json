@@ -1,38 +1,35 @@
 [
   {
-    "nationality": "210",
-    "firstName": "John",
-    "lastName": "Doe",
-    "middleName": "middle",
-    "additionalName": "additional",
-    "firstNameArabic": "الأسم الأول",
-    "lastNameArabic": "إسم العائله",
-    "middleNameArabic": "إسم الجد",
-    "additionalNameArabic": "إسم الأب",
-    "mobileNumber": "9493231289",
-    "gender": "1",
-    "dob": "01/01/1997",
-    "passIssueDt": "01/01/1990",
-    "passExpireDt": "01/01/1990",
-    "birthPlace": "Cairo",
-    "profession": "Employee",
-    "address": "123 street, city state",
-    "passportNumber": "01A90920",
-    "placeOfIssue": "london",
-    "codeline": "P<CIVTRAORE<<SOULEYMANE<<<<<<<<<<<<<<<<<<<<<20AC074726CIV7003075M2502265<<<<<<<<<<<<<<00"
-  },
-  {
-    "nationality": "210",
-    "firstName": "newJohn",
-    "lastName": "newDoe",
-    "middleName": "middle",
-    "mobileNumber": "9493231289",
-    "gender": "1",
-    "dob": "01/01/1990",
-    "birthPlace": "Cairo",
-    "profession": "Employee",
-    "address": "123 street, city state",
-    "passportNumber": "02A90920",
-    "placeOfIssue": "london"
+    "nationality": {
+      "name": "United Kingdom"
+    },
+    "name": {
+      "full": "NIAZ MOHAMMED CHOUDHURY",
+      "first": "NIAZ",
+      "last": "CHOUDHURY",
+      "father": "MOHAMMED",
+      "grand": ""
+    },
+    "nameArabic": {
+      "first": "",
+      "last": "",
+      "father": "",
+      "grand": ""
+    },
+    "gender": "Male",
+    "dob": {
+      "dmy": "01/12/1974"
+    },
+    "passIssueDt": {
+      "dmy": "15/04/2014"
+    },
+    "passExpireDt": {
+      "dmy": "15/08/2024"
+    },
+    "birthPlace": "DHAKA",
+    "profession": "Manager",
+    "passportNumber": "521560678",
+    "placeOfIssue": "IPS",
+    "codeline": "P<GBRCHOUDHURY<<NIAZ<MOHAMED<<<<<<<<<<<<<<<<5215606786GBR7412017M2408150<<<<<<<<<<<<<<04"
   }
 ]
