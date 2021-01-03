@@ -7,9 +7,13 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+import AssignmentIndOutlinedIcon from "@material-ui/icons/AssignmentIndOutlined";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import RecentActorsOutlinedIcon from "@material-ui/icons/RecentActorsOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Form, Formik } from "formik";
 import _ from "lodash";
 import moment from "moment";
@@ -18,10 +22,13 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import useTravellerState from "../../Dashboard/redux/useTravellerState";
+import BirthPlace from "./BirthPlace";
 import CoreImage from "./CoreImage";
+import CorePassportImage from "./CorePassportImage";
 import CoreTextField from "./CoreTextField";
 import CustomerArabicName from "./CustomerArabicName";
 import CustomerBirthDate from "./CustomerBirthDate";
+import CustomerCodeline from "./CustomerCodeline";
 import CustomerComments from "./CustomerComments";
 import CustomerIdExpireDate from "./CustomerIdExpireDate";
 import CustomerIdIssueDate from "./CustomerIdIssueDate";
@@ -33,9 +40,7 @@ import CustomerPassportNumber from "./CustomerPassportNumber";
 import CustomerPhone from "./CustomerPhone";
 import Dropzone from "./Dropzone";
 import Gender from "./Gender";
-import BirthPlace from "./BirthPlace";
 import PassportPlaceOfIssue from "./PassportPlaceOfIssue";
-import CorePassportImage from './CorePassportImage';
 
 const storage = firebase.storage();
 
@@ -68,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
+  const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
   let { packageName } = useParams();
   const {
@@ -77,7 +83,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     deleteData: deleteTraveller,
   } = useTravellerState();
 
-  const savePassportImage = (values, image)=> {
+  const savePassportImage = (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
@@ -88,9 +94,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }
-  }
+  };
 
-  const saveImage = (values, image)=> {
+  const saveImage = (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
@@ -101,7 +107,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }
-  }
+  };
 
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
@@ -124,7 +130,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
       default:
         console.log("unknown mode");
     }
-   
+
     onClose();
   };
 
@@ -175,6 +181,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
       .required("Required")
       .max(25, "Too long!"),
   });
+
+  const handleAlignment = (event, newPhotoMode) => {
+    if (newPhotoMode !== null) {
+      setPhotoMode(newPhotoMode);
+    }
+  };
   return (
     <React.Fragment>
       <Formik
@@ -205,16 +217,28 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
               />
               <CardContent>
                 <Grid container spacing={2}>
-                  <Grid item container>
+                  <Grid item container justify="center">
                     <Grid item xs={4}>
-                      <CoreImage
-                        setImage={(img) =>  saveImage(values, img)}
+                      {photoMode === 'photo' &&  <CoreImage
+                        setImage={(img) => saveImage(values, img)}
                         record={values}
-                      />
-                      <CorePassportImage
-                        setImage={(img) =>  savePassportImage(values, img)}
+                      />}
+                      {photoMode === 'passport' && <CorePassportImage
+                        setImage={(img) => savePassportImage(values, img)}
                         record={values}
-                      />
+                      />}
+                      <ToggleButtonGroup
+                        value={photoMode}
+                        exclusive
+                        onChange={handleAlignment}
+                      >
+                        <ToggleButton value="photo" aria-label="left aligned">
+                          <AssignmentIndOutlinedIcon />
+                        </ToggleButton>
+                        <ToggleButton value="passport" aria-label="centered">
+                          <RecentActorsOutlinedIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
                     </Grid>
                     <Grid
                       item
@@ -251,11 +275,21 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         container
                         justify="space-between"
                         alignItems="center"
-                        spacing={4}
+                        spacing={2}
                       >
                         <CustomerPassportNumber
                           mode={mode}
                           value={values.passportNumber || ""}
+                          setFieldValue={setFieldValue}
+                        />
+                        <PassportPlaceOfIssue
+                          mode={mode}
+                          value={values.passPlaceOfIssue || ""}
+                          setFieldValue={setFieldValue}
+                        />
+                        <CustomerPassportIssueDate
+                          value={values.passIssueDt}
+                          mode={mode}
                           setFieldValue={setFieldValue}
                         />
                         <CustomerPassportExpireDate
@@ -264,48 +298,32 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                           setFieldValue={setFieldValue}
                         />
                       </Grid>
-                    
+
                       <Grid
                         item
                         container
                         justify="space-between"
                         alignItems="center"
-                        spacing={4}
+                        spacing={2}
                       >
-                                            <CustomerBirthDate
-                      value={values.birthDate}
-                      mode={mode}
-                      setFieldValue={setFieldValue}
-                    />
-                    <CustomerPassportIssueDate
-                      value={values.passIssueDt}
-                      mode={mode}
-                      setFieldValue={setFieldValue}
-                    />
-                      </Grid>
-                    
+                        <CustomerBirthDate
+                          value={values.birthDate}
+                          mode={mode}
+                          setFieldValue={setFieldValue}
+                        />
+                        <BirthPlace
+                          mode={mode}
+                          value={values.birthPlace || ""}
+                          setFieldValue={setFieldValue}
+                        />
 
-                    
-                      <Grid
-                        item
-                        container
-                        justify="space-between"
-                        alignItems="center"
-                        spacing={4}
-                      >
-                    <BirthPlace
-                      mode={mode}
-                      value={values.birthPlace || ""}
-                      setFieldValue={setFieldValue}
-                    />
-                    <PassportPlaceOfIssue
-                      mode={mode}
-                      value={values.passPlaceOfIssue || ""}
-                      setFieldValue={setFieldValue}
-                    />
-
+                        <CustomerCodeline
+                          value={values.codeline || ""}
+                          name="codeline"
+                          setFieldValue={setFieldValue}
+                          mode={mode}
+                        />
                       </Grid>
-                    
                     </Grid>
                   </Grid>
 
@@ -341,26 +359,25 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                   </Grid>
 
                   <Grid item container alignItems="center" spacing={4}>
-
                     <CoreTextField
                       value={values.profession || ""}
                       name="profession"
                       mode={mode}
                       maxLength={25}
                     />
-                  <CustomerPhone value={values.phone} mode={mode} />
-                  <CoreTextField
-                    value={values.email || ""}
-                    name="email"
-                    mode={mode}
-                  />
-                  </Grid>
-                  <CoreTextField
-                      value={values.mahramName || ""}
-                      name="mahramName"
-                      label="Mahram"
+                    <CustomerPhone value={values.phone} mode={mode} />
+                    <CoreTextField
+                      value={values.email || ""}
+                      name="email"
                       mode={mode}
                     />
+                  </Grid>
+                  <CoreTextField
+                    value={values.mahramName || ""}
+                    name="mahramName"
+                    label="Mahram"
+                    mode={mode}
+                  />
                   <CoreTextField
                     value={values.relationship || ""}
                     name="relationship"
@@ -372,12 +389,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                     name="comments"
                     mode={mode}
                   />
-                  <CoreTextField
-                    value={values.codeline || ""}
-                    name="codeline"
-                    mode={mode}
-                    xsWidth={12}
-                  />
+
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"

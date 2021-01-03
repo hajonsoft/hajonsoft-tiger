@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "10px",
   },
   imgContainer: {
     width: "200px",
