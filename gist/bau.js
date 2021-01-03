@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+const util = require("./util");
 const moment = require("moment");
 const sharp = require("sharp");
 let page;
@@ -8,7 +9,7 @@ let counter = 0;
 
 const config = [
   {
-    step: "login",
+    name: "login",
     url: "http://app2.babalumra.com/Security/login.aspx",
     details: [
       { selector: "#txtUserName", value: () => "ea42685" },
@@ -16,11 +17,11 @@ const config = [
     ],
   },
   {
-    step: "main",
+    name: "main",
     url: "http://app2.babalumra.com/Security/MainPage.aspx",
   },
   {
-    step: "create-group",
+    name: "create-group",
     url: "http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1",
     details: [
       {
@@ -41,7 +42,7 @@ const config = [
     ],
   },
   {
-    step: "create-mutamer",
+    name: "create-mutamer",
     regex:
       "http://app2.babalumra.com/Groups/EditMutamerNew.aspx\\?GroupId=\\d+",
     url: "http://app2.babalumra.com/Groups/EditMutamerNew.aspx?GroupId=654",
@@ -108,7 +109,6 @@ async function automate() {
   page = await browser.newPage();
   await page.bringToFront();
   page.on("domcontentloaded", onContentLoaded);
-  // await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
   await page.setUserAgent(
     "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1"
   );
@@ -150,11 +150,11 @@ async function automate() {
 }
 
 async function onContentLoaded(res) {
-    if (counter >= data.length) {
-        return;
-    }
-  const currentConfig = stepConfig(await page.url());
-  switch (currentConfig.step) {
+  if (counter >= data.length) {
+    return;
+  }
+  const currentConfig = util.findConfig(await page.url(), config);
+  switch (currentConfig.name) {
     case "login":
       await commit(currentConfig.details);
       await page.waitForSelector("#rdCap_CaptchaTextBox");
@@ -188,11 +188,12 @@ async function onContentLoaded(res) {
         "#ctl00_ContentHolder_TxtNumber",
         (e) => e.value
       );
+      // Do not continue if the passport number field is not empty
       if (passportNumber) {
         return;
       }
 
-      await page.waitFor(5000);
+      await page.waitFor(3000);
       await page.waitForSelector("#btnclick");
       await page.evaluate(() => {
         const divBtn = document.querySelector("#btnclick");
@@ -202,9 +203,13 @@ async function onContentLoaded(res) {
       });
 
       await page.waitForSelector("#ctl00_ContentHolder_btngetValues");
-      await page.type("#ctl00_ContentHolder_btngetValues", data[counter].codeline, {
-        delay: 0,
-      });
+      await page.type(
+        "#ctl00_ContentHolder_btngetValues",
+        data[counter].codeline,
+        {
+          delay: 0,
+        }
+      );
 
       await page.waitFor(2000);
       await commit(currentConfig.details, data[counter]);
@@ -359,17 +364,4 @@ async function displayButtons(mutamersObject, selector) {
     },
     [mutamersObject, selector]
   );
-}
-
-function stepConfig(url) {
-  let lowerUrl = url.toLowerCase();
-  const urlConfig = config.find(
-    (x) =>
-      x.url.toLowerCase() === lowerUrl ||
-      (x.regex && RegExp(x.regex.toLowerCase()).test(lowerUrl))
-  );
-  if (urlConfig) {
-    return urlConfig;
-  }
-  return {};
 }

@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const util = require("./util");
+const moment = require("moment");
+const sharp = require("sharp");
 
 let page;
 let emailPage;
@@ -8,17 +11,19 @@ let data;
 let counter = 0;
 const config = [
     {
+        name: 'main',
         url: 'https://visa.visitsaudi.com/Registration/Verify',
         details: [
             { selector: '#PassportType', value: () => '1' },
-            { selector: '#Nationality', value: (row) => row.nationality },
+            { selector: '#Nationality', value: (row) => row.nationality.name },
         ]
     },
     {
+        name: 'add',
         url: 'https://visa.visitsaudi.com/Registration/Add',
         details: [
-            { selector: '#FirstName', value: (row) => row.firstName },
-            { selector: '#LastName', value: (row) => row.lastName },
+            { selector: '#FirstName', value: (row) => row.name.first },
+            { selector: '#LastName', value: (row) => row.name.last},
             { selector: '#MobileNumber', value: (row) => row.mobileNumber },
             { selector: '#SecretQuestion', value: () => '1' },
             { selector: '#Answer', value: () => 'blue' },
@@ -27,6 +32,7 @@ const config = [
         ]
     },
     {
+        name: 'login',
         url: 'https://visa.visitsaudi.com/Login',
         details: [
             { selector: '#EmailId', value: () => email },
@@ -34,22 +40,26 @@ const config = [
         ]
     },
     {
+        name: 'otp',
         url: 'https://visa.visitsaudi.com/Login/OTPAuth',
     },
     {
+        name: 'index',
         url: 'https://visa.visitsaudi.com/Visa/Index',
     },
     {
+        name: 'personal',
+        regex: 'https://visa.visitsaudi.com/Visa/PersonalInfo\\?g',
         url: 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName',
         details: [
-            { selector: '#FirstNameEnglish', value: (row) => row.firstName },
-            { selector: '#LastNameEnglish', value: (row) => row.lastName },
-            { selector: '#FatherNameEnglish', value: (row) => row.middleName },
+            { selector: '#FirstNameEnglish', value: (row) => row.name.firstName },
+            { selector: '#LastNameEnglish', value: (row) => row.name.lastName },
+            { selector: '#FatherNameEnglish', value: (row) => row.name.father },
             { selector: '#Gender', value: (row) => row.gender },
             { selector: '#SocialStatus', value: () => '5' },
-            { selector: '#Nationality', value: (row) => row.nationality },
-            { selector: '#CountryOfBirth', value: (row) => row.nationality },
-            { selector: '#Country', value: (row) => row.nationality },
+            { selector: '#Nationality', value: (row) => row.nationality.name },
+            { selector: '#CountryOfBirth', value: (row) => row.nationality.name },
+            { selector: '#Country', value: (row) => row.nationality.name },
             { selector: '#CityOfBirth', value: (row) => row.birthPlace },
             { selector: '#Profession', value: (row) => row.profession },
             { selector: '#City', value: (row) => row.address },
@@ -58,6 +68,7 @@ const config = [
         ]
     },
     {
+        name: 'passport',
         url: 'https://visa.visitsaudi.com/Visa/PassportInfo',
         details: [
             { selector: '#PassportNumber', value: (row) => row.passportNumber },
@@ -68,10 +79,16 @@ const config = [
         ]
     },
     {
+        name: 'insurance',
         url: 'https://visa.visitsaudi.com/Insurance/ChooseInsurance',
     },
     {
+        name: 'terms',
         url: 'https://visa.visitsaudi.com/Visa/Terms',
+    },
+        {
+        name: 'review',
+        url: 'https://visa.visitsaudi.com/Visa/Review',
     }
 
 ]
@@ -95,36 +112,20 @@ async function automate() {
 };
 
 async function onContentLoaded(res) {
-    let currentUrl = (await page.url()).toLowerCase()
-    currentUrl = currentUrl.split('=')[0]
-    if (currentUrl.includes('https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase())) {
-        currentUrl = 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase()
-    } else if (currentUrl.includes('https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase())) {
-        currentUrl = 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase()
-    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/Terms'.toLowerCase())) {
-        currentUrl = 'https://visa.visitsaudi.com/Visa/Terms'.toLowerCase()
-    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/Review'.toLowerCase())){
-        currentUrl = 'https://visa.visitsaudi.com/Visa/Review'.toLowerCase()
-    } else if (currentUrl.includes('https://visa.visitsaudi.com/Visa/PersonalInfo?gid')){
-        currentUrl = 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName'
-    }
-
-    currentUrl = currentUrl.toLowerCase();
-    const pageConfig = config.find(x => x.url.toLowerCase().includes(currentUrl))
-    if (!pageConfig) {
+    if (counter >= data.length) {
         return;
-    }
-
-    switch (currentUrl) {
-        case 'https://visa.visitsaudi.com/Registration/Verify'.toLowerCase():
-            await commit(pageConfig.details, data[0])
+      }
+      const currentConfig = util.findConfig(await page.url(), config);
+      switch (currentConfig.name) {
+        case 'main':
+            await commit(currentConfig.details, data[counter])
             await page.waitForSelector('#CaptchaCode')
             await page.focus('#CaptchaCode')
             await page.waitForFunction("document.querySelector('#CaptchaCode').value.length === 5")
             await page.click('#btnVerify')
             break;
-        case 'https://visa.visitsaudi.com/Registration/Add'.toLowerCase():
-            await commit(pageConfig.details, data[0])
+        case 'add':
+            await commit(currentConfig.details, data[counter])
             await page.waitForSelector('#Email')
             await page.type('#Email', email)
             await page.waitForSelector('#AlternativeEmail')
@@ -135,11 +136,10 @@ async function onContentLoaded(res) {
             await page.waitForFunction("document.querySelector('#CaptchaCode').value.length === 5")
             await page.click('#btnAdd')
             break;
-        case 'https://visa.visitsaudi.com/Login'.toLowerCase():
+        case 'login':
             const isActive = await activateAccount()
             if (isActive) {
-
-                await commit(pageConfig.details)
+                await commit(currentConfig.details)
                 await page.bringToFront();
                 await page.waitForSelector('#CaptchaCode')
                 await page.focus('#CaptchaCode')
@@ -149,7 +149,7 @@ async function onContentLoaded(res) {
                 console.log('unable to activate email', email)
             }
             break;
-        case 'https://visa.visitsaudi.com/Login/OTPAuth'.toLowerCase():
+        case 'otp':
             if (await page.$('#resendOtp')) {
                 await page.waitForSelector('#resendOtp')
                 await page.click('#resendOtp')
@@ -161,51 +161,51 @@ async function onContentLoaded(res) {
                 await page.click('#btnSubmit')
             }
             break;
-        case 'https://visa.visitsaudi.com/Visa/Index'.toLowerCase():
+        case 'index':
             await page.waitForSelector('#btnApplyGroupVisa')
             await page.click('#btnApplyGroupVisa');
             await page.waitForSelector('#txtGroupName')
-            await page.type('#txtGroupName', data[0].firstName + data[0].lastName + data[0].nationality + data[0].mobileNumber)
+            await page.type('#txtGroupName', (data[counter].name.full + data[counter].nationality.name + data[counter].mobileNumber).replace(/ /g,''))
             await page.click('#btnCreateGroup');
             break;
-        case 'https://visa.visitsaudi.com/Visa/PersonalInfo?gName'.toLowerCase():
-        case 'https://visa.visitsaudi.com/Visa/PersonalInfo?gid'.toLowerCase():
+        case 'personal':
             await page.waitForSelector('#ApplyingVisaForSomeoneElseYes')
             await page.click('#ApplyingVisaForSomeoneElseYes');
-            await commit(pageConfig.details, data[0])
+            await commit(currentConfig.details, data[counter])
             await page.waitForSelector('#DateOfBirth')
             await page.$eval('#DateOfBirth', e => {
                 e.removeAttribute("readonly");
                 e.removeAttribute("disabled");
             })
-            await page.type('#DateOfBirth', '01/01/1993')
+            await page.type('#DateOfBirth', data[counter].dob.dmy)
 
             let futureFileChooser = page.waitForFileChooser();
             await page.waitForSelector('#AttachmentPersonalPicture')
             await page.evaluate(() => document.querySelector('#AttachmentPersonalPicture').click())
             let fileChooser = await futureFileChooser;
-            await fileChooser.accept(['./' + 'photo' + '.jpg']);
+            const photoFile = `./photos/${data[counter].passportNumber}.jpg`
+            await fileChooser.accept([photoFile]);
             await page.waitForSelector('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
             await page.click('#divPhotoCroper > div > div > div.modal-footer > button.rounded-button.upload-result')
 
             //#btnNext
             break;
-        case 'https://visa.visitsaudi.com/Visa/PassportInfo'.toLowerCase():
-            await commit(pageConfig.details, data[counter])
+        case 'passport':
+            await commit(currentConfig.details, data[counter])
             await page.click('#chk_4')
             await page.waitForSelector('#PassportIssueDate')
             await page.$eval('#PassportIssueDate', e => {
                 e.removeAttribute("readonly");
                 e.removeAttribute("disabled");
             })
-            await page.type('#PassportIssueDate', '01/01/2019')
+            await page.type('#PassportIssueDate', data[counter].passIssueDt.dmy)
 
             await page.waitForSelector('#PassportExpiryDate')
             await page.$eval('#PassportExpiryDate', e => {
                 e.removeAttribute("readonly");
                 e.removeAttribute("disabled");
             })
-            await page.type('#PassportExpiryDate', '01/01/2023')
+            await page.type('#PassportExpiryDate', data[counter].passExpireDt.dmy)
 
             // var entryDate = new Date();
             // entryDate.setDate(entryDate.getDate() + 3); 
@@ -226,17 +226,17 @@ async function onContentLoaded(res) {
             // })
             // await page.type('#ExpectedDateOfLeave', returnDate.toLocaleDateString())
             break;
-        case 'https://visa.visitsaudi.com/Insurance/ChooseInsurance'.toLowerCase():
+        case 'insurance':
             await page.waitForSelector('#chkInsurance')
             await page.click('#chkInsurance')
             await page.click('#btnNext')
             break;
-        case 'https://visa.visitsaudi.com/Visa/Terms'.toLowerCase():
+        case 'terms':
             await page.waitForSelector('#chkSelectDeselectAll')
             await page.click('#chkSelectDeselectAll')
             await page.click('#btnNext')
             break;
-        case 'https://visa.visitsaudi.com/Visa/Review'.toLowerCase():
+        case 'review':
             if (data.length > counter + 1)
             {
                 counter = counter + 1
