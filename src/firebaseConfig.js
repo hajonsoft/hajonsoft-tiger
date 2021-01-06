@@ -1,1 +1,1 @@
-import firebaseConfig from './firebaseConfigs/breno1-81c45'; export default firebaseConfig;
+import firebaseConfig from './firebaseConfigs/forhajjnow'; export default firebaseConfig;

@@ -5,12 +5,12 @@ import {
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Paper, Box, Typography } from "@material-ui/core";
 //TODO: Redesign, talk to customers to get feedback
 import axios from "axios";
 import JSZip from "jszip";
 import moment from "moment";
-import React from "react";
+import React, {useState} from "react";
 import firebase from "../../../firebaseapp";
 import { nameParts } from "../../../util/nameParts";
 import useTravellerState from "../redux/useTravellerState";
@@ -19,28 +19,32 @@ import NationalityStatistics from "./NationalityStatistics";
 const storage = firebase.storage();
 const PackageDetail = ({ data }) => {
   const { data: travellers, loading, error } = useTravellerState();
+  const [shareProgress, setshareProgress] = useState({loading: false, value: 0})
 
   const handleShareClick = async () => {
+    setshareProgress({loading: true, value: 0});
     var zip = new JSZip();
     const mapped = getTravellersJSON(travellers, data);
     zip.file("data.json", JSON.stringify(mapped));
     var photos = zip.folder("photos");
     var passports = zip.folder("passports");
-    for (let index = 0; index < travellers[data.name].length; index++) {
-        const traveller = travellers[data.name][index];
-        const photoReference = storage.ref(`${traveller.nationality}/${traveller.passportNumber}.jpg`);
-        const passportReference = storage.ref(`${traveller.nationality}/${traveller.passportNumber}_passport.jpg`);
-        const photoUrl = await photoReference.getDownloadURL();
-        const passportUrl = await passportReference.getDownloadURL();
-        try {
+    const travellersCount = travellers[data.name].length;
+    for (let index = 0; index < travellersCount; index++) {
+      const traveller = travellers[data.name][index];
+      const photoData = await getStorageBlob(
+        `${traveller.nationality}/${traveller.passportNumber}.jpg`
+      );
+      const passportData = await getStorageBlob(
+        `${traveller.nationality}/${traveller.passportNumber}_passport.jpg`
+      );
+      if (photoData) {
+        photos.file(`${traveller.passportNumber}.jpg`, photoData);
+      }
+      if (passportData) {
+        passports.file(`${traveller.passportNumber}.jpg`, passportData);
+      }
+    setshareProgress(s=> s = ({...s, value: (index/travellersCount) * 100}));
 
-          const photoData = await axios.get(photoUrl, { responseType: "blob" });
-          const passportData = await axios.get(passportUrl, { responseType: "blob" });
-          photos.file(`${traveller.passportNumber}.jpg`, photoData.data);
-          passports.file(`${traveller.passportNumber}.jpg`, passportData.data);
-        } catch (err){
-          console.log('%c 🍚 err: ', 'font-size:20px;background-color: #EA7E5C;color:#fff;', err);
-        }
     }
 
     zip.generateAsync({ type: "blob" }).then(function(content) {
@@ -51,6 +55,24 @@ const PackageDetail = ({ data }) => {
       tempLink.setAttribute("download", `${data.name}.zip`);
       tempLink.click();
     });
+
+    setshareProgress({loading: false, value: 100});
+
+  };
+
+  const getStorageBlob = async (blobPath) => {
+    try {
+      const blobRef = storage.ref(blobPath);
+      const blobUrl = await blobRef.getDownloadURL();
+      const blobData = await axios.get(blobUrl, { responseType: "blob" });
+      return blobData.data;
+    } catch (err) {
+      console.log(
+        "%c 🍚 err: ",
+        "font-size:20px;background-color: #EA7E5C;color:#fff;",
+        err
+      );
+    }
   };
 
   return (
@@ -77,8 +99,6 @@ const PackageDetail = ({ data }) => {
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
-                variant="outlined"
-                color="primary"
                 endIcon={<FontAwesomeIcon icon={faPassport} />}
               >
                 Apply for visa
@@ -87,36 +107,22 @@ const PackageDetail = ({ data }) => {
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
-                variant="outlined"
-                color="primary"
                 onClick={handleShareClick}
                 endIcon={<FontAwesomeIcon icon={faShareSquare} />}
-              >
-                {" "}
-                Share
-              </Button>
+                startIcon={shareProgress.loading && <CircularProgressWithLabel variant="determinate" size={30} value={shareProgress.value}/>}
+              >Share</Button>
             </Grid>
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
-                variant="outlined"
-                color="primary"
                 endIcon={<FontAwesomeIcon icon={faPrint} />}
-              >
-                {" "}
-                Reports
-              </Button>
+              >Reports</Button>
             </Grid>
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
-                variant="outlined"
-                color="primary"
                 endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
-              >
-                {" "}
-                Assist
-              </Button>
+              >Assist</Button>
             </Grid>
           </Grid>
         </Grid>
@@ -162,4 +168,27 @@ function getTravellersJSON(travellers, data) {
       codeline: t.codeline,
     };
   });
+}
+
+
+function CircularProgressWithLabel(props) {
+  return (
+    <Box position="relative" display="inline-flex">
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
 }

@@ -42,6 +42,9 @@ firebase CLI https://firebase.google.com/docs/cli
 
 Web Automation https://github.com/puppeteer/recorder
 
+Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-background
+
+
 
 
 
