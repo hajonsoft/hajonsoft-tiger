@@ -5,7 +5,7 @@ import {
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, CircularProgress, Grid, Paper, Box, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Paper, Box, Typography , Dialog, DialogActions,DialogContent,DialogTitle} from "@material-ui/core";
 //TODO: Redesign, talk to customers to get feedback
 import axios from "axios";
 import JSZip from "jszip";
@@ -20,7 +20,7 @@ const storage = firebase.storage();
 const PackageDetail = ({ data }) => {
   const { data: travellers, loading, error } = useTravellerState();
   const [shareProgress, setshareProgress] = useState({loading: false, value: 0})
-
+const [applyforvisaOpen, setApplyforvisaOpen] = useState(false)
   const handleShareClick = async () => {
     setshareProgress({loading: true, value: 0});
     var zip = new JSZip();
@@ -75,6 +75,9 @@ const PackageDetail = ({ data }) => {
     }
   };
 
+const handleApplyforVisa = ()=> {
+setApplyforvisaOpen(true);
+}
   return (
     <Paper style={{ padding: "2rem" }}>
       <Grid container justify="space-between" alignItems="center">
@@ -98,6 +101,7 @@ const PackageDetail = ({ data }) => {
           <Grid container direction="column" spacing={2}>
             <Grid item xs={12}>
               <Button
+              onClick={handleApplyforVisa}
                 style={{ width: "100%" }}
                 endIcon={<FontAwesomeIcon icon={faPassport} />}
               >
@@ -127,6 +131,44 @@ const PackageDetail = ({ data }) => {
           </Grid>
         </Grid>
       </Grid>
+    
+    <Dialog
+    open={applyforvisaOpen}
+    onClose={()=> setApplyforvisaOpen(false)}
+    >
+    <DialogTitle>Apply for visa</DialogTitle>
+    <DialogContent>
+    <Typography variant="h6" gutterBottom>HAJonSoft uses browser automation to send data to visa systems </Typography>
+    <Typography variant="subtitle">To apply for visa please follow the steps below or watch this video</Typography>
+
+    <Box mt={4}>
+Step 1: Choose Travellers
+
+    </Box>
+
+        <Box mt={4}>
+Step 2: Download zip file to your computer, If you prefer our engineers to send on your behalf please click here
+
+    </Box>
+
+            <Box mt={4}>
+Step 3: Verify required software (NodeJs)
+
+    </Box>
+
+                <Box mt={4}>
+Step 4: Trigger send for the required system
+
+    </Box>
+    </DialogContent>
+
+
+<DialogActions>
+
+<Button onClick={()=> setApplyforvisaOpen(false)}>Close</Button>
+</DialogActions>
+    </Dialog>
+    
     </Paper>
   );
 };

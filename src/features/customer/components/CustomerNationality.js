@@ -15,7 +15,7 @@ const CustomerNationality = ({
     const helperText = () => {
         const nationality = nationalities.find(n => n.name === value);
         if (nationality) {
-            return nationality.code;
+            return `${nationality.code} ${nationality.isArabic? '(Arabic)' : ''}`;
         }
     }
     return (

@@ -3,6 +3,7 @@ const fs = require("fs");
 const util = require("./util");
 const moment = require("moment");
 const sharp = require("sharp");
+const path = require("path")
 let page;
 let data;
 let counter = 0;
@@ -95,11 +96,16 @@ const displayButtonsContainer =
 automate();
 
 async function automate() {
-  if (!fs.existsSync(__dirname + "/data.json")) {
-    console.log("Data file does not exist");
+  let dataFileName = path.join(__dirname , "data.json");
+  if (!fs.existsSync(dataFileName)) {
+    console.log(`Data file does not exist in ${dataFileName}`);
+    dataFileName = path.join("c:\\snapshot",__dirname , "data.json");
+  }
+    if (!fs.existsSync(dataFileName)) {
+    console.log(`Data file does not exist in ${dataFileName}`);
     process.exit(1);
   }
-  const content = fs.readFileSync(__dirname + "/data.json", "utf8");
+  const content = fs.readFileSync(dataFileName, "utf8");
   data = JSON.parse(content);
   const browser = await puppeteer.launch({
     headless: false,
