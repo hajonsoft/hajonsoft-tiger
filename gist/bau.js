@@ -162,7 +162,7 @@ async function onContentLoaded(res) {
   const currentConfig = util.findConfig(await page.url(), config);
   switch (currentConfig.name) {
     case "login":
-      await commit(currentConfig.details);
+      await util.commit(page,currentConfig.details);
       await page.waitForSelector("#rdCap_CaptchaTextBox");
       await page.focus("#rdCap_CaptchaTextBox");
       await page.waitForFunction(
@@ -176,7 +176,7 @@ async function onContentLoaded(res) {
       );
       break;
     case "create-group":
-      await commit(currentConfig.details, data[0]);
+      await util.commit(page,currentConfig.details, data[0]);
       await page.evaluate(() => {
         const consulate = document.querySelector(
           "#ctl00_ContentHolder_LstConsulate"
@@ -218,7 +218,7 @@ async function onContentLoaded(res) {
       );
 
       await page.waitFor(2000);
-      await commit(currentConfig.details, data[counter]);
+      await util.commit(page,currentConfig.details, data[counter]);
 
       let photoFile = `./photos/${data[counter].passportNumber}.jpg`;
       await page.waitForSelector("#ctl00_ContentHolder_imgSelectedFile");
@@ -264,32 +264,7 @@ async function onContentLoaded(res) {
   }
 }
 
-async function commit(structure, info) {
-  for (const element of structure) {
-    await page.waitForSelector(element.selector);
-    let value;
-    if (element.value) {
-      value = element.value(info);
-    }
-    const elementType = await page.$eval(element.selector, (e) =>
-      e.outerHTML
-        .match(/<(.*?) /g)[0]
-        .replace(/</g, "")
-        .replace(/ /g, "")
-        .toLowerCase()
-    );
-    switch (elementType) {
-      case "input":
-        await page.type(element.selector, value);
-        break;
-      case "select":
-        await page.select(element.selector, value);
-        break;
-      default:
-        break;
-    }
-  }
-}
+
 
 async function movetoNextMutamer() {
   const data = fs.readFileSync("./Mutamers.json");
