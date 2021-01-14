@@ -5,6 +5,11 @@ import {
   DialogContent,
   DialogTitle,
   Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  TextField,
+  Grid
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -37,7 +42,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ApplyForVisa = ({ open, onClose, travellers }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [visaSystem, setVisaSystem] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
+  const handleSystemChange = (system) => {
+      setVisaSystem(system );
+  };
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -76,22 +87,56 @@ const ApplyForVisa = ({ open, onClose, travellers }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
+            expanded={expanded === "system"}
+            onChange={handleChange("system")}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 2: External system details
+                Step 2: Visa system
               </Typography>
               <Typography className={classes.secondaryHeading}>
                 Way to Umrah
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                List all supported external systems, wtu, bau, gma, twf, vst as
-                well as egyptian system or indian system
-              </Typography>
+<Grid container justify="space-between" alignItems="center"> 
+<Grid item>
+              <RadioGroup
+                  value={visaSystem}
+                  onChange={(e)=> handleSystemChange(e.target.value) }
+              >
+                  <FormControlLabel value="bau" control={<Radio />} label="Bab al umrah (Recommended)" />
+                  <FormControlLabel value="wtu" control={<Radio />} label="Way to umrah (legacy)" />
+                  <FormControlLabel value="gma" control={<Radio />} label="Gabul ya hajj (difficult)" />
+                  <FormControlLabel value="twf" control={<Radio />} label="Gabul ya hajj (slow)" />
+                  <FormControlLabel value="vst" control={<Radio />} label="Visit Saudi " />
+                  <FormControlLabel value="mot" control={<Radio />} label="Egypt Tourism" />
+              </RadioGroup>
+</Grid>
+<Grid item>
+<Grid  container direction="column" spacing={4}>
+
+<Grid item>
+              <TextField
+                  value={username}
+                  label="User name"
+                  onChange={(e)=> setUsername(e.target.value)}
+                  margin="normal"
+              />
+</Grid>
+<Grid item>
+
+                            <TextField
+                  value={password}
+                  label="Password"
+
+                  onChange={(e) => setPassword(e.target.value)}
+                  margin="normal"
+              />
+</Grid>
+</Grid>
+</Grid>
+</Grid>
             </AccordionDetails>
           </Accordion>
           <Accordion
