@@ -8,14 +8,14 @@ const useStyles = makeStyles({
     borderRadius: "8px",
     position: "relative",
     width: "90%",
-    height: "210px",
+    height: "310px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   imgContainer: {
     width: "100%",
-    height: "200px",
+    height: "300px",
   },
   pickImage: {
     position: "absolute",

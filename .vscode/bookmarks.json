@@ -1,15 +1,10 @@
 [
 	{
-		"path": "$ROOTPATH$\\gist\\visit.js",
+		"path": "$ROOTPATH$\\src\\features\\Dashboard\\components\\ApplyForVisa.js",
 		"bookmarks": [
 			{
-				"line": 13,
-				"column": 21,
-				"label": ""
-			},
-			{
-				"line": 113,
-				"column": 18,
+				"line": 139,
+				"column": 16,
 				"label": ""
 			}
 		]

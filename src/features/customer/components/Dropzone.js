@@ -12,9 +12,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import firebase from "../../../firebaseapp";
 const storage = firebase.storage();
+
 const saveCustomerToFirebase = async (values, packageName, callback) => {
   let image = values.image;
   delete values["image"];
+
+  let passportImage = values.passportImage;
+  delete values["passportImage"];
 
   const customerRef = firebase.database().ref(`customer/${packageName}`);
   customerRef.push(values);
@@ -35,6 +39,16 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
       });
   } else {
     callback({ success: true });
+  }
+
+  if (passportImage) {
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+    const passportFileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}_passport.jpg`;
+    let ref = storage.ref(passportFileName);
+    ref
+      .put(passportImage, metadata);
   }
 };
 

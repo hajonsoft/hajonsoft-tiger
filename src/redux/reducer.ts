@@ -1,4 +1,4 @@
-import { combineReducers, createSlice } from "@reduxjs/toolkit"
+import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import _ from 'lodash';
 
 const emptyState = {
@@ -14,7 +14,7 @@ const applyFail = (state: any, action: any) => { state.loading = false; state.er
 const applyFetchSuccess = (state: any, action: any) => {
     state.loading = false;
     state.error = '';
-    state.data = _.omit(state.data, 'No Groups Found')
+    state.data = _.omit(state.data, 'No data found')
     state.data = action.payload;
 
 }
@@ -22,13 +22,27 @@ const applyFetchSuccess = (state: any, action: any) => {
 const applyCreateSuccess = (state: any, action: any) => {
     state.loading = false;
     state.error = '';
-    state.data = _.omit(state.data, 'No Groups Found')
+    state.data = _.omit(state.data, 'No data found')
     const groupName = Object.keys(action.payload)[0];
     if (!Object.keys(state.data).includes(groupName)) {
         state.data[groupName] = [];
     }
     state.data[groupName].push(Object.values(Object.values(action.payload)[0])[0][0]);
 }
+
+const applyFetchVisaSystemSuccess = (state: any, action: any) => {
+    state.loading = false;
+    state.error = '';
+    state.data= action.payload;
+}
+
+
+const applyCreateVisaSystemSuccess = (state: any, action: any) => {
+    state.loading = false;
+    state.error = '';
+    state.data.push(action.payload);
+}
+
 
 const applyUpdateSuccess = (state: any, action: any) => {
     state.loading = false;
@@ -71,6 +85,22 @@ export const travellerSlice = createSlice({
     }
 })
 
+export const systemSlice = createSlice({
+    name: 'system',
+    initialState: emptyState,
+    reducers: {
+        fetch: (state, action) => applyStart(state, action),
+        fetchSuccess: (state, action) => applyFetchVisaSystemSuccess(state, action),
+        create: (state, action) => applyStart(state, action),
+        createSuccess: (state, action) => applyCreateVisaSystemSuccess(state, action),
+        update: (state, action) => applyStart(state, action),
+        updateSuccess: (state, action) => applyUpdateSuccess(state, action),
+        delete: (state, action) => applyStart(state, action),
+        deleteSuccess: (state, action) => applyDeleteSuccess(state, action),
+        fail: (state, action) => applyFail(state, action)
+    }
+})
+
 export const userSlice = createSlice({
     name: 'user',
     initialState: emptyState,
@@ -84,6 +114,7 @@ export const userSlice = createSlice({
 const reducer = combineReducers({
     user: userSlice.reducer,
     traveller: travellerSlice.reducer,
+    system: systemSlice.reducer,
 })
 
 export default reducer;

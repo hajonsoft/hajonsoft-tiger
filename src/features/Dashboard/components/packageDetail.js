@@ -5,26 +5,15 @@ import {
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
 //TODO: Redesign, talk to customers to get feedback
-import axios from "axios";
-import JSZip from "jszip";
-import moment from "moment";
 import React, { useState } from "react";
-import firebase from "../../../firebaseapp";
-import { nameParts } from "../../../util/nameParts";
+import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
 import useTravellerState from "../redux/useTravellerState";
 import ApplyForVisa from "./ApplyForVisa";
 import BioStatistics from "./BioStatistics";
+import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import NationalityStatistics from "./NationalityStatistics";
-const storage = firebase.storage();
 
 const PackageDetail = ({ data }) => {
   const { data: travellers, loading, error } = useTravellerState();
@@ -130,6 +119,7 @@ const PackageDetail = ({ data }) => {
       <ApplyForVisa
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
+        groupName={data.name}
         travellers={travellers[data.name]}
       />
     </Paper>
@@ -137,112 +127,3 @@ const PackageDetail = ({ data }) => {
 };
 
 export default PackageDetail;
-
-const getStorageBlob = async (blobPath) => {
-  try {
-    const blobRef = storage.ref(blobPath);
-    const blobUrl = await blobRef.getDownloadURL();
-    const blobData = await axios.get(blobUrl, { responseType: "blob" });
-    return blobData.data;
-  } catch (err) {
-    console.log(
-      "%c 🍚 err: ",
-      "font-size:20px;background-color: #EA7E5C;color:#fff;",
-      err
-    );
-  }
-};
-
-async function zipWithPhotos(
-  jsonData,
-  travellers,
-  packageData,
-  setShareProgress
-) {
-  var zip = new JSZip();
-  zip.file("data.json", jsonData);
-  var photos = zip.folder("photos");
-  var passports = zip.folder("passports");
-  const travellersCount = travellers[packageData.name].length;
-  for (let index = 0; index < travellersCount; index++) {
-    const traveller = travellers[packageData.name][index];
-    const photoData = await getStorageBlob(
-      `${traveller.nationality}/${traveller.passportNumber}.jpg`
-    );
-    const passportData = await getStorageBlob(
-      `${traveller.nationality}/${traveller.passportNumber}_passport.jpg`
-    );
-    if (photoData) {
-      photos.file(`${traveller.passportNumber}.jpg`, photoData);
-    }
-    if (passportData) {
-      passports.file(`${traveller.passportNumber}.jpg`, passportData);
-    }
-    setShareProgress(
-      (s) => (s = { ...s, value: (index / travellersCount) * 100 })
-    );
-  }
-  return zip;
-}
-
-function getTravellersJSON(travellers, data) {
-  return travellers[data.name].map((t) => {
-    const _nameParts = nameParts(t.name);
-    let _nameArabicParts = nameParts(t.nameArabic);
-    if (_nameArabicParts[0] === "invalid") {
-      _nameArabicParts = ["", "", "", ""];
-    }
-    return {
-      nationality: { name: t.nationality },
-      name: {
-        full: t.name,
-        first: _nameParts[0],
-        last: _nameParts[3],
-        father: _nameParts[1],
-        grand: _nameParts[2],
-      },
-      nameArabic: {
-        full: t.nameArabic,
-        first: _nameArabicParts[0],
-        last: _nameArabicParts[3],
-        father: _nameArabicParts[1],
-        grand: _nameArabicParts[2],
-      },
-      mobileNumber: t.phone,
-      gender: t.gender,
-      dob: { dmy: moment(t.birthDate).format("DD/MM/YYYY") },
-      passIssueDt: { dmy: moment(t.passIssueDt).format("DD/MM/YYYY") },
-      passExpireDt: { dmy: moment(t.passExpireDt).format("DD/MM/YYYY") },
-      birthPlace: t.birthPlace,
-      profession: t.profession,
-      address: t.address,
-      passportNumber: t.passportNumber,
-      placeOfIssue: t.passPlaceOfIssue,
-      codeline: t.codeline,
-    };
-  });
-}
-
-function CircularProgressWithLabel(props) {
-  return (
-    <Box position="relative" display="inline-flex">
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          color="textSecondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}

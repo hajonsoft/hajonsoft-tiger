@@ -16,9 +16,14 @@ const travellerService = {
         updateRef.update(data);
         return {updated: data};
     },
-    deleteTraveller: async ({ path }) => {
+    deleteTraveller: async ({ path, data }) => {
         const removeRef = firebase.database().ref(path);
         removeRef.remove();
+        const photoRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}.jpg`);
+        photoRef.delete();
+        const passportRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}_passport.jpg`);
+        passportRef.delete();
+
     }
 }
 

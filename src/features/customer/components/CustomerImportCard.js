@@ -29,7 +29,7 @@ const CustomerImportCard = ({ importData }) => {
     <Alert
       color={"error"}
       severity={"error"}
-    >{`Customer of "${importData.id}" files group failed to import`}</Alert>
+    >{`Customer ${importData.id} ${importData.name} ${importData.passportNumber} failed to import`}</Alert>
   );
 };
 

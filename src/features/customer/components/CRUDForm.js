@@ -124,7 +124,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
         });
         break;
       case "delete":
-        deleteTraveller({ path: `customer/${packageName}/${record._fid}` });
+        deleteTraveller({ path: `customer/${packageName}/${record._fid}` , data: values});
         break;
 
       default:
@@ -219,15 +219,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                 <Grid container spacing={2}>
                   <Grid item container justify="center">
                     <Grid item xs={4}>
-                      {photoMode === 'photo' &&  <CoreImage
-                        setImage={(img) => saveImage(values, img)}
-                        record={values}
-                      />}
-                      {photoMode === 'passport' && <CorePassportImage
-                        setImage={(img) => savePassportImage(values, img)}
-                        record={values}
-                      />}
-                      <ToggleButtonGroup
+                    <ToggleButtonGroup
                         value={photoMode}
                         exclusive
                         onChange={handleAlignment}
@@ -239,6 +231,14 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                           <RecentActorsOutlinedIcon />
                         </ToggleButton>
                       </ToggleButtonGroup>
+                      {photoMode === 'photo' &&  <CoreImage
+                        setImage={(img) => saveImage(values, img)}
+                        record={values}
+                      />}
+                      {photoMode === 'passport' && <CorePassportImage
+                        setImage={(img) => savePassportImage(values, img)}
+                        record={values}
+                      />}
                     </Grid>
                     <Grid
                       item
@@ -318,8 +318,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         />
 
                         <CustomerCodeline
-                          value={values.codeline || ""}
-                          name="codeline"
+                          value={values.codeLine || ""}
+                          name="codeLine"
                           setFieldValue={setFieldValue}
                           mode={mode}
                         />
