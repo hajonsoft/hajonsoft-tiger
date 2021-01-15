@@ -23,7 +23,7 @@ export function getTravellersJSON(travellers, data) {
     return {
       nationality: { name: t.nationality },
       name: {
-        full: t.name,
+        full: t.name.replace(/[^A-Z ]/g,' '),
         first: _nameParts[0],
         last: _nameParts[3],
         father: _nameParts[1],

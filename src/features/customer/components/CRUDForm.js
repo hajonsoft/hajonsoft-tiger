@@ -201,7 +201,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
               }
             : record
         }
-        validationSchema={validSchema}
+        validationSchema={mode !== 'delete' ? validSchema: null}
         onSubmit={handleSubmitForm}
       >
         {({ setFieldValue, values, errors, isSubmitting }) => (

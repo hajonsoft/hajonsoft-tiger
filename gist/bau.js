@@ -13,8 +13,8 @@ const config = [
     name: "login",
     url: "http://app2.babalumra.com/Security/login.aspx",
     details: [
-      { selector: "#txtUserName", value: () => "ea42685" },
-      { selector: "#txtPassword", value: () => "ea42685" },
+      { selector: "#txtUserName", value: (system) => system.username },
+      { selector: "#txtPassword", value: (system) => system.password },
     ],
   },
   {
@@ -162,7 +162,7 @@ async function onContentLoaded(res) {
   const currentConfig = util.findConfig(await page.url(), config);
   switch (currentConfig.name) {
     case "login":
-      await util.commit(page,currentConfig.details);
+      await util.commit(page,currentConfig.details, data.system);
       await page.waitForSelector("#rdCap_CaptchaTextBox");
       await page.focus("#rdCap_CaptchaTextBox");
       await page.waitForFunction(
@@ -176,7 +176,7 @@ async function onContentLoaded(res) {
       );
       break;
     case "create-group":
-      await util.commit(page,currentConfig.details, data[0]);
+      await util.commit(page,currentConfig.details, data.travellers[0]);
       await page.evaluate(() => {
         const consulate = document.querySelector(
           "#ctl00_ContentHolder_LstConsulate"
@@ -211,16 +211,16 @@ async function onContentLoaded(res) {
       await page.waitForSelector("#ctl00_ContentHolder_btngetValues");
       await page.type(
         "#ctl00_ContentHolder_btngetValues",
-        data[counter].codeline,
+        data.travellers[counter].codeline,
         {
           delay: 0,
         }
       );
 
       await page.waitFor(2000);
-      await util.commit(page,currentConfig.details, data[counter]);
+      await util.commit(page,currentConfig.details, data.travellers[counter]);
 
-      let photoFile = `./photos/${data[counter].passportNumber}.jpg`;
+      let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
       await page.waitForSelector("#ctl00_ContentHolder_imgSelectedFile");
       let futureFileChooser = page.waitForFileChooser();
       await page.evaluate(() =>
@@ -229,13 +229,13 @@ async function onContentLoaded(res) {
           .click()
       );
       let fileChooser = await futureFileChooser;
-      const resizedPhotoFile = `./photos/${data[counter].passportNumber}_200x200.jpg`;
+      const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
       await sharp(photoFile)
         .resize(200)
         .toFile(resizedPhotoFile);
       await fileChooser.accept([resizedPhotoFile]);
 
-      let passportFile = `./passports/${data[counter].passportNumber}.jpg`;
+      let passportFile = `./passports/${data.travellers[counter].passportNumber}.jpg`;
       if (fs.existsSync(passportFile)) {
         futureFileChooser = page.waitForFileChooser();
         await page.evaluate(() =>
@@ -244,7 +244,7 @@ async function onContentLoaded(res) {
             .click()
         );
         fileChooser = await futureFileChooser;
-        let resizedPassportFile = `./passports/${data[counter].passportNumber}_400x300.jpg`;
+        let resizedPassportFile = `./passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
         await sharp(passportFile)
           .resize(400, 300)
           .toFile(resizedPassportFile);
