@@ -3,7 +3,6 @@ const fs = require("fs");
 const util = require("./util");
 const moment = require("moment");
 const sharp = require("sharp");
-const path = require("path")
 let page;
 let data;
 let counter = 0;
@@ -47,6 +46,9 @@ const config = [
     regex:
       "http://app2.babalumra.com/Groups/EditMutamerNew.aspx\\?GroupId=\\d+",
     url: "http://app2.babalumra.com/Groups/EditMutamerNew.aspx?GroupId=654",
+    controller: {
+      selector: "#aspnetForm > div.container-fluid.body-content > div.page-header",
+    },
     details: [
       { selector: "#ctl00_ContentHolder_LstTitle", value: (row) => "99" },
       {
@@ -91,22 +93,9 @@ const config = [
   },
 ];
 
-const displayButtonsContainer =
-  "#aspnetForm > div.container-fluid.body-content > div.page-header";
-automate();
 
-async function automate() {
-  let dataFileName = path.join(__dirname , "data.json");
-  if (!fs.existsSync(dataFileName)) {
-    console.log(`Data file does not exist in ${dataFileName}`);
-    dataFileName = path.join("c:\\snapshot",__dirname , "data.json");
-  }
-    if (!fs.existsSync(dataFileName)) {
-    console.log(`Data file does not exist in ${dataFileName}`);
-    process.exit(1);
-  }
-  const content = fs.readFileSync(dataFileName, "utf8");
-  data = JSON.parse(content);
+ async function send(sendData) {
+  data = sendData;
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
@@ -162,7 +151,7 @@ async function onContentLoaded(res) {
   const currentConfig = util.findConfig(await page.url(), config);
   switch (currentConfig.name) {
     case "login":
-      await util.commit(page,currentConfig.details, data.system);
+      await util.commit(page, currentConfig.details, data.system);
       await page.waitForSelector("#rdCap_CaptchaTextBox");
       await page.focus("#rdCap_CaptchaTextBox");
       await page.waitForFunction(
@@ -176,7 +165,7 @@ async function onContentLoaded(res) {
       );
       break;
     case "create-group":
-      await util.commit(page,currentConfig.details, data.travellers[0]);
+      await util.commit(page, currentConfig.details, data.travellers[0]);
       await page.evaluate(() => {
         const consulate = document.querySelector(
           "#ctl00_ContentHolder_LstConsulate"
@@ -190,6 +179,7 @@ async function onContentLoaded(res) {
       await page.click("#ctl00_ContentHolder_btnCreate");
       break;
     case "create-mutamer":
+      await util.controller(page,currentConfig);
       const passportNumber = await page.$eval(
         "#ctl00_ContentHolder_TxtNumber",
         (e) => e.value
@@ -218,7 +208,7 @@ async function onContentLoaded(res) {
       );
 
       await page.waitFor(2000);
-      await util.commit(page,currentConfig.details, data.travellers[counter]);
+      await util.commit(page, currentConfig.details, data.travellers[counter]);
 
       let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
       await page.waitForSelector("#ctl00_ContentHolder_imgSelectedFile");
@@ -231,7 +221,7 @@ async function onContentLoaded(res) {
       let fileChooser = await futureFileChooser;
       const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
       await sharp(photoFile)
-        .resize(200)
+        .resize(200,200)
         .toFile(resizedPhotoFile);
       await fileChooser.accept([resizedPhotoFile]);
 
@@ -264,30 +254,6 @@ async function onContentLoaded(res) {
   }
 }
 
-
-
-async function movetoNextMutamer() {
-  const data = fs.readFileSync("./Mutamers.json");
-  const mutamersObject = JSON.parse(data);
-  if (!mutamersObject.mutamerIndex) {
-    mutamersObject.mutamerIndex = 1;
-  } else {
-    mutamersObject.mutamerIndex = parseInt(mutamersObject.mutamerIndex) + 1;
-  }
-  fs.writeFileSync("./Mutamers.json", JSON.stringify(mutamersObject));
-  await displayButtons(mutamersObject, displayButtonsContainer);
-}
-async function movetoPreviousMutamer() {
-  const data = fs.readFileSync("./Mutamers.json");
-  const mutamersObject = JSON.parse(data);
-  if (!mutamersObject.mutamerIndex || mutamersObject.mutamerIndex === "0") {
-    return;
-  } else {
-    mutamersObject.mutamerIndex = parseInt(mutamersObject.mutamerIndex) - 1;
-  }
-  fs.writeFileSync("./Mutamers.json", JSON.stringify(mutamersObject));
-  await displayButtons(mutamersObject, displayButtonsContainer);
-}
 
 async function displayButtons(mutamersObject, selector) {
   await page.evaluate(
@@ -346,3 +312,5 @@ async function displayButtons(mutamersObject, selector) {
     [mutamersObject, selector]
   );
 }
+
+module.exports = {send}

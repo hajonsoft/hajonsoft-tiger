@@ -46,7 +46,7 @@ export function getTravellersJSON(travellers, data) {
       address: t.address,
       passportNumber: t.passportNumber,
       placeOfIssue: t.passPlaceOfIssue,
-      codeline: t.codeline,
+      codeline: t.codeLine,
     };
   });
 }

@@ -22,9 +22,9 @@
                 "father": "",
                 "grand": ""
             },
-            "gender": "Female",
+            "gender": "Male",
             "dob": {
-                "dmy": "16/11/1962"
+                "dmy": "16/11/1979"
             },
             "passIssueDt": {
                 "dmy": "21/01/2020"
@@ -34,7 +34,8 @@
             },
             "birthPlace": "TREICHVILLE",
             "passportNumber": "19AA77137",
-            "placeOfIssue": "Cote Divoire"
+            "placeOfIssue": "Cote Divoire",
+            "codeline": "P<CIVABIBA<<CISSE<<<<<<<<<<<<<<<<<<<<<<<<<<<19AA771375CIV7911165M2501202<<<<<<<<<<<<<<02"
         },
         {
             "nationality": {
@@ -65,7 +66,8 @@
             },
             "birthPlace": "GAGNDA",
             "passportNumber": "18AT76855",
-            "placeOfIssue": "Cote Divoire"
+            "placeOfIssue": "Cote Divoire",
+            "codeline": "P<CIVASSATA<<KONE<<<<<<<<<<<<<<<<<<<<<<<<<<<18AT768557CIV5405046F2403063<<<<<<<<<<<<<<00"
         },
         {
             "nationality": {
@@ -96,7 +98,8 @@
             },
             "birthPlace": "DIGNAGO",
             "passportNumber": "19AA84861",
-            "placeOfIssue": "Cote Divoire"
+            "placeOfIssue": "Cote Divoire",
+            "codeline": "P<CIVHALIYOU<<DOUMOUYA<<<<<<<<<<<<<<<<<<<<<<19AA848617CIV6309026M2501291<<<<<<<<<<<<<<06"
         }
     ]
 }
