@@ -179,7 +179,7 @@ async function onContentLoaded(res) {
       await page.click("#ctl00_ContentHolder_btnCreate");
       break;
     case "create-mutamer":
-      await util.controller(page,currentConfig);
+      await util.controller(page,currentConfig,data.travellers);
       const passportNumber = await page.$eval(
         "#ctl00_ContentHolder_TxtNumber",
         (e) => e.value

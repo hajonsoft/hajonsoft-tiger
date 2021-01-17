@@ -43,20 +43,21 @@ async function commit(page, structure, info) {
   }
 }
 
-async function controller(page, structure, info) {
+async function controller(page, structure, travellers) {
+
+  const options = travellers.map((t,i)=> `<option value="${i}">${i} - ${t.name.full}</option>`).join(' ')
   if (!structure.controller || !structure.controller.selector) {
     return;
   }
 await page.evaluate((p)=> {
   const controller = p[0].controller;
   const container = document.querySelector(controller.selector);
-  container.outerHTML = `HajOnSoft <select>
-  <option value="0">Hello</option>
-  </select>
-  <button style='background-color: blue;'>Send</button>
-  `
+  container.innerHTML = `<div style='background-color: #CCCCCC; border: 1px solid black; border-radius: 16px; display: flex; align-items: center;width: 100%; justify-content: space-between'> <h6> HAJonSoft </h6> <select onchange="">` + 
+  p[1] +
+  `</select>` + 
+  `<button style='background-color: #666666; color: #ffffff'>Send</button> </div>`
 
-},[structure])
+},[structure, options])
 
 }
 module.exports = { findConfig, commit, controller };
