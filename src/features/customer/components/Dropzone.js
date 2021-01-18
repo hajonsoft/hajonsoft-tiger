@@ -186,7 +186,7 @@ function Basic({ packageName, onClose }) {
                 <div style={{ textAlign: "center" }}>
                   <SaveAltOutlined></SaveAltOutlined>
                 </div>
-                <div>Drop your files here</div>
+                <div>Drop your 3M files from c:\HajOnSoft or Combo smart zip files from c:\Program files\gx\demos\prDemoSDL\log</div>
               </div>
             </div>
           )}

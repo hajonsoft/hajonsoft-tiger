@@ -1,4 +1,4 @@
-const JSZip = require("jszip");
+const jszip = require("jszip");
 var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
@@ -15,7 +15,7 @@ function getNationality(code) {
 async function getZipEntries(file) {
   return new Promise(async (resolve, reject) => {
     let files = [];
-    let zip = await JSZip.loadAsync(file);
+    let zip = await jszip.loadAsync(file);
     zip.forEach(function(relativePath, zipEntry) {
       files.push(zipEntry);
     });
@@ -47,21 +47,21 @@ async function ParseZip(file) {
           mrz1 = xpath.find(json, "//field[@id='MRZ1']")[0]["$"].fieldvalue;
           mrz2 = xpath.find(json, "//field[@id='MRZ2']")[0]["$"].fieldvalue;
 
-          record = parse([mrz1, mrz2]).fields;
+          const parsedData = parse([mrz1, mrz2]).fields;
+          record = {...record, ...parsedData};
           record.codeLine = mrz1 + mrz2;
         } catch (er) {
           record.failed = true;
         }
       } else if (entry.name.includes("VIZ_FACE")) {
         let image = await entry.async("blob");
-
         record.image = image;
       } else if (entry.name.includes("image3")) {
         let passportImage = await entry.async("blob");
-
         record.passportImage = passportImage;
       }
     }
+
     if (!xmlFound) {
       record.failed = true;
     }
@@ -108,7 +108,7 @@ async function getRecords(ComboFiles, ThreeMFiles) {
       let imageFile = ThreeMFiles[key].find((x) =>
         x.name.includes("IMAGEPHOTO")
       );
-      let passportImageFile = ThreeMFiles[key].find((x) =>
+      let threeMPassportImage = ThreeMFiles[key].find((x) =>
       x.name.includes("IMAGEVIS")
     );
       if (detailsFile) {
@@ -119,8 +119,8 @@ async function getRecords(ComboFiles, ThreeMFiles) {
       if (imageFile) {
         record.image = imageFile;
       }
-      if (passportImageFile) {
-        record.passportImage = passportImageFile;
+      if (threeMPassportImage) {
+        record.passportImage = threeMPassportImage;
       }
       postMessage({ type: "debug", data: record });
       record.id = key;

@@ -2,8 +2,8 @@ import { CardActions, CardContent, Card, Button } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { ErrorMessage, Field } from "formik";
 import React, { useState } from "react";
+import { createCodeline } from '../../../util/codeline';
 
 const name = "codeLine";
 
@@ -26,21 +26,10 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   };
 
   const handleGenerateCodeline = () => {
-    // const codeline = generateMRZ({
-    //   user: {
-    //     firstName: record.firstName,
-    //     lastName: record.lastName,
-    //     passportNumber: record.passportNumber,
-    //     countryCode: "USA",
-    //     nationality: "USA",
-    //     birthday: record.birthDate,
-    //     gender: record.gender,
-    //     validUntilDay: "02.03.2028",
-    //     personalNumber: "12345678901234",
-    //   },
-    // });
-    // console.log('%c 🍜 codeline: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', codeline);
-    // setFieldValue('codeLine',codeline)
+    const codeline = createCodeline(record)
+    setLine1(codeline.substring(0,44));
+    setLine2(codeline.substring(44));
+    setFieldValue(name,codeline);
   };
   const handlePDF417 = () => {};
   return (

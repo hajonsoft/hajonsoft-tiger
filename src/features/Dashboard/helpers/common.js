@@ -1,6 +1,6 @@
 import moment from "moment";
 import { nameParts } from "../../../util/nameParts";
-import JSZip from "jszip";
+import jszip from "jszip";
 import firebase from "../../../firebaseapp";
 import axios from "axios";
 
@@ -57,7 +57,7 @@ export async function zipWithPhotos(
   packageData,
   setShareProgress
 ) {
-  var zip = new JSZip();
+  var zip = new jszip();
   zip.file("data.json", jsonData);
   var photos = zip.folder("photos");
   var passports = zip.folder("passports");
