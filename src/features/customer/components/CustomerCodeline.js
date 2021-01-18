@@ -1,8 +1,7 @@
-import { CardActions, CardContent, Card, Button } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { ErrorMessage, Field } from "formik";
 import React, { useState } from "react";
 
 const name = "codeLine";
@@ -11,13 +10,13 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   const [editMode, setEditMode] = useState(false);
   const [line1, setLine1] = useState(
     record.codeLine &&
-      record.codeLine.length > 44 &&
-      record.codeLine.substring(0, 44)
+    record.codeLine.length > 44 &&
+    record.codeLine.substring(0, 44)
   );
   const [line2, setLine2] = useState(
     record.codeLine &&
-      record.codeLine.length > 45 &&
-      record.codeLine.substring(44)
+    record.codeLine.length > 45 &&
+    record.codeLine.substring(44)
   );
 
   const handleDone = () => {
@@ -42,7 +41,7 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
     // console.log('%c 🍜 codeline: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', codeline);
     // setFieldValue('codeLine',codeline)
   };
-  const handlePDF417 = () => {};
+  const handlePDF417 = () => { };
   return (
     <Grid item xs={6}>
       <Card>
