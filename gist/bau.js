@@ -6,7 +6,6 @@ const sharp = require("sharp");
 let page;
 let data;
 let counter = 0;
-
 const config = [
   {
     name: "login",
@@ -47,7 +46,16 @@ const config = [
       "http://app2.babalumra.com/Groups/EditMutamerNew.aspx\\?GroupId=\\d+",
     url: "http://app2.babalumra.com/Groups/EditMutamerNew.aspx?GroupId=654",
     controller: {
-      selector: "#aspnetForm > div.container-fluid.body-content > div.page-header",
+      selector:
+        "#aspnetForm > div.container-fluid.body-content > div.page-header",
+      action: async () => {
+
+        const selectedTraveller = await page.$eval("#hajonsoft_select", el=> el.value);
+        if (selectedTraveller) {
+          fs.writeFileSync("./selectedTraveller.txt", selectedTraveller);
+          await page.goto(await page.url())
+        }
+      },
     },
     details: [
       { selector: "#ctl00_ContentHolder_LstTitle", value: (row) => "99" },
@@ -93,8 +101,7 @@ const config = [
   },
 ];
 
-
- async function send(sendData) {
+async function send(sendData) {
   data = sendData;
   const browser = await puppeteer.launch({
     headless: false,
@@ -104,51 +111,28 @@ const config = [
   page = await browser.newPage();
   await page.bringToFront();
   page.on("domcontentloaded", onContentLoaded);
+  page.on("console", (msg) => console.log(msg.text()));
   await page.setUserAgent(
     "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1"
   );
 
   await page.goto(config[0].url, { waitUntil: "domcontentloaded" });
-
-  // await page.exposeFunction('pasteCurrentMutamer', async (currentMutamer) => {
-  //     try {
-  //         scanCurrentMutamer();
-  //     } catch (ex) {
-  //         console.log(ex);
-  //     }
-
-  // });
-  // await page.exposeFunction('pasteCurrentMutamerBlur', async (currentMutamer) => {
-  //     try {
-  //         scanCurrentMutamer(true);
-  //     } catch (ex) {
-  //         console.log(ex);
-  //     }
-
-  // });
-  // await page.exposeFunction('nextMutamer', async () => {
-  //     try {
-  //         movetoNextMutamer();
-  //     } catch (ex) {
-  //         console.log(ex);
-  //     }
-
-  // });
-  // await page.exposeFunction('previousMutamer', async () => {
-  //     try {
-  //         movetoPreviousMutamer();
-  //     } catch (ex) {
-  //         console.log(ex);
-  //     }
-
-  // });
 }
 
 async function onContentLoaded(res) {
-  if (counter >= data.length) {
+  counter = util.counter(counter);
+  if (counter >= data.travellers.length) {
     return;
   }
   const currentConfig = util.findConfig(await page.url(), config);
+  try {
+    await pageContentHandler(currentConfig);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function pageContentHandler(currentConfig) {
   switch (currentConfig.name) {
     case "login":
       await util.commit(page, currentConfig.details, data.system);
@@ -179,16 +163,15 @@ async function onContentLoaded(res) {
       await page.click("#ctl00_ContentHolder_btnCreate");
       break;
     case "create-mutamer":
-      await util.controller(page,currentConfig,data.travellers);
+      await util.controller(page, currentConfig, data.travellers);
       const passportNumber = await page.$eval(
         "#ctl00_ContentHolder_TxtNumber",
         (e) => e.value
       );
-      // Do not continue if the passport number field is not empty
+      // Do not continue if the passport number field is not empty - This could be a manual page refresh
       if (passportNumber) {
         return;
       }
-
       await page.waitFor(3000);
       await page.waitForSelector("#btnclick");
       await page.evaluate(() => {
@@ -206,7 +189,6 @@ async function onContentLoaded(res) {
           delay: 0,
         }
       );
-
       await page.waitFor(2000);
       await util.commit(page, currentConfig.details, data.travellers[counter]);
 
@@ -221,7 +203,7 @@ async function onContentLoaded(res) {
       let fileChooser = await futureFileChooser;
       const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
       await sharp(photoFile)
-        .resize(200,200)
+        .resize(200, 200)
         .toFile(resizedPhotoFile);
       await fileChooser.accept([resizedPhotoFile]);
 
@@ -254,63 +236,4 @@ async function onContentLoaded(res) {
   }
 }
 
-
-async function displayButtons(mutamersObject, selector) {
-  await page.evaluate(
-    (p) => {
-      let buttonsDiv = document.querySelector(p[1]);
-      if (!p[0].mutamerIndex) {
-        p[0].mutamerIndex = 0;
-      }
-      if (p[0].mutamerIndex >= p[0].pax) {
-        p[0].mutamerIndex = p[0].pax - 1;
-      }
-
-      let previousButton = "";
-      let nextButton = ";";
-      if (p[0].mutamerIndex > 0) {
-        previousButton =
-          `<button class="btn btn-success"  style="border-radius: 50%" type='button' onclick='previousMutamer()'> <<` +
-          "" +
-          `</button>`;
-      } else {
-        previousButton =
-          `<button class="btn btn-success" style="border-radius: 50%" type='button' disabled> <<` +
-          "" +
-          `</button>`;
-      }
-      if (p[0].mutamerIndex < parseInt(p[0].pax) - 1) {
-        nextButton =
-          `<button class="btn btn-success" style="border-radius: 50%" type='button' onclick='nextMutamer()'>>>` +
-          "" +
-          `</button>`;
-      } else {
-        nextButton =
-          `<button class="btn btn-success" type='button' style="border-radius: 50%" disabled> >>` +
-          "" +
-          `</button>`;
-      }
-
-      let currentButton =
-        `<button class="btn btn-primary rounded" type='button' onclick='pasteCurrentMutamer()'> ` +
-        p[0].mutamers[p[0].mutamerIndex].ShortName +
-        " [" +
-        (parseInt(p[0].mutamerIndex) + 1) +
-        "/" +
-        p[0].pax +
-        "]" +
-        `</button>`;
-      let children = "";
-      buttonsDiv.innerHTML =
-        children +
-        `<div style="display: flex; width: 100%; justify-content: center">` +
-        previousButton +
-        currentButton +
-        nextButton +
-        "</div>";
-    },
-    [mutamersObject, selector]
-  );
-}
-
-module.exports = {send}
+module.exports = { send };
