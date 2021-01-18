@@ -1,15 +1,10 @@
 [
 	{
-		"path": "$ROOTPATH$\\gist\\bau.js",
+		"path": "$ROOTPATH$/src/features/customer/index.js",
 		"bookmarks": [
 			{
-				"line": 51,
-				"column": 16,
-				"label": ""
-			},
-			{
-				"line": 178,
-				"column": 13,
+				"line": 61,
+				"column": 60,
 				"label": ""
 			}
 		]
