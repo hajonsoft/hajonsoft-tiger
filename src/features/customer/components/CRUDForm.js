@@ -318,8 +318,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         />
 
                         <CustomerCodeline
-                          value={values.codeLine || ""}
-                          name="codeLine"
+                          record={record}
                           setFieldValue={setFieldValue}
                           mode={mode}
                         />
