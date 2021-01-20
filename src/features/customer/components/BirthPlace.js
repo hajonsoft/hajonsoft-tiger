@@ -15,7 +15,7 @@ const BirthPlace = ({ mode, value, setFieldValue }) => {
         name={name}
         label="Birth place"
         disabled={mode === "delete"}
-        autoComplete="off"
+        autoComplete="birth-place"
         onChange={(event) => {
           const regex = /^([-a-zA-Z ]){1,25}$/i;
           if (event.target.value === "" || regex.test(event.target.value)) {

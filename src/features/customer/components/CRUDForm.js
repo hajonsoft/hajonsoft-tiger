@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
+const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
   let { packageName } = useParams();
@@ -109,6 +109,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     }
   };
 
+  const handleSaveAndNext = async (values)=> {
+    await handleSubmitForm(values,null,onNext);
+  }
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     delete values["passportImage"];
@@ -131,7 +134,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
         console.log("unknown mode");
     }
 
-    onClose();
+    callback();
   };
 
   const popularNationality = () => {
@@ -462,17 +465,31 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                         </Grid>
                       )}
                       {mode === "update" && (
-                        <Grid item>
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            variant="contained"
-                            color="primary"
-                            startIcon={<SaveOutlinedIcon />}
-                          >
-                            Save
-                          </Button>
-                        </Grid>
+                        <React.Fragment>
+                          <Grid item>
+                            <Button
+                              type="submit"
+                              disabled={isSubmitting}
+                              variant="contained"
+                              color="primary"
+                              startIcon={<SaveOutlinedIcon />}
+                            >
+                              Save & Close
+                            </Button>
+                          </Grid>
+                          <Grid item>
+                            <Button
+                              type="button"
+                              disabled={isSubmitting}
+                              variant="contained"
+                              color="primary"
+                              onClick={()=> handleSaveAndNext (values)}
+                              startIcon={<SaveOutlinedIcon />}
+                            >
+                              Save & Next
+                            </Button>
+                          </Grid>
+                        </React.Fragment>
                       )}
                     </Grid>
                   </Grid>

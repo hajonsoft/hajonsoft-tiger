@@ -149,18 +149,34 @@ function Basic({ packageName, onClose }) {
                   </Grid>
                 ))}
                 <Grid item container xs={12} justify="flex-end">
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      setIsImported(false);
-                      setImports({});
-                    }}
-                    startIcon={<RefreshOutlined />}
-                  >
-                    Import again
-                  </Button>
+                  <Grid item>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setIsImported(false);
+                        setImports({});
+                      }}
+                      startIcon={<RefreshOutlined />}
+                    >
+                      Import again
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setIsImported(false);
+                        setImports({});
+                      }}
+                      startIcon={<RefreshOutlined />}
+                    >
+                      Finish
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             ) : (

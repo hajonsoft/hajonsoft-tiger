@@ -1,7 +1,7 @@
 import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -12,8 +12,8 @@ import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import HomeIcon from "@material-ui/icons/Home";
@@ -24,11 +24,11 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
-import moment from 'moment';
+import moment from "moment";
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import useTravellerState from '../Dashboard/redux/useTravellerState';
+import useTravellerState from "../Dashboard/redux/useTravellerState";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
@@ -38,14 +38,18 @@ const tableIcons = {
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
@@ -53,13 +57,19 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
   Favorite: forwardRef((props, ref) => <FavoriteIcon {...props} ref={ref} />),
-  NoFavorite: forwardRef((props, ref) => <FavoriteBorderIcon {...props} ref={ref} />),
+  NoFavorite: forwardRef((props, ref) => (
+    <FavoriteBorderIcon {...props} ref={ref} />
+  )),
 };
 const Customers = () => {
-
   let { packageName } = useParams();
 
-  const { data: travellers, updateData: updateTraveller, loading, error } = useTravellerState();
+  const {
+    data: travellers,
+    updateData: updateTraveller,
+    loading,
+    error,
+  } = useTravellerState();
 
   const [state, setState] = useState({
     mode: "list",
@@ -107,6 +117,17 @@ const Customers = () => {
       </div>
     );
   };
+  const bringNext = () => {
+    let nextTraveller = travellers[packageName][0];
+    if (state.record && state.record._fid) {
+      for (let i = 0; i < travellers[packageName].length - 1; i++) {
+        if (travellers[packageName][i]._fid === state.record._fid) {
+          nextTraveller = travellers[packageName][i + 1];
+        }
+      }
+    }
+    setState((st) => ({ ...st, mode: "update", record: nextTraveller }));
+  };
   return (
     <React.Fragment>
       <div
@@ -124,6 +145,7 @@ const Customers = () => {
               onClose={() =>
                 setState((st) => ({ ...st, mode: "list", record: {} }))
               }
+              onNext={bringNext}
             />
           )}
           {state.mode === "list" && (
@@ -136,32 +158,50 @@ const Customers = () => {
                 { title: "Nationality", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
                 {
-                  title: "Birth Date", field: "birthDate", render: (rowData) =>
-                    rowData.birthDate && <Chip avatar={<Avatar>{moment().diff(rowData.birthDate, 'years')}</Avatar>} label={moment(rowData.birthDate).format('DD-MMM-yyyy')} />
+                  title: "Birth Date",
+                  field: "birthDate",
+                  render: (rowData) =>
+                    rowData.birthDate && (
+                      <Chip
+                        avatar={
+                          <Avatar>
+                            {moment().diff(rowData.birthDate, "years")}
+                          </Avatar>
+                        }
+                        label={moment(rowData.birthDate).format("DD-MMM-yyyy")}
+                      />
+                    ),
                 },
                 { title: "Email", field: "email" },
               ]}
               data={travellers[packageName] ? travellers[packageName] : []}
-              detailPanel={(rowData) => (
-                <CustomerDetail
-                  customer={rowData}
-                />
-              )}
+              detailPanel={(rowData) => <CustomerDetail customer={rowData} />}
               actions={[
                 {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
-                  onClick: (event) => setState((st) => ({ ...st, mode: "create" })),
+                  onClick: (event) =>
+                    setState((st) => ({ ...st, mode: "create" })),
                 },
-                rowData => ({
-                  icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
-                  tooltip: rowData.favorite ? `un-favor ${title}` : `favor ${title}`,
+                (rowData) => ({
+                  icon: () =>
+                    rowData.favorite ? (
+                      <tableIcons.Favorite color="action" />
+                    ) : (
+                      <tableIcons.NoFavorite color="action" />
+                    ),
+                  tooltip: rowData.favorite
+                    ? `un-favor ${title}`
+                    : `favor ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    updateTraveller({ path: `customer/${packageName}/${rowData._fid}`, data: { ...rowData, favorite: !rowData.favorite } })
+                    updateTraveller({
+                      path: `customer/${packageName}/${rowData._fid}`,
+                      data: { ...rowData, favorite: !rowData.favorite },
+                    });
                   },
                 }),
                 {
@@ -176,7 +216,7 @@ const Customers = () => {
                       mode: "update",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
-                    }))
+                    }));
                   },
                 },
                 {
@@ -191,7 +231,7 @@ const Customers = () => {
                       mode: "delete",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
-                    }))
+                    }));
                   },
                 },
               ]}
@@ -200,12 +240,12 @@ const Customers = () => {
                 grouping: true,
                 exportAllData: true,
                 pageSize: 50,
-                pageSizeOptions: [10,50,100],
+                pageSizeOptions: [10, 50, 100],
                 initialPage: 0,
                 exportFileName: packageName,
                 exportButton: true,
                 columnsButton: true,
-                searchAutoFocus: true
+                searchAutoFocus: true,
               }}
               localization={{
                 body: {

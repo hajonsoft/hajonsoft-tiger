@@ -1,4 +1,5 @@
 const { send: sendBau } = require("./bau");
+const { send: sendWtu } = require("./wtu");
 const path = require("path");
 const fs = require("fs");
 
@@ -18,7 +19,7 @@ switch (data.system.name) {
   case "bau":
     return sendBau(data);
   case "wtu":
-    return sendBau(data);
+    return sendWtu(data);
   case "gma":
     return sendBau(data);
   case "twf":
