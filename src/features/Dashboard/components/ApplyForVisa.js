@@ -14,6 +14,9 @@ import {
   Input,
   InputLabel,
   MenuItem,
+  Card,
+  CardActions,
+  CardContent,
   Grid,
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
@@ -23,11 +26,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import useVisaSystemState from "../redux/useVisaSystemState";
 import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
-
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +63,6 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     value: 0,
   });
 
-
   const {
     data: visaSystems,
     createData: createVisaSystem,
@@ -83,37 +85,37 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       data: { usap, username, password },
     });
   };
-const handleExport = async ()=> {
-  setExportProgress({ loading: true, value: 0 });
-  const travellersData = getTravellersJSON(travellers);
-  const exportVisaSystem = visaSystems[selectedVisaSystem];
-  const data = {
-    system: {
-      username: exportVisaSystem.username,
-      password: exportVisaSystem.password,
-      name: exportVisaSystem.usap,
-    },
-    travellers: travellersData
-  }
-  const jsonData = JSON.stringify(data);
-  const zip = await zipWithPhotos(
-    jsonData,
-    travellers,
-    null,
-    setExportProgress
-  );
+  const handleExport = async () => {
+    setExportProgress({ loading: true, value: 0 });
+    const travellersData = getTravellersJSON(travellers);
+    const exportVisaSystem = visaSystems[selectedVisaSystem];
+    const data = {
+      system: {
+        username: exportVisaSystem.username,
+        password: exportVisaSystem.password,
+        name: exportVisaSystem.usap,
+      },
+      travellers: travellersData,
+    };
+    const jsonData = JSON.stringify(data);
+    const zip = await zipWithPhotos(
+      jsonData,
+      travellers,
+      null,
+      setExportProgress
+    );
 
-  zip.generateAsync({ type: "blob" }).then(function(content) {
-    const newFile = new Blob([content], { type: "application/zip" });
-    var csvURL = window.URL.createObjectURL(newFile);
-    const tempLink = document.createElement("a");
-    tempLink.href = csvURL;
-    tempLink.setAttribute("download", `${groupName}.zip`);
-    tempLink.click();
-  });
+    zip.generateAsync({ type: "blob" }).then(function(content) {
+      const newFile = new Blob([content], { type: "application/zip" });
+      var csvURL = window.URL.createObjectURL(newFile);
+      const tempLink = document.createElement("a");
+      tempLink.href = csvURL;
+      tempLink.setAttribute("download", `${groupName + "_" + parseInt(moment().format('X')).toString(36)}.zip`);
+      tempLink.click();
+    });
 
-  setExportProgress({ loading: false, value: 100 });
-}
+    setExportProgress({ loading: false, value: 100 });
+  };
   const getUsapName = (u) => {
     switch (u) {
       case "wtu":
@@ -144,6 +146,11 @@ const handleExport = async ()=> {
     }
   };
 
+  const handleSendAssist = ()=> {
+    const tempLink = document.createElement("a");
+    tempLink.href = new URL('hajonsoftapp:wtu?json=jsonData');
+    tempLink.click();
+  }
   return (
     <Dialog
       open={open}
@@ -187,7 +194,6 @@ const handleExport = async ()=> {
               </Typography>
               <Typography className={classes.secondaryHeading}>
                 {getSelectedVisaSystem()}
-                {exportProgress.loading &&  <CircularProgressWithLabel value={exportProgress} />}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -281,22 +287,36 @@ const handleExport = async ()=> {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 3: Choose who will send
+                Step 3: Choose operator
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                Myself, HajOnSoft Operator, Community Helper
+                Me, HajOnSoft, or a friend!
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container justify="space-around" alignItems="center">
-                <Grid item xs={4}>
-                  <Button onClick={handleExport}>Export</Button>
+              <Grid container justify="space-between" alignItems="center">
+                <Grid item xs={3}>
+                  <Card
+                    variant="outlined"
+                    style={{ backgroundColor: "hsl(240,50%,95%)" }}
+                  >
+                    <CardContent>
+                      <Typography>I will send by myself.</Typography>
+                    </CardContent>
+
+                    <CardActions>
+                      <Button onClick={handleExport}>Export</Button>
+                      {exportProgress.loading && (
+                        <CircularProgressWithLabel value={exportProgress} />
+                      )}
+                    </CardActions>
+                  </Card>
                 </Grid>
-                <Grid item xs={4}>
-                  <Button>Sent to HajOnSoft</Button>
+                <Grid item xs={3}>
+                  <Button onClick={handleSendAssist}>Send to HajOnSoft</Button>
                 </Grid>
-                <Grid item xs={4}>
-                  <Button>Send to a community helper</Button>
+                <Grid item xs={3}>
+                  <Button>Send to a friend</Button>
                 </Grid>
               </Grid>
             </AccordionDetails>
