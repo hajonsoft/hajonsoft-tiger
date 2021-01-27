@@ -24,7 +24,11 @@ async function initPage(onContentLoaded) {
 }
 
 async function storeControls(url) {
-  const fileName = _.last(url.split("/"));
+  const folder = "log";
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder);
+  }
+  const fileName = folder + "\\" + _.last(url.split("/"));
   const inputs = await page.$$eval("input", (inputs) =>
     inputs.filter((i) => i.type !== "hidden").map((i) => i.outerHTML)
   );
@@ -97,22 +101,24 @@ async function commit(page, structure, info) {
       case "select":
         if (value) {
           await page.select(element.selector, value);
-        break;
-
+          break;
         }
         if (txt) {
           const options = await page.$eval(
             element.selector,
             (e) => e.innerHTML
           );
-          const pattern = new RegExp(`value="(\\d+)">${txt}`,'im');
-          const match = pattern.exec(options.replace(/\n/igm,''));
+          const pattern = new RegExp(`value="(\\d+)">${txt}`, "im");
+          const match = pattern.exec(options.replace(/\n/gim, ""));
           if (match && match.length >= 2) {
             await page.select(element.selector, match[1]);
-            console.log('%c 🍨 match[1]: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', match[1]);
+            console.log(
+              "%c 🍨 match[1]: ",
+              "font-size:20px;background-color: #2EAFB0;color:#fff;",
+              match[1]
+            );
           }
-        break;
-
+          break;
         }
         break;
       default:

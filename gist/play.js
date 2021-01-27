@@ -1,4 +1,12 @@
-var  moment = require('moment');
+const puppeteer = require("puppeteer");
 
-const stamp = parseInt(moment().format('X')).toString(36);
-console.log('%c 🍜 stamp: ', 'font-size:20px;background-color: #FCA650;color:#fff;', stamp);
+async function scraper(url) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(url);
+  const title = await page.title();
+  await browser.close();
+  return title;
+}
+
+scraper("http://example.com").then(console.log);

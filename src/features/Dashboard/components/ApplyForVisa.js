@@ -32,6 +32,8 @@ import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import moment from 'moment';
 
+const sanitizeGroupName = (gn)=> gn.replace(/[^A-Za-z0-9]/gi,'');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -57,6 +59,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   const [usap, setUsap] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [downloadFileName, setDownloadFileName] = useState('');
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
   const [exportProgress, setExportProgress] = useState({
     loading: false,
@@ -110,7 +113,9 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
-      tempLink.setAttribute("download", `${groupName + "_" + parseInt(moment().format('X')).toString(36)}.zip`);
+      const fileName = `${sanitizeGroupName(groupName) + "_" + parseInt(moment().format('X')).toString(36)}.zip`;
+      tempLink.setAttribute("download", fileName);
+      setDownloadFileName(fileName);
       tempLink.click();
     });
 
@@ -148,7 +153,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
 
   const handleSendAssist = ()=> {
     const tempLink = document.createElement("a");
-    tempLink.href = new URL('hajonsoftapp:wtu?json=jsonData');
+    tempLink.href = new URL('hajonsoftapp://' + downloadFileName);
     tempLink.click();
   }
   return (
