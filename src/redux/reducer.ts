@@ -59,12 +59,7 @@ const applyDeleteSuccess = (state: any, action: any) => {
     state.loading = false;
     state.error = '';
 
-    const pathParts = action.payload.path.split('/');
-    if (pathParts.length === 3) {
-        state.data[pathParts[1]] = state.data[pathParts[1]].filter(x => x._fid !== pathParts[2])
-    } else if (pathParts.length === 2) {
-        state.data = _.omit(state.data, action.payload.path.split('/')[1])
-    }
+//TODO: remove only the deleted one
 }
 
 

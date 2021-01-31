@@ -69,6 +69,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   const {
     data: visaSystems,
     createData: createVisaSystem,
+    deleteData: deleteVisaSystem,
   } = useVisaSystemState();
 
   const handleSelectedVisaSystemChange = (system) => {
@@ -86,6 +87,11 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     createVisaSystem({
       path: "visaSystem",
       data: { usap, username, password },
+    });
+  };
+  const handleRemoveVisaSystem = () => {
+    deleteVisaSystem({
+      path: "visaSystem/" + visaSystems[selectedVisaSystem]._fid,
     });
   };
   const handleExport = async () => {
@@ -226,7 +232,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <FormControlLabel
                       value="twf"
                       control={<Radio />}
-                      label="Gabul ya hajj (slow)"
+                      label="Tawaf (slow)"
                     />
                     <FormControlLabel
                       value="vst"
@@ -259,7 +265,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                       />
                     </Grid>
                     <Grid item>
-                      <Button onClick={handleAddVisaSystem}>Add/Replace</Button>
+                      <Button onClick={handleAddVisaSystem}>Add</Button>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -282,6 +288,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                         ))}
                     </Select>
                   </FormControl>
+                  <Button onClick={handleRemoveVisaSystem}>Remove</Button>
                 </Grid>
               </Grid>
             </AccordionDetails>
