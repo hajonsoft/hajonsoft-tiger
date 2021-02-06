@@ -105,6 +105,11 @@ const Dashboard = () => {
                   onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
                 },
                 {
+                  icon: () => <tableIcons.MoreDetails color="success" />,
+                  tooltip: `Apply for visa`,
+                  onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData })),
+                },
+                {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
                   onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData })),

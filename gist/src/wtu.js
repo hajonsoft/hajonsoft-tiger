@@ -47,10 +47,13 @@ const config = [
       selector:
         "#Table2 > tbody > tr > td > div > div > div > div.widget-title",
       action: async () => {
-        const selectedTraveller = await page.$eval("#hajonsoft_select", el=> el.value);
+        const selectedTraveller = await page.$eval(
+          "#hajonsoft_select",
+          (el) => el.value
+        );
         if (selectedTraveller) {
           fs.writeFileSync("./selectedTraveller.txt", selectedTraveller);
-          await page.goto(await page.url())
+          await page.goto(await page.url());
         }
       },
     },
@@ -63,14 +66,10 @@ const config = [
       { selector: "#ddlhealth", value: (row) => "0" },
       {
         selector: "#txtprofession",
-        value: (row) => decodeURI(row.profession),
+        value: (row) => decodeURI(row.profession || "unknown"),
       },
       { selector: "#ddlmstatus", value: (row) => "99" },
       { selector: "#ddleducation", value: (row) => "99" },
-      {
-        selector: "#txtbirthcity",
-        value: (row) => decodeURI(row.birthPlace),
-      },
       {
         selector: "#txtbirthcity",
         value: (row) => decodeURI(row.birthPlace),
@@ -107,22 +106,22 @@ const config = [
         selector: "#txtppisscity",
         value: (row) => decodeURI(row.placeOfIssue),
       },
-            {
+      {
         selector: "#txtcity",
-        value: (row) => 'city',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtstreet",
-        value: (row) => 'txtstreet',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtstate",
-        value: (row) => 'txtstate',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtzipcode",
-        value: (row) => 'txtzipcode',
-      }
+        value: (row) => "",
+      },
     ],
   },
 ];
@@ -156,6 +155,7 @@ async function pageContentHandler(currentConfig) {
         "document.querySelector('#txtImagetext').value.length === 6"
       );
       await page.click("#cmdlogin");
+
       break;
     case "main":
       await page.goto(
@@ -178,15 +178,14 @@ async function pageContentHandler(currentConfig) {
       break;
     case "create-mutamer":
       await util.controller(page, currentConfig, data.travellers);
-      await page.select('#ddlgroupname', '152522');
-      const passportNumber = await page.$eval(
-        "#txtppno",
-        (e) => e.value
-      );
+      await page.waitForSelector("#txtppno");
+      const passportNumber = await page.$eval("#txtppno", (e) => e.value);
       // Do not continue if the passport number field is not empty - This could be a manual page refresh
       if (passportNumber) {
         return;
       }
+      await page.waitForSelector("#ddlgroupname");
+      await page.select("#ddlgroupname", "152522");
       await page.waitFor(3000);
       await page.waitForSelector("#btnppscan");
       await page.evaluate(() => {
@@ -197,47 +196,36 @@ async function pageContentHandler(currentConfig) {
       });
 
       await page.waitForSelector("#divshowmsg");
-      await page.type(
-        "#divshowmsg",
-        data.travellers[counter].codeline,
-        {
-          delay: 0,
-        }
-      );
+      await page.type("#divshowmsg", data.travellers[counter].codeline, {
+        delay: 0,
+      });
       await page.waitFor(2000);
       await util.commit(page, currentConfig.details, data.travellers[counter]);
 
-      // let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
-      // await page.waitForSelector("#file_photo_upload");
-      // let futureFileChooser = page.waitForFileChooser();
-      // await page.evaluate(() =>
-      //   document
-      //     .querySelector("#ctl00_ContentHolder_ImageUploaderControl")
-      //     .click()
-      // );
-      // let fileChooser = await futureFileChooser;
-      // const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
-      // await sharp(photoFile)
-      //   .resize(200, 200)
-      //   .toFile(resizedPhotoFile);
-      // await fileChooser.accept([resizedPhotoFile]);
 
-      // let passportFile = `./passports/${data.travellers[counter].passportNumber}.jpg`;
-      // if (fs.existsSync(passportFile)) {
-      //   futureFileChooser = page.waitForFileChooser();
-      //   await page.evaluate(() =>
-      //     document
-      //       .querySelector("#fuppcopy")
-      //       .click()
-      //   );
-      //   fileChooser = await futureFileChooser;
-      //   let resizedPassportFile = `./passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
-      //   await sharp(passportFile)
-      //     .resize(400, 300)
-      //     .toFile(resizedPassportFile);
+      await page.click("#btn_uploadImage");
+      let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
+      const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
+      await sharp(photoFile)
+        .resize(200, 200)
+        .toFile(resizedPhotoFile);
+        await util.commitFile("#file_photo_upload",resizedPhotoFile);
+        await page.waitForNavigation();
 
-      //   await fileChooser.accept([resizedPassportFile]);
-      // }
+        await page.waitForSelector("#imgppcopy");
+        const ppSrc = await page.$eval("#imgppcopy", (e) => e.getAttribute("src"));
+        console.log('%c 🍅 ppSrc: ', 'font-size:20px;background-color: #465975;color:#fff;', ppSrc);
+
+        if (!ppSrc) {
+          let passportFile = `./passports/${data.travellers[counter].passportNumber}.jpg`;
+          if (fs.existsSync(passportFile)) {
+            let resizedPassportFile = `./passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
+            await sharp(passportFile)
+              .resize(400, 300)
+              .toFile(resizedPassportFile);
+            await util.commitFile('#fuppcopy',resizedPassportFile);
+          }
+        }
       await page.waitForSelector("#txtImagetext");
       await page.focus("#txtImagetext");
       await page.waitForFunction(

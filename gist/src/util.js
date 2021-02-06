@@ -133,7 +133,7 @@ async function controller(page, structure, travellers) {
     travellers
       .map(
         (t, i) =>
-          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.dmmmy}</option>`
+          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.dmmmy} - ${t.dob.age}</option>`
       )
       .join(" ");
   if (
@@ -186,4 +186,21 @@ function counter(currentCounter) {
   }
   return output;
 }
-module.exports = { findConfig, commit, controller, initPage, counter };
+
+async function commitFile(selector, fileName) {
+  await page.waitForSelector(selector);
+  let [fileChooser] = await Promise.all([
+    page.waitForFileChooser(),
+    page.evaluate((p) => document.querySelector(p[0]).click(),[selector]),
+  ]);
+
+  await fileChooser.accept([fileName]);
+}
+module.exports = {
+  findConfig,
+  commit,
+  controller,
+  initPage,
+  counter,
+  commitFile,
+};
