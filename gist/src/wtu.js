@@ -6,6 +6,7 @@ const sharp = require("sharp");
 let page;
 let data;
 let counter = 0;
+let groupNumber;
 const config = [
   {
     name: "login",
@@ -21,22 +22,19 @@ const config = [
   },
   {
     name: "create-group",
-    url: "http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1",
+    regex:
+    "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx\\?PageId=M.*",
     details: [
       {
-        selector: "#ctl00_ContentHolder_TxtGroupName",
-        value: (row) => (row.name.full + row.passportNumber).replace(/ /g, ""),
+        selector: "#txtGrpdesc",
+        value: (row) => (row.name.full + row.passportNumber).replace(/ /g, "") + parseInt(moment().format("DDMMYYYYHHmmss")).toString(32),
       },
       {
-        selector: "#ctl00_ContentHolder_TxtNotes",
-        value: () => new Date().toString(),
-      },
-      {
-        selector: "#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput",
+        selector: "#txtEADate",
         value: () =>
           moment()
             .add(7, "days")
-            .format("DD/MM/YYYY"),
+            .format("MM-DD-YYYY"),
       },
     ],
   },
@@ -58,7 +56,7 @@ const config = [
       },
     },
     details: [
-      { selector: "#ddlgroupname", value: (row) => "152522" },
+      { selector: "#ddlgroupname", value: (row) => groupNumber },
       { selector: "#ddltitle", value: (row) => "99" },
       { selector: "#ddlpptype", value: (row) => "1" },
       { selector: "#ddlbirthcountry", value: (row) => row.nationality.telCode },
@@ -159,22 +157,32 @@ async function pageContentHandler(currentConfig) {
       break;
     case "main":
       await page.goto(
-        "https://www.waytoumrah.com/prj_umrah/Eng/Eng_MutamerEntry.aspx"
+        "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx\?PageId=M"
       );
       break;
     case "create-group":
       await util.commit(page, currentConfig.details, data.travellers[0]);
-      await page.evaluate(() => {
+      const embassyCount = await page.evaluate(() => {
         const consulate = document.querySelector(
-          "#ctl00_ContentHolder_LstConsulate"
+          "#cmbEmb"
         );
         const consulateOptions = consulate.querySelectorAll("option");
         const consulateOptionsCount = [...consulateOptions].length;
         if (consulateOptionsCount === 2) {
           consulateOptions[1].selected = true;
         }
+
+        return consulateOptionsCount;
       });
-      await page.click("#ctl00_ContentHolder_btnCreate");
+      if (embassyCount == 2) {
+        await page.click("#BtnSave"); 
+      }
+      const confirmationTextSelector = "body > div.lobibox.lobibox-success.animated-super-fast.zoomIn > div.lobibox-body > div.lobibox-body-text-wrapper > span";
+      await page.waitForSelector(confirmationTextSelector, {visible: true, timeout: 0})
+      const confirmationText = await page.$eval(confirmationTextSelector, el => el.innerText);
+      groupNumber = confirmationText.match(/\d+/g)[0];
+      console.log('%c 🥒 groupNumber: ', 'font-size:20px;background-color: #FCA650;color:#fff;', groupNumber);
+      await page.goto("https://www.waytoumrah.com/prj_umrah/eng/eng_mutamerentry.aspx");
       break;
     case "create-mutamer":
       await util.controller(page, currentConfig, data.travellers);
@@ -185,7 +193,7 @@ async function pageContentHandler(currentConfig) {
         return;
       }
       await page.waitForSelector("#ddlgroupname");
-      await page.select("#ddlgroupname", "152522");
+      await page.select("#ddlgroupname", groupNumber);
       await page.waitFor(3000);
       await page.waitForSelector("#btnppscan");
       await page.evaluate(() => {

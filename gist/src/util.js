@@ -66,7 +66,7 @@ function findConfig(url, config) {
 
   const urlConfig = config.find(
     (x) =>
-      x.url.toLowerCase() === lowerUrl ||
+    (x.url && x.url.toLowerCase() === lowerUrl )||
       (x.regex && RegExp(x.regex.toLowerCase()).test(lowerUrl))
   );
   if (urlConfig) {
@@ -112,11 +112,6 @@ async function commit(page, structure, info) {
           const match = pattern.exec(options.replace(/\n/gim, ""));
           if (match && match.length >= 2) {
             await page.select(element.selector, match[1]);
-            console.log(
-              "%c 🍨 match[1]: ",
-              "font-size:20px;background-color: #2EAFB0;color:#fff;",
-              match[1]
-            );
           }
           break;
         }
@@ -133,7 +128,7 @@ async function controller(page, structure, travellers) {
     travellers
       .map(
         (t, i) =>
-          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.dmmmy} - ${t.dob.age}</option>`
+          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.age} years old</option>`
       )
       .join(" ");
   if (
