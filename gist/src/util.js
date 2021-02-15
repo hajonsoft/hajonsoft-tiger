@@ -24,11 +24,11 @@ async function initPage(onContentLoaded) {
 }
 
 async function storeControls(url) {
-  const folder = "log";
+  const folder = __dirname + "/../log/";
   if (!fs.existsSync(folder)) {
     fs.mkdirSync(folder);
   }
-  const fileName = folder + "\\" + _.last(url.split("/"));
+  const fileName = folder + _.last(url.split("/"));
   const inputs = await page.$$eval("input", (inputs) =>
     inputs.filter((i) => i.type !== "hidden").map((i) => i.outerHTML)
   );
@@ -191,6 +191,19 @@ async function commitFile(selector, fileName) {
 
   await fileChooser.accept([fileName]);
 }
+async function captchaClick(selector, numbers, actionSelector) {
+  await page.waitForSelector(selector);
+  await page.focus(selector);
+  await page.waitForFunction((args)=> 
+    {
+      document.querySelector( args[0] ).value.length === args[1]
+    }, 
+    {timeout: 0}, 
+    [selector, numbers]
+  );
+  await page.click(actionSelector);
+}
+
 module.exports = {
   findConfig,
   commit,
@@ -198,4 +211,5 @@ module.exports = {
   initPage,
   counter,
   commitFile,
+  captchaClick
 };

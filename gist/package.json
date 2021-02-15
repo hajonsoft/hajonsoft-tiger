@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "add-text-to-image": "^1.0.1",
+    "canvas": "^2.6.1",
     "downloads-folder": "^3.0.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",

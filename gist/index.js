@@ -1,5 +1,6 @@
 const { send: sendBau } = require("./src/bau");
 const { send: sendWtu } = require("./src/wtu");
+const { send: sendGma } = require("./src/gma");
 const path = require("path");
 const fs = require("fs");
 var unzipper = require("unzipper");
@@ -25,13 +26,14 @@ if (!fs.existsSync(dataFileName)) {
 const content = fs.readFileSync(dataFileName, "utf8");
 const data = JSON.parse(content);
 
+
 switch (data.system.name) {
   case "bau":
     return sendBau(data);
   case "wtu":
     return sendWtu(data);
   case "gma":
-    return sendBau(data);
+    return sendGma(data);
   case "twf":
     return sendBau(data);
   case "mot":

@@ -10,33 +10,26 @@ let groupNumber;
 const config = [
   {
     name: "login",
-    url: "https://www.waytoumrah.com/prj_umrah/eng/Eng_frmlogin.aspx",
+    url: "https://eumra.com/login.aspx",
     details: [
-      { selector: "#txtUserName", value: (system) => system.username },
-      { selector: "#txtPwd", value: (system) => system.password },
+      { selector: "#LoginName", value: (system) => system.username },
+      { selector: "#password", value: (system) => system.password },
     ],
   },
   {
     name: "main",
-    url: "https://www.waytoumrah.com/prj_umrah/Eng/Eng_Waytoumrah_EA.aspx",
+    url: "https://eumra.com/homepage.aspx?P=DashboardClassic",
   },
   {
     name: "create-group",
-    regex:
-      "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx\\?PageId=M.*",
+    url:
+      "https://eumra.com/homepage.aspx?P=auploader",
     details: [
       {
-        selector: "#txtGrpdesc",
+        selector: "#txt_GroupName",
         value: (row) =>
           (row.name.full + row.passportNumber).replace(/ /g, "") +
           parseInt(moment().format("DDMMYYYYHHmmss")).toString(32),
-      },
-      {
-        selector: "#txtEADate",
-        value: () =>
-          moment()
-            .add(7, "days")
-            .format("MM-DD-YYYY"),
       },
     ],
   },
@@ -149,53 +142,47 @@ async function pageContentHandler(currentConfig) {
   switch (currentConfig.name) {
     case "login":
       await util.commit(page, currentConfig.details, data.system);
-      await page.waitForSelector("#txtImagetext");
-      await page.focus("#txtImagetext");
-      await page.waitForFunction(
-        "document.querySelector('#txtImagetext').value.length === 6"
-      );
-      await page.click("#cmdlogin");
-
+      await util.captchaClick("#CodeNumberTextBox", 5, "#btn_Login");
       break;
     case "main":
       await page.goto(
-        "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx?PageId=M"
+        "https://eumra.com/homepage.aspx?P=auploader"
       );
       break;
     case "create-group":
       await util.commit(page, currentConfig.details, data.travellers[0]);
-      const embassyCount = await page.evaluate(() => {
-        const consulate = document.querySelector("#cmbEmb");
-        const consulateOptions = consulate.querySelectorAll("option");
-        const consulateOptionsCount = [...consulateOptions].length;
-        if (consulateOptionsCount === 2) {
-          consulateOptions[1].selected = true;
-        }
+      // const embassyCount = await page.evaluate(() => {
+      //   const consulate = document.querySelector("#cmbEmb");
+      //   const consulateOptions = consulate.querySelectorAll("option");
+      //   const consulateOptionsCount = [...consulateOptions].length;
+      //   if (consulateOptionsCount === 2) {
+      //     consulateOptions[1].selected = true;
+      //   }
 
-        return consulateOptionsCount;
-      });
-      if (embassyCount == 2) {
-        await page.click("#BtnSave");
-      }
-      const confirmationTextSelector =
-        "body > div.lobibox.lobibox-success.animated-super-fast.zoomIn > div.lobibox-body > div.lobibox-body-text-wrapper > span";
-      await page.waitForSelector(confirmationTextSelector, {
-        visible: true,
-        timeout: 0,
-      });
-      const confirmationText = await page.$eval(
-        confirmationTextSelector,
-        (el) => el.innerText
-      );
-      groupNumber = confirmationText.match(/\d+/g)[0];
-      console.log(
-        "%c 🥒 groupNumber: ",
-        "font-size:20px;background-color: #FCA650;color:#fff;",
-        groupNumber
-      );
-      await page.goto(
-        "https://www.waytoumrah.com/prj_umrah/eng/eng_mutamerentry.aspx"
-      );
+      //   return consulateOptionsCount;
+      // });
+      // if (embassyCount == 2) {
+      //   await page.click("#BtnSave");
+      // }
+      // const confirmationTextSelector =
+      //   "body > div.lobibox.lobibox-success.animated-super-fast.zoomIn > div.lobibox-body > div.lobibox-body-text-wrapper > span";
+      // await page.waitForSelector(confirmationTextSelector, {
+      //   visible: true,
+      //   timeout: 0,
+      // });
+      // const confirmationText = await page.$eval(
+      //   confirmationTextSelector,
+      //   (el) => el.innerText
+      // );
+      // groupNumber = confirmationText.match(/\d+/g)[0];
+      // console.log(
+      //   "%c 🥒 groupNumber: ",
+      //   "font-size:20px;background-color: #FCA650;color:#fff;",
+      //   groupNumber
+      // );
+      // await page.goto(
+      //   "https://www.waytoumrah.com/prj_umrah/eng/eng_mutamerentry.aspx"
+      // );
       break;
     case "create-mutamer":
       await util.controller(page, currentConfig, data.travellers);
@@ -243,16 +230,19 @@ async function pageContentHandler(currentConfig) {
       );
 
       if (!ppSrc) {
-        let passportFile = __dirname + `/../passports/${data.travellers[counter].passportNumber}.jpg`;
+        let passportFile =
+          __dirname +
+          `/../passports/${data.travellers[counter].passportNumber}.jpg`;
         if (fs.existsSync(passportFile)) {
-          let resizedPassportFile = __dirname + `../passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
+          let resizedPassportFile =
+            __dirname +
+            `../passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
           await sharp(passportFile)
             .resize(400, 300)
             .toFile(resizedPassportFile);
           await util.commitFile("#fuppcopy", resizedPassportFile);
         } else {
           // let pngFile = __dirname +  `/../passports/${data.travellers[counter].passportNumber}.png`;
-
           // const pad = " ".repeat(4);
           // const height = "\n".repeat(10);
           // const codeline = `${height}${pad}${data.travellers[
@@ -260,7 +250,6 @@ async function pageContentHandler(currentConfig) {
           // ].codeline.substring(0, 44)}${pad}${"\n"}${pad}${data.travellers[
           //   counter
           // ].codeline.substring(44)}${pad}${"\n".repeat(1)}`;
-
           // fs.writeFileSync(
           //   pngFile,
           //   text2png(codeline, {
@@ -270,7 +259,6 @@ async function pageContentHandler(currentConfig) {
           //     lineSpacing: 20,
           //   })
           // );
-
           // await util.commitFile("#fuppcopy", pngFile);
         }
       }
