@@ -15,7 +15,6 @@ To signup a new customer (a.k.a travel agent)
 - Click overview and create an app, web app  and state at this page to copy the values into github YML
 - Setup github actions and deploy
 ```
-
 ### Setup github actions
 
 ```
