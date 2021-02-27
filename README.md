@@ -2,7 +2,7 @@
 
 This react project allows hajonsoft customers to login to their own firebase account to work on travellers to manage relationship, scan passports and apply for visa.
 
-edit master translation 
+Edit master translation 
 edit customers 
 save chat log
 edit other looks up 
