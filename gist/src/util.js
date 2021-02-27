@@ -24,7 +24,11 @@ async function initPage(onContentLoaded) {
 }
 
 async function storeControls(url) {
-  const fileName = _.last(url.split("/"));
+  const folder = __dirname + "/../log/";
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder);
+  }
+  const fileName = folder + _.last(url.split("/"));
   const inputs = await page.$$eval("input", (inputs) =>
     inputs.filter((i) => i.type !== "hidden").map((i) => i.outerHTML)
   );
@@ -62,7 +66,7 @@ function findConfig(url, config) {
 
   const urlConfig = config.find(
     (x) =>
-      x.url.toLowerCase() === lowerUrl ||
+    (x.url && x.url.toLowerCase() === lowerUrl )||
       (x.regex && RegExp(x.regex.toLowerCase()).test(lowerUrl))
   );
   if (urlConfig) {
@@ -97,22 +101,19 @@ async function commit(page, structure, info) {
       case "select":
         if (value) {
           await page.select(element.selector, value);
-        break;
-
+          break;
         }
         if (txt) {
           const options = await page.$eval(
             element.selector,
             (e) => e.innerHTML
           );
-          const pattern = new RegExp(`value="(\\d+)">${txt}`,'im');
-          const match = pattern.exec(options.replace(/\n/igm,''));
+          const pattern = new RegExp(`value="(\\d+)">${txt}`, "im");
+          const match = pattern.exec(options.replace(/\n/gim, ""));
           if (match && match.length >= 2) {
             await page.select(element.selector, match[1]);
-            console.log('%c 🍨 match[1]: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', match[1]);
           }
-        break;
-
+          break;
         }
         break;
       default:
@@ -127,7 +128,7 @@ async function controller(page, structure, travellers) {
     travellers
       .map(
         (t, i) =>
-          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.dmmmy}</option>`
+          `<option value="${i}">${i} - ${t.name.full} - ${t.gender} - ${t.dob.age} years old</option>`
       )
       .join(" ");
   if (
@@ -180,4 +181,35 @@ function counter(currentCounter) {
   }
   return output;
 }
-module.exports = { findConfig, commit, controller, initPage, counter };
+
+async function commitFile(selector, fileName) {
+  await page.waitForSelector(selector);
+  let [fileChooser] = await Promise.all([
+    page.waitForFileChooser(),
+    page.evaluate((p) => document.querySelector(p[0]).click(),[selector]),
+  ]);
+
+  await fileChooser.accept([fileName]);
+}
+async function captchaClick(selector, numbers, actionSelector) {
+  await page.waitForSelector(selector);
+  await page.focus(selector);
+  await page.waitForFunction((args)=> 
+    {
+      document.querySelector( args[0] ).value.length === args[1]
+    }, 
+    {timeout: 0}, 
+    [selector, numbers]
+  );
+  await page.click(actionSelector);
+}
+
+module.exports = {
+  findConfig,
+  commit,
+  controller,
+  initPage,
+  counter,
+  commitFile,
+  captchaClick
+};

@@ -6,6 +6,7 @@ const sharp = require("sharp");
 let page;
 let data;
 let counter = 0;
+let groupNumber;
 const config = [
   {
     name: "login",
@@ -21,22 +22,21 @@ const config = [
   },
   {
     name: "create-group",
-    url: "http://app2.babalumra.com/Groups/AddNewGroup.aspx?gMode=1",
+    regex:
+      "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx\\?PageId=M.*",
     details: [
       {
-        selector: "#ctl00_ContentHolder_TxtGroupName",
-        value: (row) => (row.name.full + row.passportNumber).replace(/ /g, ""),
+        selector: "#txtGrpdesc",
+        value: (row) =>
+          (row.name.full + row.passportNumber).replace(/ /g, "") +
+          parseInt(moment().format("DDMMYYYYHHmmss")).toString(32),
       },
       {
-        selector: "#ctl00_ContentHolder_TxtNotes",
-        value: () => new Date().toString(),
-      },
-      {
-        selector: "#ctl00_ContentHolder_TxtExpectedArrivalDate_dateInput",
+        selector: "#txtEADate",
         value: () =>
           moment()
             .add(7, "days")
-            .format("DD/MM/YYYY"),
+            .format("MM-DD-YYYY"),
       },
     ],
   },
@@ -47,15 +47,18 @@ const config = [
       selector:
         "#Table2 > tbody > tr > td > div > div > div > div.widget-title",
       action: async () => {
-        const selectedTraveller = await page.$eval("#hajonsoft_select", el=> el.value);
+        const selectedTraveller = await page.$eval(
+          "#hajonsoft_select",
+          (el) => el.value
+        );
         if (selectedTraveller) {
           fs.writeFileSync("./selectedTraveller.txt", selectedTraveller);
-          await page.goto(await page.url())
+          await page.goto(await page.url());
         }
       },
     },
     details: [
-      { selector: "#ddlgroupname", value: (row) => "152522" },
+      { selector: "#ddlgroupname", value: (row) => groupNumber },
       { selector: "#ddltitle", value: (row) => "99" },
       { selector: "#ddlpptype", value: (row) => "1" },
       { selector: "#ddlbirthcountry", value: (row) => row.nationality.telCode },
@@ -63,14 +66,10 @@ const config = [
       { selector: "#ddlhealth", value: (row) => "0" },
       {
         selector: "#txtprofession",
-        value: (row) => decodeURI(row.profession),
+        value: (row) => decodeURI(row.profession || "unknown"),
       },
       { selector: "#ddlmstatus", value: (row) => "99" },
       { selector: "#ddleducation", value: (row) => "99" },
-      {
-        selector: "#txtbirthcity",
-        value: (row) => decodeURI(row.birthPlace),
-      },
       {
         selector: "#txtbirthcity",
         value: (row) => decodeURI(row.birthPlace),
@@ -107,22 +106,22 @@ const config = [
         selector: "#txtppisscity",
         value: (row) => decodeURI(row.placeOfIssue),
       },
-            {
+      {
         selector: "#txtcity",
-        value: (row) => 'city',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtstreet",
-        value: (row) => 'txtstreet',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtstate",
-        value: (row) => 'txtstate',
+        value: (row) => "",
       },
-            {
+      {
         selector: "#txtzipcode",
-        value: (row) => 'txtzipcode',
-      }
+        value: (row) => "",
+      },
     ],
   },
 ];
@@ -156,37 +155,58 @@ async function pageContentHandler(currentConfig) {
         "document.querySelector('#txtImagetext').value.length === 6"
       );
       await page.click("#cmdlogin");
+
       break;
     case "main":
       await page.goto(
-        "https://www.waytoumrah.com/prj_umrah/Eng/Eng_MutamerEntry.aspx"
+        "https://www.waytoumrah.com/prj_umrah/Eng/Eng_frmGroup.aspx?PageId=M"
       );
       break;
     case "create-group":
       await util.commit(page, currentConfig.details, data.travellers[0]);
-      await page.evaluate(() => {
-        const consulate = document.querySelector(
-          "#ctl00_ContentHolder_LstConsulate"
-        );
+      const embassyCount = await page.evaluate(() => {
+        const consulate = document.querySelector("#cmbEmb");
         const consulateOptions = consulate.querySelectorAll("option");
         const consulateOptionsCount = [...consulateOptions].length;
         if (consulateOptionsCount === 2) {
           consulateOptions[1].selected = true;
         }
+
+        return consulateOptionsCount;
       });
-      await page.click("#ctl00_ContentHolder_btnCreate");
+      if (embassyCount == 2) {
+        await page.click("#BtnSave");
+      }
+      const confirmationTextSelector =
+        "body > div.lobibox.lobibox-success.animated-super-fast.zoomIn > div.lobibox-body > div.lobibox-body-text-wrapper > span";
+      await page.waitForSelector(confirmationTextSelector, {
+        visible: true,
+        timeout: 0,
+      });
+      const confirmationText = await page.$eval(
+        confirmationTextSelector,
+        (el) => el.innerText
+      );
+      groupNumber = confirmationText.match(/\d+/g)[0];
+      console.log(
+        "%c 🥒 groupNumber: ",
+        "font-size:20px;background-color: #FCA650;color:#fff;",
+        groupNumber
+      );
+      await page.goto(
+        "https://www.waytoumrah.com/prj_umrah/eng/eng_mutamerentry.aspx"
+      );
       break;
     case "create-mutamer":
       await util.controller(page, currentConfig, data.travellers);
-      await page.select('#ddlgroupname', '152522');
-      const passportNumber = await page.$eval(
-        "#txtppno",
-        (e) => e.value
-      );
+      await page.waitForSelector("#txtppno");
+      const passportNumber = await page.$eval("#txtppno", (e) => e.value);
       // Do not continue if the passport number field is not empty - This could be a manual page refresh
       if (passportNumber) {
         return;
       }
+      await page.waitForSelector("#ddlgroupname");
+      await page.select("#ddlgroupname", groupNumber);
       await page.waitFor(3000);
       await page.waitForSelector("#btnppscan");
       await page.evaluate(() => {
@@ -197,47 +217,63 @@ async function pageContentHandler(currentConfig) {
       });
 
       await page.waitForSelector("#divshowmsg");
-      await page.type(
-        "#divshowmsg",
-        data.travellers[counter].codeline,
-        {
-          delay: 0,
-        }
-      );
+      await page.type("#divshowmsg", data.travellers[counter].codeline, {
+        delay: 0,
+      });
       await page.waitFor(2000);
       await util.commit(page, currentConfig.details, data.travellers[counter]);
 
-      // let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
-      // await page.waitForSelector("#file_photo_upload");
-      // let futureFileChooser = page.waitForFileChooser();
-      // await page.evaluate(() =>
-      //   document
-      //     .querySelector("#ctl00_ContentHolder_ImageUploaderControl")
-      //     .click()
-      // );
-      // let fileChooser = await futureFileChooser;
-      // const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
-      // await sharp(photoFile)
-      //   .resize(200, 200)
-      //   .toFile(resizedPhotoFile);
-      // await fileChooser.accept([resizedPhotoFile]);
+      await page.click("#btn_uploadImage");
+      let photoFile = `./photos/${data.travellers[counter].passportNumber}.jpg`;
+      const resizedPhotoFile = `./photos/${data.travellers[counter].passportNumber}_200x200.jpg`;
+      await sharp(photoFile)
+        .resize(200, 200)
+        .toFile(resizedPhotoFile);
+      await util.commitFile("#file_photo_upload", resizedPhotoFile);
+      await page.waitForNavigation();
 
-      // let passportFile = `./passports/${data.travellers[counter].passportNumber}.jpg`;
-      // if (fs.existsSync(passportFile)) {
-      //   futureFileChooser = page.waitForFileChooser();
-      //   await page.evaluate(() =>
-      //     document
-      //       .querySelector("#fuppcopy")
-      //       .click()
-      //   );
-      //   fileChooser = await futureFileChooser;
-      //   let resizedPassportFile = `./passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
-      //   await sharp(passportFile)
-      //     .resize(400, 300)
-      //     .toFile(resizedPassportFile);
+      await page.waitForSelector("#imgppcopy");
+      const ppSrc = await page.$eval("#imgppcopy", (e) =>
+        e.getAttribute("src")
+      );
+      console.log(
+        "%c 🍅 ppSrc: ",
+        "font-size:20px;background-color: #465975;color:#fff;",
+        ppSrc
+      );
 
-      //   await fileChooser.accept([resizedPassportFile]);
-      // }
+      if (!ppSrc) {
+        let passportFile = __dirname + `/../passports/${data.travellers[counter].passportNumber}.jpg`;
+        if (fs.existsSync(passportFile)) {
+          let resizedPassportFile = __dirname + `../passports/${data.travellers[counter].passportNumber}_400x300.jpg`;
+          await sharp(passportFile)
+            .resize(400, 300)
+            .toFile(resizedPassportFile);
+          await util.commitFile("#fuppcopy", resizedPassportFile);
+        } else {
+          // let pngFile = __dirname +  `/../passports/${data.travellers[counter].passportNumber}.png`;
+
+          // const pad = " ".repeat(4);
+          // const height = "\n".repeat(10);
+          // const codeline = `${height}${pad}${data.travellers[
+          //   counter
+          // ].codeline.substring(0, 44)}${pad}${"\n"}${pad}${data.travellers[
+          //   counter
+          // ].codeline.substring(44)}${pad}${"\n".repeat(1)}`;
+
+          // fs.writeFileSync(
+          //   pngFile,
+          //   text2png(codeline, {
+          //     font: '30px sans-serif',
+          //     color: "black",
+          //     bgColor: "white",
+          //     lineSpacing: 20,
+          //   })
+          // );
+
+          // await util.commitFile("#fuppcopy", pngFile);
+        }
+      }
       await page.waitForSelector("#txtImagetext");
       await page.focus("#txtImagetext");
       await page.waitForFunction(
