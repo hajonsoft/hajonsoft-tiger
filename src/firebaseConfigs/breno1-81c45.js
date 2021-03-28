@@ -8,5 +8,3 @@ const firebaseConfig = {
     appId: "1:413195855317:web:6f916414b9970d3534095c"
 };
 export default firebaseConfig;
-
-// alialiayman@gmail.com 

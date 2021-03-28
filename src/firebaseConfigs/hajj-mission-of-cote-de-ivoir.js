@@ -9,5 +9,3 @@ const firebaseConfig = {
 };
 
 export default firebaseConfig;
-
-//alialiayman@gmail.com 

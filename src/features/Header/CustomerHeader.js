@@ -13,11 +13,11 @@ const CustomerHeader = () => {
 
     useEffect(() => {
         firebase.database().ref("protected/profile").once('value', snapshot => {
-            if (snapshot.toJSON()) {
+            if (snapshot && snapshot.toJSON()) {
                 setProfile(snapshot.toJSON())
             }
         })
-    }, [profile])
+    }, [])
 
     return (
         <AppBar position="static" style={{ backgroundColor: '#4caf50' }}>
@@ -34,7 +34,7 @@ const CustomerHeader = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Typography variant="body1">{`Call us ${profile.tel}`}</Typography>
+                        {profile && profile.tel && <Typography variant="body1">{`Call us ${profile.tel}`}</Typography>}
                     </Grid>
                 </Grid>
             </Toolbar>

@@ -9,5 +9,3 @@ const firebaseConfig = {
 };
 
 export default firebaseConfig;
-
-// forhajj2hajonsoft@gmail.com

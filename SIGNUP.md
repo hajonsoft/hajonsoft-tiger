@@ -5,8 +5,8 @@ To signup a new customer (a.k.a travel agent)
 ### Create firebase account
 
 ```
-- Create a new gmail account for the customer companyname2hajonsoft. password companyname22hajonsoftcountryname all small. ex forhajj2hajonsoft/forhaj23hajonsoftusa
-- login to firebase.google.com
+- Send video to customer to add you as an admin to their firebase account. hajonsoft@gmail.com
+- login to firebase.google.com using this admin account
 - create new project, make sure the name is readable and record the name ex. forhajjnow
 - Authentication: enable email/password incognito - it may error if not incognito, create the first user (use user email above), default password is the same for email
 - Realtime database: start in test mode
@@ -14,6 +14,7 @@ To signup a new customer (a.k.a travel agent)
 - click project overview and change public facing name
 - Click overview and create an app, web app  and state at this page to copy the values into github YML
 - Setup github actions and deploy
+- Make sure the new web application is searchable by you as an admin somewhere as well as any custom website created for the client. TBD
 ```
 ### Setup github actions
 
