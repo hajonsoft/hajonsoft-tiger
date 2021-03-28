@@ -45,8 +45,6 @@ Web Automation https://github.com/puppeteer/recorder
 Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-background
 
 
-
-
 ## We need your help!
 
 
@@ -59,3 +57,7 @@ We also would like to extend personal assistance and would like input around how
 To start contributing, fork git repository from github, clone the forked repository and make your changes according to instructions below. Then send a pull request. We discuss changes you have made. After that you can see your changes merged in the main repository!
 
 © Ayman Ali 2021
+
+
+# git
+git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
