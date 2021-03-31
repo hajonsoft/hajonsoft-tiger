@@ -44,6 +44,8 @@ Web Automation https://github.com/puppeteer/recorder
 
 Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-background
 
+url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-my-own-url-protocol-e-g-so
+
 
 ## We need your help!
 
