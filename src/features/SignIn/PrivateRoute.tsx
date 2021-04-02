@@ -4,12 +4,27 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../../firebaseapp'
 function PrivateRoute({ children, ...rest }) {
 
-  const [user] = useAuthState(firebase.auth());
+  const [user, loading, error] = useAuthState(firebase.auth());
+
+  if (loading) {
+    return (
+      <div>
+        <p>Initialising User...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
     return (
       <Route
         {...rest}
         render={({ location }) =>
-        user && user.uid ? (
+        user ? (
             children
           ) : (
             <Redirect

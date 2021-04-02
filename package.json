@@ -53,7 +53,7 @@
     "react-animated-css": "^1.2.1",
     "react-dom": "16.11.0",
     "react-dropzone": "^11.2.4",
-    "react-firebase-hooks": "^2.2.0",
+    "react-firebase-hooks": "^3.0.3",
     "react-helmet": "^6.1.0",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-material-ui-carousel": "^1.5.1",
