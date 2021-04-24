@@ -3,7 +3,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import firebase from "../../../firebaseapp";
 import packagePlaceholder from '../../../images/package-placeholder.jpg';
@@ -29,9 +28,6 @@ const PackageDetailCardM3li = () => {
 
     return (
         <div>
-            <Helmet>
-                <title>{`${detail.name}`}</title>
-            </Helmet>
             <CustomerHeader />
             <Box mx={2} mt={2}>
                 <Grid Container>

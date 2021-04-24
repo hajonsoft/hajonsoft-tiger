@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Toolbar, Grid, Typography, Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
-import firebaseConfig from '../../firebaseConfig';
+import {Helmet} from "react-helmet";
 import _ from 'lodash';
+
+import firebaseConfig from '../../firebaseConfig';
 import firebase from './../../firebaseapp';
 
 
@@ -21,6 +23,9 @@ const CustomerHeader = () => {
 
     return (
         <AppBar position="static" style={{ backgroundColor: '#4caf50' }}>
+            <Helmet>
+                <title>{profile.name}</title>
+            </Helmet>
             <Toolbar>
                 <Grid container justify="space-between" alignItems="center">
                     <Grid item><Typography variant="h4" align="center">{profile.name}</Typography></Grid>

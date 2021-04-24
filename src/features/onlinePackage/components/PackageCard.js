@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import ForwardIcon from '@material-ui/icons/Forward';
 import NearMeIcon from '@material-ui/icons/NearMe';
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
 import { packageImage } from './../../../util/packageImage';
 
@@ -21,9 +20,6 @@ const PackageCard = ({ detail, index }) => {
     }
     return (
         <div>
-            <Helmet>
-                <title>{`${detail.name}`}</title>
-            </Helmet>
             <Card raised variant="outlined" style={{ backgroundColor: "#e8f5e9" }}>
                 <CardHeader title={detail.name} subheader={`${detail.quadPrice} 4 persons/room`} ></CardHeader>
                 <CardMedia
