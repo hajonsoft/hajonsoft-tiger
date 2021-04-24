@@ -157,9 +157,9 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     }
   };
 
-  const handleSendAssist = ()=> {
+  const handleSentToHos = ()=> {
     const tempLink = document.createElement("a");
-    tempLink.href = new URL('hajonsoftapp://' + downloadFileName);
+    tempLink.href = new URL('hajonsoftapp://{"mode":"scan","fileName":"' + downloadFileName + '"}');
     tempLink.click();
   }
   return (
@@ -325,7 +325,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                   </Card>
                 </Grid>
                 <Grid item xs={3}>
-                  <Button onClick={handleSendAssist}>Send to HajOnSoft</Button>
+                  <Button onClick={handleSentToHos}>Send to HajOnSoft</Button>
                 </Grid>
                 <Grid item xs={3}>
                   <Button>Send to a friend</Button>
