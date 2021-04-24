@@ -31,6 +31,7 @@ import useVisaSystemState from "../redux/useVisaSystemState";
 import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import moment from 'moment';
+import firebaseConfig from "../../../firebaseConfig";
 
 const sanitizeGroupName = (gn)=> gn.replace(/[^A-Za-z0-9]/gi,'');
 
@@ -159,7 +160,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
 
   const handleSentToHos = ()=> {
     const tempLink = document.createElement("a");
-    tempLink.href = new URL('hajonsoftapp://{"mode":"scan","fileName":"' + downloadFileName + '"}');
+    tempLink.href = new URL('hajonsoftapp://mode=send,fileName=' + downloadFileName + ',host=' + firebaseConfig.projectId);
     tempLink.click();
   }
   return (
