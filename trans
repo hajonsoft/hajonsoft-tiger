@@ -1,0 +1,3 @@
+cp public/assets/lang/en.json src/lang/en.json
+cp public/assets/lang/fr.json src/lang/fr.json
+cp public/assets/lang/ar.json src/lang/ar.json

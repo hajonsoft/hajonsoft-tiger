@@ -1,8 +1,11 @@
 import { ThemeProvider } from "@material-ui/core";
 import { configureStore } from "@reduxjs/toolkit";
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
+import { IntlProvider } from 'react-intl';
+
+
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
@@ -25,6 +28,9 @@ import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
 import Reserve from "./features/onlinePackage/components/Reserve";
 import Favorite from './features/favorite';
+import messages_ar from './lang/ar.json'
+import messages_en from './lang/en.json'
+import messages_fr from './lang/fr.json'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -36,61 +42,88 @@ const store = configureStore({
 });
 sagaMiddleware.run(sagas);
 
+const messages = {
+  "fr": messages_fr,
+  "ar": messages_ar,
+  "en": messages_en
+}
+const navigatorLanguage = navigator.language.split(/[-_]/)[0];
+
 function App() {
+
+  const [language, setLanguage] = useState(localStorage.getItem('langOverride') || navigatorLanguage)
+  const [dir, setDir] = useState(localStorage.getItem('langOverride') === "ar" ? "rtl" : "ltr")
+
+  const handleLanguageChange = (lang) => {
+    if (lang === "ar" && dir !== "rtl") {
+      setDir("rtl")
+    }
+
+    if (lang !== "ar" && dir === "rtl") {
+      setDir("ltr")
+    }
+    setLanguage(lang);
+    localStorage.setItem('langOverride', lang);
+  };
+
+  document.dir = dir;
+
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Router>
-        <Provider store={store}>
-          <PublicRoute exact path="/">
-            <CustomerHome />
-          </PublicRoute>
-          <PublicRoute exact path="/admin">
-            <Home />
-          </PublicRoute>
-          <PublicRoute path="/register">
-            <Register />
-          </PublicRoute>
-          <PublicRoute path="/login">
-            <SignIn />
-          </PublicRoute>
-          <PublicRoute path="/forgot-password">
-            <ForgotPassword />
-          </PublicRoute>
-          <PublicRoute path="/logout">
-            <SignOut />
-          </PublicRoute>
-          <PublicRoute path="/reserve/:packageName">
-            <Reserve />
-          </PublicRoute>
-          <PublicRoute exact path="/hajj-packages">
-            <HajjPackagesContainer />
-          </PublicRoute>
-          <PublicRoute exact path="/umrah-packages">
-            <UmrahPackagesContainer />
-          </PublicRoute>
-          <PublicRoute exact path="/tours">
-            <TourPackagesContainer />
-          </PublicRoute>
-          <PublicRoute exact path="/package/detail/:packageName">
-            <PackageDetailCardM3li />
-          </PublicRoute>
-          <PrivateRoute path="/groups">
-            <Dashboard />
-          </PrivateRoute>
-          <PrivateRoute path="/online">
-            <OnlinePackages />
-          </PrivateRoute>
-          <PrivateRoute path="/profile">
-            <Profile />
-          </PrivateRoute>
-          <PrivateRoute path="/:packageName/customers">
-            <Customers />
-          </PrivateRoute>
-          <PrivateRoute path="/favorite">
-            <Favorite />
-          </PrivateRoute>
-        </Provider>
-      </Router>
+      <IntlProvider messages={messages[language]} locale={language} >
+        <Router>
+          <Provider store={store}>
+            <PublicRoute exact path="/">
+              <CustomerHome />
+            </PublicRoute>
+            <PublicRoute exact path="/admin">
+              <Home onLanguageChange={handleLanguageChange} lang={language}/>
+            </PublicRoute>
+            <PublicRoute path="/register">
+              <Register />
+            </PublicRoute>
+            <PublicRoute path="/login">
+              <SignIn />
+            </PublicRoute>
+            <PublicRoute path="/forgot-password">
+              <ForgotPassword />
+            </PublicRoute>
+            <PublicRoute path="/logout">
+              <SignOut />
+            </PublicRoute>
+            <PublicRoute path="/reserve/:packageName">
+              <Reserve />
+            </PublicRoute>
+            <PublicRoute exact path="/hajj-packages">
+              <HajjPackagesContainer />
+            </PublicRoute>
+            <PublicRoute exact path="/umrah-packages">
+              <UmrahPackagesContainer />
+            </PublicRoute>
+            <PublicRoute exact path="/tours">
+              <TourPackagesContainer />
+            </PublicRoute>
+            <PublicRoute exact path="/package/detail/:packageName">
+              <PackageDetailCardM3li />
+            </PublicRoute>
+            <PrivateRoute path="/groups">
+              <Dashboard />
+            </PrivateRoute>
+            <PrivateRoute path="/online">
+              <OnlinePackages />
+            </PrivateRoute>
+            <PrivateRoute path="/profile">
+              <Profile />
+            </PrivateRoute>
+            <PrivateRoute path="/:packageName/customers">
+              <Customers />
+            </PrivateRoute>
+            <PrivateRoute path="/favorite">
+              <Favorite />
+            </PrivateRoute>
+          </Provider>
+        </Router>
+      </IntlProvider>
     </ThemeProvider>
   );
 }
