@@ -1,6 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
 import React from 'react';
-import qibla from '../../images/qibla-bg.jpg';
+import roundedPlus from '../../images/customer-home-background.svg';
 import PackagesContainer from '../onlinePackage/components/PackagesContainer';
 import CustomerHeader from './../Header/CustomerHeader';
 import ImportantDates from './components/importantDates';
@@ -9,14 +9,14 @@ const CustomerHome = () => {
 
     return (
 
-        <div style={{ backgroundImage: "url(" + qibla + ")", backgroundAttachment: 'fixed', backgroundSize: 'cover' }}>
+        <div style={{ background: "url(" + roundedPlus + ")" }}>
             <CustomerHeader />
-            <Box m={8} mt={50}>
+            <Box m={8} mt={2}>
                 <ImportantDates />
                 <PackagesContainer />
             </Box>
             <Box m={4}>
-                <Typography variant="body1" align="center" style={{ color: '#ffdabf' }}>If you are an admin, <a style={{ color: '#ffdabf' }} href="/admin">click here to login.</a></Typography>
+                <Typography variant="body1" align="center" style={{ color: '#18a600' }}>If you are an admin, <a style={{ color: '#18a600' }} href="/admin">click here to login.</a></Typography>
             </Box>
 
         </div >

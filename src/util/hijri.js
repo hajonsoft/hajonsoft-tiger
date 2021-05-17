@@ -19,12 +19,12 @@ const hijraMonths = [
   const festivals = [
     { names: ['New hijra year'], day: 1, month: 1 },
     { names: ['Ashura', 'Crossing red sea'], day: 10, month: 1 },
-    { names: ['Mawlid'], day: 12, month: 3 },
+    { names: ['Profit Mohamed Birth'], day: 12, month: 3 },
     { names: ['Israa'], day: 27, month: 7 },
     { names: ['Mid Shaaban'], day: 15, month: 8 },
     { names: ['Ramadan'], day: 1, month: 9 },
-    { names: ['Eid ul-Fitr'], day: 1, month: 10 },
-    { names: ['Hajj'], day: 8, month: 12 },
+    { names: ['1 Shawwal'], day: 1, month: 10 },
+    { names: ['Hajj-Akbar'], day: 8, month: 12 },
   ]
   
   const eventsBefore = (inputDate = new Date())=> {
