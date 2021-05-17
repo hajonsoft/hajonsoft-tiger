@@ -16,7 +16,7 @@ const CustomerHome = () => {
                 <PackagesContainer />
             </Box>
             <Box m={4}>
-                <Typography variant="body1" align="center" style={{ color: '#18a600' }}>If you are an admin, <a style={{ color: '#18a600' }} href="/admin">click here to login.</a></Typography>
+                <Typography variant="body1" align="center" style={{ color: '#18a600' }}>If you are a dove admin, <a style={{ color: '#18a600' }} href="/admin">click here to login to Hummingbird</a></Typography>
             </Box>
 
         </div >
