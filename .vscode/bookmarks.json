@@ -1,12 +1,19 @@
-[
-	{
-		"path": "$ROOTPATH$/src/features/customer/index.js",
-		"bookmarks": [
-			{
-				"line": 61,
-				"column": 60,
-				"label": ""
-			}
-		]
-	}
-]
+{
+	"files": [
+		{
+			"path": "src/features/customer/index.js",
+			"bookmarks": [
+				{
+					"line": 61,
+					"column": 60,
+					"label": ""
+				},
+				{
+					"line": 163,
+					"column": 24,
+					"label": ""
+				}
+			]
+		}
+	]
+}

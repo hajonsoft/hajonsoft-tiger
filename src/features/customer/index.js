@@ -1,4 +1,4 @@
-import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
+import { Breadcrumbs, CircularProgress, Grid, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
@@ -32,6 +32,8 @@ import useTravellerState from "../Dashboard/redux/useTravellerState";
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -99,6 +101,11 @@ const Customers = () => {
     history.goBack();
   };
 
+  const handleWhatsappClick = (phone) => {
+    const url = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone.replace(/[^0-9]/g,''))}`
+    window.open(url, "_blank");
+  }
+
   const Title = () => {
     return (
       <div style={{ width: "500px" }}>
@@ -154,9 +161,22 @@ const Customers = () => {
               title={<Title />}
               columns={[
                 { title: "Name", field: "name" },
-                { title: "Gender", field: "gender" },
+                {
+                  title: "Phone",
+                  field: "phone",
+                  render: (rowData) =>
+                    rowData.phone && (
+                      <Grid container>
+                        <Grid item>
+                          <WhatsAppIcon onClick={() => handleWhatsappClick(rowData.phone)}/>
+                        </Grid>
+                        <Grid item>
+                          {rowData.phone}
+                        </Grid>
+                      </Grid>
+                    ),
+                },
                 { title: "Nationality", field: "nationality" },
-                { title: "Pass #", field: "passportNumber" },
                 {
                   title: "Birth Date",
                   field: "birthDate",
