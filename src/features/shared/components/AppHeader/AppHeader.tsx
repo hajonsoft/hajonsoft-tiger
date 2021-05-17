@@ -6,6 +6,7 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import React from "react";
@@ -17,6 +18,7 @@ import { IHeaderConfig } from "../interfaces";
 
 const AppHeader = ({ config }: { config: IHeaderConfig }) => {
   const [user] = useAuthState(firebase.auth());
+  const isMobile = useMediaQuery('(max-width: 600px)');
 
   let history = useHistory();
   const { data: travellers } = useTravellerState();
@@ -54,7 +56,7 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
             </IconButton>
           </Grid>
 
-          <Grid item xs={6}>
+          {!isMobile && <Grid item xs={6}>
             <Button
               style={{ color: "#fff", textTransform: "none" }}
               onClick={() => history.push("/groups")}
@@ -98,9 +100,11 @@ const AppHeader = ({ config }: { config: IHeaderConfig }) => {
               Help
             </Button>
           </Grid>
+          }
           <Grid
             item
-            xs={3}
+            md={3}
+            sm={6}
             container
             spacing={2}
             alignItems="center"
