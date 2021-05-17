@@ -102,7 +102,12 @@ const Customers = () => {
   };
 
   const handleWhatsappClick = (phone) => {
-    const url = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone.replace(/[^0-9]/g,''))}`
+    if (!phone) return;
+    let whatsappPhone = phone;
+    if (phone.startsWith("00")) {
+      whatsappPhone = phone.subString(2);
+    }
+    const url = `https://api.whatsapp.com/send?phone=+${encodeURIComponent(whatsappPhone.replace(/[^0-9]/g,''))}`
     window.open(url, "_blank");
   }
 
