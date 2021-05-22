@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "firebase": "^7.22.0",
     "firebase-admin": "^9.2.0",
     "lodash": "^4.17.20",
