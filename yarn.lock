@@ -2918,10 +2918,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@*", "@types/react-dom@16.9.12":
-  version "16.9.12"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.12.tgz"
-  integrity sha512-i7NPZZpPte3jtVOoW+eLB7G/jsX5OM6GqQnH+lC0nq0rqwlK0x8WcMEvYDgFWqWhWMlTltTimzdMax6wYfZssA==
+"@types/react-dom@*", "@types/react-dom@16.9.13":
+  version "16.9.13"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.13.tgz"
+  integrity sha512-34Hr3XnmUSJbUVDxIw/e7dhQn2BJZhJmlAaPyPwfTQyuVS9mV/CeyghFcXyvkJXxI7notQJz8mF8FeCVvloJrA==
   dependencies:
     "@types/react" "^16"
 
