@@ -31,7 +31,7 @@
     "@types/react-router-hash-link": "1.2.1",
     "@types/react-text-mask": "5.4.7",
     "@types/yup": "0.29.11",
-    "axios": "^0.21.0",
+    "axios": "0.21.1",
     "color-scheme": "1.0.1",
     "date-fns": "2.21.1",
     "firebase": "8.4.2",
