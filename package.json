@@ -56,7 +56,7 @@
     "react-firebase-hooks": "3.0.4",
     "react-helmet": "6.1.0",
     "react-input-mask": "3.0.0-alpha.2",
-    "react-intl": "5.17.0",
+    "react-intl": "5.18.1",
     "react-material-ui-carousel": "1.9.2",
     "react-number-format": "4.5.5",
     "react-redux": "7.2.4",
