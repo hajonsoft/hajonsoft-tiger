@@ -34,7 +34,7 @@
     "axios": "0.21.1",
     "color-scheme": "1.0.1",
     "date-fns": "2.21.3",
-    "firebase": "8.4.2",
+    "firebase": "8.6.2",
     "formik": "2.2.8",
     "gh-pages": "2.2.0",
     "imagemagick": "0.1.3",
