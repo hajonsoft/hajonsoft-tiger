@@ -1243,19 +1243,19 @@
   resolved "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-10.1.0.tgz"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@datadog/browser-core@1.26.3":
-  version "1.26.3"
-  resolved "https://registry.npmjs.org/@datadog/browser-core/-/browser-core-1.26.3.tgz"
-  integrity sha512-/YrSvljK4RnjiLBX18P23PtcpYUPnSUVafy+41MatN8ZjtdzFsdK4VxQWhLFygG/Au8pvXacU1Kg7CVRk7hbMQ==
+"@datadog/browser-core@2.10.0":
+  version "2.10.0"
+  resolved "https://registry.npmjs.org/@datadog/browser-core/-/browser-core-2.10.0.tgz"
+  integrity sha512-uevetkUOfPJWy0nlnVwAntgZ5fsrrL8h8O6hl7DMqgpdy4paGFwlNoFpncL/6MCDnRt7FauHTdsK2V1EatKzaw==
   dependencies:
     tslib "^1.10.0"
 
-"@datadog/browser-logs@1.26.3":
-  version "1.26.3"
-  resolved "https://registry.npmjs.org/@datadog/browser-logs/-/browser-logs-1.26.3.tgz"
-  integrity sha512-bVE4hWV+vkUtG3bh3o0K+rWCGlMLtDmqoBvmjylWMbmLkHM/ua1QTqgQY2m36erS6MPXgQDVy4q0BAp9vwjFPA==
+"@datadog/browser-logs@2.10.0":
+  version "2.10.0"
+  resolved "https://registry.npmjs.org/@datadog/browser-logs/-/browser-logs-2.10.0.tgz"
+  integrity sha512-ShGmni4C0FNjk21+cQqP3sCB5fppZpYpfvw195ExWGHxCADIvRduUSXyoP14AVSZHPzzQHxuBO79PwubR8z9pg==
   dependencies:
-    "@datadog/browser-core" "1.26.3"
+    "@datadog/browser-core" "2.10.0"
     tslib "^1.10.0"
 
 "@date-io/core@1.x", "@date-io/core@^1.1.0":
@@ -1903,6 +1903,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
+
+"@jest/types@^26.6.2":
+  version "26.6.2"
+  resolved "https://registry.npmjs.org/@jest/types/-/types-26.6.2.tgz"
+  integrity sha512-fC6QCp7Sc5sX6g8Tvbmj4XUTbyrik0akgRy03yjXbQaBWWNWGE7SGtJk98m0N8nzegD/7SggrUlivxo5ax4KWQ==
+  dependencies:
+    "@types/istanbul-lib-coverage" "^2.0.0"
+    "@types/istanbul-reports" "^3.0.0"
+    "@types/node" "*"
+    "@types/yargs" "^15.0.0"
+    chalk "^4.0.0"
 
 "@material-ui/core@4.11.4":
   version "4.11.4"
@@ -3072,12 +3083,20 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@24.9.1":
-  version "24.9.1"
-  resolved "https://registry.npmjs.org/@types/jest/-/jest-24.9.1.tgz"
-  integrity sha512-Fb38HkXSVA4L8fGKEZ6le5bB8r6MRWlOCZbVuWZcmOMSCd2wCYOwN1ibj8daIoV9naq7aaOZjrLCoCMptKU/4Q==
+"@types/istanbul-reports@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@types/istanbul-reports/-/istanbul-reports-3.0.0.tgz"
+  integrity sha512-nwKNbvnwJ2/mndE9ItP/zc2TCzw6uuodnF4EHYWD+gCQDVBuRQL5UzbZD0/ezy1iKsFU2ZQiDqg4M9dN4+wZgA==
   dependencies:
-    jest-diff "^24.3.0"
+    "@types/istanbul-lib-report" "*"
+
+"@types/jest@26.0.23":
+  version "26.0.23"
+  resolved "https://registry.npmjs.org/@types/jest/-/jest-26.0.23.tgz"
+  integrity sha512-ZHLmWMJ9jJ9PTiT58juykZpL7KjwJywFN3Rr2pTSkyQfydf/rk22yS7W8p5DaVUMQ2BQC7oYiU3FjbTM/mYrOA==
+  dependencies:
+    jest-diff "^26.0.0"
+    pretty-format "^26.0.0"
 
 "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6":
   version "7.0.6"
@@ -3212,12 +3231,12 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@*", "@types/react-dom@16.9.13":
-  version "16.9.13"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.13.tgz"
-  integrity sha512-34Hr3XnmUSJbUVDxIw/e7dhQn2BJZhJmlAaPyPwfTQyuVS9mV/CeyghFcXyvkJXxI7notQJz8mF8FeCVvloJrA==
+"@types/react-dom@*", "@types/react-dom@17.0.5":
+  version "17.0.5"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-17.0.5.tgz"
+  integrity sha512-ikqukEhH4H9gr4iJCmQVNzTB307kROe3XFfHAOTxOXPOw7lAoEXnM5KWTkzeANGL5Ce6ABfiMl/zJBYNi7ObmQ==
   dependencies:
-    "@types/react" "^16"
+    "@types/react" "*"
 
 "@types/react-input-mask@2.0.5":
   version "2.0.5"
@@ -3282,7 +3301,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.14.8", "@types/react@^16", "@types/react@^16.8.12":
+"@types/react@*", "@types/react@16.14.8", "@types/react@^16.8.12":
   version "16.14.8"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.14.8.tgz"
   integrity sha512-QN0/Qhmx+l4moe7WJuTxNiTsjBwlBGHqKGvInSQCBdo7Qio0VtOqwsC0Wq7q3PbJlB0cR4Y4CVo1OOe6BOsOmA==
@@ -4979,6 +4998,14 @@ chalk@^3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.1.tgz"
+  integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 chalk@^4.1.0:
   version "4.1.1"
   resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.1.tgz"
@@ -6175,6 +6202,11 @@ diff-sequences@^24.9.0:
   version "24.9.0"
   resolved "https://registry.npmjs.org/diff-sequences/-/diff-sequences-24.9.0.tgz"
   integrity sha512-Dj6Wk3tWyTE+Fo1rW8v0Xhwk80um6yFYKbuAxc9c3EZxIHFDYwbi34Uk42u1CdnIiVorvt4RmlSDjIPyzGC2ew==
+
+diff-sequences@^26.6.2:
+  version "26.6.2"
+  resolved "https://registry.npmjs.org/diff-sequences/-/diff-sequences-26.6.2.tgz"
+  integrity sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -9359,7 +9391,7 @@ jest-config@^24.9.0:
     pretty-format "^24.9.0"
     realpath-native "^1.1.0"
 
-jest-diff@^24.0.0, jest-diff@^24.3.0, jest-diff@^24.9.0:
+jest-diff@^24.0.0, jest-diff@^24.9.0:
   version "24.9.0"
   resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-24.9.0.tgz"
   integrity sha512-qMfrTs8AdJE2iqrTp0hzh7kTd2PQWrsFyj9tORoKmu32xjPjeE4NyjVRDz8ybYwqS2ik8N4hsIpiVTyFeo2lBQ==
@@ -9368,6 +9400,16 @@ jest-diff@^24.0.0, jest-diff@^24.3.0, jest-diff@^24.9.0:
     diff-sequences "^24.9.0"
     jest-get-type "^24.9.0"
     pretty-format "^24.9.0"
+
+jest-diff@^26.0.0:
+  version "26.6.2"
+  resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-26.6.2.tgz"
+  integrity sha512-6m+9Z3Gv9wN0WFVasqjCL/06+EFCMTqDEUl/b87HYK2rAPTyfz4ZIuSlPhY51PIQRWx5TaxeF1qmXKe9gfN3sA==
+  dependencies:
+    chalk "^4.0.0"
+    diff-sequences "^26.6.2"
+    jest-get-type "^26.3.0"
+    pretty-format "^26.6.2"
 
 jest-docblock@^24.3.0:
   version "24.9.0"
@@ -9426,6 +9468,11 @@ jest-get-type@^24.9.0:
   version "24.9.0"
   resolved "https://registry.npmjs.org/jest-get-type/-/jest-get-type-24.9.0.tgz"
   integrity sha512-lUseMzAley4LhIcpSP9Jf+fTrQ4a1yHQwLNeeVa2cEmbCGeoZAtYPOIv8JaxLD/sUpKxetKGP+gsHl8f8TSj8Q==
+
+jest-get-type@^26.3.0:
+  version "26.3.0"
+  resolved "https://registry.npmjs.org/jest-get-type/-/jest-get-type-26.3.0.tgz"
+  integrity sha512-TpfaviN1R2pQWkIihlfEanwOXK0zcxrKEE4MlU6Tn7keoXdN6/3gK/xl0yEh8DOunn5pOVGKf8hB4R9gVh04ig==
 
 jest-haste-map@^24.9.0:
   version "24.9.0"
@@ -12726,6 +12773,16 @@ pretty-format@^25.1.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
+pretty-format@^26.0.0, pretty-format@^26.6.2:
+  version "26.6.2"
+  resolved "https://registry.npmjs.org/pretty-format/-/pretty-format-26.6.2.tgz"
+  integrity sha512-7AeGuCYNGmycyQbCqd/3PWH4eOoX/OiCa0uphp57NVTeAGdJGaAliecxwBDHYQCIvrW7aDBZCYeNTP/WX69mkg==
+  dependencies:
+    "@jest/types" "^26.6.2"
+    ansi-regex "^5.0.0"
+    ansi-styles "^4.0.0"
+    react-is "^17.0.1"
+
 pretty-hrtime@^1.0.3:
   version "1.0.3"
   resolved "https://repo1.uhc.com:443/artifactory/api/npm/npm-virtual/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz"
@@ -13361,10 +13418,10 @@ react-material-ui-carousel@1.9.2:
     auto-bind "^2.1.1"
     react-swipeable "^5.5.1"
 
-react-number-format@4.5.5:
-  version "4.5.5"
-  resolved "https://registry.npmjs.org/react-number-format/-/react-number-format-4.5.5.tgz"
-  integrity sha512-3NGqgSbMUwRwgJ4852RH24UFkW89yx/e0P78Hwmf3TajLMKCOJ7DPJCcl/6z+2+HpJ8AG7je/J8na3ykWx8acg==
+react-number-format@4.6.0:
+  version "4.6.0"
+  resolved "https://registry.npmjs.org/react-number-format/-/react-number-format-4.6.0.tgz"
+  integrity sha512-0Td7QM3FGFVOw+DzYooLae50d6r67hZcinbDy5TQRQJB9+/p1caX+NQQ6PW408H+nZTKgykknQHv6L6PPoRO2w==
   dependencies:
     prop-types "^15.7.2"
 
@@ -16691,12 +16748,12 @@ xml-name-validator@^3.0.0:
   resolved "https://registry.npmjs.org/xml-name-validator/-/xml-name-validator-3.0.0.tgz"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
 
-xml2js-xpath@0.11.0:
-  version "0.11.0"
-  resolved "https://registry.npmjs.org/xml2js-xpath/-/xml2js-xpath-0.11.0.tgz"
-  integrity sha512-LJJWN9VcZUItBb3R3NmaWuE7+mZzhwGfo9vqekDki02ZnnO7M5QHeqpT49XBfWxZlBuuYVXw3t8rjvekZY43Yg==
+xml2js-xpath@0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmjs.org/xml2js-xpath/-/xml2js-xpath-0.12.0.tgz"
+  integrity sha512-WqUdyAVNuGU5uENvzqPyG+jjhv+pdZXrv899bAMcoznucpOvLgowfpCzSOoM8iumG4XM0yBOo3HKTYFsZ7t7/g==
   dependencies:
-    lodash "^4.17.15"
+    lodash "^4.17.21"
 
 xml2js@0.4.23:
   version "0.4.23"
