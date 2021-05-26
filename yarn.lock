@@ -2930,10 +2930,10 @@
   dependencies:
     "@types/react" "^16"
 
-"@types/react-input-mask@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/@types/react-input-mask/-/react-input-mask-2.0.5.tgz"
-  integrity sha512-4wPehO42dCk2sMrAGGT/xIfUG5GVdmzyGalweW5EvJARNXgtoxQ9HnkgSkXlVKR3oLVIHlT/vXk/DUXV+WSPyw==
+"@types/react-input-mask@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@types/react-input-mask/-/react-input-mask-3.0.0.tgz"
+  integrity sha512-W8I2GRt1wkFgEJJ4dleSCw1ly2lL+pW71OPkJSz6G93V77io4ulSSnZyiyCv3uljmQDOr94NMbNr5V5hfkMaUg==
   dependencies:
     "@types/react" "*"
 
