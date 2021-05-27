@@ -27,6 +27,8 @@ import useTravellerState from './redux/useTravellerState';
 import HajonsoftHeader from "../Header/HajonsoftHeader";
 import CRUDForm from './components/CRUDForm';
 import PackageDetail from './components/packageDetail';
+import ApplyForVisa from "./components/ApplyForVisa";
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -55,6 +57,7 @@ const tableIcons = {
 
 const Dashboard = () => {
 
+  const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const { data: travellers, loading, error } = useTravellerState()
   const [state, setstate] = useState({ mode: 'list', record: {} })
   const history = useHistory()
@@ -105,10 +108,18 @@ const Dashboard = () => {
                   onClick: (event) => setstate(st => ({ ...st, mode: 'create' })),
                 },
                 {
+                  icon: () => <Button variant="outlined">Apply for visa</Button>,
+                  tooltip: `Apply for visa`,
+                  onClick: (event, rowData) => {
+                    setApplyForVisaOpen(true);
+                    setstate(st => ({ ...st, record: rowData }))
+                  },
+                },
+                {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
                   onClick: (event, rowData) => setstate(st => ({ ...st, mode: 'delete', record: rowData })),
-                }
+                },
               ]}
               options={{
                 actionsColumnIndex: -1,
@@ -131,6 +142,12 @@ const Dashboard = () => {
           {error}
         </Alert>
       </Snackbar>
+      <ApplyForVisa
+        open={applyForVisaOpen}
+        onClose={() => setApplyForVisaOpen(false)}
+        groupName={state?.record?.name}
+        travellers={travellers[state?.record?.name]}
+      />
     </React.Fragment>
   );
 };

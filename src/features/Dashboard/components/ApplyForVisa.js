@@ -148,7 +148,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   };
 
   const getSelectedVisaSystem = () => {
-    if (visaSystems && visaSystems.length > 0) {
+    if (visaSystems && visaSystems?.length > 0) {
       const defaultSystem = visaSystems[selectedVisaSystem];
       return `${getUsapName(defaultSystem.usap)} - Username: ${
         defaultSystem.username
@@ -189,7 +189,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
               </Typography>
               <Typography
                 className={classes.secondaryHeading}
-              >{`${travellers.length} Travellers`}</Typography>
+              >{`${travellers?.length} Travellers`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               List all travellers in this package in a list or a table, with a
@@ -281,7 +281,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                       input={<Input name="age" />}
                     >
                       {visaSystems &&
-                        visaSystems.length > 0 &&
+                        visaSystems?.length > 0 &&
                         visaSystems.map((x, i) => (
                           <MenuItem value={i}>{`${getUsapName(x.usap)} ${
                             x.username
