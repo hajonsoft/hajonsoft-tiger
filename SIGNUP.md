@@ -5,7 +5,7 @@ To signup a new customer (a.k.a travel agent)
 ### Create firebase account
 
 ```
-- Send video to customer to add you as an admin to their firebase account. hajonsoft@gmail.com
+- Send video to customer to add you as an admin to their firebase account. hajonsoft@gmail.com (https://share.vidyard.com/watch/rT1rBy1t54MiBTSXygavNx?)
 - login to firebase.google.com using this admin account
 - create new project, make sure the name is readable and record the name ex. forhajjnow
 - Authentication: enable email/password incognito - it may error if not incognito, create the first user (use user email above), default password is the same for email
