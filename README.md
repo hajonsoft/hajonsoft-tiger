@@ -1,12 +1,39 @@
-﻿### HajOnSoft Web
+﻿### HAJonSoft Tiger
 
-This react project allows hajonsoft customers to login to their own firebase account to work on travellers to manage relationship, scan passports and apply for visa.
+Home of Dove 🕊  and Humming Bird 🦅 . The code repo is called Tiger 🐅 (Animal). 
+Code repo will use an animal name while deployed apps will use bird name.
+
+Humming Bird allows HAJonSoft customers to login to their own firebase account and administer travellers to manage relationship, scan passports and apply for visa.
+Dove allows travellers to look at advertized packages and reserve.
 
 Edit master translation 
 edit customers 
 save chat log
 edit other looks up 
 connect to any other firebase project as owner
+
+## Quick start
+
+---
+
+### Local Development
+
+npm start runs the react application and connects to firebase defined by in src/firebaseConfig
+
+`import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
+
+prettier is used for lint and formatting
+
+currently no unit tests are used
+
+
+### Firebase
+
+Customers authroize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find customers or administer their firebase
+
+### Localization
+
+
 
 # Getting started 
 

@@ -19,7 +19,7 @@ To signup a new customer (a.k.a travel agent)
 ```
 ### Setup github actions
 
-
+```
 If firebase-CLI is not installed => `npm install -g firebase-tools`
 firebase logout
 `rm firebase.json .firebaserc`
@@ -38,6 +38,10 @@ firebase init hosting
         - Rename the new yml file with to project Id. mv .github/workflows/firebase-hosting-pull-request.yml .github/workflows/PROJECT_ID.yml   
         - Change the name inside the file line 4
         - after actions/checkout@v2 (line ~10) paste this include the -
+```
+
+---
+
 ```
         - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
           shell: bash
