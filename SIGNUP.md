@@ -19,14 +19,14 @@ To signup a new customer (a.k.a travel agent)
 ```
 ### Setup github actions
 
-```
-If firebase-CLI is not installed => npm install -g firebase-tools
+
+If firebase-CLI is not installed => `npm install -g firebase-tools`
 firebase logout
-<!-- rm firebase.json .firebaserc -->
+`rm firebase.json .firebaserc`
 firebase login
 firebase init hosting
         Answers 
-        - public=build 
+        - **public=build**
         - **Configure as single-page-app=y**
         - **Set up automatic builds and deploys with GitHub?=y**
         - File public/index.html already exists. Overwrite?=N
@@ -51,10 +51,11 @@ firebase init hosting
         - Replace all HERE variables with the correct ones (PROJETID_HERE, SECRET-HERE) 
         - Make sure indentation is correct otherwise deployment will fail (Compare with a valid file)
         - Make sure or add **channelId: live** is just above projectId (line ~24)
-        - Change to on pull_request to on push (Lione ~5)
+        - Change to on pull_request to on push (Line ~5)
+        - firebase deploy then `rm firebase.json .firebaserc` (these two files required for firebase deploy but not github action verify that)
         - Push changes to master make sure action runs successfully and get the deployment url which should be 
 projectId.web.app 
-```
+
 ### Migrate data from sql server (if needed)
 make sure sql server is running
 relax database and storage rules using Testing mode below 
