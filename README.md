@@ -1,7 +1,7 @@
 ﻿### HAJonSoft Tiger
 
 Home of Dove 🕊  and Humming Bird 🦅 sites. The code repo is called Tiger 🐅 (Animal). 
-Code repo will use an animal name while deployed apps will use a bird name.
+Repo uses an animal name while customer facing modules will use a bird name.
 
 Humming Bird allows HAJonSoft customers to login to their own firebase account and administer travellers to manage relationship, scan passports and apply for visa.
 Dove allows travellers to look at advertized packages to reserve or manage them.
@@ -26,6 +26,25 @@ To connect to a specific customer firebase account, Change src/firebaseConfig
 
 `import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
 
+### Scrum
+We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browing github.
+
+
+Virtual standup every today is held on slack – please Slack your updates. Happy Scrumming!!
+ 
+We will cover these three things:
+ 
+What specific things did you complete yesterday, and how would you briefly describe your approach to these things?
+What specific things do you plan to work on today, and how would you briefly describe the approach you intend to take?
+What would allow you to go faster or do your work better?
+ 
+We’ll meet in the development Slack channel.
+
+### Slack
+
+▪ Sign up through https://join.slack.com/t/hajonsoft/signup
+▪ Select link and go through the setup steps of confirming email, agreeing to terms, enter name, and select password
+▪ Add profile picture to Slack in Profile & Settings section
 
 ### Firebase
 
@@ -35,6 +54,10 @@ The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/b
 
 
 ### Localization
+
+### Video vidyard
+
+### Figma
 
 
 ### TalentLMS
@@ -82,7 +105,17 @@ url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-
 
 
 # Git and SSH
+
+Set up an ssh key with GitHub
+https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
 git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
+
+
+## Vision
+
+Revolutionize the industry by creating an integrated digital platform for travel agents, travellers and our employees who serve them – by harnessing
+science and technology to help travellers achieve the best possible travel experience.
 
 
 ## We need your help!
