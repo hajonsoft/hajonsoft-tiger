@@ -6,7 +6,8 @@ Repo uses an animal name while customer facing modules will use a bird name.
 Humming Bird allows HAJonSoft customers to login to their own firebase account and administer travellers to manage relationship, scan passports and apply for visa.
 Dove allows travellers to look at advertized packages to reserve or manage them.
 
-To learn about hajonsoft repos please watch this video https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?
+
+To learn about hajonsoft repos please watch this video [![image](https://user-images.githubusercontent.com/9623964/121062683-40adc680-c77a-11eb-8cc0-7488bd23c13e.png)](https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?)
 
 
 ## Quick start
