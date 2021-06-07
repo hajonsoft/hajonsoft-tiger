@@ -1,16 +1,13 @@
 ﻿### HAJonSoft Tiger
 
-Home of Dove 🕊  and Humming Bird 🦅 . The code repo is called Tiger 🐅 (Animal). 
-Code repo will use an animal name while deployed apps will use bird name.
+Home of Dove 🕊  and Humming Bird 🦅 sites. The code repo is called Tiger 🐅 (Animal). 
+Code repo will use an animal name while deployed apps will use a bird name.
 
 Humming Bird allows HAJonSoft customers to login to their own firebase account and administer travellers to manage relationship, scan passports and apply for visa.
-Dove allows travellers to look at advertized packages and reserve.
+Dove allows travellers to look at advertized packages to reserve or manage them.
 
-Edit master translation 
-edit customers 
-save chat log
-edit other looks up 
-connect to any other firebase project as owner
+To learn about hajonsoft repos please watch this video https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?
+
 
 ## Quick start
 
@@ -18,28 +15,37 @@ connect to any other firebase project as owner
 
 ### Local Development
 
-npm start runs the react application and connects to firebase defined by in src/firebaseConfig
+To start the application
+
+```
+npm start 
+```
+
+To connect to a specific customer firebase account, Change src/firebaseConfig 
+
 
 `import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
-
-prettier is used for lint and formatting
-
-currently no unit tests are used
 
 
 ### Firebase
 
-Customers authroize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find customers or administer their firebase
+Customers authroize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find all customers and administer their firebase account.
+
+The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+
 
 ### Localization
 
 
+### TalentLMS
 
-# Getting started 
+We use TalentLMS.com to create customer videos, the free account provides 6 lessons. Each lesson can have videos, questions and assignments. to login to TalentLMS.com use hajonsoft.com federated google login.
 
-To signup a new customer (a.k.a travel agent) see SIGNUP.md
+### Puppeteer
 
-https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+We use puppeteer package to submit traveller data to various visa websites
+
+
 
 # Credits
 
@@ -74,19 +80,20 @@ Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-backgr
 url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-my-own-url-protocol-e-g-so
 
 
+
+# Git and SSH
+git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
+
+
 ## We need your help!
 
 
-HAJonSoft is a work in progress and needs a lot of improvement. There are unimplemented stuff waiting for your help! You can find them at github issue tracker or read the code and find @TODO tags! You can also subscribe to the development mailing list where we talk about features.
+HAJonSoft is a work in progress and needs a lot of improvement. There are unimplemented stuff waiting for your help! You can find them at github issue tracker or read the code and find @TODO tags! To contribute please send us an email hajonsoft@gmail.com
 
-There are two areas you can help. If you code in ReactJs try to implement features for the website. If you are professional in Javascript and Node.js then you can help us by implementing external system interfaces with puppeteer.
+There are two areas you can help. If you like React then you can help implementing features for Tiger. If you are professional in Javascript and Node.js then you can help us by implementing external system interfaces with puppeteer.
 
 We also would like to extend personal assistance and would like input around how to do that competently.
 
 To start contributing, fork git repository from github, clone the forked repository and make your changes according to instructions below. Then send a pull request. We discuss changes you have made. After that you can see your changes merged in the main repository!
 
-© Ayman Ali 2021
-
-
-# git
-git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
+© HAJonSoft 2021
