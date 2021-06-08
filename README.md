@@ -70,6 +70,10 @@ We use TalentLMS.com to create customer videos, the free account provides 6 less
 We use puppeteer package to submit traveller data to various visa websites
 
 
+### Hubspot
+
+Hubspot is an interesting customer management system and it has now all the HAJonSoft customers imported. You can use federated google login to access it. login with hajonsoft@gmail.com and here is a video showing it beyond the login page https://share.vidyard.com/watch/o8FrgwzsA4MbHQHXNs8MpK?
+
 
 # Credits
 
