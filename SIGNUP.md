@@ -17,6 +17,9 @@ To signup a new customer (a.k.a travel agent)
 - Setup github actions using firebase CLI (see below) then and deploy
 - Make sure the new web application is searchable by you as an admin somewhere as well as any custom website created for the client. TBD
 ```
+
+![image](https://user-images.githubusercontent.com/9623964/121272329-86ea4f00-c87a-11eb-83d5-fbbb948e5e56.png)
+
 ### Setup github actions
 
 ```
