@@ -27,6 +27,20 @@ To connect to a specific customer firebase account, Change src/firebaseConfig
 
 `import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
 
+# Git and SSH
+
+ssh commands key 
+```zsh
+ssh-keygen -t ed25519 -C "your_github_email@example.com"
+save at ~/.ssh/id_hajonsoft
+eval "$(ssh-agent -s)"
+pbcopy < ~/.ssh/id_hajonsoft.pub
+open ~/.ssh/config
+```
+
+git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
+
+
 ### Scrum
 We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browing github.
 
@@ -107,14 +121,6 @@ Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-backgr
 
 url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-my-own-url-protocol-e-g-so
 
-
-
-# Git and SSH
-
-Set up an ssh key with GitHub
-https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-
-git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
 
 
 ## Vision
