@@ -37,8 +37,21 @@ eval "$(ssh-agent -s)"
 pbcopy < ~/.ssh/id_hajonsoft.pub
 open ~/.ssh/config
 ```
+![image](https://user-images.githubusercontent.com/9623964/122631031-385c6200-d07d-11eb-854b-3266c2e3a91b.png)
 
-git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-react.git
+~/.ssh/config contents
+
+```
+Host github.com-
+	HostName hajonsoft.github.com
+	User git
+	IdentityFile ~/.ssh/id_hajonsoft
+ AddKeysToAgent yes
+ UseKeychain yes
+```
+![image](https://user-images.githubusercontent.com/9623964/122631290-b15cb900-d07f-11eb-9d09-e0c0142363e0.png)
+
+git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-tiger.git
 
 
 ### Scrum
