@@ -15,7 +15,7 @@ const config = [
         url: 'https://visa.visitsaudi.com/Registration/Verify',
         details: [
             { selector: '#PassportType', value: () => '1' },
-            { selector: '#Nationality', value: (row) => row.nationality.name },
+            { selector: '#Nationality', txt: (row) => row.nationality.name},
         ]
     },
     {
@@ -94,38 +94,34 @@ const config = [
 ]
 
 getEmailAddress()
-automate();
 
-async function automate() {
-    if (!fs.existsSync(__dirname + '/data.json')) {
-        console.log('Data file does not exist')
-        process.exit(1);
-    }
-    const content = fs.readFileSync(__dirname + '/data.json', 'utf8');
-    data = JSON.parse(content)
-    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ['--start-maximized'] });
-    page = await browser.newPage();
-    await page.bringToFront();
-    page.on('domcontentloaded', onContentLoaded);
-    await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
-    await page.goto(config[0].url, { waitUntil: 'domcontentloaded' });
+async function send(sendData) {
+    data = sendData;
+    page = await util.initPage(onContentLoaded);
+    await page.goto(config[0].url, { waitUntil: "domcontentloaded" });
 };
 
 async function onContentLoaded(res) {
-    if (counter >= data.length) {
-        return;
-      }
-      const currentConfig = util.findConfig(await page.url(), config);
+    counter = util.counter(counter);
+    if (counter >= data.travellers.length) {
+      return;
+    }
+    const currentConfig = util.findConfig(await page.url(), config);
+    try {
+      await pageContentHandler(currentConfig);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+async function pageContentHandler(currentConfig) {
       switch (currentConfig.name) {
         case 'main':
-            await commit(currentConfig.details, data[counter])
-            await page.waitForSelector('#CaptchaCode')
-            await page.focus('#CaptchaCode')
-            await page.waitForFunction("document.querySelector('#CaptchaCode').value.length === 5")
-            await page.click('#btnVerify')
+            await util.commit(page, currentConfig.details, data.travellers[counter])
+            await util.captchaClick("#CaptchaCode", 5, "#btnVerify");
             break;
         case 'add':
-            await commit(currentConfig.details, data[counter])
+            await util.commit(currentConfig.details, data[counter])
             await page.waitForSelector('#Email')
             await page.type('#Email', email)
             await page.waitForSelector('#AlternativeEmail')
@@ -139,7 +135,7 @@ async function onContentLoaded(res) {
         case 'login':
             const isActive = await activateAccount()
             if (isActive) {
-                await commit(currentConfig.details)
+                await util.commit(currentConfig.details)
                 await page.bringToFront();
                 await page.waitForSelector('#CaptchaCode')
                 await page.focus('#CaptchaCode')
@@ -191,7 +187,7 @@ async function onContentLoaded(res) {
             //#btnNext
             break;
         case 'passport':
-            await commit(currentConfig.details, data[counter])
+            await util.commit(currentConfig.details, data[counter])
             await page.click('#chk_4')
             await page.waitForSelector('#PassportIssueDate')
             await page.$eval('#PassportIssueDate', e => {
@@ -250,28 +246,6 @@ async function onContentLoaded(res) {
 
 }
 
-async function commit(structure, info) {
-    for (const element of structure) {
-        await page.waitForSelector(element.selector)
-        let value;
-        if (element.value) {
-            value = element.value(info)
-        }
-        const elementType = await page.$eval(element.selector, e => e.outerHTML.match(/<(.*?) /g)[0].replace(/</g, '').replace(/ /g, '').toLowerCase())
-        switch (elementType) {
-            case 'input':
-                await page.type(element.selector, value)
-                break;
-            case 'select':
-                await page.select(element.selector, value)
-                break;
-            default:
-                break;
-        }
-    }
-
-}
-
 async function getEmailAddress() {
     const browser = await puppeteer.launch({ headless: true, defaultViewport: null, args: ['--start-maximized'] });
     emailPage = await browser.newPage();
@@ -318,75 +292,8 @@ async function receiveActivationCode() {
     return false;
 }
 
-async function movetoNextMutamer() {
-    const data = fs.readFileSync('./Mutamers.json');
-    const mutamersObject = JSON.parse(data);
-    if (!mutamersObject.mutamerIndex) {
-        mutamersObject.mutamerIndex = 1;
-    } else {
-        mutamersObject.mutamerIndex = parseInt(mutamersObject.mutamerIndex) + 1;
-    }
-    fs.writeFileSync('./Mutamers.json', JSON.stringify(mutamersObject));
-    await displayButtons(mutamersObject);
 
-}
-async function movetoPreviousMutamer() {
-    const data = fs.readFileSync('./Mutamers.json');
-    const mutamersObject = JSON.parse(data);
-    if (!mutamersObject.mutamerIndex || mutamersObject.mutamerIndex === "0") {
-        return;
-    } else {
-        mutamersObject.mutamerIndex = parseInt(mutamersObject.mutamerIndex) - 1;
-    }
-    fs.writeFileSync('./Mutamers.json', JSON.stringify(mutamersObject));
-    await displayButtons(mutamersObject);
-}
-
-async function enableAllDateButtons() {
-    try {
-        await page.evaluate((p) => {
-            let elements = document.querySelectorAll('input');
-            for (num = 0; num < elements.length; num++) {
-                elements[num].removeAttribute("readonly");
-                elements[num].removeAttribute("disabled");
-            }
-        });
-    } catch (ex) { console.log(ex); }
-}
-
-async function displayButtons(mutamersObject) {
-    await page.evaluate((p) => {
-        let dom = document.querySelector('#formPersonalInfo > div.form-fields > div.bg-label-gray.d-flex.justify-content-between');
-        if (!p.mutamerIndex) {
-            p.mutamerIndex = 0;
-        }
-        if (p.mutamerIndex >= p.pax) {
-            return;
-        }
-
-        let previousButton = '';
-        let nextButton = ';'
-        if (p.mutamerIndex > 0) {
-
-            previousButton = `<button class="btn btn-success"   style="border-radius: 50%" type='button' onclick='previousMutamer()'><<</button>`;
-        } else {
-            previousButton = `<button class="btn btn-success"   style="border-radius: 50%" type='button' disabled><<</button>`;
-
-        }
-        if (p.mutamerIndex < (parseInt(p.pax) - 1)) {
-            nextButton = `<button class="btn btn-success"   style="border-radius: 50%" type='button' onclick='nextMutamer()'>>></button>`;
-        } else {
-            nextButton = `<button class="btn btn-success"   style="border-radius: 50%" type='button' disabled>>></button>`;
-        }
-
-        let currentButton = `<button class="btn btn-primary rounded" type='button' onclick='pasteCurrentMutamer()'> ` + p.mutamers[p.mutamerIndex].ShortName + ' [' + (parseInt(p.mutamerIndex) + 1) + '/' + p.pax + ']' + `</button>`;
-
-        dom.innerHTML = dom.children[0].outerHTML + previousButton + currentButton + nextButton;
-    }, mutamersObject);
-}
-
-
-
+module.exports = { send };
 
 
     // await page.exposeFunction('pasteCurrentMutamer', async () => {

@@ -1,6 +1,8 @@
 const { send: sendBau } = require("./src/bau");
 const { send: sendWtu } = require("./src/wtu");
 const { send: sendGma } = require("./src/gma");
+const { send: sendVst } = require("./src/vst");
+
 const path = require("path");
 const fs = require("fs");
 var unzipper = require("unzipper");
@@ -39,7 +41,7 @@ switch (data.system.name) {
   case "mot":
     return sendBau(data);
   case "vst":
-    return sendBau(data);
+    return sendVst(data);
   default:
     console.log("unknown system");
 }

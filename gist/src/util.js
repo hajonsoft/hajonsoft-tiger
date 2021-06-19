@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 const _ = require("lodash");
 
 let page;
-const debug = true;
+const debug = false;
 async function initPage(onContentLoaded) {
   const browser = await puppeteer.launch({
     headless: false,
@@ -119,6 +119,9 @@ async function commit(page, structure, info) {
       default:
         break;
     }
+    if (element.break) {
+      throw new Error('break-here')
+    }
   }
 }
 
@@ -195,8 +198,8 @@ async function captchaClick(selector, numbers, actionSelector) {
   await page.waitForSelector(selector);
   await page.focus(selector);
   await page.waitForFunction((args)=> 
-    {
-      document.querySelector( args[0] ).value.length === args[1]
+  {
+      document.querySelector(args[0]).value.length === args[1]
     }, 
     {timeout: 0}, 
     [selector, numbers]
