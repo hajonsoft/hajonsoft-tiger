@@ -39,7 +39,7 @@ open ~/.ssh/config
 ```
 ![image](https://user-images.githubusercontent.com/9623964/122631031-385c6200-d07d-11eb-854b-3266c2e3a91b.png)
 
-~/.ssh/config contents
+~/.ssh/config
 
 ```
 Host github.com-
@@ -49,13 +49,15 @@ Host github.com-
  AddKeysToAgent yes
  UseKeychain yes
 ```
+ssh-add ~/.ssh/id_hajonsoft
+
 ![image](https://user-images.githubusercontent.com/9623964/122631290-b15cb900-d07f-11eb-9d09-e0c0142363e0.png)
 
 git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-tiger.git
 
 
 ### Scrum
-We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browing github.
+We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browsing github.
 
 
 Virtual standup every today is held on slack – please Slack your updates. Happy Scrumming!!
