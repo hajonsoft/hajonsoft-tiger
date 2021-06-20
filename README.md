@@ -96,7 +96,7 @@ We use TalentLMS.com to create customer videos, the free account provides 6 less
 
 ### Puppeteer
 
-We use puppeteer package to submit traveller data to various visa websites
+We use puppeteer to submit travellers to various visa websites. Video https://youtu.be/BMtcwF96j6I
 
 
 ### Hubspot
