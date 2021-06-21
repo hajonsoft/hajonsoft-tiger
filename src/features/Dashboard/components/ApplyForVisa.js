@@ -97,7 +97,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   };
   const handleExport = async () => {
     setExportProgress({ loading: true, value: 0 });
-    const travellersData = getTravellersJSON(travellers);
+    const travellersData =  getTravellersJSON(travellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
@@ -107,10 +107,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       },
       travellers: travellersData,
     };
-    const jsonData = JSON.stringify(data);
-    const zip = await zipWithPhotos(
-      jsonData,
-      travellers,
+    const zip = await zipWithPhotos(data,
       null,
       setExportProgress
     );

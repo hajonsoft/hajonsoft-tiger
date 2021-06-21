@@ -29,11 +29,14 @@ To connect to a specific customer firebase account, Change src/firebaseConfig
 
 # Git and SSH
 
+https://medium.com/@pinglinh/how-to-have-2-github-accounts-on-one-machine-windows-69b5b4c5b14e
+
 ssh commands key 
 ```zsh
 ssh-keygen -t ed25519 -C "your_github_email@example.com"
-save at ~/.ssh/id_hajonsoft
+save it as  `~/.ssh/id_hajonsoft`
 eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_hajonsoft
 pbcopy < ~/.ssh/id_hajonsoft.pub
 open ~/.ssh/config
 ```
@@ -43,24 +46,24 @@ open ~/.ssh/config
 
 ```
 Host github.com-
-	HostName hajonsoft.github.com
-	User git
-	IdentityFile ~/.ssh/id_hajonsoft
- AddKeysToAgent yes
- UseKeychain yes
+  HostName hajonsoft.github.com
+  User git
+  IdentityFile ~/.ssh/id_hajonsoft
+  AddKeysToAgent yes
+  UseKeychain yes
 ```
-ssh-add ~/.ssh/id_hajonsoft
 
 ![image](https://user-images.githubusercontent.com/9623964/122631290-b15cb900-d07f-11eb-9d09-e0c0142363e0.png)
 
 git remote set-url origin git@hajonsoft.github.com:hajonsoft/hajonsoft-tiger.git
-
+git config user.name YOUR_USER_NAME
+git config user.email YOUR_EMAIL
 
 ### Scrum
 We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browsing github.
 
 
-Virtual standup every today is held on slack – please Slack your updates. Happy Scrumming!!
+Virtual standup is held on slack – please Slack your updates. Happy Scrumming!!
  
 We will cover these three things:
  
@@ -135,8 +138,6 @@ Web Automation https://github.com/puppeteer/recorder
 Islamic Geometric patterns https://www.vecteezy.com/free-vector/geometric-background
 
 url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-my-own-url-protocol-e-g-so
-
-
 
 ## Vision
 
