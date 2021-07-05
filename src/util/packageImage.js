@@ -21,7 +21,7 @@ const umrah = [umrahPackage1, umrahPackage2, umrahPackage3, umrahPackage4, umrah
 const tour = [tourPackage1, tourPackage2, tourPackage3, tourPackage4, tourPackage5];
 
 export function packageImage(packageType, index) {
-    switch (packageType.toLowerCase()) {
+    switch (packageType?.toLowerCase()) {
         case 'hajj':
             if (index < hajj.length) {
                 return hajj[index]
