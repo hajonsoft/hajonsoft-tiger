@@ -57,10 +57,7 @@ const tableIcons = {
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [filteredTravellers, setFilteredTravellers] = useState([]);
-  // const travellers = [];
-  // const loading = false;
-  // const error = "";
+  const [filteredTravellers, setFilteredTravellers] = useState({});
   const { data: travellers, loading, error } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
@@ -237,7 +234,7 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         groupName={state?.record?.name}
-        filteredTravellers={filteredTravellers[state?.record?.name]}
+        travellers={filteredTravellers[state?.record?.name]}
       />
     </React.Fragment>
   );

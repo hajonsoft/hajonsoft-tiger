@@ -6,7 +6,9 @@
 
 - [ ] This work has been tested/validated and is ready for a production deployment and a vidyard code walkthrough is attached
 - [ ] The code has been tested with firebaseConfig of a real customer (ex. hajj mission of cote de ivore) and a vidyard demo is attached
-- [ ] The code has been tested according to established test criteria
+- [ ] The code has been tested according to established test criteria (empty fields, undefined numbers, offline, mobile size)
+- [ ] UI elements are internationalized in English, French, Arabic and Portuguese
+
 
 ## Security
 
