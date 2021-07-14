@@ -5,12 +5,11 @@ To signup a new customer (a.k.a travel agent)
 ### Create firebase account
 
 ```
-- Send video to customer to add you as an admin to their firebase account. hajonsoft@gmail.com 
-        [vidyard](https://share.vidyard.com/watch/rT1rBy1t54MiBTSXygavNx?)
-- login to firebase.google.com using this admin account and verify or 
+- Send training to customer to add hajonsoft@gmail.com as an admin to their firebase account. https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR
+- login to firebase.google.com using hajonsoft@gmail.com and verify or 
 - create new project, make sure the name is readable and record the name ex. forhajjnow
-- Authentication: enable email/password incognito - it may error if not incognito, create the first user (use user email above), default password is the same for email
-- Realtime database: start in test mode
+- Authentication: enable email/password, and google incognito - it may error if not incognito, verify hajonsoft@gmail.com is in authroization
+- Realtime database: verify rules are in test mode, deploy correct rules using created users.
 - storage: sign up and then change the security rules to true
 - click project overview and change public facing name
 - Click overview and create an web app with the same project name, copy the config of SDK setup and configuration into src/firebaseConfigs/APP_NAME.js
