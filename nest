@@ -1,0 +1,18 @@
+firebase login
+rm .firebaserc
+firebase use --add $1
+firebase auth:export --format json users
+cat users
+echo "If there are no users, please create users manually in firebase and restart nest, otherwise press any key to continue"
+read
+firebase apps:sdkconfig > $1.js
+echo "press any key to continue"
+read 
+firebase init hosting:github
+echo "press any key to continue"
+read
+mv $1.js src/firebaseConfigs
+cp .github/workflows/template .github/workflows/$1.yml
+node nest-script $1
+firebase deploy --only database
+firebase deploy --only storage
