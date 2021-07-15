@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": "auth != null && (auth.uid == 'UUID1' || auth.uid == 'UUID2')",
+    ".write": "auth != null && (auth.uid == 'UUID1' || auth.uid == 'UUID2')",
+    "$uid": {
+      ".read": "auth != null && auth.uid == $uid",
+      ".write": "auth != null && auth.uid == $uid"
+    },
+    "public": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

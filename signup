@@ -1,0 +1,10 @@
+firebase login
+firebase use --clear
+firebase use --alias $1
+firebase auth:export --format json users
+firebase apps:sdkconfig > $1.js
+mv $1.js src/firebaseConfigs
+cp .github/workflows/template .github/workflows/$1.yml
+node makedbrules $1
+firebase deploy --only database
+firebase deploy --only storage

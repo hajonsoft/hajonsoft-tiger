@@ -129,6 +129,8 @@ Firebase Rest https://firebase.google.com/docs/reference/rest/database
 
 Firebase Deploy https://www.robinwieruch.de/firebase-deploy-react-js 
 
+Firebase Deploy docs https://firebase.google.com/docs/rules/manage-deploy#generate_a_configuration_file
+
 Firebase Auth https://www.youtube.com/watch?v=zq0TuNqV0Ew
 
 firebase CLI https://firebase.google.com/docs/cli

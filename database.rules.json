@@ -1,7 +1,7 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null",
+    ".read": "auth != null && (auth.uid == 'AzhipoQEJvTzmtehtWzyJ6KLkOp1' || auth.uid == 'md1nFRWCPNY1U8jrvKz2hftrtVa2')",
+    ".write": "auth != null && (auth.uid == 'AzhipoQEJvTzmtehtWzyJ6KLkOp1' || auth.uid == 'md1nFRWCPNY1U8jrvKz2hftrtVa2')",
     "$uid": {
       ".read": "auth != null && auth.uid == $uid",
       ".write": "auth != null && auth.uid == $uid"
@@ -9,9 +9,6 @@
     "public": {
       ".read": true,
       ".write": true
-    },
-    "protected": {
-      ".read": true
     }
   }
 }
