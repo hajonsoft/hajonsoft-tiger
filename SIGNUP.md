@@ -5,12 +5,15 @@ To signup a new customer (a.k.a travel agent)
 ### Create firebase account
 
 ```
+
+zsh nest project_name
+
+
 - Send training to customer to add hajonsoft@gmail.com as an admin to their firebase account. https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR
 - login to firebase.google.com using hajonsoft@gmail.com and verify or create
     * new project, make sure the name is readable and record the name ex. forhajjnow
     * Authentication: enable email/password, and google incognito - it may error if not incognito, verify hajonsoft@gmail.com is a user
-- firebase init hosting:github untill the service account is created and delete the github actions 
-- zsh signup project_name this should deploy database rules, create github a new action 
+- zsh nest project_name this should deploy database rules, create github a new action 
 - git push and notify customer sign up is completed
 ```
 
