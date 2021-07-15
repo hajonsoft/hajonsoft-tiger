@@ -20,7 +20,7 @@ fs.writeFileSync('./src/firebaseConfigs/' + process.argv[2] + '.js',firebaseConf
 
 
 let githubAction = fs.readFileSync('./.github/workflows/' + process.argv[2] + '.yml', 'utf-8')
-githubAction = githubAction.replace(/projectidhere/g,process.argv[2]).replace(/-/g,'_')
-githubAction = githubAction.replace(/PROJECTIDHERE/g,process.argv[2].toUpperCase()).replace(/-/g,'_')
+githubAction = githubAction.replace(/projectidhere/g,process.argv[2])
+githubAction = githubAction.replace(/PROJECTIDHERE/g,process.argv[2].toUpperCase().replace(/-/g,'_'))
 
 fs.writeFileSync('./.github/workflows/' + process.argv[2] + '.yml',githubAction)
