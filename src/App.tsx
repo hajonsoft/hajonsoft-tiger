@@ -26,7 +26,7 @@ import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDe
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-import Reserve from "./features/onlinePackage/components/Reserve";
+import Reservation from "./features/reserves"
 import Favorite from './features/favorite';
 import messages_ar from './lang/ar.json'
 import messages_en from './lang/en.json'
@@ -92,7 +92,7 @@ function App() {
               <SignOut />
             </PublicRoute>
             <PublicRoute path="/reserve/:packageName">
-              <Reserve />
+              <Reservation />
             </PublicRoute>
             <PublicRoute exact path="/hajj-packages">
               <HajjPackagesContainer />
