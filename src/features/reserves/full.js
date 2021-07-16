@@ -12,7 +12,11 @@ import * as yup from "yup";
 import firebase from "../../firebaseapp"
 import { useHistory } from 'react-router';
 import { useParams } from "react-router-dom";
+import { nationalities } from '../../data/nationality';
 const storage = firebase.storage();
+
+
+console.log(nationalities, "___nationalities___")
 
 
 const useStyles = makeStyles((theme) => ({
@@ -249,15 +253,13 @@ const Full = () => {
       return;
     }
 
-    const metadata = {
-      contentType: "image/jpeg",
-    };
+    console.log(photoURL)
 
     const photoFileName = `${values.nationality ||
       "unknown"}/${values.passportNumber || "unknown"}.jpg`;
     let photoRef = storage.ref(photoFileName);
     photoRef
-      .putString(photoURL, metadata)
+      .putString(photoURL, 'data_url')
       .then((snap) => {
         console.log(snap, 1);
       })
@@ -271,7 +273,7 @@ const Full = () => {
       "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
     let passportRef = storage.ref(passportFileName);
     passportRef
-      .putString(passportURL, metadata)
+      .putString(passportURL, 'data_url')
       .then((snap) => {
         console.log(snap, 1);
       })
@@ -285,8 +287,7 @@ const Full = () => {
       .database()
       .ref(`public/fullReserve/${packageName}`);
     customerRef.push({ ...values, photoFileName, passportFileName });
-
-    console.log(customerRef, "___ref___");
+    
 
     history.push("/");
 
@@ -399,11 +400,7 @@ const Full = () => {
                           touched.nationality && Boolean(errors.nationality)
                         }
                         helperText={touched.nationality && errors.nationality}
-                        options={[
-                          { value: "none", label: "Nationality" },
-                          { value: "nigeria", label: "Nigeria" },
-                          { value: "egypt", label: "Egypt" },
-                        ]}
+                        options={[ {value: "none", label: "Nationality"},  ...nationalities.map(nationality => ({ value: nationality.name, label: nationality.name }) ) ]}
                       />
                     </Grid>
                     <Grid item md={12} className={classes.p1rem0}>

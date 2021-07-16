@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { useState } from 'react';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
-import { ErrorMessage, Field } from "formik";
+import {  Field } from "formik";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
@@ -85,7 +84,7 @@ const Input = (props) => {
                 error={!!error}
               >
                 { options && options.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem key={option.value + Math.random()} value={option.value}>
               {option.label}
             </MenuItem>
           ))}
