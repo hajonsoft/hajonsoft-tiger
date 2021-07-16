@@ -17,25 +17,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     borderColor: theme.palette.primary.main,
   },
-  textInput: {
-    width: '100%',
-    border: 'none',
-    resize: 'none',
-    borderRadius: 10,
-    padding: 10,
-    fontSize: '1.075rem',
-    background: props => props.disabled ? "cccccc2b" : "white"
-  },
   inputLabel: {
     marginTop: '-45px',
     color: (props) => props.labelColor || '',
     '&.focused': {
       color: theme.palette.primary.main,
     },
-  },
-  smallLabel: {
-    fontSize: '0.8rem',
-    marginTop: -38,
   },
 }));
 

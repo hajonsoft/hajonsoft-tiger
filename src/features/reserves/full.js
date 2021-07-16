@@ -20,12 +20,6 @@ console.log(nationalities, "___nationalities___")
 
 
 const useStyles = makeStyles((theme) => ({
-  selector: {
-    border: "solid 1px #ccc",
-    borderRadius: 10,
-    paddingLeft: 3,
-    height: 32,
-  },
   titleContainer: {
     color: "#385273",
     borderRadius: 15,
@@ -35,45 +29,6 @@ const useStyles = makeStyles((theme) => ({
     borderBottomRightRadius: 0,
     borderBottom: "1px solid #F7F7FA",
   },
-  coloredText: {
-    color: "#ccc",
-    fontSize: "1rem",
-    fontWeight: "bold",
-  },
-  button: {
-    paddingTop: 10,
-    width: 100,
-    height: 30,
-    color: "white",
-    borderRadius: 10,
-  },
-  buttonApply: {
-    backgroundColor: "#487DBF",
-    "&:hover": {
-      backgroundColor: "#487DBF",
-    },
-  },
-  passwordSectionTitle: {
-    color: "#ccc",
-    fontSize: "1rem",
-    fontWeight: "bold",
-  },
-  textInput: {
-    width: "100%",
-    border: "none",
-    resize: "none",
-    borderRadius: 10,
-    padding: 10,
-    borderColor: "lightgrey",
-    fontSize: "1.075rem",
-  },
-  buttonContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: 90,
-    },
-  },
   submitBtn: {
     background: "#178CF9",
     paddingLeft: "3rem",
@@ -81,20 +36,10 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     color: "white",
   },
-  snackBar: {
-    color: "#000",
-    fontSize: "13px",
-    cursor: "pointer",
-    fontWeight: "500",
-  },
   titleText: {
     marginLeft: 10,
     fontSize: "1.1rem",
     color: "#434343",
-  },
-  mainContainer: {
-    marginTop: 10,
-    padding: 10,
   },
   container: {
     maxWidth: 1000,
@@ -144,23 +89,11 @@ const useStyles = makeStyles((theme) => ({
   p1rem0: {
     padding: "1rem 0px",
   },
-  addressText: {
-    fontSize: ".8rem",
-    color: "#434343",
-  },
   pt1rem: {
     paddingTop: "1rem",
   },
-  form: {
-    paddingTop: "5rem",
-    paddingBottom: "4rem",
-  },
   mb1rem: {
     marginBottom: "1rem",
-  },
-  sectionText: {
-    fontSize: ".8rem",
-    color: "#434343",
   },
   passportBox: {
     border: "1px solid #ccc",

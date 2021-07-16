@@ -11,12 +11,6 @@ import * as yup from 'yup';
 import firebase from "../../firebaseapp"
 
 const useStyles = makeStyles((theme) => ({
-  selector: {
-    border: "solid 1px #ccc",
-    borderRadius: 10,
-    paddingLeft: 3,
-    height: 32,
-  },
   titleContainer: {
     color: "#385273",
     borderRadius: 15,
@@ -26,57 +20,12 @@ const useStyles = makeStyles((theme) => ({
     borderBottomRightRadius: 0,
     borderBottom: "1px solid #F7F7FA",
   },
-  coloredText: {
-    color: "#ccc",
-    fontSize: "1rem",
-    fontWeight: "bold",
-  },
-  button: {
-    paddingTop: 10,
-    width: 100,
-    height: 30,
-    color: "white",
-    borderRadius: 10,
-  },
-  buttonApply: {
-    backgroundColor: "#487DBF",
-    "&:hover": {
-      backgroundColor: "#487DBF",
-    },
-  },
-  passwordSectionTitle: {
-    color: "#ccc",
-    fontSize: "1rem",
-    fontWeight: "bold",
-  },
-  textInput: {
-    width: "100%",
-    border: "none",
-    resize: "none",
-    borderRadius: 10,
-    padding: 10,
-    borderColor: "lightgrey",
-    fontSize: "1.075rem",
-  },
-  buttonContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: 90,
-    },
-  },
   submitBtn: {
     background: "#178CF9",
     paddingLeft: "3rem",
     paddingRight: "3rem",
     textTransform: "capitalize",
     color: "white"
-  },
-  snackBar: {
-    color: "#000",
-    fontSize: "13px",
-    cursor: "pointer",
-    fontWeight: "500",
   },
   titleText: {
     marginLeft: 10,
@@ -95,74 +44,14 @@ const useStyles = makeStyles((theme) => ({
   p5: {
     padding: 5,
   },
-  avatarContainer: {
-    border: "1px solid #F7F7FA",
-    padding: "1.4rem",
-    borderRadius: "50%",
-  },
-  avatar: {
-    width: 75,
-    height: 75,
-    borderRadius: 20,
-  },
-  posRelative: {
-    position: "relative",
-  },
-  imgIconContainer: {
-    position: "absolute",
-    top: -35,
-    left: 64,
-  },
-  addIcon: {
-    color: "#157CFC",
-    fontSize: "1.75rem",
-  },
-  mt10: {
-    marginTop: 10,
-  },
-  imgText: {
-    color: "#8A9EB5",
-    fontSize: "0.75rem",
-    textAlign: "left",
-    padding: "1.5rem 0px"
-  },
   pt3rem: {
     paddingTop: "1.5rem",
   },
   pb0: {
     padding: 0,
   },
-  p1rem0: {
-    padding: "1rem 0px",
-  },
-  addressText: {
-    fontSize: ".8rem",
-    color: "#434343",
-  },
   pt1rem: {
     paddingTop: "1rem",
-  },
-  form: {
-    paddingTop: "5rem",
-    paddingBottom: "4rem",
-  },
-  mb1rem: {
-    marginBottom: "1rem",
-  },
-  sectionText: {
-    fontSize: ".8rem",
-    color: "#434343",
-  },
-  passportBox: {
-    border: "1px solid #ccc",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: "300px",
-    cursor: "pointer",
-    overflow: "hidden",
   },
 }));
 
