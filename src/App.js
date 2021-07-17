@@ -12,7 +12,7 @@ import Dashboard from "./features/Dashboard";
 import CustomerHome from "./features/Home/CustomerHome";
 import Home from "./features/Home/Home";
 import Profile from "./features/Profile";
-import Register from "./features/Register/Register";
+import Register from "./features/Register/Register.j";
 import ForgotPassword from "./features/SignIn/ForgotPassword";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
 import PublicRoute from "./features/SignIn/PublicRoute";
@@ -26,7 +26,7 @@ import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDe
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-import Reservation from "./features/reserves"
+import Reservation from "./features/Reservation"
 import Favorite from './features/favorite';
 import messages_ar from './lang/ar.json'
 import messages_en from './lang/en.json'
@@ -47,26 +47,26 @@ const messages = {
   "ar": messages_ar,
   "en": messages_en
 }
-const navigatorLanguage = navigator.language.split(/[-_]/)[0];
+const browserLanguage = navigator.language.split(/[-_]/)[0];
 
 function App() {
 
-  const [language, setLanguage] = useState(localStorage.getItem('langOverride') || navigatorLanguage)
-  const [dir, setDir] = useState(localStorage.getItem('langOverride') === "ar" ? "rtl" : "ltr")
+  const [language, setLanguage] = useState(localStorage.getItem('langOverride') || browserLanguage)
+  const [languageDirection, setLanguageDirection] = useState(localStorage.getItem('langOverride') === "ar" ? "rtl" : "ltr")
 
   const handleLanguageChange = (lang) => {
-    if (lang === "ar" && dir !== "rtl") {
-      setDir("rtl")
+    if (lang === "ar" && languageDirection !== "rtl") {
+      setLanguageDirection("rtl")
     }
 
-    if (lang !== "ar" && dir === "rtl") {
-      setDir("ltr")
+    if (lang !== "ar" && languageDirection === "rtl") {
+      setLanguageDirection("ltr")
     }
     setLanguage(lang);
     localStorage.setItem('langOverride', lang);
   };
 
-  document.dir = dir;
+  document.dir = languageDirection;
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -92,7 +92,7 @@ function App() {
               <SignOut />
             </PublicRoute>
             <PublicRoute path="/reserve/:packageName">
-              <Reservation />
+              <Reservation onLanguageChange={handleLanguageChange} lang={language}/>
             </PublicRoute>
             <PublicRoute exact path="/hajj-packages">
               <HajjPackagesContainer />

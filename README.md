@@ -86,7 +86,17 @@ Customers authroize hajonsoft@gmail.com as an owner on their firebase account. Y
 The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
 
 
-### Localization
+### Internationalization
+
+To internationalize a component, import trans function located at src/util/trans using relative import
+
+import trans from '../../util/trans' 
+
+Choose text and press ^T to add a key to public/assets/lang
+
+Open babel edit and translate french and Arabic
+
+zsh trans
 
 ### Video vidyard
 

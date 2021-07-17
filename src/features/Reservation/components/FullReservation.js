@@ -1,22 +1,21 @@
-import React, {  useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { Avatar, IconButton, Box } from "@material-ui/core";
 import { Typography, Button } from "@material-ui/core";
-import Input from "./input";
+import InputControl from "./InputControl";
 import AddIcon from "@material-ui/icons/AddCircle";
 import clsx from "classnames";
 import { Form, Formik } from "formik";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import * as yup from "yup";
-import firebase from "../../firebaseapp"
-import { useHistory } from 'react-router';
+import firebase from "../../../firebaseapp";
+import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
-import { nationalities } from '../../data/nationality';
+import { nationalities } from "../../../data/nationality";
+import trans from "../../../util/trans";
+
 const storage = firebase.storage();
-
-
-console.log(nationalities, "___nationalities___")
 
 
 const useStyles = makeStyles((theme) => ({
@@ -130,7 +129,7 @@ const validationSchema = yup.object({
     ),
   passportNumber: yup
     .string("Enter your passport number")
-    .required("Passport Number is required"),
+    .required("Passport number is required"),
   issuedAt: yup
     .string("Enter your passport issuedAt")
     .required("Passport issuedAt is required"),
@@ -146,19 +145,12 @@ const validationSchema = yup.object({
   birthPlace: yup
     .string("Enter your birth place")
     .required("Birth place is required"),
-  mrz: yup.string("Enter your passport MRZ").required("MRZ is required"),
   phone: yup
     .string("Enter your phone number")
     .required("phone number is required"),
-  nextOfKin: yup
-    .string("Enter your nextOfKin")
-    .required("next Of Kin is required"),
-  relationship: yup
-    .string("Enter your passport relationship")
-    .required("relationship is required"),
 });
 
-const Full = () => {
+const FullReservation = () => {
   const classes = useStyles();
   const inputRef = useRef(null);
   let { packageName } = useParams();
@@ -180,19 +172,15 @@ const Full = () => {
   }
 
   const handleSubmitForm = async (values, actions) => {
-
     if (!photoURL || !passportURL) {
       alert("upload all required photos");
       return;
     }
-
-    console.log(photoURL)
-
     const photoFileName = `${values.nationality ||
       "unknown"}/${values.passportNumber || "unknown"}.jpg`;
     let photoRef = storage.ref(photoFileName);
     photoRef
-      .putString(photoURL, 'data_url')
+      .putString(photoURL, "data_url")
       .then((snap) => {
         console.log(snap, 1);
       })
@@ -206,7 +194,7 @@ const Full = () => {
       "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
     let passportRef = storage.ref(passportFileName);
     passportRef
-      .putString(passportURL, 'data_url')
+      .putString(passportURL, "data_url")
       .then((snap) => {
         console.log(snap, 1);
       })
@@ -216,15 +204,12 @@ const Full = () => {
         return;
       });
 
-    const customerRef = firebase
+    const reservationReference = firebase
       .database()
       .ref(`public/fullReserve/${packageName}`);
-    customerRef.push({ ...values, photoFileName, passportFileName });
-    
-
+    const reservationResult = reservationReference.push({ ...values, photoFileName, passportFileName });
+    alert("Your reservation has been received " + reservationResult.key);
     history.push("/");
-
-    alert("You've successfully booked a reserve");
   };
 
   return (
@@ -236,7 +221,7 @@ const Full = () => {
         alignItems="center"
         className={classes.titleContainer}
       >
-        <Typography className={classes.titleText}>Full Reservation</Typography>
+        <Typography className={classes.titleText}>{`Full Reservation ${packageName}`}</Typography>
       </Grid>
       <Grid className={classes.container}>
         <Grid item direction="row" xs={12} className={classes.mainContainer}>
@@ -289,7 +274,7 @@ const Full = () => {
                     className={clsx(classes.container, classes.pb0)}
                   >
                     <Grid item xs={12}>
-                      <Input
+                      <InputControl
                         name="fullName"
                         label="Full Name"
                         required
@@ -299,7 +284,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Input
+                      <InputControl
                         name="arabicName"
                         label="Arabic Name"
                         value={values.arabicName}
@@ -309,7 +294,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item md={6} xs={12}>
-                      <Input
+                      <InputControl
                         name="gender"
                         label="Gender"
                         required
@@ -324,7 +309,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item md={6} xs={12}>
-                      <Input
+                      <InputControl
                         name="nationality"
                         label="Nationality"
                         required
@@ -333,7 +318,13 @@ const Full = () => {
                           touched.nationality && Boolean(errors.nationality)
                         }
                         helperText={touched.nationality && errors.nationality}
-                        options={[ {value: "none", label: "Nationality"},  ...nationalities.map(nationality => ({ value: nationality.name, label: nationality.name }) ) ]}
+                        options={[
+                          { value: "none", label: "Nationality" },
+                          ...nationalities.map((nationality) => ({
+                            value: nationality.name,
+                            label: nationality.name,
+                          })),
+                        ]}
                       />
                     </Grid>
                     <Grid item md={12} className={classes.p1rem0}>
@@ -343,7 +334,7 @@ const Full = () => {
                     </Grid>
 
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="passportNumber"
                         label="Passport Number"
                         value={values.passportNumber}
@@ -357,7 +348,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="issuedAt"
                         label="Issued At"
                         value={values.issueAt}
@@ -366,7 +357,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="passIssueDt"
                         label="Passort Issue Date"
                         value={values.passIssueDt}
@@ -378,7 +369,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="passExpireDt"
                         label="Passort Expiry Date"
                         value={values.passExpireDt}
@@ -390,7 +381,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="birthDate"
                         label="Birth Date"
                         value={values.birthDate}
@@ -400,22 +391,12 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="birthPlace"
                         label="Birth Place"
                         value={values.birthPlace}
                         error={touched.birthPlace && Boolean(errors.birthPlace)}
                         helperText={touched.birthPlace && errors.birthPlace}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Input
-                        multiline
-                        name="mrz"
-                        label="MRZ"
-                        value={values.mrz}
-                        error={touched.mrz && Boolean(errors.mrz)}
-                        helperText={touched.mrz && errors.mrz}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -454,7 +435,7 @@ const Full = () => {
                     </Grid>
 
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="idNumber"
                         required={false}
                         label="ID Number"
@@ -465,7 +446,7 @@ const Full = () => {
                     </Grid>
 
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="idIssueDate"
                         label="ID Issue Date"
                         required={false}
@@ -478,7 +459,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="idExpiryDate"
                         label="ID Expiry Date"
                         value={values.idExpiryDate}
@@ -497,7 +478,7 @@ const Full = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="profession"
                         label="Profession"
                         value={values.profession}
@@ -506,7 +487,7 @@ const Full = () => {
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
-                      <Input
+                      <InputControl
                         name="phone"
                         label="Phone"
                         value={values.phone}
@@ -514,28 +495,8 @@ const Full = () => {
                         helperText={touched.phone && errors.phone}
                       />
                     </Grid>
-                    <Grid item xs={12} md="6">
-                      <Input
-                        name="nextOfKin"
-                        label="Next Of Kin"
-                        value={values.nextOfKin}
-                        error={touched.nextOfKin && Boolean(errors.nextOfKin)}
-                        helperText={touched.nextOfKin && errors.nextOfKin}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md="6">
-                      <Input
-                        name="relationship"
-                        label="Relationship"
-                        value={values.relationship}
-                        error={
-                          touched.relationship && Boolean(errors.relationship)
-                        }
-                        helperText={touched.relationship && errors.relationship}
-                      />
-                    </Grid>
                     <Grid item xs={12}>
-                      <Input
+                      <InputControl
                         multiline
                         required={false}
                         name="message"
@@ -554,7 +515,7 @@ const Full = () => {
                       className={classes.submitBtn}
                       type="submit"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit" }
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
                   </Grid>
                 </Form>
@@ -567,4 +528,4 @@ const Full = () => {
   );
 };
 
-export default Full;
+export default FullReservation;

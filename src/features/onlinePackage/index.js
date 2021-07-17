@@ -49,7 +49,7 @@ const tableIcons = {
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
 };
 const OnlinePackage = () => {
-  // const mobileMedia = useMediaQuery((theme: any) =>
+  // const mobileMedia = useMediaQuery((theme) =>
   //   theme.breakpoints.down("sm")
   // );
 

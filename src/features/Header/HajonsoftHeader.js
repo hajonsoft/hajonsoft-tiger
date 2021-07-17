@@ -10,10 +10,9 @@ import React from 'react';
 import logo from '../../images/icon_logo_png.png';
 import smallLogo from '../../images/logo_mobile.jpg';
 import AppHeader from '../shared/components/AppHeader/AppHeader';
-import { IHeaderConfig } from '../shared/components/interfaces';
 
-const HajonsoftHeader: React.FC = () => {
-  const config: IHeaderConfig = {
+const HajonsoftHeader = () => {
+  const config = {
     logo,
     smallLogo,
     elevation: 2,

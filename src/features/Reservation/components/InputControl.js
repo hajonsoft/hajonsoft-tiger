@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Input = (props) => {
+const InputControl = (props) => {
   const {
     name,
     label,
@@ -49,6 +49,7 @@ const Input = (props) => {
             style={{ color: error ? 'red' : null }}
             htmlFor={name}
             placeholder={placeholder || name}
+            required={required}
           >
             {label}
           </InputLabel>
@@ -86,7 +87,7 @@ const Input = (props) => {
 };
 
 
-Input.defaultProps = {
+InputControl.defaultProps = {
    editable: true,
    commonUse: true,
    type: 'text',
@@ -94,4 +95,4 @@ Input.defaultProps = {
    required: true,
 };
 
-export default Input;
+export default InputControl;

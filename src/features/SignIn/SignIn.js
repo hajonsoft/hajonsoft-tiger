@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const SignIn = () => {
-  const mediaMobile = useMediaQuery((theme: any) =>
+  const mediaMobile = useMediaQuery((theme) =>
     theme.breakpoints.down("sm")
   );
 
@@ -65,7 +65,7 @@ const SignIn = () => {
     // ),
   });
 
-  const handleLogin = (values: any, actions: any) => {
+  const handleLogin = (values, actions) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)

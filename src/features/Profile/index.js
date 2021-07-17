@@ -9,8 +9,8 @@ import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import firebaseConfig from "./../../firebaseConfig";
-import firebase from "./../../firebaseapp";
+import firebaseConfig from "../../firebaseConfig";
+import firebase from "../../firebaseapp";
 import { Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 const useStyles = makeStyles((theme) => ({
