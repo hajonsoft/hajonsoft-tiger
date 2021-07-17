@@ -61,9 +61,9 @@ const validationSchema = yup.object({
     .string("Enter your full Name")
     .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
     .required("Full name is required (as it appears on passport) "),
-  tel: yup
+  phone: yup
     .string("Enter your phone number")
-    .required("phone number is required"),
+    .required("Phone number is required"),
   email: yup.string("Enter your email address").email("Enter a valid email"),
   departureCity: yup
     .string("Enter your departure city")
@@ -84,7 +84,7 @@ const BasicReservation = () => {
   const handleSubmitForm = async (values, actions) => {
     const reservationRef = firebase
       .database()
-      .ref(`public/reserve/${packageName}`);
+      .ref(`customer/${packageName}`);
     const pushResult = reservationRef.push(values);
     alert("You reservation has been received " + pushResult.key);
     history.push("/");
@@ -136,11 +136,11 @@ const BasicReservation = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <InputControl
-                        name="tel"
+                        name="phone"
                         label={trans('reservation.telephone')}
-                        value={values.tel}
-                        error={touched.tel && Boolean(errors.tel)}
-                        helperText={touched.tel && errors.tel}
+                        value={values.phone}
+                        error={touched.phone && Boolean(errors.phone)}
+                        helperText={touched.phone && errors.phone}
                         required={true}
                       />
                     </Grid>
@@ -196,11 +196,11 @@ const BasicReservation = () => {
                       <InputControl
                         multiline
                         required={false}
-                        name="message"
+                        name="comments"
                         label={trans('reservation.message')}
-                        value={values.message}
-                        error={touched.message && Boolean(errors.message)}
-                        helperText={touched.message && errors.message}
+                        value={values.comments}
+                        error={touched.comments && Boolean(errors.comments)}
+                        helperText={touched.comments && errors.comments}
                       />
                     </Grid>
                   </Grid>

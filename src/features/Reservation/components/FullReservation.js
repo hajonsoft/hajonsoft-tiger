@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = yup.object({
-  fullName: yup
+  name: yup
     .string("Enter your Full Name")
     .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
     .required("Full name is required (as it appears on passport) "),
@@ -129,7 +129,7 @@ const validationSchema = yup.object({
   passportNumber: yup
     .string("Enter your passport number")
     .required("Passport number is required"),
-  issuedAt: yup
+  passPlaceOfIssue: yup
     .string("Enter your passport issuedAt")
     .required("Passport issuedAt is required"),
   passIssueDt: yup
@@ -205,7 +205,7 @@ const FullReservation = () => {
 
     const reservationReference = firebase
       .database()
-      .ref(`public/fullReserve/${packageName}`);
+      .ref(`customer/${packageName}`);
     const reservationResult = reservationReference.push({
       ...values,
       photoFileName,
@@ -231,7 +231,7 @@ const FullReservation = () => {
               <Grid direction="column" container>
                 <Grid container direction="row" className={classes.mt10}>
                   <Typography className={classes.imgText}>
-                    {trans('reservation.basic-information')}
+                    {trans("reservation.basic-information")}
                   </Typography>
                 </Grid>
                 <Grid container direction="row">
@@ -262,7 +262,7 @@ const FullReservation = () => {
             </Grid>
           </Grid>
           <Formik
-            initialValues={{ fullName: "" }}
+            initialValues={{ name: "" }}
             onSubmit={handleSubmitForm}
             validationSchema={validationSchema}
           >
@@ -276,21 +276,21 @@ const FullReservation = () => {
                   >
                     <Grid item xs={12}>
                       <InputControl
-                        name="fullName"
+                        name="name"
                         label={trans("reservation.full-name")}
                         required
-                        value={values.fullName}
-                        error={touched.fullName && Boolean(errors.fullName)}
-                        helperText={touched.fullName && errors.fullName}
+                        value={values.name}
+                        error={touched.name && Boolean(errors.name)}
+                        helperText={touched.name && errors.name}
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <InputControl
-                        name="arabicName"
+                        name="nameArabic"
                         label={trans("reservation.arabic-name")}
                         value={values.arabicName}
-                        error={touched.arabicName && Boolean(errors.arabicName)}
-                        helperText={touched.arabicName && errors.arabicName}
+                        error={touched.nameArabic && Boolean(errors.nameArabic)}
+                        helperText={touched.nameArabic && errors.nameArabic}
                         required={false}
                       />
                     </Grid>
@@ -304,8 +304,8 @@ const FullReservation = () => {
                         helperText={touched.gender && errors.gender}
                         options={[
                           { value: "none", label: "Gender" },
-                          { value: "male", label: "Male" },
-                          { value: "female", label: "Female" },
+                          { value: "Male", label: "Male" },
+                          { value: "Female", label: "Female" },
                         ]}
                       />
                     </Grid>
@@ -350,11 +350,16 @@ const FullReservation = () => {
                     </Grid>
                     <Grid item xs={12} md="6">
                       <InputControl
-                        name="issuedAt"
+                        name="passPlaceOfIssue"
                         label={trans("reservation.issued-at")}
-                        value={values.issueAt}
-                        error={touched.issueAt && Boolean(errors.issueAt)}
-                        helperText={touched.issueAt && errors.issueAt}
+                        value={values.passPlaceOfIssue}
+                        error={
+                          touched.passPlaceOfIssue &&
+                          Boolean(errors.passPlaceOfIssue)
+                        }
+                        helperText={
+                          touched.passPlaceOfIssue && errors.passPlaceOfIssue
+                        }
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
@@ -401,7 +406,9 @@ const FullReservation = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography>{trans('reservation.upload-your-passport')}</Typography>
+                      <Typography>
+                        {trans("reservation.upload-your-passport")}
+                      </Typography>
                       <Box
                         className={classes.passportBox}
                         onClick={(e) => {
@@ -423,7 +430,9 @@ const FullReservation = () => {
                               color="primary"
                               fontSize="large"
                             />
-                            <Typography>{trans('reservation.upload-your-passport')}</Typography>
+                            <Typography>
+                              {trans("reservation.upload-your-passport")}
+                            </Typography>
                           </>
                         )}
                       </Box>
@@ -448,27 +457,34 @@ const FullReservation = () => {
 
                     <Grid item xs={12} md="6">
                       <InputControl
-                        name="idIssueDate"
+                        name="idNumberIssueDate"
                         label={trans("reservation.id-issue-date")}
                         required={false}
-                        value={values.idIssueDate}
+                        value={values.idNumberIssueDate}
                         error={
-                          touched.idIssueDate && Boolean(errors.idIssueDate)
+                          touched.idNumberIssueDate &&
+                          Boolean(errors.idNumberIssueDate)
                         }
-                        helperText={touched.idIssueDate && errors.idIssueDate}
+                        helperText={
+                          touched.idNumberIssueDate && errors.idNumberIssueDate
+                        }
                         type="date"
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
                       <InputControl
-                        name="idExpiryDate"
+                        name="idNumberExpireDate"
                         label={trans("reservation.id-expire-date")}
-                        value={values.idExpiryDate}
+                        value={values.idNumberExpireDate}
                         required={false}
                         error={
-                          touched.idExpiryDate && Boolean(errors.idExpiryDate)
+                          touched.idNumberExpireDate &&
+                          Boolean(errors.idNumberExpireDate)
                         }
-                        helperText={touched.idExpiryDate && errors.idExpiryDate}
+                        helperText={
+                          touched.idNumberExpireDate &&
+                          errors.idNumberExpireDate
+                        }
                         type="date"
                       />
                     </Grid>
@@ -500,11 +516,11 @@ const FullReservation = () => {
                       <InputControl
                         multiline
                         required={false}
-                        name="message"
+                        name="comments"
                         label={trans("reservation.message")}
-                        value={values.message}
-                        error={touched.message && Boolean(errors.message)}
-                        helperText={touched.message && errors.message}
+                        value={values.comments}
+                        error={touched.comments && Boolean(errors.comments)}
+                        helperText={touched.comments && errors.comments}
                       />
                     </Grid>
                   </Grid>
