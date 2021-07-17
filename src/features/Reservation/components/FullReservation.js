@@ -501,6 +501,7 @@ const FullReservation = () => {
                         value={values.profession}
                         error={touched.profession && Boolean(errors.profession)}
                         helperText={touched.profession && errors.profession}
+                        required={false}
                       />
                     </Grid>
                     <Grid item xs={12} md="6">
@@ -510,6 +511,16 @@ const FullReservation = () => {
                         value={values.phone}
                         error={touched.phone && Boolean(errors.phone)}
                         helperText={touched.phone && errors.phone}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputControl
+                        name="email"
+                        label={trans("reservation.email")}
+                        value={values.email}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                        required={false}
                       />
                     </Grid>
                     <Grid item xs={12}>
