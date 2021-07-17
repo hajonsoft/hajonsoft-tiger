@@ -17,7 +17,6 @@ import trans from "../../../util/trans";
 
 const storage = firebase.storage();
 
-
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     color: "#385273",
@@ -185,7 +184,7 @@ const FullReservation = () => {
         console.log(snap, 1);
       })
       .catch((error) => {
-        alert("An error occured");
+        alert("An error occurred");
         console.log(error, "__error___");
         return;
       });
@@ -199,7 +198,7 @@ const FullReservation = () => {
         console.log(snap, 1);
       })
       .catch((error) => {
-        alert("An error 2 occured");
+        alert("An error 2 occurred");
         console.log(error, "___error2___");
         return;
       });
@@ -207,7 +206,11 @@ const FullReservation = () => {
     const reservationReference = firebase
       .database()
       .ref(`public/fullReserve/${packageName}`);
-    const reservationResult = reservationReference.push({ ...values, photoFileName, passportFileName });
+    const reservationResult = reservationReference.push({
+      ...values,
+      photoFileName,
+      passportFileName,
+    });
     alert("Your reservation has been received " + reservationResult.key);
     history.push("/");
   };
@@ -215,13 +218,11 @@ const FullReservation = () => {
   return (
     <Grid container style={{ backgroundColor: "white" }}>
       <input ref={inputRef} hidden type="file" accept="image/*" />
-      <Grid
-        container
-        justify="space-between"
-        alignItems="center"
-        className={classes.titleContainer}
-      >
-        <Typography className={classes.titleText}>{`Full Reservation ${packageName}`}</Typography>
+      <Grid container alignItems="center" className={classes.titleContainer}>
+        <Typography className={classes.titleText}>
+          {trans("reservation.full-reservation")}
+        </Typography>
+        <Typography className={classes.titleText}>{packageName}</Typography>
       </Grid>
       <Grid className={classes.container}>
         <Grid item direction="row" xs={12} className={classes.mainContainer}>
@@ -230,7 +231,7 @@ const FullReservation = () => {
               <Grid direction="column" container>
                 <Grid container direction="row" className={classes.mt10}>
                   <Typography className={classes.imgText}>
-                    Basic Information
+                    {trans('reservation.basic-information')}
                   </Typography>
                 </Grid>
                 <Grid container direction="row">
@@ -276,7 +277,7 @@ const FullReservation = () => {
                     <Grid item xs={12}>
                       <InputControl
                         name="fullName"
-                        label="Full Name"
+                        label={trans("reservation.full-name")}
                         required
                         value={values.fullName}
                         error={touched.fullName && Boolean(errors.fullName)}
@@ -286,7 +287,7 @@ const FullReservation = () => {
                     <Grid item xs={12}>
                       <InputControl
                         name="arabicName"
-                        label="Arabic Name"
+                        label={trans("reservation.arabic-name")}
                         value={values.arabicName}
                         error={touched.arabicName && Boolean(errors.arabicName)}
                         helperText={touched.arabicName && errors.arabicName}
@@ -296,7 +297,7 @@ const FullReservation = () => {
                     <Grid item md={6} xs={12}>
                       <InputControl
                         name="gender"
-                        label="Gender"
+                        label={trans("reservation.gender")}
                         required
                         value={values.gender}
                         error={touched.gender && Boolean(errors.gender)}
@@ -311,7 +312,7 @@ const FullReservation = () => {
                     <Grid item md={6} xs={12}>
                       <InputControl
                         name="nationality"
-                        label="Nationality"
+                        label={trans("reservation.nationality")}
                         required
                         value={values.nationality}
                         error={
@@ -336,7 +337,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="passportNumber"
-                        label="Passport Number"
+                        label={trans("reservation.passport-number")}
                         value={values.passportNumber}
                         error={
                           touched.passportNumber &&
@@ -350,7 +351,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="issuedAt"
-                        label="Issued At"
+                        label={trans("reservation.issued-at")}
                         value={values.issueAt}
                         error={touched.issueAt && Boolean(errors.issueAt)}
                         helperText={touched.issueAt && errors.issueAt}
@@ -359,7 +360,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="passIssueDt"
-                        label="Passort Issue Date"
+                        label={trans("reservation.passport-issue-date")}
                         value={values.passIssueDt}
                         error={
                           touched.passIssueDt && Boolean(errors.passIssueDt)
@@ -371,7 +372,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="passExpireDt"
-                        label="Passort Expiry Date"
+                        label={trans("reservation.passport-expire-date")}
                         value={values.passExpireDt}
                         error={
                           touched.passExpireDt && Boolean(errors.passExpireDt)
@@ -383,7 +384,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="birthDate"
-                        label="Birth Date"
+                        label={trans("reservation.birth-date")}
                         value={values.birthDate}
                         error={touched.birthDate && Boolean(errors.birthDate)}
                         helperText={touched.birthDate && errors.birthDate}
@@ -393,14 +394,14 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="birthPlace"
-                        label="Birth Place"
+                        label={trans("reservation.birth-place")}
                         value={values.birthPlace}
                         error={touched.birthPlace && Boolean(errors.birthPlace)}
                         helperText={touched.birthPlace && errors.birthPlace}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography>Upload your passport</Typography>
+                      <Typography>{trans('reservation.upload-your-passport')}</Typography>
                       <Box
                         className={classes.passportBox}
                         onClick={(e) => {
@@ -422,7 +423,7 @@ const FullReservation = () => {
                               color="primary"
                               fontSize="large"
                             />
-                            <Typography>Upload your Passport</Typography>
+                            <Typography>{trans('reservation.upload-your-passport')}</Typography>
                           </>
                         )}
                       </Box>
@@ -430,7 +431,7 @@ const FullReservation = () => {
 
                     <Grid item md={12} className={classes.p1rem0}>
                       <Typography className={classes.imgText}>
-                        Residential Permit Information (optional)
+                        {trans("reservation.residency-permit-info")}
                       </Typography>
                     </Grid>
 
@@ -438,7 +439,7 @@ const FullReservation = () => {
                       <InputControl
                         name="idNumber"
                         required={false}
-                        label="ID Number"
+                        label={trans("reservation.id-number")}
                         value={values.idNumber}
                         error={touched.idNumber && Boolean(errors.idNumber)}
                         helperText={touched.idNumber && errors.idNumber}
@@ -448,7 +449,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="idIssueDate"
-                        label="ID Issue Date"
+                        label={trans("reservation.id-issue-date")}
                         required={false}
                         value={values.idIssueDate}
                         error={
@@ -461,7 +462,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="idExpiryDate"
-                        label="ID Expiry Date"
+                        label={trans("reservation.id-expire-date")}
                         value={values.idExpiryDate}
                         required={false}
                         error={
@@ -480,7 +481,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="profession"
-                        label="Profession"
+                        label={trans("reservation.profession")}
                         value={values.profession}
                         error={touched.profession && Boolean(errors.profession)}
                         helperText={touched.profession && errors.profession}
@@ -489,7 +490,7 @@ const FullReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="phone"
-                        label="Phone"
+                        label={trans("reservation.telephone")}
                         value={values.phone}
                         error={touched.phone && Boolean(errors.phone)}
                         helperText={touched.phone && errors.phone}
@@ -500,7 +501,7 @@ const FullReservation = () => {
                         multiline
                         required={false}
                         name="message"
-                        label="Message"
+                        label={trans("reservation.message")}
                         value={values.message}
                         error={touched.message && Boolean(errors.message)}
                         helperText={touched.message && errors.message}
@@ -515,7 +516,9 @@ const FullReservation = () => {
                       className={classes.submitBtn}
                       type="submit"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                      {isSubmitting
+                        ? trans("reservation.submitting")
+                        : trans("reservation.submit")}
                     </Button>
                   </Grid>
                 </Form>

@@ -11,7 +11,6 @@ import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
 
-
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     color: "#385273",
@@ -73,7 +72,7 @@ const validationSchema = yup.object({
     .string("Enter your departure date")
     .required("Departure date is required"),
   pax: yup
-    .number("Enter your number of compannions")
+    .number("Enter your number of companions")
     .required("Number of companions is required"),
 });
 
@@ -95,13 +94,13 @@ const BasicReservation = () => {
     <Grid container style={{ backgroundColor: "white", minHeight: "100vh" }}>
       <Grid
         container
-        justify="space-between"
         alignItems="center"
         className={classes.titleContainer}
       >
-        <Typography
-          className={classes.titleText}
-        >{`Quick Reservation ${packageName}`}</Typography>
+        <Typography component="span" className={classes.titleText}>
+          {trans("reservation.quick-reservation")}
+        </Typography>
+        <Typography className={classes.titleText}>{`${packageName}`}</Typography>
       </Grid>
       <Grid className={classes.container}>
         <Grid item direction="row" xs={12} className={classes.mainContainer}>
@@ -128,7 +127,7 @@ const BasicReservation = () => {
                     <Grid item xs={12}>
                       <InputControl
                         name="name"
-                        label="Full Name"
+                        label={trans('reservation.full-name')}
                         required
                         value={values.name}
                         error={touched.name && Boolean(errors.name)}
@@ -138,7 +137,7 @@ const BasicReservation = () => {
                     <Grid item xs={12}>
                       <InputControl
                         name="tel"
-                        label="Telephone"
+                        label={trans('reservation.telephone')}
                         value={values.tel}
                         error={touched.tel && Boolean(errors.tel)}
                         helperText={touched.tel && errors.tel}
@@ -148,7 +147,7 @@ const BasicReservation = () => {
                     <Grid item md={6} xs={12}>
                       <InputControl
                         name="email"
-                        label="Email"
+                        label={trans('reservation.email')}
                         required
                         value={values.email}
                         error={touched.email && Boolean(errors.email)}
@@ -158,7 +157,7 @@ const BasicReservation = () => {
                     <Grid item md={6} xs={12}>
                       <InputControl
                         name="departureCity"
-                        label="Departure City"
+                        label={trans('reservation.departure-city')}
                         required
                         value={values.departureCity}
                         error={
@@ -173,7 +172,7 @@ const BasicReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="pax"
-                        label="Number of Companions"
+                        label={trans('reservation.number-of-companions')}
                         value={values.pax}
                         error={touched.pax && Boolean(errors.pax)}
                         helperText={touched.pax && errors.pax}
@@ -182,7 +181,7 @@ const BasicReservation = () => {
                     <Grid item xs={12} md="6">
                       <InputControl
                         name="departureDate"
-                        label="Departure Date"
+                        label={trans('reservation.departure-date')}
                         value={values.departureDate}
                         error={
                           touched.departureDate && Boolean(errors.departureDate)
@@ -198,7 +197,7 @@ const BasicReservation = () => {
                         multiline
                         required={false}
                         name="message"
-                        label="Message"
+                        label={trans('reservation.message')}
                         value={values.message}
                         error={touched.message && Boolean(errors.message)}
                         helperText={touched.message && errors.message}
@@ -213,7 +212,7 @@ const BasicReservation = () => {
                       className={classes.submitBtn}
                       type="submit"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                      {isSubmitting ? trans('reservation.submitting') : trans('reservation.submit')}
                     </Button>
                   </Grid>
                 </Form>

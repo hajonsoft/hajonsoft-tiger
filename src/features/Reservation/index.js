@@ -1,7 +1,7 @@
 import React from "react";
 import FullReservation from "./components/FullReservation";
 import BasicReservation from "./components/BasicReservation";
-import { Box, Grid, MenuItem, Select, Typography} from "@material-ui/core";
+import { Box, Grid, MenuItem, Select, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -27,7 +27,7 @@ function a11yProps(index) {
   };
 }
 
-const Reservation = ({lang, onLanguageChange}) => {
+const Reservation = ({ lang, onLanguageChange }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -48,16 +48,16 @@ const Reservation = ({lang, onLanguageChange}) => {
         >
           <Tab
             style={{ width: "100%" }}
-            label="Quick reservation"
+            label={trans("reservation.quick-reservation")}
             {...a11yProps(0)}
           />
           <Tab
             style={{ width: "100%" }}
-            label="Full reservation"
+            label={trans("reservation.full-reservation")}
             {...a11yProps(1)}
           />
         </Tabs>
-        <Box p={4} style={{display: 'flex', justifyContent: 'center'}}>
+        <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
           <Select
             value={lang}
             onChange={(e) => onLanguageChange(e.target.value)}
@@ -66,11 +66,11 @@ const Reservation = ({lang, onLanguageChange}) => {
             <MenuItem value="en">
               <Typography variant="body1">English</Typography>
             </MenuItem>
-            <MenuItem value="ar">
-              <Typography variant="body1">اللغه العربيه</Typography>
-            </MenuItem>
             <MenuItem value="fr">
               <Typography variant="body1">Française</Typography>
+            </MenuItem>
+            <MenuItem value="ar">
+              <Typography variant="body1">اللغه العربيه</Typography>
             </MenuItem>
           </Select>
         </Box>
