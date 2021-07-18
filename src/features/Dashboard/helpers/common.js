@@ -88,7 +88,7 @@ export function getTravellersJSON(travellers, data) {
   return exportData;
 }
 
-export async function zipWithPhotos(data, packageData, setShareProgress) {
+export async function zipWithPhotos(data, packageData) {
   var zip = new jszip();
   let travellerArray;
   if (packageData && packageData.name) {
@@ -109,9 +109,6 @@ export async function zipWithPhotos(data, packageData, setShareProgress) {
       photo: photoUrl,
       passport: passportUrl,
     };
-    setShareProgress(
-      (s) => (s = { ...s, value: (index / travellersCount) * 100 })
-    );
   }
   const jsonData = JSON.stringify(data);
   zip.file("data.json", jsonData);

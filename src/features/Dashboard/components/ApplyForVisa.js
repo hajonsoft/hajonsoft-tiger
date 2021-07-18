@@ -1,23 +1,13 @@
 import {
-  Button,
-  Dialog,
+  Button, Card,
+  CardActions,
+  CardContent, Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  TextField,
-  FormControl,
-  Select,
-  Input,
+  DialogTitle, FormControl, FormControlLabel, Grid, Input,
   InputLabel,
-  MenuItem,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
+  MenuItem, Radio,
+  RadioGroup, Select, TextField, Typography
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -26,14 +16,13 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import moment from "moment";
 import React, { useState } from "react";
-import useVisaSystemState from "../redux/useVisaSystemState";
-import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
-import CircularProgressWithLabel from "./CircularProgressWithLabel";
-import moment from 'moment';
 import firebaseConfig from "../../../firebaseConfig";
+import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
+import useVisaSystemState from "../redux/useVisaSystemState";
 
-const sanitizeGroupName = (gn)=> gn.replace(/[^A-Za-z0-9]/gi,'');
+const sanitizeGroupName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,12 +49,8 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   const [usap, setUsap] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [downloadFileName, setDownloadFileName] = useState('');
+  const [downloadFileName, setDownloadFileName] = useState("");
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
-  const [exportProgress, setExportProgress] = useState({
-    loading: false,
-    value: 0,
-  });
 
   const {
     data: visaSystems,
@@ -96,8 +81,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     });
   };
   const handleExport = async () => {
-    setExportProgress({ loading: true, value: 0 });
-    const travellersData =  getTravellersJSON(travellers);
+    const travellersData = getTravellersJSON(travellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
@@ -107,23 +91,21 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       },
       travellers: travellersData,
     };
-    const zip = await zipWithPhotos(data,
-      null,
-      setExportProgress
-    );
+    const zip = await zipWithPhotos(data, null);
 
     zip.generateAsync({ type: "blob" }).then(function(content) {
       const newFile = new Blob([content], { type: "application/zip" });
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
-      const fileName = `${sanitizeGroupName(groupName) + "_" + parseInt(moment().format('X')).toString(36)}.zip`;
+      const fileName = `${sanitizeGroupName(groupName) +
+        "_" +
+        parseInt(moment().format("X")).toString(36)}.zip`;
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
     });
 
-    setExportProgress({ loading: false, value: 100 });
   };
   const getUsapName = (u) => {
     switch (u) {
@@ -155,11 +137,25 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     }
   };
 
-  const handleSentToHos = ()=> {
+  const handleSentToHos = () => {
     const tempLink = document.createElement("a");
-    tempLink.href = new URL('hajonsoftapp://mode=send,fileName=' + downloadFileName + ',host=' + firebaseConfig.projectId);
+    tempLink.href = new URL(
+      "hawk://mode=send,fileName=" +
+        downloadFileName +
+        ",host=" +
+        firebaseConfig.projectId
+    );
     tempLink.click();
-  }
+  };
+
+  const handleOpenHawk = () => {
+    const tempLink = document.createElement("a");
+    tempLink.href = new URL(
+      "hawk://mode=open,host=" + firebaseConfig.projectId
+    );
+    tempLink.click();
+  };
+
   return (
     <Dialog
       open={open}
@@ -297,56 +293,51 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 3: Choose operator
+                Step 3: Download and Send
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                Me, HajOnSoft, or a friend!
+                Download travellers in one file and start sending to the
+                selected visa system
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container justify="space-between" alignItems="center">
                 <Grid item xs={3}>
-                  <Card
-                    variant="outlined"
-                    style={{ backgroundColor: "hsl(240,50%,95%)" }}
-                  >
+                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
                     <CardContent>
-                      <Typography>I will send by myself.</Typography>
+                      <Typography>Option 1</Typography>
                     </CardContent>
 
                     <CardActions>
-                      <Button onClick={handleExport}>Export</Button>
-                      {exportProgress.loading && (
-                        <CircularProgressWithLabel value={exportProgress} />
-                      )}
+                      <Button onClick={handleExport}>Download only</Button>
                     </CardActions>
                   </Card>
                 </Grid>
                 <Grid item xs={3}>
-                  <Button onClick={handleSentToHos}>Send to HajOnSoft</Button>
+                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
+                    <CardContent>
+                      <Typography>Option 2</Typography>
+                    </CardContent>
+
+                    <CardActions>
+                      <Button onClick={handleSentToHos}>
+                        Download and Send
+                      </Button>
+                    </CardActions>
+                  </Card>
                 </Grid>
                 <Grid item xs={3}>
-                  <Button>Send to a friend</Button>
+                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
+                    <CardContent>
+                      <Typography>Option 3</Typography>
+                    </CardContent>
+
+                    <CardActions>
+                      <Button onClick={handleOpenHawk}>Manual</Button>
+                    </CardActions>
+                  </Card>
                 </Grid>
               </Grid>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel4"}
-            onChange={handleChange("panel4")}
-          >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>
-                Step 4: Execute
-              </Typography>
-              <Typography className={classes.secondaryHeading}>
-                Verify software is installed in case of export
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Button to export the data or create an assist request
-              </Typography>
             </AccordionDetails>
           </Accordion>
         </div>
