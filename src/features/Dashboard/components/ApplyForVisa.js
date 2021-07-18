@@ -137,7 +137,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     }
   };
 
-  const handleSentToHos = () => {
+  const handleSendDownloadedFile = () => {
     const tempLink = document.createElement("a");
     tempLink.href = new URL(
       "hawk://mode=send,fileName=" +
@@ -305,23 +305,23 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                 <Grid item xs={3}>
                   <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
                     <CardContent>
-                      <Typography>Option 1</Typography>
+                      <Typography>Step 1 (Required)</Typography>
                     </CardContent>
 
                     <CardActions>
-                      <Button onClick={handleExport}>Download only</Button>
+                      <Button onClick={handleExport}>Download zip file</Button>
                     </CardActions>
                   </Card>
                 </Grid>
                 <Grid item xs={3}>
                   <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
                     <CardContent>
-                      <Typography>Option 2</Typography>
+                      <Typography>Step 2 (Option 1)</Typography>
                     </CardContent>
 
                     <CardActions>
-                      <Button onClick={handleSentToHos}>
-                        Download and Send
+                      <Button onClick={handleSendDownloadedFile}>
+                        {`Send ${downloadFileName}`}
                       </Button>
                     </CardActions>
                   </Card>
@@ -329,7 +329,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                 <Grid item xs={3}>
                   <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
                     <CardContent>
-                      <Typography>Option 3</Typography>
+                      <Typography>Step 2 (Option 2)</Typography>
                     </CardContent>
 
                     <CardActions>
