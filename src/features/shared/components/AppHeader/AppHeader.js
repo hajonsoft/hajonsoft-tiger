@@ -16,9 +16,8 @@ import { useHistory } from "react-router-dom";
 import firebase from "../../../../firebaseapp";
 import firebaseConfig from "../../../../firebaseConfig";
 import useTravellerState from "../../../Dashboard/redux/useTravellerState";
-import { IHeaderConfig } from "../interfaces";
 
-const AppHeader = ({ config }: { config: IHeaderConfig }) => {
+const AppHeader = ({ config }) => {
     const [user] = useAuthState(firebase.auth());
     const isMobile = useMediaQuery("(max-width: 600px)");
     const projectName = `${_.startCase(

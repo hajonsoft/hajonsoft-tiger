@@ -81,12 +81,26 @@ We’ll meet in the development Slack channel.
 
 ### Firebase
 
-Customers authroize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find all customers and administer their firebase account.
+Customers authorize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find all customers and administer their firebase account.
 
-The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+The sign-up documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
 
 
-### Localization
+### Internationalization
+
+Watch this video https://share.vidyard.com/watch/TDQtCsQQGPxvyNX1GkGpMN?
+
+To internationalize a component, import trans function located at src/util/trans using relative import
+
+import trans from '../../util/trans' 
+
+make sure this VS code extension is installed tauqeernasir.langs-extractor
+
+Choose text and press ^T to add a key to public/assets/lang
+
+Open babel edit and translate french and Arabic
+
+zsh trans
 
 ### Video vidyard
 

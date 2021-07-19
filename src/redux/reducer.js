@@ -8,10 +8,10 @@ const emptyState = {
 }
 
 
-const applyStart = (state: any, action: any) => { state.loading = true; state.req = action.payload }
-const applyFail = (state: any, action: any) => { state.loading = false; state.error = action.payload?.message || action.payload }
+const applyStart = (state, action) => { state.loading = true; state.req = action.payload }
+const applyFail = (state, action) => { state.loading = false; state.error = action.payload?.message || action.payload }
 
-const applyFetchSuccess = (state: any, action: any) => {
+const applyFetchSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     state.data = _.omit(state.data, 'No data found')
@@ -19,7 +19,7 @@ const applyFetchSuccess = (state: any, action: any) => {
 
 }
 
-const applyCreateSuccess = (state: any, action: any) => {
+const applyCreateSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     state.data = _.omit(state.data, 'No data found')
@@ -30,21 +30,21 @@ const applyCreateSuccess = (state: any, action: any) => {
     state.data[groupName].push(Object.values(Object.values(action.payload)[0])[0][0]);
 }
 
-const applyFetchVisaSystemSuccess = (state: any, action: any) => {
+const applyFetchVisaSystemSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     state.data= action.payload;
 }
 
 
-const applyCreateVisaSystemSuccess = (state: any, action: any) => {
+const applyCreateVisaSystemSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     state.data.push(action.payload);
 }
 
 
-const applyUpdateSuccess = (state: any, action: any) => {
+const applyUpdateSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     const pathParts = action.payload.path.split('/');
@@ -55,7 +55,7 @@ const applyUpdateSuccess = (state: any, action: any) => {
     }
 }
 
-const applyDeleteSuccess = (state: any, action: any) => {
+const applyDeleteSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
 

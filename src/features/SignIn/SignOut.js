@@ -3,7 +3,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Typography } from '@material-ui/core';
 
-const SignOut: React.FC = () => {
+const SignOut = () => {
   const history = useHistory();
   setTimeout(() => {
     history.push("/login");

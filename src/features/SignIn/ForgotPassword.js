@@ -41,7 +41,7 @@ const ForgotPassword = () => {
             .oneOf([yup.ref('password'), ''], 'Passwords must match')
     });
 
-    const handleSendCode = (values: any, actions: any) => {
+    const handleSendCode = (values, actions) => {
 
         // const cognitoUser = new CognitoUser({
         //     Username: values.email,
@@ -63,7 +63,7 @@ const ForgotPassword = () => {
 
     }
 
-    const handleChangePassword = (values: any, actions: any) => {
+    const handleChangePassword = (values, actions) => {
 
         // const cognitoUser = new CognitoUser({
         //     Username: values.email,
