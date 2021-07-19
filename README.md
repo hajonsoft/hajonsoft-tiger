@@ -83,7 +83,7 @@ We’ll meet in the development Slack channel.
 
 Customers authorize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find all customers and administer their firebase account.
 
-The sign-up documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/doc/SIGNUP.md
 
 
 ### Internationalization
