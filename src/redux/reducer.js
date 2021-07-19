@@ -65,7 +65,7 @@ const applyDeleteSuccess = (state, action) => {
     //TODO: Implement delete success. Make sure this delete is relevant to the correct slice
 }
 
-const applyDeleteVisaSystemSuccess = (state: any, action: any) => {
+const applyDeleteVisaSystemSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     if (action.payload.fid) { 
