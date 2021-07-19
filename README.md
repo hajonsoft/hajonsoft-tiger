@@ -66,22 +66,23 @@ git config user.email YOUR_EMAIL
 ### Scrum
 We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browsing github.
 
+Virtual standup is held on slack using slack schedule app– https://schedule-it-on-slack.herokuapp.com/index.html
 
-Virtual standup is held on slack – please Slack your updates. Happy Scrumming!!
+Please Slack your updates, If you would like to share it with the team. Happy Scrumming!!
  
 We will cover these three things:
  
-What specific things did you complete yesterday, and how would you briefly describe your approach to these things?
-What specific things do you plan to work on today, and how would you briefly describe the approach you intend to take?
-What would allow you to go faster or do your work better?
+1- What specific things did you complete yesterday, and how would you briefly describe your approach to these things?
+2- What specific things do you plan to work on today, and how would you briefly describe the approach you intend to take?
+3- What would allow you to go faster or do your work better?
  
-We’ll meet in the development Slack channel.
+We’ll meet in the #dev Slack channel.
 
 ### Slack
 
-▪ Sign up through https://join.slack.com/t/hajonsoft/signup
-▪ Select link and go through the setup steps of confirming email, agreeing to terms, enter name, and select password
-▪ Add profile picture to Slack in Profile & Settings section
+* Sign up through https://join.slack.com/t/hajonsoft/signup
+* Select link and go through the setup steps of confirming email, agreeing to terms, enter name, and select password
+* Add profile picture to Slack in Profile & Settings section
 
 ### Firebase
 
