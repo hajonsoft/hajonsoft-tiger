@@ -1,16 +1,16 @@
 {
 	"files": [
 		{
-			"path": "src/features/customer/index.js",
+			"path": "src/features/Dashboard/components/ApplyForVisa.js",
 			"bookmarks": [
 				{
-					"line": 61,
-					"column": 60,
+					"line": 244,
+					"column": 63,
 					"label": ""
 				},
 				{
-					"line": 163,
-					"column": 24,
+					"line": 280,
+					"column": 2,
 					"label": ""
 				}
 			]

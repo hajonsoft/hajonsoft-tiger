@@ -1,6 +1,9 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import _ from 'lodash';
 
+// TODO: Obviously this reducer implementation was intended to b generic but it doen't work for /visaSystem correctly. or at least it needs to be reviewed
+// state.data is confusing
+
 const emptyState = {
     data: {},
     loading: false,
@@ -59,9 +62,16 @@ const applyDeleteSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
 
-//TODO: remove only the deleted one
+    //TODO: Implement delete success. Make sure this delete is relevant to the correct slice
 }
 
+const applyDeleteVisaSystemSuccess = (state: any, action: any) => {
+    state.loading = false;
+    state.error = '';
+    if (action.payload.fid) { 
+        state.data = state.data.filter(x => x._fid !== action.payload.fid )
+    }
+}
 
 
 export const travellerSlice = createSlice({
@@ -91,7 +101,7 @@ export const systemSlice = createSlice({
         update: (state, action) => applyStart(state, action),
         updateSuccess: (state, action) => applyUpdateSuccess(state, action),
         delete: (state, action) => applyStart(state, action),
-        deleteSuccess: (state, action) => applyDeleteSuccess(state, action),
+        deleteSuccess: (state, action) => applyDeleteVisaSystemSuccess(state, action),
         fail: (state, action) => applyFail(state, action)
     }
 })

@@ -17,6 +17,7 @@ firebaseConfig = firebaseConfig.replace(/firebase\.initializeApp\(/g,'const fire
 firebaseConfig = firebaseConfig.replace(/\);/g,';\nexport default firebaseConfig;')
 
 fs.writeFileSync('./src/firebaseConfigs/' + process.argv[2] + '.js',firebaseConfig)
+fs.writeFileSync('./src/firebaseConfig.js',`import firebaseConfig from './firebaseConfigs/${process.argv[2]}';\nexport default firebaseConfig;`)
 
 
 let githubAction = fs.readFileSync('./.github/workflows/' + process.argv[2] + '.yml', 'utf-8')

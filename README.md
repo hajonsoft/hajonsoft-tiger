@@ -1,37 +1,41 @@
 ﻿### HAJonSoft Tiger
 
-Home of Dove 🕊  and Humming Bird 🦅 sites. The code repo is called Tiger 🐅 (Animal). 
+Home of the Nest which is Dove 🕊  and Humming Bird 🦅 sites. The code repo is called Tiger 🐅 (Animal). 
 Repo uses an animal name while customer facing modules will use a bird name.
 
-Humming Bird allows HAJonSoft customers to login to their own firebase account and administer travellers to manage relationship, scan passports and apply for visa.
-Dove allows travellers to look at advertized packages to reserve or manage them.
+Humming Bird allows Munazims to login to their own firebase account and administer traveller data as well as apply for visa, scan passports or print reports.
+Dove allows travellers to find and reserve trips
 
 
-To learn about hajonsoft repos please watch this video [![image](https://user-images.githubusercontent.com/9623964/121062683-40adc680-c77a-11eb-8cc0-7488bd23c13e.png)](https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?)
+To learn about HAJonSoft repos please watch this video [![image](https://user-images.githubusercontent.com/9623964/121062683-40adc680-c77a-11eb-8cc0-7488bd23c13e.png)](https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?)
 
 
 ## Quick start
 
 ---
 
+yarn start
+
 ### Local Development
 
-To start the application
+To start Nest locally. First check which customer account you want to use, change src/firebaseConfig.js to point to the correct Munazim account then 
+
+ex. `import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
 
 ```
 npm start 
+or 
+yarn start
 ```
 
-To connect to a specific customer firebase account, Change src/firebaseConfig 
-
-
-`import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
 
 # Git and SSH
 
+If you want to have to github accounts on your local machine, you can use ssh here is a guide
+
 https://medium.com/@pinglinh/how-to-have-2-github-accounts-on-one-machine-windows-69b5b4c5b14e
 
-ssh commands key 
+ssh commands 
 ```zsh
 ssh-keygen -t ed25519 -C "your_github_email@example.com"
 save it as  `~/.ssh/id_hajonsoft`
@@ -83,7 +87,7 @@ We’ll meet in the development Slack channel.
 
 Customers authorize hajonsoft@gmail.com as an owner on their firebase account. You can login to any customer firebase hosted app. To administer the project go to firebase.google.com and login using hajonsoft@gmail.com to find all customers and administer their firebase account.
 
-The sign-up documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/SIGNUP.md
+The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/blob/master/doc/SIGNUP.md
 
 
 ### Internationalization
@@ -103,6 +107,8 @@ Open babel edit and translate french and Arabic
 zsh trans
 
 ### Video vidyard
+
+Login to vidyard using hajonsoft@gmail.com 
 
 ### Figma
 
