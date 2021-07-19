@@ -1,13 +1,22 @@
 import {
-  Button, Card,
+  Box,
+  Button,
+  Card,
   CardActions,
-  CardContent, Dialog,
+  CardContent,
+  CardHeader,
+  Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle, FormControl, FormControlLabel, Grid, Input,
+  DialogTitle,
+  FormControl,
+  Grid,
+  IconButton,
   InputLabel,
-  MenuItem, Radio,
-  RadioGroup, Select, TextField, Typography
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -15,6 +24,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import moment from "moment";
 import React, { useState } from "react";
@@ -37,15 +48,33 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  sendCard: {},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const usaps = [
+  { value: "bau", name: "UMRAH | Bab al umrah (Recommended)" },
+
+  { value: "wtu", name: "UMRAH | Way to umrah (legacy)" },
+
+  { value: "gma", name: "UMRAH | Gabul ya hajj (difficult)" },
+
+  { value: "twf", name: "UMRAH | Tawaf (slow)" },
+  { value: "ehr", name: "HAJ | Ehaj (Reservation)" },
+  { value: "ehj", name: "HAJ | Ehaj (Submit)" },
+
+  { value: "vst", name: "VISIT | Visit Saudi " },
+
+  { value: "mot", name: "LOCAL | Egypt Tourism" },
+];
+
 const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [addMode, setAddMode] = React.useState(false);
   const [usap, setUsap] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -58,8 +87,10 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     deleteData: deleteVisaSystem,
   } = useVisaSystemState();
 
-  const handleSelectedVisaSystemChange = (system) => {
-    setSelectedVisaSystem(system);
+  const handleSelectedVisaSystemChange = (systemIndex) => {
+    if (visaSystems.length > systemIndex) {
+      setSelectedVisaSystem(systemIndex);
+    }
   };
 
   const handleUsapChange = (usap) => {
@@ -69,15 +100,17 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const handleAddVisaSystem = () => {
+  const handleDoneAddVisaSystem = () => {
     createVisaSystem({
       path: "visaSystem",
       data: { usap, username, password },
     });
+    setAddMode(false);
   };
-  const handleRemoveVisaSystem = () => {
+  const handleOnDeleteVisaSystem = (visaSystemIndex) => {
     deleteVisaSystem({
-      path: "visaSystem/" + visaSystems[selectedVisaSystem]._fid,
+      path: "visaSystem/" + visaSystems[visaSystemIndex]._fid,
+      fid: visaSystems[visaSystemIndex]._fid,
     });
   };
   const handleExport = async () => {
@@ -105,32 +138,16 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       setDownloadFileName(fileName);
       tempLink.click();
     });
-
   };
   const getUsapName = (u) => {
-    switch (u) {
-      case "wtu":
-        return "Way to umrah";
-      case "bau":
-        return "Bab al umrah";
-      case "gma":
-        return "Gabul ya haj";
-      case "vst":
-        return "Visit Saudi";
-      case "twf":
-        return "Tawaf";
-      case "mot":
-        return "Egypt Ministry of Tourism";
-      default:
-        return "";
-    }
+    return usaps.find((ausap) => ausap.value === u)?.name;
   };
 
   const getSelectedVisaSystem = () => {
     if (visaSystems && visaSystems?.length > 0) {
-      const defaultSystem = visaSystems[selectedVisaSystem];
-      return `${getUsapName(defaultSystem.usap)} - Username: ${
-        defaultSystem.username
+      const defaultSystem = visaSystems[selectedVisaSystem] || visaSystems[0];
+      return `${getUsapName(defaultSystem?.usap)} - Username: ${
+        defaultSystem?.username
       }`;
     } else {
       return "No system selected";
@@ -195,96 +212,114 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 2: Choose external system
+                Step 2: Choose visa system
               </Typography>
               <Typography className={classes.secondaryHeading}>
                 {getSelectedVisaSystem()}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container justify="space-between" alignItems="center">
-                <Grid item>
-                  <RadioGroup
-                    value={usap}
-                    onChange={(e) => handleUsapChange(e.target.value)}
+              <Box style={{ width: "100%" }}>
+                {!addMode && (
+                  <Grid container alignItems="center">
+                    <Grid item md={11}>
+                      <FormControl fullWidth variant="filled">
+                        <InputLabel>System</InputLabel>
+                        <Select
+                          value={selectedVisaSystem}
+                          onChange={(e) =>
+                            handleSelectedVisaSystemChange(e.target.value)
+                          }
+                        >
+                          {visaSystems &&
+                            visaSystems?.length > 0 &&
+                            visaSystems.map((x, i) => (
+                              <MenuItem value={i} key={x.username}>
+                                <Grid
+                                  container
+                                  justify="space-between"
+                                  alignItems="center"
+                                >
+                                  <Grid item>
+                                    {`${getUsapName(x.usap)} ${x.username}`}
+                                  </Grid>
+                                  {i !== selectedVisaSystem && (
+                                    <Grid item>
+                                      <IconButton
+                                        onClick={() =>
+                                          handleOnDeleteVisaSystem(i)
+                                        }
+                                      >
+                                        <DeleteIcon
+                                          fontSize="small"
+                                          color="error"
+                                        />
+                                      </IconButton>
+                                    </Grid>
+                                  )}
+                                </Grid>
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item md={1}>
+                      <IconButton aria-label="add">
+                        <AddIcon onClick={() => setAddMode(true)} />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                )}
+                {addMode && (
+                  <Grid
+                    container
+                    justify="space-between"
+                    alignItems="center"
+                    spacing={2}
                   >
-                    <FormControlLabel
-                      value="bau"
-                      control={<Radio />}
-                      label="Bab al umrah (Recommended)"
-                    />
-                    <FormControlLabel
-                      value="wtu"
-                      control={<Radio />}
-                      label="Way to umrah (legacy)"
-                    />
-                    <FormControlLabel
-                      value="gma"
-                      control={<Radio />}
-                      label="Gabul ya hajj (difficult)"
-                    />
-                    <FormControlLabel
-                      value="twf"
-                      control={<Radio />}
-                      label="Tawaf (slow)"
-                    />
-                    <FormControlLabel
-                      value="vst"
-                      control={<Radio />}
-                      label="Visit Saudi "
-                    />
-                    <FormControlLabel
-                      value="mot"
-                      control={<Radio />}
-                      label="Egypt Tourism"
-                    />
-                  </RadioGroup>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="column" spacing={4}>
-                    <Grid item>
+                    <Grid item md={12}>
+                      Enter visa system details then press Done
+                    </Grid>
+                    <Grid item md={8}>
+                      <Select
+                        fullWidth
+                        value={usap}
+                        onChange={(e) => handleUsapChange(e.target.value)}
+                      >
+                        {usaps.map((ausap) => (
+                          <MenuItem value={ausap.value}>{ausap.name}</MenuItem>
+                        ))}
+                      </Select>
+                    </Grid>
+                    <Grid item md={1}>
                       <TextField
+                        fullWidth
                         value={username}
                         label="User name"
                         onChange={(e) => setUsername(e.target.value)}
                         margin="normal"
                       />
                     </Grid>
-                    <Grid item>
+                    <Grid item md={1}>
                       <TextField
+                        fullWidth
                         value={password}
                         label="Password"
                         onChange={(e) => setPassword(e.target.value)}
                         margin="normal"
                       />
                     </Grid>
-                    <Grid item>
-                      <Button onClick={handleAddVisaSystem}>Add</Button>
+                    <Grid item md={1}>
+                      <Button onClick={() => setAddMode(false)}>Cancel</Button>
+                    </Grid>
+                    <Grid item md={1}>
+                      <Button onClick={handleDoneAddVisaSystem} color="primary">
+                        Done
+                      </Button>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Grid item xs={5}>
-                  <FormControl fullWidth>
-                    <InputLabel>System</InputLabel>
-                    <Select
-                      value={selectedVisaSystem}
-                      onChange={(e) =>
-                        handleSelectedVisaSystemChange(e.target.value)
-                      }
-                      input={<Input name="age" />}
-                    >
-                      {visaSystems &&
-                        visaSystems?.length > 0 &&
-                        visaSystems.map((x, i) => (
-                          <MenuItem value={i}>{`${getUsapName(x.usap)} ${
-                            x.username
-                          }`}</MenuItem>
-                        ))}
-                    </Select>
-                  </FormControl>
-                  <Button onClick={handleRemoveVisaSystem}>Remove</Button>
-                </Grid>
-              </Grid>
+                )}
+              </Box>
             </AccordionDetails>
           </Accordion>
           <Accordion
@@ -301,39 +336,89 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container justify="space-between" alignItems="center">
-                <Grid item xs={3}>
-                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
+              <Grid
+                container
+                justify="space-between"
+                alignItems="center"
+                spacing={2}
+              >
+                <Grid item md={12}>
+                  <Box p={2}>
+                    <Typography variant="body1">
+                      Instructions: To send travller data to an external visa
+                      system. You must have NodeJs installed as well as Eagle
+                      and Hawk applications. Eagle is a NodeJs application while
+                      Hawk is a windows desktop application.
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item md={4}>
+                  <Card
+                    raised
+                    style={{ backgroundColor: "hsl(240,50%,94%)" }}
+                    className={classes.sendCard}
+                  >
+                    <CardHeader
+                      title="Step 1 (Required)"
+                      subheader={downloadFileName}
+                    />
                     <CardContent>
-                      <Typography>Step 1 (Required)</Typography>
+                      <Typography variant="body2">
+                        Download comprehensive traveller data into one file JSON
+                        formatted ready to be submitted to all visa systems
+                      </Typography>
                     </CardContent>
-
                     <CardActions>
                       <Button onClick={handleExport}>Download zip file</Button>
                     </CardActions>
                   </Card>
                 </Grid>
-                <Grid item xs={3}>
-                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
+                <Grid item md={4}>
+                  <Card
+                    raised
+                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    className={classes.sendCard}
+                  >
+                    <CardHeader
+                      title="Step 2 (Option 1)"
+                      subheader={downloadFileName}
+                    />
                     <CardContent>
-                      <Typography>Step 2 (Option 1)</Typography>
+                      <Typography variant="body2">
+                        Once traveller data file has been downloaded. Choose
+                        this option to start Hawk. Hawk is a desktop application
+                        able to send the downloaded file to the visa system
+                      </Typography>
                     </CardContent>
-
                     <CardActions>
-                      <Button onClick={handleSendDownloadedFile}>
-                        {`Send ${downloadFileName}`}
+                      <Button
+                        disabled={!downloadFileName}
+                        onClick={handleSendDownloadedFile}
+                      >
+                        {`Start Send`}
                       </Button>
                     </CardActions>
                   </Card>
                 </Grid>
-                <Grid item xs={3}>
-                  <Card raised style={{ backgroundColor: "hsl(240,50%,95%)" }}>
+                <Grid item md={4}>
+                  <Card
+                    raised
+                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    className={classes.sendCard}
+                  >
+                    <CardHeader
+                      title="Step 2 (Option 2)"
+                      subheader={downloadFileName}
+                    />
                     <CardContent>
-                      <Typography>Step 2 (Option 2)</Typography>
+                      <Typography variant="body2">
+                        Choose this option to start Hawk desktop application and
+                        perform manual steps. This is an advancd option. If Hawk
+                        did not start restart Hawk setup
+                      </Typography>
                     </CardContent>
-
                     <CardActions>
-                      <Button onClick={handleOpenHawk}>Manual</Button>
+                      <Button onClick={handleOpenHawk}>start hawk</Button>
                     </CardActions>
                   </Card>
                 </Grid>
