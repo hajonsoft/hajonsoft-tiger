@@ -1,10 +1,10 @@
 ﻿### HAJonSoft Tiger
 
-Home of the Nest which is Dove 🕊  and Humming Bird 🦅 sites. The code repo is called Tiger 🐅 (Animal). 
+Home of the Nest which is Dove 🕊  and Humming Bird combined. The code repo is called Tiger 🐅 (Animal). 
 Repo uses an animal name while customer facing modules will use a bird name.
 
-Humming Bird allows Munazims to login to their own firebase account and administer traveller data as well as apply for visa, scan passports or print reports.
-Dove allows travellers to find and reserve trips
+* Humming Bird (Bird) allows a Munazim to login to own firebase account to administer travellers, apply for visa, scan passports or print reports.
+* Dove (Bird) allows travellers to find and reserve trips
 
 
 To learn about HAJonSoft repos please watch this video [![image](https://user-images.githubusercontent.com/9623964/121062683-40adc680-c77a-11eb-8cc0-7488bd23c13e.png)](https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?)
@@ -18,9 +18,11 @@ yarn start
 
 ### Local Development
 
-To start Nest locally. First check which customer account you want to use, change src/firebaseConfig.js to point to the correct Munazim account then 
+To start Nest locally. First edit src/firebaseConfig.js to point to the correct Munazim account 
 
-ex. `import firebaseConfig from './firebaseConfigs/hajj-mission-of-cote-de-ivoir'; `
+ex. `import firebaseConfig from './firebaseConfigs/breno-tours'; `
+
+Which will utilize breno-tours firebase account
 
 ```
 npm start 
@@ -64,24 +66,25 @@ git config user.name YOUR_USER_NAME
 git config user.email YOUR_EMAIL
 
 ### Scrum
-We use zenhub to manage stories and epics. install zenhub extension to see epics and stories right in your google chrome when browsing github.
+We use ZenHub to manage stories and epics. install ZenHub extension to see epics and stories right in your google chrome when browsing github.
 
-Virtual standup is held on slack using slack schedule app– https://schedule-it-on-slack.herokuapp.com/index.html
+Virtual standup is held on slack using `/remind me every [day/hour] at [time] to [your message]`
 
-Please Slack your updates, If you would like to share it with the team. Happy Scrumming!!
- 
-We will cover these three things:
- 
-1- What specific things did you complete yesterday, and how would you briefly describe your approach to these things?
-2- What specific things do you plan to work on today, and how would you briefly describe the approach you intend to take?
-3- What would allow you to go faster or do your work better?
- 
-We’ll meet in the #dev Slack channel.
+/remind #dev every day at 07:00 to '
+
+Virtual standup :virtual-meeting ! please :thread with
+
+1- What specific things did you complete yesterday and would like to share, and how would you briefly describe your approach to these things?
+2- What specific things do you plan to work on today and would like to share, and how would you briefly describe the approach you intend to take?
+3- What would allow you to go faster or do better?
+'
+
+We’ll meet in the #dev channel.
 
 ### Slack
 
 * Sign up through https://join.slack.com/t/hajonsoft/signup
-* Select link and go through the setup steps of confirming email, agreeing to terms, enter name, and select password
+* Go through steps of confirming email, agreeing to terms, enter name, and select password
 * Add profile picture to Slack in Profile & Settings section
 
 ### Firebase
