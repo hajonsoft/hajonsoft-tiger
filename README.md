@@ -121,6 +121,9 @@ Login to vidyard using hajonsoft@gmail.com
 
 We use TalentLMS.com to create customer videos, the free account provides 6 lessons. Each lesson can have videos, questions and assignments. to login to TalentLMS.com use hajonsoft.com federated google login.
 
+If the camera is open in a video we usually start with
+My name is ... and my job is to ... so you can .....
+
 ### Puppeteer
 
 We use puppeteer to submit travellers to various visa websites. Video https://youtu.be/BMtcwF96j6I
