@@ -413,7 +413,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Choose this option to start Hawk desktop application and
-                        perform manual steps. This is an advancd option. If Hawk
+                        perform manual steps. This is an advanced option. If Hawk
                         did not start restart Hawk setup
                       </Typography>
                     </CardContent>
