@@ -345,10 +345,10 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                 <Grid item md={12}>
                   <Box p={2}>
                     <Typography variant="body1">
-                      Instructions: To send travller data to an external visa
+                      Instructions: To send travellers data to an external visa
                       system. You must have NodeJs installed as well as Eagle
                       and Hawk applications. Eagle is a NodeJs application while
-                      Hawk is a windows desktop application.
+                      Hawk is a windows desktop application. To install Hawk and Eagle please contact HAJonSoft support.
                     </Typography>
                   </Box>
                 </Grid>
@@ -413,7 +413,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Choose this option to start Hawk desktop application and
-                        perform manual steps. This is an advancd option. If Hawk
+                        perform manual steps. This is an advanced option. If Hawk
                         did not start restart Hawk setup
                       </Typography>
                     </CardContent>

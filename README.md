@@ -16,13 +16,15 @@ To learn about HAJonSoft repos please watch this video [![image](https://user-im
 
 yarn start
 
-### Local Development
+### Environment Resolution
 
-To start Nest locally. First edit src/firebaseConfig.js to point to the correct Munazim account 
+To start Nest locally. First edit src/firebaseConfig.js to point to the desired Munazim account 
 
 ex. `import firebaseConfig from './firebaseConfigs/breno-tours'; `
 
 Which will utilize breno-tours firebase account
+
+This file will be overwritten during automated deployment but not if you `firebase deploy --hosting'
 
 ```
 npm start 
@@ -30,6 +32,15 @@ or
 yarn start
 ```
 
+# Commit format
+
+Commits should start with one of the following words
+fix: To express a fix to the code ex. `fix: build error`
+feat: To introduce a new feature to the code base ex. `feat: apply for visa`
+refactor: Code refactor ex. `refactor: apply for visa`
+doc: Update to documentation only ex. `docs: spell check`
+style: Update to style only ex. `style: apply for visa`
+test: Create or update test ex. `test: apply for visa`
 
 # Git and SSH
 
@@ -120,6 +131,9 @@ Login to vidyard using hajonsoft@gmail.com
 ### TalentLMS
 
 We use TalentLMS.com to create customer videos, the free account provides 6 lessons. Each lesson can have videos, questions and assignments. to login to TalentLMS.com use hajonsoft.com federated google login.
+
+If the camera is open in a video we usually start with
+My name is ... and my job is to ... so you can .....
 
 ### Puppeteer
 
