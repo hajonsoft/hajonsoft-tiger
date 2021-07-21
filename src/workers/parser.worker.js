@@ -136,15 +136,13 @@ function formatRecord(record) {
     birthDate = birthDate.subtract(100, "years");
   }
   let passExpireDt = moment(record.expirationDate, "YYMMDD");
-  if (passExpireDt.isBefore(moment())) {
-    passExpireDt = passExpireDt.add(100, "years");
-  }
-
+const nationality = getNationality(record.nationality);
   const formattedRecord = {
     name: record.firstName + " " + record.lastName,
     codeLine: record.codeLine,
     birthDate: birthDate.format(),
-    nationality: getNationality(record.nationality),
+    nationality,
+    birthPlace: nationality,
     gender: record.sex === "female" ? "Female" : "Male",
     passPlaceOfIssue: getNationality(record.issuingState),
     passportNumber: record.documentNumber,
