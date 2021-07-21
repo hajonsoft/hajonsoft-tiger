@@ -132,6 +132,12 @@ Login to vidyard using hajonsoft@gmail.com
 
 We use TalentLMS.com to create customer videos, the free account provides 6 lessons. Each lesson can have videos, questions and assignments. to login to TalentLMS.com use hajonsoft.com federated google login.
 
+To record videos use
+recordcast.com. login with hajonsoft@gmail.com
+Quick time
+Kap
+Vidyard
+
 If the camera is open in a video we usually start with
 My name is ... and my job is to ... so you can .....
 
