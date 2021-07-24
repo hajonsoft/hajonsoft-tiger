@@ -17,6 +17,9 @@ import {
   Select,
   TextField,
   Typography,
+  FormControlLabel,
+  Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -33,7 +36,7 @@ import firebaseConfig from "../../../firebaseConfig";
 import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
-const sanitizeGroupName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
+const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +58,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const usaps = [
+const serviceProviders = [
   { value: "bau", name: "UMRAH | Bab al umrah (Recommended)" },
 
   { value: "wtu", name: "UMRAH | Way to umrah (legacy)" },
@@ -71,15 +74,25 @@ const usaps = [
   { value: "mot", name: "LOCAL | Egypt Tourism" },
 ];
 
-const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
+const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-  const [addMode, setAddMode] = React.useState(false);
-  const [usap, setUsap] = React.useState("");
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [expandedPanel, setExpandedPanel] = React.useState('');
+  const [selectedTravellers, setSelectedTravellers] = React.useState(
+    travellers
+  );
+  const [serviceProviderAddMode, setServiceProviderAddMode] = React.useState(false);
+  const [selectedServiceProvider, setSelectedServiceProvider] = React.useState(
+    ""
+  );
+  const [serviceProviderUsername, setServiceProviderProfileUsername] = React.useState("");
+  const [serviceProviderPassword, setServiceProviderProfilePassword] = React.useState("");
   const [downloadFileName, setDownloadFileName] = useState("");
+  const [downloading, setDownloading] = useState(false);
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
+
+  React.useEffect(() => {
+    setSelectedTravellers(travellers);
+  }, [travellers]);
 
   const {
     data: visaSystems,
@@ -87,34 +100,35 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     deleteData: deleteVisaSystem,
   } = useVisaSystemState();
 
-  const handleSelectedVisaSystemChange = (systemIndex) => {
+  const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
       setSelectedVisaSystem(systemIndex);
     }
   };
 
-  const handleUsapChange = (usap) => {
-    setUsap(usap);
+  const handleServiceProviderChange = (usap) => {
+    setSelectedServiceProvider(usap);
   };
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handlePanelChange = (panel) => (event, isExpanded) => {
+    setExpandedPanel(isExpanded ? panel : '');
   };
 
-  const handleDoneAddVisaSystem = () => {
+  const handleDoneAddServiceProviderProfile = () => {
     createVisaSystem({
       path: "visaSystem",
-      data: { usap, username, password },
+      data: { usap: selectedServiceProvider, username: serviceProviderUsername, password: serviceProviderPassword },
     });
-    setAddMode(false);
+    setServiceProviderAddMode(false);
   };
-  const handleOnDeleteVisaSystem = (visaSystemIndex) => {
+  const handleOnDeleteServiceProviderProfile = (visaSystemIndex) => {
     deleteVisaSystem({
       path: "visaSystem/" + visaSystems[visaSystemIndex]._fid,
       fid: visaSystems[visaSystemIndex]._fid,
     });
   };
-  const handleExport = async () => {
-    const travellersData = getTravellersJSON(travellers);
+  const handleDownloadZipFileClick = async () => {
+    setDownloading(true);
+    const travellersData = getTravellersJSON(selectedTravellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
@@ -131,22 +145,25 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
-      const fileName = `${sanitizeGroupName(groupName) +
+      const fileName = `${sanitizeCaravanName(caravan) +
         "_" +
         parseInt(moment().format("X")).toString(36)}.zip`;
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
+      setDownloading(false);
     });
   };
-  const getUsapName = (u) => {
-    return usaps.find((ausap) => ausap.value === u)?.name;
+  const getServiceProviderProfileName = (u) => {
+    return serviceProviders.find(
+      (serviceProvider) => serviceProvider.value === u
+    )?.name;
   };
 
-  const getSelectedVisaSystem = () => {
+  const getSelectedServiceProviderProfile = () => {
     if (visaSystems && visaSystems?.length > 0) {
       const defaultSystem = visaSystems[selectedVisaSystem] || visaSystems[0];
-      return `${getUsapName(defaultSystem?.usap)} - Username: ${
+      return `${getServiceProviderProfileName(defaultSystem?.usap)} - Username: ${
         defaultSystem?.username
       }`;
     } else {
@@ -173,6 +190,18 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
     tempLink.click();
   };
 
+  const handleCheckTraveller = (checkStatus, traveller) => {
+    if (checkStatus) {
+      setSelectedTravellers(
+        (prevState) => (prevState = [...prevState, traveller])
+      );
+    } else {
+      setSelectedTravellers((prevState) =>
+        prevState.filter((t) => t._fid !== traveller._fid)
+      );
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -181,17 +210,18 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
       maxWidth="lg"
       keepMounted
     >
-      <DialogTitle>Apply for visa</DialogTitle>
+      <DialogTitle>{`Apply for visa`}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          HAJonSoft uses browser automation to connect to visa systems. To apply
-          for visa please follow the steps below or watch this video
+          HAJonSoft uses browser automation to connect to service providers. To
+          apply for visa please follow the steps below or watch the getting
+          started course
         </DialogContentText>
 
         <div className={classes.root}>
           <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
+            expanded={expandedPanel === "travellersPanel"}
+            onChange={handlePanelChange("travellersPanel")}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
@@ -199,36 +229,68 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
               </Typography>
               <Typography
                 className={classes.secondaryHeading}
-              >{`${travellers?.length} Travellers`}</Typography>
+              >{`${selectedTravellers?.length}/${travellers?.length} Travellers [${caravan} caravan]`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              List all travellers in this package in a list or a table, with a
-              check box. all checked. User an deselect a traveller
+              <Grid container justify="space-between">
+                <Grid items md={6}>
+                  <Button onClick={() => setSelectedTravellers(travellers)}>
+                    {" "}
+                    Select All{" "}
+                  </Button>
+                </Grid>
+                <Grid items md={6} container justify="flex-end">
+                  <Button onClick={() => setSelectedTravellers([])}>
+                    {" "}
+                    Deselect All{" "}
+                  </Button>
+                </Grid>
+                {travellers &&
+                  travellers.map((traveller) => (
+                    <Grid item key={traveller._fid}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={
+                              selectedTravellers?.filter(
+                                (t) => t._fid === traveller._fid
+                              ).length > 0
+                            }
+                            onChange={(e) =>
+                              handleCheckTraveller(e.target.checked, traveller)
+                            }
+                          />
+                        }
+                        label={traveller.name}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "system"}
-            onChange={handleChange("system")}
+            expanded={expandedPanel === "serviceProviderPanel"}
+            onChange={handlePanelChange("serviceProviderPanel")}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 2: Choose visa system
+                Step 2: Choose Service Provider Profile
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                {getSelectedVisaSystem()}
+                {getSelectedServiceProviderProfile()}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box style={{ width: "100%" }}>
-                {!addMode && (
+                {!serviceProviderAddMode && (
                   <Grid container alignItems="center">
                     <Grid item md={11}>
                       <FormControl fullWidth variant="filled">
-                        <InputLabel>System</InputLabel>
+                        <InputLabel>Service Provider Profile</InputLabel>
                         <Select
                           value={selectedVisaSystem}
                           onChange={(e) =>
-                            handleSelectedVisaSystemChange(e.target.value)
+                            handleServiceProviderProfileChange(e.target.value)
                           }
                         >
                           {visaSystems &&
@@ -241,13 +303,15 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                                   alignItems="center"
                                 >
                                   <Grid item>
-                                    {`${getUsapName(x.usap)} ${x.username}`}
+                                    {`${getServiceProviderProfileName(x.usap)} ${
+                                      x.username
+                                    }`}
                                   </Grid>
                                   {i !== selectedVisaSystem && (
                                     <Grid item>
                                       <IconButton
                                         onClick={() =>
-                                          handleOnDeleteVisaSystem(i)
+                                          handleOnDeleteServiceProviderProfile(i)
                                         }
                                       >
                                         <DeleteIcon
@@ -265,12 +329,12 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     </Grid>
                     <Grid item md={1}>
                       <IconButton aria-label="add">
-                        <AddIcon onClick={() => setAddMode(true)} />
+                        <AddIcon onClick={() => setServiceProviderAddMode(true)} />
                       </IconButton>
                     </Grid>
                   </Grid>
                 )}
-                {addMode && (
+                {serviceProviderAddMode && (
                   <Grid
                     container
                     justify="space-between"
@@ -278,15 +342,17 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     spacing={2}
                   >
                     <Grid item md={12}>
-                      Enter visa system details then press Done
+                      Enter service provider profile details then press Done
                     </Grid>
                     <Grid item md={8}>
                       <Select
                         fullWidth
-                        value={usap}
-                        onChange={(e) => handleUsapChange(e.target.value)}
+                        value={selectedServiceProvider}
+                        onChange={(e) =>
+                          handleServiceProviderChange(e.target.value)
+                        }
                       >
-                        {usaps.map((ausap) => (
+                        {serviceProviders.map((ausap) => (
                           <MenuItem value={ausap.value}>{ausap.name}</MenuItem>
                         ))}
                       </Select>
@@ -294,26 +360,26 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <Grid item md={1}>
                       <TextField
                         fullWidth
-                        value={username}
+                        value={serviceProviderUsername}
                         label="User name"
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => setServiceProviderProfileUsername(e.target.value)}
                         margin="normal"
                       />
                     </Grid>
                     <Grid item md={1}>
                       <TextField
                         fullWidth
-                        value={password}
+                        value={serviceProviderPassword}
                         label="Password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setServiceProviderProfilePassword(e.target.value)}
                         margin="normal"
                       />
                     </Grid>
                     <Grid item md={1}>
-                      <Button onClick={() => setAddMode(false)}>Cancel</Button>
+                      <Button onClick={() => setServiceProviderAddMode(false)}>Cancel</Button>
                     </Grid>
                     <Grid item md={1}>
-                      <Button onClick={handleDoneAddVisaSystem} color="primary">
+                      <Button onClick={handleDoneAddServiceProviderProfile} color="primary">
                         Done
                       </Button>
                     </Grid>
@@ -323,8 +389,8 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "panel3"}
-            onChange={handleChange("panel3")}
+            expanded={expandedPanel === "sendPanel"}
+            onChange={handlePanelChange("sendPanel")}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
@@ -332,7 +398,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
               </Typography>
               <Typography className={classes.secondaryHeading}>
                 Download travellers in one file and start sending to the
-                selected visa system
+                selected service provider
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -345,10 +411,10 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                 <Grid item md={12}>
                   <Box p={2}>
                     <Typography variant="body1">
-                      Instructions: To send travellers data to an external visa
-                      system. You must have NodeJs installed as well as Eagle
+                      Instructions: To send travellers to a service provider. You must have NodeJs installed as well as Eagle
                       and Hawk applications. Eagle is a NodeJs application while
-                      Hawk is a windows desktop application. To install Hawk and Eagle please contact HAJonSoft support.
+                      Hawk is a windows desktop application. To install Hawk and
+                      Eagle please contact HAJonSoft support.
                     </Typography>
                   </Box>
                 </Grid>
@@ -365,11 +431,23 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Download comprehensive traveller data into one file JSON
-                        formatted ready to be submitted to all visa systems
+                        formatted ready to be submitted to any service provider
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={handleExport}>Download zip file</Button>
+                      {!downloading && (
+                        <Button onClick={handleDownloadZipFileClick}>
+                          Download zip file
+                        </Button>
+                      )}
+                      {downloading && (
+                        <CircularProgress
+                          color="secondary"
+                          size={30}
+                          thickness={3}
+                          variant="indeterminate"
+                        />
+                      )}
                     </CardActions>
                   </Card>
                 </Grid>
@@ -387,7 +465,7 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                       <Typography variant="body2">
                         Once traveller data file has been downloaded. Choose
                         this option to start Hawk. Hawk is a desktop application
-                        able to send the downloaded file to the visa system
+                        able to send the downloaded file to a service provider
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -413,8 +491,8 @@ const ApplyForVisa = ({ open, onClose, travellers, groupName }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Choose this option to start Hawk desktop application and
-                        perform manual steps. This is an advanced option. If Hawk
-                        did not start restart Hawk setup
+                        perform manual steps. This is an advanced option. If
+                        Hawk did not start restart Hawk setup
                       </Typography>
                     </CardContent>
                     <CardActions>

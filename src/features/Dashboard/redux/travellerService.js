@@ -31,7 +31,7 @@ const flatten = (snapshot) => {
 
     const output = {};
     const data = snapshot.toJSON();
-    if (!data) return { 'No Groups Found': [{ _fid: '0', name: 'No Travellers Found' }] }
+    if (!data) return { 'No Caravans Found': [{ _fid: '0', name: 'No Travellers Found' }] }
     const groupKeys = Object.keys(data);
 
     groupKeys.forEach(groupKey => {

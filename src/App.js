@@ -106,7 +106,7 @@ function App() {
             <PublicRoute exact path="/package/detail/:packageName">
               <PackageDetailCardM3li />
             </PublicRoute>
-            <PrivateRoute path="/groups">
+            <PrivateRoute path="/caravans">
               <Dashboard />
             </PrivateRoute>
             <PrivateRoute path="/online">

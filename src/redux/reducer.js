@@ -26,11 +26,11 @@ const applyCreateSuccess = (state, action) => {
     state.loading = false;
     state.error = '';
     state.data = _.omit(state.data, 'No data found')
-    const groupName = Object.keys(action.payload)[0];
-    if (!Object.keys(state.data).includes(groupName)) {
-        state.data[groupName] = [];
+    const caravan = Object.keys(action.payload)[0];
+    if (!Object.keys(state.data).includes(caravan)) {
+        state.data[caravan] = [];
     }
-    state.data[groupName].push(Object.values(Object.values(action.payload)[0])[0][0]);
+    state.data[caravan].push(Object.values(Object.values(action.payload)[0])[0][0]);
 }
 
 const applyFetchVisaSystemSuccess = (state, action) => {
@@ -52,8 +52,8 @@ const applyUpdateSuccess = (state, action) => {
     state.error = '';
     const pathParts = action.payload.path.split('/');
     if (pathParts.length === 3) {
-        const groupName = pathParts[1];
-        let updated = state.data[groupName].find(x => x._fid === pathParts[2])
+        const caravan = pathParts[1];
+        let updated = state.data[caravan].find(x => x._fid === pathParts[2])
         _.assign(updated,action.payload.data)
     }
 }
