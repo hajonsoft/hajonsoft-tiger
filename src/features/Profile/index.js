@@ -55,7 +55,7 @@ const Profile = () => {
     })
   }, [])
 
-  const onClose = ()=> history.push('/groups');
+  const onClose = ()=> history.push('/caravans');
 
   const handleSubmitForm = async (values, actions) => {
     const updateRef = firebase.database().ref(`protected/profile`);

@@ -61,7 +61,7 @@ const Dashboard = () => {
   const { data: travellers, loading, error } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
-  const title = "Group";
+  const title = "Caravan";
 
   useEffect(() => {
     if (!loading) {
@@ -233,7 +233,7 @@ const Dashboard = () => {
       <ApplyForVisa
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
-        groupName={state?.record?.name}
+        caravan={state?.record?.name}
         travellers={filteredTravellers[state?.record?.name]}
       />
     </React.Fragment>

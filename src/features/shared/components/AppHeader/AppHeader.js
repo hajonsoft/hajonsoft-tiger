@@ -68,9 +68,9 @@ const AppHeader = ({ config }) => {
                         <Grid item xs={6}>
                             <Button
                                 style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/groups")}
+                                onClick={() => history.push("/caravans")}
                             >
-                                Groups
+                                Caravans
                             </Button>
                             <Button
                                 style={{ color: "#fff", textTransform: "none" }}

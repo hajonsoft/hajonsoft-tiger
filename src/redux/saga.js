@@ -51,10 +51,10 @@ function* retrieveTravellersSaga(action) {
 function* createTravellerSaga(action) {
   try {
     const result = yield call(travellerService.createTraveller, action.payload);
-    const groupName = _.last(action.payload.path.split("/"));
+    const caravan = _.last(action.payload.path.split("/"));
     yield put(
       travellerSlice.actions.createSuccess({
-        [groupName]: { [result._fid]: [{ ...result }] },
+        [caravan]: { [result._fid]: [{ ...result }] },
       })
     );
   } catch (e) {

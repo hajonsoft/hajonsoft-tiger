@@ -82,7 +82,7 @@ const SignIn = () => {
   };
   // if (user?.idToken) {
   if (user) {
-    return <Redirect to="/groups" />;
+    return <Redirect to="/caravans" />;
   }
   return (
     <div className={classes.container}>

@@ -49,7 +49,7 @@ const PackageSchedule = ({ detail }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell><SupervisorAccountIcon fontSize={"large"} color="primary"></SupervisorAccountIcon></TableCell>
-                            <TableCell>Imams will accompany the group.</TableCell>
+                            <TableCell>Imams will accompany the caravan.</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

@@ -12,7 +12,7 @@
 
 ## Security
 
-- [ ] No secrets are being committed (i.e. credentials, PII)
+- [ ] No secrets or customer information are being committed (i.e. credentials, PII) [except firebaseConfigs]
 - [ ] This PR does not have any significant security implications
 
 ## Code Review
