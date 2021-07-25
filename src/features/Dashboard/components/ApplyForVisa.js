@@ -76,16 +76,24 @@ const serviceProviders = [
 
 const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const classes = useStyles();
-  const [expandedPanel, setExpandedPanel] = React.useState('');
+  const [expandedPanel, setExpandedPanel] = React.useState("");
   const [selectedTravellers, setSelectedTravellers] = React.useState(
     travellers
   );
-  const [serviceProviderAddMode, setServiceProviderAddMode] = React.useState(false);
+  const [serviceProviderAddMode, setServiceProviderAddMode] = React.useState(
+    false
+  );
   const [selectedServiceProvider, setSelectedServiceProvider] = React.useState(
     ""
   );
-  const [serviceProviderUsername, setServiceProviderProfileUsername] = React.useState("");
-  const [serviceProviderPassword, setServiceProviderProfilePassword] = React.useState("");
+  const [
+    serviceProviderUsername,
+    setServiceProviderProfileUsername,
+  ] = React.useState("");
+  const [
+    serviceProviderPassword,
+    setServiceProviderProfilePassword,
+  ] = React.useState("");
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
@@ -110,13 +118,17 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
     setSelectedServiceProvider(usap);
   };
   const handlePanelChange = (panel) => (event, isExpanded) => {
-    setExpandedPanel(isExpanded ? panel : '');
+    setExpandedPanel(isExpanded ? panel : "");
   };
 
   const handleDoneAddServiceProviderProfile = () => {
     createVisaSystem({
       path: "visaSystem",
-      data: { usap: selectedServiceProvider, username: serviceProviderUsername, password: serviceProviderPassword },
+      data: {
+        usap: selectedServiceProvider,
+        username: serviceProviderUsername,
+        password: serviceProviderPassword,
+      },
     });
     setServiceProviderAddMode(false);
   };
@@ -163,9 +175,9 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const getSelectedServiceProviderProfile = () => {
     if (visaSystems && visaSystems?.length > 0) {
       const defaultSystem = visaSystems[selectedVisaSystem] || visaSystems[0];
-      return `${getServiceProviderProfileName(defaultSystem?.usap)} - Username: ${
-        defaultSystem?.username
-      }`;
+      return `${getServiceProviderProfileName(
+        defaultSystem?.usap
+      )} - Username: ${defaultSystem?.username}`;
     } else {
       return "No system selected";
     }
@@ -303,15 +315,17 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                                   alignItems="center"
                                 >
                                   <Grid item>
-                                    {`${getServiceProviderProfileName(x.usap)} ${
-                                      x.username
-                                    }`}
+                                    {`${getServiceProviderProfileName(
+                                      x.usap
+                                    )} ${x.username}`}
                                   </Grid>
                                   {i !== selectedVisaSystem && (
                                     <Grid item>
                                       <IconButton
                                         onClick={() =>
-                                          handleOnDeleteServiceProviderProfile(i)
+                                          handleOnDeleteServiceProviderProfile(
+                                            i
+                                          )
                                         }
                                       >
                                         <DeleteIcon
@@ -329,7 +343,9 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     </Grid>
                     <Grid item md={1}>
                       <IconButton aria-label="add">
-                        <AddIcon onClick={() => setServiceProviderAddMode(true)} />
+                        <AddIcon
+                          onClick={() => setServiceProviderAddMode(true)}
+                        />
                       </IconButton>
                     </Grid>
                   </Grid>
@@ -362,7 +378,9 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                         fullWidth
                         value={serviceProviderUsername}
                         label="User name"
-                        onChange={(e) => setServiceProviderProfileUsername(e.target.value)}
+                        onChange={(e) =>
+                          setServiceProviderProfileUsername(e.target.value)
+                        }
                         margin="normal"
                       />
                     </Grid>
@@ -371,15 +389,22 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                         fullWidth
                         value={serviceProviderPassword}
                         label="Password"
-                        onChange={(e) => setServiceProviderProfilePassword(e.target.value)}
+                        onChange={(e) =>
+                          setServiceProviderProfilePassword(e.target.value)
+                        }
                         margin="normal"
                       />
                     </Grid>
                     <Grid item md={1}>
-                      <Button onClick={() => setServiceProviderAddMode(false)}>Cancel</Button>
+                      <Button onClick={() => setServiceProviderAddMode(false)}>
+                        Cancel
+                      </Button>
                     </Grid>
                     <Grid item md={1}>
-                      <Button onClick={handleDoneAddServiceProviderProfile} color="primary">
+                      <Button
+                        onClick={handleDoneAddServiceProviderProfile}
+                        color="primary"
+                      >
                         Done
                       </Button>
                     </Grid>
@@ -411,10 +436,24 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={12}>
                   <Box p={2}>
                     <Typography variant="body1">
-                      Instructions: To send travellers to a service provider. You must have NodeJs installed as well as Eagle
-                      and Hawk applications. Eagle is a NodeJs application while
-                      Hawk is a windows desktop application. To install Hawk and
-                      Eagle please contact HAJonSoft support.
+                      To send travellers to a service provider. You must have{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://nodejs.org/"
+                      >
+                        NodeJs
+                      </a>{" "}
+                      and{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
+                      >
+                        HAJonSoft Hawk
+                      </a>{" "}
+                      installed. To install NodeJs and Hawk please contact
+                      HAJonSoft support.
                     </Typography>
                   </Box>
                 </Grid>
