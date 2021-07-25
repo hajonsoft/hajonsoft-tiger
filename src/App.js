@@ -28,6 +28,7 @@ import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
 import Reservation from "./features/Reservation"
 import Favorite from './features/favorite';
+import Help from './features/help';
 import messages_ar from './lang/ar.json'
 import messages_en from './lang/en.json'
 import messages_fr from './lang/fr.json'
@@ -114,6 +115,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/profile">
               <Profile />
+            </PrivateRoute>
+            <PrivateRoute path="/help">
+              <Help />
             </PrivateRoute>
             <PrivateRoute path="/:packageName/customers">
               <Customers />
