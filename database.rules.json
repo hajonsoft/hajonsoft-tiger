@@ -2,6 +2,9 @@
   "rules": {
     ".read": "auth != null && (auth.uid == 'AWRMmLgvQjY63B6N2mhag1kZoIN2' || auth.uid == 'nbE8ZncxoiP5h1ZnnyKghzxYN603')",
     ".write": "auth != null && (auth.uid == 'AWRMmLgvQjY63B6N2mhag1kZoIN2' || auth.uid == 'nbE8ZncxoiP5h1ZnnyKghzxYN603')",
+    "protected": {
+      ".read": true
+    },
     "$uid": {
       ".read": "auth != null && auth.uid == $uid",
       ".write": "auth != null && auth.uid == $uid"

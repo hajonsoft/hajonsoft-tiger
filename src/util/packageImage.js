@@ -10,11 +10,11 @@ import umrahPackage3 from '../images/umrah-package-3.jpg'
 import umrahPackage4 from '../images/umrah-package-4.jpg'
 import umrahPackage5 from '../images/umrah-package-5.jpg'
 
-import tourPackage1 from '../images/tour-package-1.jpg'
-import tourPackage2 from '../images/tour-package-2.jpg'
-import tourPackage3 from '../images/tour-package-3.jpg'
-import tourPackage4 from '../images/tour-package-4.jpg'
-import tourPackage5 from '../images/tour-package-5.jpg'
+import tourPackage1 from '../images/tour-1.jpg'
+import tourPackage2 from '../images/tour-2.jpg'
+import tourPackage3 from '../images/tour-3.jpg'
+import tourPackage4 from '../images/tour-4.jpg'
+import tourPackage5 from '../images/tour-5.jpg'
 
 const hajj = [hajjPackage1, hajjPackage2, hajjPackage3, hajjPackage4, hajjPackage5];
 const umrah = [umrahPackage1, umrahPackage2, umrahPackage3, umrahPackage4, umrahPackage5];

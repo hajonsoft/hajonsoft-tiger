@@ -12,15 +12,14 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
-import moment from 'moment';
-import {todayHijraDate, eventsNearby} from '../../../util/hijri'
-import React from "react";
+import moment from "moment";
+import { todayHijraDate, eventsNearby } from "../../../util/hijri";
+import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
 import Gender from "./CustomerGender";
-import CoreDateField from './CoreDateField';
+import CoreDateField from "./CoreDateField";
 import CoreTextField from "./CoreTextField";
-import PackageDetail from './PackageDetail';
-
+import PackageDetail from "./PackageDetail";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -50,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const DEFAULT_DESCRIPTION = `Spiritual experience led by an amazing group of scholars designed to provide the best in customer service, hospitality and comfort. Commemorate the legacy of Islam with uplifting lectures and tours of historical sites. We are dedicated to help you have a great experience with personalized services and peace of mind.`;
+
 const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
   const handleSubmitForm = async (values, actions, callback = onClose) => {
@@ -75,8 +76,16 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
     }
     onClose();
   };
+  const [defaultDescription, setDefaultDescription] = useState(
+    DEFAULT_DESCRIPTION
+  );
 
-  const defaultDescription = `Spiritual experience led by an amazing group of scholars designed to provide the best in customer service, hospitality and comfort. Commemorate the legacy of Islam with uplifting lectures and tours of historical sites. We are dedicated to help you have a great experience with personalized services and peace of mind.`
+  const handleTripTypeChange = (selectedType) => {
+    if (selectedType === "tour") {
+      setDefaultDescription("");
+    }
+  };
+
   return (
     <React.Fragment>
       <Formik
@@ -94,133 +103,282 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
           handleSubmit,
           isSubmitting,
         }) => (
-            <Form>
-              <Card raised className={classes.formContainer}>
-                <CardHeader
-                  className={classes.cardTitle}
-                  title={_.startCase(mode + " " + title)}
-                  subheader={`${todayHijraDate()} : ${eventsNearby(values.departureDate)}`}
-                  action={<CancelOutlinedIcon color="secondary" onClick={onClose} />}
-                />
-                <CardContent>
-                  <Grid container spacing={2} justify="space-between" alignItems="center" alignContent="center">
-                    <CoreTextField
-                      value={values.name}
-                      name="name"
-                      label="Name"
-                      mode={mode}
-                      xsWidth={5}
-                    />
-                    <Gender
-                      value={values.gender}
-                      name="gender"
-                      label="Nature"
-                      mode={mode}
-                      xsWidth={4}
-                    />
-                    <CoreTextField
-                      value={values.headline}
-                      name="headline"
-                      label="Headline"
-                      mode={mode}
-                      xsWidth={3}
-                    />
-                    <PackageDetail mode={mode} value={values.description || defaultDescription} />
-                    <CoreTextField value={values.departureAirport || ""} name="departureAirport" mode={mode} xsWidth={3} />
-                    <CoreTextField value={values.departureFlight || ""} name="departureFlight" mode={mode} xsWidth={3} />
-                    <CoreDateField setFieldValue={setFieldValue} value={values.departureDate} name="departureDate" mode={mode} xsWidth={3} />
-                    <CoreTextField value={values.arrivalAirport || ""} name="arrivalAirport" mode={mode} xsWidth={3} />
+          <Form>
+            <Card raised className={classes.formContainer}>
+              <CardHeader
+                className={classes.cardTitle}
+                title={_.startCase(mode + " " + title)}
+                subheader={`${todayHijraDate()} : ${eventsNearby(
+                  values.departureDate
+                )}`}
+                action={
+                  <CancelOutlinedIcon color="secondary" onClick={onClose} />
+                }
+              />
+              <CardContent>
+                <Grid
+                  container
+                  spacing={2}
+                  justify="space-between"
+                  alignItems="center"
+                  alignContent="center"
+                >
+                  <CoreTextField
+                    value={values.name}
+                    name="name"
+                    label="Title"
+                    mode={mode}
+                    xsWidth={3}
+                  />
+                  <CoreTextField
+                    value={values.headline}
+                    name="headline"
+                    label="Subheader"
+                    mode={mode}
+                    xsWidth={3}
+                  />
+                  <Gender
+                    value={values.gender}
+                    name="gender"
+                    label="Nature"
+                    mode={mode}
+                    xsWidth={6}
+                    onChange={(e) => handleTripTypeChange(e)}
+                  />
+                  <PackageDetail
+                    mode={mode}
+                    value={values.description || defaultDescription}
+                  />
+                  <Grid item md={12}>
+                    <Card>
+                      <CardHeader title="Flight" />
+                      <CardContent>
+                        <Grid
+                          container
+                          justify="space-between"
+                          alignItems="center"
+                          spacing={2}
+                        >
+                          <CoreTextField
+                            value={values.departureAirport || ""}
+                            name="departureAirport"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Departure airport or city"
+                          />
+                          <CoreTextField
+                            value={values.departureFlight || ""}
+                            name="departureFlight"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Departure flight or airline"
+                          />
+                          <CoreDateField
+                            setFieldValue={setFieldValue}
+                            value={values.departureDate}
+                            name="departureDate"
+                            mode={mode}
+                            xsWidth={2}
+                          />
+                          <CoreTextField
+                            value={values.arrivalAirport || ""}
+                            name="arrivalAirport"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Arrival airport or city"
+                          />
 
+                          <CoreTextField
+                            value={values.returnAirport}
+                            name="returnAirport"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Rebound airport or city"
+                          />
+                          <CoreTextField
+                            value={values.returnFlight}
+                            name="returnFlight"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Rebound flight or airline"
+                          />
+                          <CoreDateField
+                            setFieldValue={setFieldValue}
+                            value={values.returnDate}
+                            name="returnDate"
+                            mode={mode}
+                            xsWidth={2}
+                            label="Rebound date"
+                          />
+                          <CoreTextField
+                            value={values.flightNotes}
+                            name="flightNotes"
+                            mode={mode}
+                            xsWidth={10}
+                          />
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    container
+                    spacing={2}
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item xs={3}>
+                      <Card>
+                        <CardHeader title="Prices"></CardHeader>
+                        <CardContent>
+                          <CoreTextField
+                            value={values.quadPrice || ""}
+                            name="quadPrice"
+                            mode={mode}
+                            xsWidth={12}
+                          />
+                          <CoreTextField
+                            value={values.triplePrice || ""}
+                            name="triplePrice"
+                            mode={mode}
+                            xsWidth={12}
+                          />
+                          <CoreTextField
+                            value={values.doublePrice || ""}
+                            name="doublePrice"
+                            mode={mode}
+                            xsWidth={12}
+                          />
+                          <CoreTextField
+                            value={values.fees || ""}
+                            name="fees"
+                            label="Fees not included"
+                            mode={mode}
+                            xsWidth={12}
+                          />
+                          <CoreTextField
+                            value={values.paymentLink || ""}
+                            name="paymentLink"
+                            mode={mode}
+                            xsWidth={12}
+                          />
+                        </CardContent>
+                      </Card>
+                    </Grid>
 
-                    <CoreTextField value={values.returnAirport} name="returnAirport" mode={mode} xsWidth={3} />
-                    <CoreTextField value={values.returnFlight} name="returnFlight" mode={mode} xsWidth={3} />
-                    <CoreDateField setFieldValue={setFieldValue} value={values.returnDate} name="returnDate" mode={mode} xsWidth={3} />
-                    <CoreTextField value={values.flightNotes} name="flightNotes" mode={mode} xsWidth={3} />
-
-                    <Grid item xs={12} container spacing={2} justify="space-between" alignItems="center">
-                      <Grid item xs={3}>
-                        <CoreTextField value={values.quadPrice || ""} name="quadPrice" mode={mode} xsWidth={12} />
-                        <CoreTextField value={values.triplePrice || ""} name="triplePrice" mode={mode} xsWidth={12} />
-                        <CoreTextField value={values.doublePrice || ""} name="doublePrice" mode={mode} xsWidth={12} />
-                        <CoreTextField value={values.fees || ""} name="fees" mode={mode} xsWidth={12} />
-
-                      </Grid>
-
-                      <Grid item xs={9} container spacing={2} justify="space-between" alignItems="center">
-                        <CoreTextField value={values.arrivalHotel} name="arrivalHotel" mode={mode} xsWidth={9} />
-                        <CoreDateField setFieldValue={setFieldValue} value={values.checkoutDate} name="checkoutDate" mode={mode} xsWidth={3} />
-                        <CoreTextField value={values.departureHotel} name="departureHotel" mode={mode} xsWidth={9} />
+                    <Grid
+                      item
+                      xs={9}
+                      container
+                      spacing={2}
+                      justify="space-between"
+                      alignItems="center"
+                    >
+                      <Grid item md={12}>
+                        <Card>
+                          <CardHeader title="Accommodation"></CardHeader>
+                          <CardContent>
+                            <CoreTextField
+                              value={values.arrivalHotel}
+                              name="arrivalHotel"
+                              label="Arrival hotel details [First stay]"
+                              mode={mode}
+                              xsWidth={12}
+                            />
+                            <CoreDateField
+                              setFieldValue={setFieldValue}
+                              value={values.checkoutDate}
+                              name="checkoutDate"
+                              mode={mode}
+                              xsWidth={3}
+                            />
+                            <CoreTextField
+                              value={values.departureHotel}
+                              name="departureHotel"
+                              label="Rebound hotel details [Second stay]"
+                              mode={mode}
+                              xsWidth={12}
+                            />
+                          </CardContent>
+                        </Card>
                       </Grid>
                     </Grid>
                   </Grid>
-                </CardContent>
-                <CardActions className={classes.actionsContainer}>
-                  <Grid container spacing={2}>
-                    {mode !== "create" &&
-                      <Grid container item xs>
-                        <Typography variant="body2" color="textSecondary">{`Created: ${moment(values.createDt).format('LLLL')} ${moment(values.createDt).fromNow()}`}</Typography>
+                </Grid>
+              </CardContent>
+              <CardActions className={classes.actionsContainer}>
+                <Grid container spacing={2}>
+                  {mode !== "create" && (
+                    <Grid container item xs>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                      >{`Created: ${moment(values.createDt).format(
+                        "LLLL"
+                      )} ${moment(values.createDt).fromNow()}`}</Typography>
+                    </Grid>
+                  )}
+                  <Grid item>
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <Button
+                          type="button"
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="secondary"
+                          onClick={onClose}
+                          startIcon={<CancelOutlinedIcon />}
+                        >
+                          Cancel
+                        </Button>
                       </Grid>
-                    }
-                    <Grid item >
-                      <Grid container spacing={2}>
+                      {mode === "create" && (
                         <Grid item>
                           <Button
-                            type="button"
+                            type="submit"
+                            disabled={isSubmitting}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<AddOutlinedIcon />}
+                          >
+                            Create
+                          </Button>
+                        </Grid>
+                      )}
+                      {mode === "delete" && (
+                        <Grid item>
+                          <Button
+                            type="submit"
                             disabled={isSubmitting}
                             variant="contained"
                             color="secondary"
-                            onClick={onClose}
-                            startIcon={<CancelOutlinedIcon />}
+                            startIcon={<DeleteOutlinedIcon />}
                           >
-                            Cancel
-                        </Button>
+                            Delete
+                          </Button>
                         </Grid>
-                        {mode === "create" && (
-                          <Grid item>
-                            <Button
-                              type="submit"
-                              disabled={isSubmitting}
-                              variant="contained"
-                              color="primary"
-                              startIcon={<AddOutlinedIcon />}
-                            >
-                              Create
+                      )}
+                      {mode === "update" && (
+                        <Grid item>
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<SaveOutlinedIcon />}
+                          >
+                            Save
                           </Button>
-                          </Grid>
-                        )}
-                        {mode === "delete" && (
-                          <Grid item>
-                            <Button
-                              type="submit"
-                              disabled={isSubmitting}
-                              variant="contained"
-                              color="secondary"
-                              startIcon={<DeleteOutlinedIcon />}
-                            >
-                              Delete
-                          </Button>
-                          </Grid>
-                        )}
-                        {mode === "update" && (
-                          <Grid item>
-                            <Button
-                              type="submit"
-                              disabled={isSubmitting}
-                              variant="contained"
-                              color="primary"
-                              startIcon={<SaveOutlinedIcon />}
-                            >
-                              Save
-                          </Button>
-                          </Grid>
-                        )}
-                      </Grid>
+                        </Grid>
+                      )}
                     </Grid>
                   </Grid>
-                </CardActions>
-              </Card>
-            </Form>
-          )}
+                </Grid>
+              </CardActions>
+            </Card>
+          </Form>
+        )}
       </Formik>
     </React.Fragment>
   );

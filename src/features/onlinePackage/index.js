@@ -55,12 +55,12 @@ const OnlinePackage = () => {
 
   const [snapshots, loading, error] = useList(firebase.database().ref("protected/onlinePackage"));
 
-  const [state, setstate] = useState({
+  const [state, setState] = useState({
     mode: "list",
-    record: {},
+    record: {gender: 'umrah'},
     customerKey: 0,
   });
-  const title = "Online Package";
+  const title = "online advertisement";
   const history = useHistory();
 
   if (loading) {
@@ -116,7 +116,7 @@ const OnlinePackage = () => {
               title={title}
               customerKey={state.customerKey}
               onClose={() =>
-                setstate((st) => ({ ...st, mode: "list", record: {}, customerKey: 0 }))
+                setState((st) => ({ ...st, mode: "list", record: {}, customerKey: 0 }))
               }
             />
           )}
@@ -147,13 +147,13 @@ const OnlinePackage = () => {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
-                  onClick: (event) => setstate((st) => ({ ...st, mode: "create" })),
+                  onClick: (event) => setState((st) => ({ ...st, mode: "create" })),
                 },
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
                   onClick: (event, rowData) =>
-                    setstate((st) => ({
+                    setState((st) => ({
                       ...st,
                       mode: "update",
                       record: rowData,
@@ -164,7 +164,7 @@ const OnlinePackage = () => {
                   icon: () => <tableIcons.Delete color="error" />,
                   tooltip: `Delete ${title}`,
                   onClick: (event, rowData) =>
-                    setstate((st) => ({
+                    setState((st) => ({
                       ...st,
                       mode: "delete",
                       record: rowData,

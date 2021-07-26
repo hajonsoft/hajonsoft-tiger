@@ -15,9 +15,10 @@ const Gender = ({
   label,
   xsWidth = 4,
   autoFocus = false,
-  value = "Tour",
+  value = "Umrah",
   required = false,
-  maxLength = 60
+  maxLength = 60,
+  onChange
 }) => {
   return (
     <Grid item xs={xsWidth}>
@@ -31,9 +32,9 @@ const Gender = ({
           row
         >
           <Grid container spacing={4} alignItems="center">
-            <Grid item><FormControlLabel value="Hajj" control={<Radio />} label={<HAjj />} /></Grid>
-            <Grid item><FormControlLabel value="Umrah" control={<Radio />} label={<Umrah />} /></Grid>
-            <Grid item><FormControlLabel value="Tour" control={<Radio />} label={<Tour />} /></Grid>
+            <Grid item><FormControlLabel value="Hajj" onClick={()=> onChange('hajj')} control={<Radio />} label={<HAjj />} /></Grid>
+            <Grid item><FormControlLabel value="Umrah" onClick={()=> onChange('umrah')}  control={<Radio />} label={<Umrah />} /></Grid>
+            <Grid item><FormControlLabel value="Tour" onClick={()=> onChange('tour')}  control={<Radio />} label={<Tour />} /></Grid>
           </Grid>
         </Field>
       </FormControl>
