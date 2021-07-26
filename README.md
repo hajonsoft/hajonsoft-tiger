@@ -81,14 +81,14 @@ We use ZenHub to manage stories and epics. install ZenHub extension to see epics
 
 Virtual standup is held on slack using `/remind me every [day/hour] at [time] to [your message]`
 
-/remind #dev every day at 07:00 to '
+/remind #dev every day at 07:00 to 
 
 Virtual standup :virtual-meeting ! please :thread with
 
 1- What specific things did you complete yesterday and would like to share, and how would you briefly describe your approach to these things?
 2- What specific things do you plan to work on today and would like to share, and how would you briefly describe the approach you intend to take?
 3- What would allow you to go faster or do better?
-'
+
 
 We’ll meet in the #dev channel.
 
