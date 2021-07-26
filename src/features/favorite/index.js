@@ -27,7 +27,7 @@ import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import useTravellerState from '../Dashboard/redux/useTravellerState';
-import HajonsoftHeader from "../Header/HajonsoftHeader";
+import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
 
@@ -36,14 +36,18 @@ const tableIcons = {
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
@@ -51,11 +55,17 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
   Favorite: forwardRef((props, ref) => <FavoriteIcon {...props} ref={ref} />),
-  NoFavorite: forwardRef((props, ref) => <FavoriteBorderIcon {...props} ref={ref} />),
+  NoFavorite: forwardRef((props, ref) => (
+    <FavoriteBorderIcon {...props} ref={ref} />
+  )),
 };
 const Favorite = () => {
-
-  const { data: travellers, updateData: updateTraveller, loading, error } = useTravellerState();
+  const {
+    data: travellers,
+    updateData: updateTraveller,
+    loading,
+    error,
+  } = useTravellerState();
 
   const [state, setstate] = useState({
     mode: "list",
@@ -102,17 +112,17 @@ const Favorite = () => {
       </div>
     );
   };
-  const favoriteData = ()=> {
+  const favoriteData = () => {
     const keys = Object.keys(travellers);
     let output = [];
-    keys.forEach(k=> {
-      const values = travellers[k].filter(x=> x.favorite);
-      values.forEach(v=> v._groupName = k);
+    keys.forEach((k) => {
+      const values = travellers[k].filter((x) => x.favorite);
+      values.forEach((v) => (v._groupName = k));
       output = output.concat(values);
-    })
+    });
 
     return output;
-  }
+  };
   return (
     <React.Fragment>
       <div
@@ -120,7 +130,7 @@ const Favorite = () => {
           backgroundColor: "snow",
         }}
       >
-        <HajonsoftHeader />
+        <AppHeader />
         <div>
           {state.mode !== "list" && (
             <CRUDForm
@@ -141,25 +151,44 @@ const Favorite = () => {
                 { title: "Gender", field: "gender" },
                 { title: "Nationality", field: "nationality" },
                 { title: "Pass #", field: "passportNumber" },
-                { title: "Birth Date", field: "birthDate", render: (rowData) => `${moment(rowData.birthDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.birthDate, 'years')}]` },
+                {
+                  title: "Birth Date",
+                  field: "birthDate",
+                  render: (rowData) =>
+                    `${moment(rowData.birthDate).format(
+                      "DD-MMM-yyyy"
+                    )} [${moment().diff(rowData.birthDate, "years")}]`,
+                },
                 { title: "Email", field: "email" },
               ]}
               data={favoriteData()}
               detailPanel={(rowData) => (
                 <CustomerDetail
                   customer={rowData}
-                  customerKey={travellers.map((s) => s.key)[rowData.tableData.id]}
+                  customerKey={
+                    travellers.map((s) => s.key)[rowData.tableData.id]
+                  }
                 />
               )}
               actions={[
-                rowData => ({
-                  icon: () => rowData.favorite ? <tableIcons.Favorite color="action" /> : <tableIcons.NoFavorite color="action" />,
-                  tooltip: rowData.favorite ? `un-favor ${title}` : `favor ${title}`,
+                (rowData) => ({
+                  icon: () =>
+                    rowData.favorite ? (
+                      <tableIcons.Favorite color="action" />
+                    ) : (
+                      <tableIcons.NoFavorite color="action" />
+                    ),
+                  tooltip: rowData.favorite
+                    ? `un-favor ${title}`
+                    : `favor ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    updateTraveller({ path: `customer/${rowData._groupName}/${rowData._fid}`, data: { ...rowData, favorite: !rowData.favorite } })
+                    updateTraveller({
+                      path: `customer/${rowData._groupName}/${rowData._fid}`,
+                      data: { ...rowData, favorite: !rowData.favorite },
+                    });
                   },
                 }),
                 {
@@ -174,7 +203,7 @@ const Favorite = () => {
                       mode: "update",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
-                    }))
+                    }));
                   },
                 },
               ]}

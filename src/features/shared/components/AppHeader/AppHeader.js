@@ -17,7 +17,7 @@ import firebase from "../../../../firebaseapp";
 import firebaseConfig from "../../../../firebaseConfig";
 import useTravellerState from "../../../Dashboard/redux/useTravellerState";
 
-const AppHeader = ({ config }) => {
+const AppHeader = () => {
     const [user] = useAuthState(firebase.auth());
     const isMobile = useMediaQuery("(max-width: 600px)");
     const projectName = `${_.startCase(
@@ -76,37 +76,19 @@ const AppHeader = ({ config }) => {
                                 style={{ color: "#fff", textTransform: "none" }}
                                 onClick={() => history.push("/online")}
                             >
-                                Online
+                                Market
                             </Button>
                             <Button
                                 style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/news")}
+                                onClick={() => history.push("/trade")}
                             >
-                                News
-                            </Button>
-                            <Button
-                                style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/hotels")}
-                            >
-                                Hotels
-                            </Button>
-                            <Button
-                                style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/flights")}
-                            >
-                                Flights
-                            </Button>
-                            <Button
-                                style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/sponsor")}
-                            >
-                                Sponsor
+                                Trade
                             </Button>
                             <Button
                                 style={{ color: "#fff", textTransform: "none" }}
                                 onClick={() => history.push("/help")}
                             >
-                                Help
+                                Support
                             </Button>
                         </Grid>
                     )}

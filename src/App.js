@@ -3,8 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import { IntlProvider } from 'react-intl';
-
+import { IntlProvider } from "react-intl";
 
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
@@ -26,12 +25,13 @@ import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDe
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-import Reservation from "./features/Reservation"
-import Favorite from './features/favorite';
-import Help from './features/help';
-import messages_ar from './lang/ar.json'
-import messages_en from './lang/en.json'
-import messages_fr from './lang/fr.json'
+import Reservation from "./features/Reservation";
+import Favorite from "./features/favorite";
+import Help from "./features/help";
+import messages_ar from "./lang/ar.json";
+import messages_en from "./lang/en.json";
+import messages_fr from "./lang/fr.json";
+import Trade from "./features/trade";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -44,41 +44,44 @@ const store = configureStore({
 sagaMiddleware.run(sagas);
 
 const messages = {
-  "fr": messages_fr,
-  "ar": messages_ar,
-  "en": messages_en
-}
+  fr: messages_fr,
+  ar: messages_ar,
+  en: messages_en,
+};
 const browserLanguage = navigator.language.split(/[-_]/)[0];
 
 function App() {
-
-  const [language, setLanguage] = useState(localStorage.getItem('langOverride') || browserLanguage)
-  const [languageDirection, setLanguageDirection] = useState(localStorage.getItem('langOverride') === "ar" ? "rtl" : "ltr")
+  const [language, setLanguage] = useState(
+    localStorage.getItem("langOverride") || browserLanguage
+  );
+  const [languageDirection, setLanguageDirection] = useState(
+    localStorage.getItem("langOverride") === "ar" ? "rtl" : "ltr"
+  );
 
   const handleLanguageChange = (lang) => {
     if (lang === "ar" && languageDirection !== "rtl") {
-      setLanguageDirection("rtl")
+      setLanguageDirection("rtl");
     }
 
     if (lang !== "ar" && languageDirection === "rtl") {
-      setLanguageDirection("ltr")
+      setLanguageDirection("ltr");
     }
     setLanguage(lang);
-    localStorage.setItem('langOverride', lang);
+    localStorage.setItem("langOverride", lang);
   };
 
   document.dir = languageDirection;
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <IntlProvider messages={messages[language]} locale={language} >
+      <IntlProvider messages={messages[language]} locale={language}>
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
               <CustomerHome />
             </PublicRoute>
             <PublicRoute exact path="/admin">
-              <Home onLanguageChange={handleLanguageChange} lang={language}/>
+              <Home onLanguageChange={handleLanguageChange} lang={language} />
             </PublicRoute>
             <PublicRoute path="/register">
               <Register />
@@ -93,7 +96,10 @@ function App() {
               <SignOut />
             </PublicRoute>
             <PublicRoute path="/reserve/:packageName">
-              <Reservation onLanguageChange={handleLanguageChange} lang={language}/>
+              <Reservation
+                onLanguageChange={handleLanguageChange}
+                lang={language}
+              />
             </PublicRoute>
             <PublicRoute exact path="/hajj-packages">
               <HajjPackagesContainer />
@@ -115,6 +121,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/profile">
               <Profile />
+            </PrivateRoute>
+            <PrivateRoute path="/trade">
+              <Trade />
             </PrivateRoute>
             <PrivateRoute path="/help">
               <Help />

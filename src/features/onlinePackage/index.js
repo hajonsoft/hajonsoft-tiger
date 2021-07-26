@@ -26,21 +26,25 @@ import React, { forwardRef, useState } from "react";
 import { useList } from "react-firebase-hooks/database";
 import { useHistory } from "react-router-dom";
 import firebase from "../../firebaseapp";
-import HajonsoftHeader from "../Header/HajonsoftHeader";
+import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CoreForm from "./components/CoreForm";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
@@ -53,11 +57,13 @@ const OnlinePackage = () => {
   //   theme.breakpoints.down("sm")
   // );
 
-  const [snapshots, loading, error] = useList(firebase.database().ref("protected/onlinePackage"));
+  const [snapshots, loading, error] = useList(
+    firebase.database().ref("protected/onlinePackage")
+  );
 
   const [state, setState] = useState({
     mode: "list",
-    record: {gender: 'umrah'},
+    record: { gender: "umrah" },
     customerKey: 0,
   });
   const title = "online advertisement";
@@ -107,7 +113,7 @@ const OnlinePackage = () => {
           backgroundColor: "snow",
         }}
       >
-        <HajonsoftHeader />
+        <AppHeader />
         <div>
           {state.mode !== "list" && (
             <CoreForm
@@ -116,7 +122,12 @@ const OnlinePackage = () => {
               title={title}
               customerKey={state.customerKey}
               onClose={() =>
-                setState((st) => ({ ...st, mode: "list", record: {}, customerKey: 0 }))
+                setState((st) => ({
+                  ...st,
+                  mode: "list",
+                  record: {},
+                  customerKey: 0,
+                }))
               }
             />
           )}
@@ -130,10 +141,31 @@ const OnlinePackage = () => {
                 { title: "Headline", field: "headline" },
                 { title: "From", field: "departureAirport" },
                 { title: "To", field: "arrivalAirport" },
-                { title: "Description", field: "description" }, 
-                { title: "Departure", field: "departureDate", render: (rowData) => `${moment(rowData.departureDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.departureDate, 'days')}]` },
-                { title: "Checkout", field: "checkoutDate", render: (rowData) => `${moment(rowData.checkoutDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.checkoutDate, 'days')}]` },
-                { title: "Return", field: "returnDate", render: (rowData) => `${moment(rowData.returnDate).format('DD-MMM-yyyy')} [${moment().diff(rowData.returnDate, 'days')}]` },
+                { title: "Description", field: "description" },
+                {
+                  title: "Departure",
+                  field: "departureDate",
+                  render: (rowData) =>
+                    `${moment(rowData.departureDate).format(
+                      "DD-MMM-yyyy"
+                    )} [${moment().diff(rowData.departureDate, "days")}]`,
+                },
+                {
+                  title: "Checkout",
+                  field: "checkoutDate",
+                  render: (rowData) =>
+                    `${moment(rowData.checkoutDate).format(
+                      "DD-MMM-yyyy"
+                    )} [${moment().diff(rowData.checkoutDate, "days")}]`,
+                },
+                {
+                  title: "Return",
+                  field: "returnDate",
+                  render: (rowData) =>
+                    `${moment(rowData.returnDate).format(
+                      "DD-MMM-yyyy"
+                    )} [${moment().diff(rowData.returnDate, "days")}]`,
+                },
               ]}
               data={snapshots && snapshots.map((s) => s.val())}
               // detailPanel={(rowData) => (
@@ -147,7 +179,8 @@ const OnlinePackage = () => {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
-                  onClick: (event) => setState((st) => ({ ...st, mode: "create" })),
+                  onClick: (event) =>
+                    setState((st) => ({ ...st, mode: "create" })),
                 },
                 {
                   icon: () => <tableIcons.Edit color="action" />,
@@ -157,7 +190,9 @@ const OnlinePackage = () => {
                       ...st,
                       mode: "update",
                       record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
+                      customerKey: snapshots.map((s) => s.key)[
+                        rowData.tableData.id
+                      ],
                     })),
                 },
                 {
@@ -168,7 +203,9 @@ const OnlinePackage = () => {
                       ...st,
                       mode: "delete",
                       record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[rowData.tableData.id],
+                      customerKey: snapshots.map((s) => s.key)[
+                        rowData.tableData.id
+                      ],
                     })),
                 },
               ]}

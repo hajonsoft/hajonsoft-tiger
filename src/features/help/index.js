@@ -1,35 +1,36 @@
 import {
+  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  Grid,
+  Grid
 } from "@material-ui/core";
-import HajonsoftHeader from "../Header/HajonsoftHeader";
 import React from "react";
+import AppHeader from "../shared/components/AppHeader/AppHeader";
 
 const Help = () => {
   return (
     <React.Fragment>
-      <HajonsoftHeader />
+      <AppHeader />
 
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           width: "100%",
-          height: "100vh",
-          padding: '2rem'
+          padding: "2rem",
         }}
       >
         <Grid container justify="center" spacing={4} alignItems="center">
-          <Grid item md={6}>
+          <Grid item md={4}>
             <Card raised>
-              <CardHeader title="Book a meeting"></CardHeader>
+              <CardHeader
+                title="HAJonSoft Support"
+                subheader="Technical Support"
+              ></CardHeader>
               <CardContent>
-                Meet online with a support engineer. Click reserve button below
-                to book a meeting
+                Book a meeting time that works for you to talk to a HAJonSoft
+                technician.
               </CardContent>
               <CardActions>
                 <a
@@ -37,17 +38,41 @@ const Help = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Reserve meeting
+                  <Button variant="contained">Schedule</Button>
                 </a>
               </CardActions>
             </Card>
           </Grid>
-
-          <Grid item md={6}>
+          <Grid item md={4}>
             <Card raised>
-              <CardHeader title="Watch a course"></CardHeader>
+              <CardHeader
+                title="Community Support"
+                subheader="Expand your network worldwide"
+              ></CardHeader>
               <CardContent>
-                Watch a course to learn more about HAJonSoft
+                Connect with Munazims around the world to network, discuss a
+                business, a technical issue or a challenge. If you wish to be
+                added here please contact technical support.
+              </CardContent>
+              <CardActions>
+                <a
+                  href="https://meetings.hubspot.com/alialiayman"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="contained">Schedule</Button>
+                </a>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item md={4}>
+            <Card raised>
+              <CardHeader
+                title="Training"
+                subheader="Watch online course"
+              ></CardHeader>
+              <CardContent>
+                Watch a course to learn the basics of HAJonSoft
               </CardContent>
               <CardActions>
                 <a
@@ -55,7 +80,7 @@ const Help = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Start course
+                  <Button variant="contained">Play</Button>
                 </a>
               </CardActions>
             </Card>

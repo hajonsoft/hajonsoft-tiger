@@ -1,7 +1,12 @@
-import { Breadcrumbs, CircularProgress, Grid, Typography } from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {
+  Breadcrumbs,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
+import Link from "@material-ui/core/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -22,6 +27,7 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
 import moment from "moment";
@@ -29,11 +35,9 @@ import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useTravellerState from "../Dashboard/redux/useTravellerState";
-import HajonsoftHeader from "../Header/HajonsoftHeader";
+import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -107,9 +111,11 @@ const Customers = () => {
     if (phone.startsWith("00")) {
       whatsappPhone = phone.subString(2);
     }
-    const url = `https://api.whatsapp.com/send?phone=+${encodeURIComponent(whatsappPhone.replace(/[^0-9]/g,''))}`
+    const url = `https://api.whatsapp.com/send?phone=+${encodeURIComponent(
+      whatsappPhone.replace(/[^0-9]/g, "")
+    )}`;
     window.open(url, "_blank");
-  }
+  };
 
   const Title = () => {
     return (
@@ -147,7 +153,7 @@ const Customers = () => {
           backgroundColor: "snow",
         }}
       >
-        <HajonsoftHeader />
+        <AppHeader />
         <div>
           {state.mode !== "list" && (
             <CRUDForm
@@ -173,11 +179,11 @@ const Customers = () => {
                     rowData.phone && (
                       <Grid container>
                         <Grid item>
-                          <WhatsAppIcon onClick={() => handleWhatsappClick(rowData.phone)}/>
+                          <WhatsAppIcon
+                            onClick={() => handleWhatsappClick(rowData.phone)}
+                          />
                         </Grid>
-                        <Grid item>
-                          {rowData.phone}
-                        </Grid>
+                        <Grid item>{rowData.phone}</Grid>
                       </Grid>
                     ),
                 },

@@ -20,15 +20,15 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
+import moment from "moment";
 import pluralize from "pluralize";
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import useTravellerState from "./redux/useTravellerState";
-import HajonsoftHeader from "../Header/HajonsoftHeader";
+import AppHeader from "../shared/components/AppHeader/AppHeader";
+import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import ApplyForVisa from "./components/ApplyForVisa";
-import moment from "moment";
+import useTravellerState from "./redux/useTravellerState";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -86,9 +86,11 @@ const Dashboard = () => {
     const keyword1 = "passExpireDt";
     const pattern = new RegExp(`${keyword1}[0-9]{4}-[0-9]{2}-[0-9]{2}`, "i");
     if (keyword.match(pattern)) {
-      const expireDate = moment(keyword.toLowerCase().replace(keyword1.toLowerCase(), ""));
+      const expireDate = moment(
+        keyword.toLowerCase().replace(keyword1.toLowerCase(), "")
+      );
       const searchResult = {};
-      const stats = {}
+      const stats = {};
       let total = 0;
 
       for (const grp in travellers) {
@@ -99,12 +101,18 @@ const Dashboard = () => {
           searchResult[grp] = groupResult;
           total = total + groupResult.length;
           stats[grp] = {
-            total: groupResult.length
-          }
-        } 
+            total: groupResult.length,
+          };
+        }
       }
       const content = JSON.stringify(searchResult, null, 2);
-      const message = `You have ${total} passports expiring on or before ${expireDate.format("ddd DD-MMM-yyyy")} which is ${expireDate.fromNow()}. Click ok to download.\n ${JSON.stringify(stats, null, 2)}`
+      const message = `You have ${total} passports expiring on or before ${expireDate.format(
+        "ddd DD-MMM-yyyy"
+      )} which is ${expireDate.fromNow()}. Click ok to download.\n ${JSON.stringify(
+        stats,
+        null,
+        2
+      )}`;
       alert(message);
 
       const newFile = new Blob([content], { type: "application/text" });
@@ -124,7 +132,7 @@ const Dashboard = () => {
           backgroundColor: "#e3f2fd",
         }}
       >
-        <HajonsoftHeader />
+        <AppHeader />
         <div>
           {loading && (
             <Grid
