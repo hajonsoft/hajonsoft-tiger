@@ -20,3 +20,5 @@ firebase deploy --only storage
 rm .github/workflows/firebase-hosting-pull-request.yml
 npm run build
 firebase deploy --only hosting
+git add .
+git commit -m $1
