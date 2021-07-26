@@ -26,15 +26,6 @@ const HajjPackagesContainer = () => {
   const scheme = new ColorScheme();
   scheme.from_hex('4caf50').scheme('triade').variation('default');
   const history = useHistory();
-  // const indexColor = (i) => {
-  //   const colors = scheme.colors();
-  //   const colorLength = colors.length;
-  //   if (i < colorLength) {
-  //     return '#' + colors[i];
-  //   } else {
-  //     return '#' + colors[colorLength % i];
-  //   }
-  // }
   return (
     <div>
       <CustomerHeader />

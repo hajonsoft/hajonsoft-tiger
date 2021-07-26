@@ -33,15 +33,7 @@ const PackagesContainer = () => {
     .scheme("triade")
     .variation("default");
   const history = useHistory();
-  // const indexColor = (i) => {
-  //   const colors = scheme.colors();
-  //   const colorLength = colors.length;
-  //   if (i < colorLength) {
-  //     return '#' + colors[i];
-  //   } else {
-  //     return '#' + colors[colorLength % i];
-  //   }
-  // }
+
   
   return (
     <div>

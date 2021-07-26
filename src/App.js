@@ -116,7 +116,7 @@ function App() {
             <PrivateRoute path="/caravans">
               <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/online">
+            <PrivateRoute path="/market">
               <OnlinePackages />
             </PrivateRoute>
             <PrivateRoute path="/profile">

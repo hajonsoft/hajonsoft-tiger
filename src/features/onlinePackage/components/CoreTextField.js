@@ -12,7 +12,8 @@ const CoreTextField = ({
   autoFocus = false,
   value,
   required = false,
-  maxLength=60
+  maxLength=60,
+  helperText
 }) => {
   return (
     <Grid item xs={xsWidth}>
@@ -27,6 +28,7 @@ const CoreTextField = ({
         autoComplete="off"
         maxLength={maxLength}
         value={value || ""}
+        helperText={helperText}
       />
       <ErrorMessage name={name} component="div" />
     </Grid>
