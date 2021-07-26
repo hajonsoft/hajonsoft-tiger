@@ -137,7 +137,7 @@ const OnlinePackage = () => {
               icons={tableIcons}
               title={<Title />}
               columns={[
-                { title: "Name", field: "name" },
+                { title: "Title", field: "name" },
                 { title: "Headline", field: "headline" },
                 { title: "From", field: "departureAirport" },
                 { title: "To", field: "arrivalAirport" },

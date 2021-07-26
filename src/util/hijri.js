@@ -120,7 +120,7 @@ const hijraMonths = [
         output[1].feast = f;
       }
     })
-    return `${output[0].feast.names.join(',')} was ${Math.abs(output[0].daysBefore)} days ago while ${output[1].feast.names.join(',')} is in ${output[1].daysAfter} days `;
+    return `${output?.[0]?.feast?.names?.join(',')} was ${Math.abs(output?.[0]?.daysBefore)} days ago while ${output?.[1]?.feast?.names?.join(',')} is in ${output?.[1]?.daysAfter} days `;
   }
 
   const todayHijraDate = ()=> {

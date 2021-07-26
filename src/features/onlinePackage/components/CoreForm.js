@@ -128,6 +128,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     name="name"
                     label="Title"
                     mode={mode}
+                    required={true}
                     xsWidth={3}
                   />
                   <CoreTextField
@@ -177,6 +178,19 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             setFieldValue={setFieldValue}
                             value={values.departureDate}
                             name="departureDate"
+                            onChange={(departureMoment) => {
+                              const departeMomentClone = moment(
+                                departureMoment
+                              );
+                              setFieldValue(
+                                "returnDate",
+                                departureMoment.add(20, "days").format()
+                              );
+                              setFieldValue(
+                                "checkoutDate",
+                                departeMomentClone.add(5, "days").format()
+                              );
+                            }}
                             mode={mode}
                             xsWidth={2}
                           />
@@ -207,6 +221,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             value={values.returnDate}
                             name="returnDate"
                             mode={mode}
+                            onChange={() => {}}
                             xsWidth={2}
                             label="Rebound date"
                           />
@@ -290,6 +305,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                               setFieldValue={setFieldValue}
                               value={values.checkoutDate}
                               name="checkoutDate"
+                              onChange={() => {}}
                               mode={mode}
                               xsWidth={3}
                             />
