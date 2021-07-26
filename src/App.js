@@ -8,7 +8,7 @@ import { IntlProvider } from "react-intl";
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
-import CustomerHome from "./features/Home/CustomerHome";
+import DoveHome from "./features/Home/DoveHome";
 import Home from "./features/Home/Home";
 import Profile from "./features/Profile";
 import Register from "./features/Register/Register.j";
@@ -18,9 +18,9 @@ import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
 import OnlinePackages from "./features/onlinePackage";
-import HajjPackagesContainer from "./features/onlinePackage/components/HajjPackagesContainer";
-import UmrahPackagesContainer from "./features/onlinePackage/components/UmrahPackagesContainer";
-import TourPackagesContainer from "./features/onlinePackage/components/TourPackagesContainer";
+import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
+import UmrahAdvertisements from "./features/onlinePackage/components/UmrahAdvertisements";
+import ToursAdvertisements from "./features/onlinePackage/components/ToursAdvertisements";
 import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
@@ -78,7 +78,7 @@ function App() {
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
-              <CustomerHome />
+              <DoveHome />
             </PublicRoute>
             <PublicRoute exact path="/admin">
               <Home onLanguageChange={handleLanguageChange} lang={language} />
@@ -102,13 +102,13 @@ function App() {
               />
             </PublicRoute>
             <PublicRoute exact path="/hajj-packages">
-              <HajjPackagesContainer />
+              <HajjAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/umrah-packages">
-              <UmrahPackagesContainer />
+              <UmrahAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/tours">
-              <TourPackagesContainer />
+              <ToursAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/package/detail/:packageName">
               <PackageDetailCardM3li />

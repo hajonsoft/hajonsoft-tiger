@@ -179,16 +179,16 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             value={values.departureDate}
                             name="departureDate"
                             onChange={(departureMoment) => {
-                              const departeMomentClone = moment(departureMoment);
+                              const departeMomentClone = moment(
+                                departureMoment
+                              );
                               setFieldValue(
                                 "returnDate",
                                 departureMoment.add(20, "days").format()
                               );
                               setFieldValue(
                                 "checkoutDate",
-                                departeMomentClone
-                                  .add(5, "days")
-                                  .format()
+                                departeMomentClone.add(5, "days").format()
                               );
                             }}
                             mode={mode}

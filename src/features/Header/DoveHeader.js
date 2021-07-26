@@ -5,10 +5,10 @@ import {Helmet} from "react-helmet";
 import _ from 'lodash';
 
 import firebaseConfig from '../../firebaseConfig';
-import firebase from './../../firebaseapp';
+import firebase from '../../firebaseapp';
 
 
-const CustomerHeader = () => {
+const DoveHeader = () => {
     const projectName = `${_.startCase(firebaseConfig.projectId.replace(/[0-9]/g, '').replace(/-/g, ' '))}`;
     const history = useHistory()
     const [profile, setProfile] = useState({ name: projectName, tel: 'xxx-xxx-xxxx' })
@@ -47,4 +47,4 @@ const CustomerHeader = () => {
     )
 }
 
-export default CustomerHeader
+export default DoveHeader
