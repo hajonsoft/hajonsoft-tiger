@@ -1,0 +1,8 @@
+firebase login
+firebase use $1
+firebase auth:export --format json users
+cat users
+node nest-rules-script $1
+firebase deploy --only database
+firebase deploy --only storage
+

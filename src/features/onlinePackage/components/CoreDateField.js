@@ -9,7 +9,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 
-const CoreDateField = ({ value, mode, name, xsWidth = 4, setFieldValue }) => {
+const CoreDateField = ({ value, mode, name, xsWidth = 4, setFieldValue, onChange = ()=> {}}) => {
 
     const helperText = () => {
         return moment(value).fromNow()
@@ -28,6 +28,7 @@ const CoreDateField = ({ value, mode, name, xsWidth = 4, setFieldValue }) => {
                         value={value}
                         onChange={val => {
                             setFieldValue(name, moment(val).format());
+                            onChange(moment(val))
                         }}
                         InputLabelProps={{
                             shrink: true,

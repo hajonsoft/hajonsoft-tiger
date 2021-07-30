@@ -34,5 +34,6 @@
 	"reservation.submit": "احجز",
 	"reservation.submitting": "جاري الحجز ...",
 	"reservation.telephone": "هاتف",
+	"reservation.completed": "تم استلام الحجز. شكرا لك",
 	"reservation.upload-your-passport": "قم بتحميل جواز سفرك"
 }

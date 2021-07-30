@@ -1,10 +1,13 @@
 {
   "rules": {
-    ".read": "auth != null && (auth.uid == 'MVM80trb9mPZMSSbpxXsP3Z5X3F2' || auth.uid == 'O0drcyeGMNXxQx1awJUWESSdwZz2')",
-    ".write": "auth != null && (auth.uid == 'MVM80trb9mPZMSSbpxXsP3Z5X3F2' || auth.uid == 'O0drcyeGMNXxQx1awJUWESSdwZz2')",
+    ".read": "auth != null && (auth.uid == 'AWRMmLgvQjY63B6N2mhag1kZoIN2' || auth.uid == 'npfWpsdHc2Wo9vVZyHY3zKZsJjc2')",
+    ".write": "auth != null && (auth.uid == 'AWRMmLgvQjY63B6N2mhag1kZoIN2' || auth.uid == 'npfWpsdHc2Wo9vVZyHY3zKZsJjc2')",
     "$uid": {
       ".read": "auth != null && auth.uid == $uid",
       ".write": "auth != null && auth.uid == $uid"
+    },
+    "protected": {
+      ".read": true
     },
     "public": {
       ".read": true,

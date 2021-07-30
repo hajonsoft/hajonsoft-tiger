@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import firebase from "../../../firebaseapp";
 import packagePlaceholder from '../../../images/package-placeholder.jpg';
-import CustomerHeader from '../../Header/CustomerHeader';
+import DoveHeader from '../../Header/DoveHeader';
 import PackageFeatures from './PackageFeatures';
 import PackageSchedule from './PackageSchedule';
 
@@ -28,7 +28,7 @@ const PackageDetailCardM3li = () => {
 
     return (
         <div>
-            <CustomerHeader />
+            <DoveHeader />
             <Box mx={2} mt={2}>
                 <Grid Container>
                     <Breadcrumbs aria-label="breadcrumb" style={{ borderBottom: 'solid 1px green ' }}>

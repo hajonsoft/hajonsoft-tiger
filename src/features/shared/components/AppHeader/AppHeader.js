@@ -74,7 +74,7 @@ const AppHeader = () => {
                             </Button>
                             <Button
                                 style={{ color: "#fff", textTransform: "none" }}
-                                onClick={() => history.push("/online")}
+                                onClick={() => history.push("/market")}
                             >
                                 Market
                             </Button>

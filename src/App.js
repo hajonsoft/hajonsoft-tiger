@@ -9,13 +9,13 @@ import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
-import CustomerHome from "./features/Home/CustomerHome";
+import DoveHome from "./features/Home/DoveHome";
 import Home from "./features/Home/Home";
 import OnlinePackages from "./features/onlinePackage";
-import HajjPackagesContainer from "./features/onlinePackage/components/HajjPackagesContainer";
+import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
-import TourPackagesContainer from "./features/onlinePackage/components/TourPackagesContainer";
-import UmrahPackagesContainer from "./features/onlinePackage/components/UmrahPackagesContainer";
+import ToursAdvertisements from "./features/onlinePackage/components/ToursAdvertisements";
+import UmrahAdvertisements from "./features/onlinePackage/components/UmrahAdvertisements";
 import Profile from "./features/Profile";
 import Register from "./features/Register/Register.j";
 import Reservation from "./features/Reservation";
@@ -31,7 +31,6 @@ import messages_fr from "./lang/fr.json";
 import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
-
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -78,7 +77,7 @@ function App() {
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
-              <CustomerHome />
+              <DoveHome />
             </PublicRoute>
             <PublicRoute exact path="/admin">
               <Home onLanguageChange={handleLanguageChange} lang={language} />
@@ -102,13 +101,13 @@ function App() {
               />
             </PublicRoute>
             <PublicRoute exact path="/hajj-packages">
-              <HajjPackagesContainer />
+              <HajjAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/umrah-packages">
-              <UmrahPackagesContainer />
+              <UmrahAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/tours">
-              <TourPackagesContainer />
+              <ToursAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/package/detail/:packageName">
               <PackageDetailCardM3li />
@@ -116,7 +115,7 @@ function App() {
             <PrivateRoute path="/caravans">
               <Dashboard />
             </PrivateRoute>
-            <PrivateRoute path="/online">
+            <PrivateRoute path="/market">
               <OnlinePackages />
             </PrivateRoute>
             <PrivateRoute path="/profile">

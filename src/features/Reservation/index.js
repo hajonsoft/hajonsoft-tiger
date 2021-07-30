@@ -3,6 +3,10 @@ import FullReservation from "./components/FullReservation";
 import BasicReservation from "./components/BasicReservation";
 import { Box, Grid, MenuItem, Select, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ExploreIcon from "@material-ui/icons/Explore";
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
+
+
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -43,17 +47,17 @@ const Reservation = ({ lang, onLanguageChange }) => {
           onChange={handleChange}
           className={classes.tabs}
           variant="fullWidth"
-          indicatorColor="primary"
           textColor="primary"
         >
           <Tab
             style={{ width: "100%" }}
-            label={trans("reservation.quick-reservation")}
+            label={<Grid container alignItems="center" spacing={1} justify="center"><Grid item><ExploreIcon fontSize="small"/></Grid><Grid item>{trans("reservation.quick-reservation")}</Grid></Grid>}
             {...a11yProps(0)}
           />
           <Tab
             style={{ width: "100%" }}
-            label={trans("reservation.full-reservation")}
+            label={<Grid container alignItems="center" spacing={1} justify="center"><Grid item><FlightTakeoffIcon fontSize="small"/></Grid><Grid item>{trans("reservation.full-reservation")}</Grid></Grid>}
+
             {...a11yProps(1)}
           />
         </Tabs>

@@ -18,6 +18,7 @@ const PackageDetail = ({
         disabled={mode === "delete"}
         autoComplete="off"
         rowsMax={4}
+        helperText="Standard HAJonSoft description will not be saved. You must enter your own description"
         value={value || ""}
       />
       <ErrorMessage name="description" component="div" />

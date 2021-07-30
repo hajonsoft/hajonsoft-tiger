@@ -21,4 +21,5 @@ rm .github/workflows/firebase-hosting-pull-request.yml
 npm run build
 firebase deploy --only hosting
 git add .
+git reset HEAD -- src/firebaseConfig.js
 git commit -m $1
