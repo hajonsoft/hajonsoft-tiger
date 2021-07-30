@@ -96,7 +96,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const saveImage = (values, image) => {
+  const savePhoto = (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
@@ -109,9 +109,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const handleSaveAndNext = async (values)=> {
-    await handleSubmitForm(values,null,onNext);
-  }
+  const handleSaveAndNext = async (values) => {
+    await handleSubmitForm(values, null, onNext);
+  };
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     delete values["passportImage"];
@@ -127,7 +127,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         });
         break;
       case "delete":
-        deleteTraveller({ path: `customer/${packageName}/${record._fid}` , data: values});
+        deleteTraveller({
+          path: `customer/${packageName}/${record._fid}`,
+          data: values,
+        });
         break;
 
       default:
@@ -204,7 +207,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               }
             : record
         }
-        validationSchema={mode !== 'delete' ? validSchema: null}
+        validationSchema={mode !== "delete" ? validSchema : null}
         onSubmit={handleSubmitForm}
       >
         {({ setFieldValue, values, errors, isSubmitting }) => (
@@ -222,7 +225,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                 <Grid container spacing={2}>
                   <Grid item container justify="center">
                     <Grid item xs={4}>
-                    <ToggleButtonGroup
+                      <ToggleButtonGroup
                         value={photoMode}
                         exclusive
                         onChange={handleAlignment}
@@ -234,14 +237,18 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <RecentActorsOutlinedIcon />
                         </ToggleButton>
                       </ToggleButtonGroup>
-                      {photoMode === 'photo' &&  <CoreImage
-                        setImage={(img) => saveImage(values, img)}
-                        record={values}
-                      />}
-                      {photoMode === 'passport' && <CorePassportImage
-                        setImage={(img) => savePassportImage(values, img)}
-                        record={values}
-                      />}
+                      {photoMode === "photo" && (
+                        <CoreImage
+                          setImage={(img) => savePhoto(values, img)}
+                          record={values}
+                        />
+                      )}
+                      {photoMode === "passport" && (
+                        <CorePassportImage
+                          setImage={(img) => savePassportImage(values, img)}
+                          record={values}
+                        />
+                      )}
                     </Grid>
                     <Grid
                       item
@@ -259,6 +266,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         <CustomerArabicName
                           mode={mode}
                           value={values.nameArabic}
+                          englishName={values.name}
                           setFieldValue={setFieldValue}
                         />
                       </Grid>
@@ -483,7 +491,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               disabled={isSubmitting}
                               variant="contained"
                               color="primary"
-                              onClick={()=> handleSaveAndNext (values)}
+                              onClick={() => handleSaveAndNext(values)}
                               startIcon={<SaveOutlinedIcon />}
                             >
                               Save & Next
