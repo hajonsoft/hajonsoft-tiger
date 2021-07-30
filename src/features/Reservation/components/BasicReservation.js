@@ -1,25 +1,21 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, Paper, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import { Typography, Button } from "@material-ui/core";
-import InputControl from "./InputControl";
-import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import clsx from "classnames";
 import { Form, Formik } from "formik";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
+import ExploreIcon from "@material-ui/icons/Explore";
+import InputControl from "./InputControl";
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     color: "#385273",
-    borderRadius: 15,
     padding: 15,
     backgroundColor: "white",
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderBottom: "1px solid #F7F7FA",
   },
   submitBtn: {
     background: "#178CF9",
@@ -27,11 +23,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "3rem",
     textTransform: "capitalize",
     color: "white",
-  },
-  titleText: {
-    marginLeft: 10,
-    fontSize: "1.1rem",
-    color: "#434343",
   },
   mainContainer: {
     marginTop: 10,
@@ -79,149 +70,190 @@ const validationSchema = yup.object({
 const BasicReservation = () => {
   const classes = useStyles();
   const { packageName } = useParams();
-  const history = useHistory();
+  const [reservationNumber, setReservationNumber] = useState("");
 
   const handleSubmitForm = async (values, actions) => {
-    const reservationRef = firebase
-      .database()
-      .ref(`customer/${packageName}`);
+    const reservationRef = firebase.database().ref(`customer/${packageName}`);
     const pushResult = reservationRef.push(values);
-    alert("You reservation has been received " + pushResult.key);
-    history.push("/");
+    setReservationNumber(pushResult.key);
   };
 
   return (
-    <Grid container style={{ backgroundColor: "white", minHeight: "100vh" }}>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.titleContainer}
-      >
-        <Typography component="span" className={classes.titleText}>
-          {trans("reservation.quick-reservation")}
-        </Typography>
-        <Typography className={classes.titleText}>{`${packageName}`}</Typography>
-      </Grid>
-      <Grid className={classes.container}>
-        <Grid item direction="row" xs={12} className={classes.mainContainer}>
-          <Grid container direction="row">
-            <Grid item className={classes.p5} xs={12} container>
-              <Grid direction="column" container>
-                <Grid container direction="row"></Grid>
+    <div>
+      <Paper style={{ margin: "0.5rem" }}>
+        <Grid
+          container
+          alignItems="center"
+          spacing={1}
+          justify="center"
+          className={classes.titleContainer}
+        >
+          <Grid item>
+            <ExploreIcon fontSize="medium" />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5">
+              {trans("reservation.quick-reservation")}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="h5">{`${packageName}`}</Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+      {!reservationNumber && (
+        <Grid
+          container
+          style={{ backgroundColor: "white", minHeight: "100vh" }}
+        >
+          <Grid className={classes.container}>
+            <Grid
+              item
+              direction="row"
+              xs={12}
+              className={classes.mainContainer}
+            >
+              <Grid container direction="row">
+                <Grid item className={classes.p5} xs={12} container>
+                  <Grid direction="column" container>
+                    <Grid container direction="row"></Grid>
+                  </Grid>
+                </Grid>
               </Grid>
+              <Formik
+                initialValues={{ name: "" }}
+                onSubmit={handleSubmitForm}
+                validationSchema={validationSchema}
+              >
+                {({ values, errors, touched, isSubmitting, isValid }) => {
+                  return (
+                    <Form className={classes.pt3rem}>
+                      <Grid
+                        container
+                        spacing={3}
+                        className={clsx(classes.container, classes.pb0)}
+                      >
+                        <Grid item xs={12}>
+                          <InputControl
+                            name="name"
+                            label={trans("reservation.full-name")}
+                            required
+                            value={values.name}
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputControl
+                            name="phone"
+                            label={trans("reservation.telephone")}
+                            value={values.phone}
+                            error={touched.phone && Boolean(errors.phone)}
+                            helperText={touched.phone && errors.phone}
+                            required={true}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputControl
+                            name="email"
+                            label={trans("reservation.email")}
+                            required
+                            value={values.email}
+                            error={touched.email && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputControl
+                            name="departureCity"
+                            label={trans("reservation.departure-city")}
+                            required
+                            value={values.departureCity}
+                            error={
+                              touched.departureCity &&
+                              Boolean(errors.departureCity)
+                            }
+                            helperText={
+                              touched.departureCity && errors.departureCity
+                            }
+                          />
+                        </Grid>
+
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="pax"
+                            label={trans("reservation.number-of-companions")}
+                            value={values.pax}
+                            error={touched.pax && Boolean(errors.pax)}
+                            helperText={touched.pax && errors.pax}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="departureDate"
+                            label={trans("reservation.departure-date")}
+                            value={values.departureDate}
+                            error={
+                              touched.departureDate &&
+                              Boolean(errors.departureDate)
+                            }
+                            helperText={
+                              touched.departureDate && errors.departureDate
+                            }
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputControl
+                            multiline
+                            required={false}
+                            name="comments"
+                            label={trans("reservation.message")}
+                            value={values.comments}
+                            error={touched.comments && Boolean(errors.comments)}
+                            helperText={touched.comments && errors.comments}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        justify="flex-end"
+                        className={classes.pt1rem}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          disabled={!isValid || isSubmitting}
+                          className={classes.submitBtn}
+                          type="submit"
+                        >
+                          {isSubmitting
+                            ? trans("reservation.submitting")
+                            : trans("reservation.submit")}
+                        </Button>
+                      </Grid>
+                    </Form>
+                  );
+                }}
+              </Formik>
             </Grid>
           </Grid>
-          <Formik
-            initialValues={{ name: "" }}
-            onSubmit={handleSubmitForm}
-            validationSchema={validationSchema}
-          >
-            {({ values, errors, touched, isSubmitting, isValid }) => {
-              return (
-                <Form className={classes.pt3rem}>
-                  <Grid
-                    container
-                    spacing={3}
-                    className={clsx(classes.container, classes.pb0)}
-                  >
-                    <Grid item xs={12}>
-                      <InputControl
-                        name="name"
-                        label={trans('reservation.full-name')}
-                        required
-                        value={values.name}
-                        error={touched.name && Boolean(errors.name)}
-                        helperText={touched.name && errors.name}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <InputControl
-                        name="phone"
-                        label={trans('reservation.telephone')}
-                        value={values.phone}
-                        error={touched.phone && Boolean(errors.phone)}
-                        helperText={touched.phone && errors.phone}
-                        required={true}
-                      />
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                      <InputControl
-                        name="email"
-                        label={trans('reservation.email')}
-                        required
-                        value={values.email}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      />
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                      <InputControl
-                        name="departureCity"
-                        label={trans('reservation.departure-city')}
-                        required
-                        value={values.departureCity}
-                        error={
-                          touched.departureCity && Boolean(errors.departureCity)
-                        }
-                        helperText={
-                          touched.departureCity && errors.departureCity
-                        }
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} md="6">
-                      <InputControl
-                        name="pax"
-                        label={trans('reservation.number-of-companions')}
-                        value={values.pax}
-                        error={touched.pax && Boolean(errors.pax)}
-                        helperText={touched.pax && errors.pax}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md="6">
-                      <InputControl
-                        name="departureDate"
-                        label={trans('reservation.departure-date')}
-                        value={values.departureDate}
-                        error={
-                          touched.departureDate && Boolean(errors.departureDate)
-                        }
-                        helperText={
-                          touched.departureDate && errors.departureDate
-                        }
-                        type="date"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <InputControl
-                        multiline
-                        required={false}
-                        name="comments"
-                        label={trans('reservation.message')}
-                        value={values.comments}
-                        error={touched.comments && Boolean(errors.comments)}
-                        helperText={touched.comments && errors.comments}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container justify="flex-end" className={classes.pt1rem}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      disabled={!isValid || isSubmitting}
-                      className={classes.submitBtn}
-                      type="submit"
-                    >
-                      {isSubmitting ? trans('reservation.submitting') : trans('reservation.submit')}
-                    </Button>
-                  </Grid>
-                </Form>
-              );
-            }}
-          </Formik>
         </Grid>
-      </Grid>
-    </Grid>
+      )}
+      {reservationNumber && (
+        <div style={{backgroundColor: 'white', width: '100%',  height: '100vh', paddingTop: '4rem'}}>
+        <Grid container direction="column" spacing={4} justify="center"  alignItems="center" >
+          <Grid item>
+            <ExploreIcon fontSize="large" style={{color: '#4caf50'}}/>
+          </Grid>
+          <Grid item>
+            <Typography variant="h5">{reservationNumber}</Typography>
+          </Grid>
+          <Grid item><Typography variant="h4">{trans("reservation.completed")}</Typography></Grid>
+        </Grid>
+        </div>
+      )}
+    </div>
   );
 };
 
