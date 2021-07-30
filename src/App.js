@@ -32,6 +32,7 @@ import messages_ar from "./lang/ar.json";
 import messages_en from "./lang/en.json";
 import messages_fr from "./lang/fr.json";
 import Trade from "./features/trade";
+import CRUDForm from "./features/customer/components/CRUDForm";
 
 const sagaMiddleware = createSagaMiddleware();
 

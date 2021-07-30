@@ -194,11 +194,13 @@ const Customers = () => {
                   render: (rowData) =>
                     rowData.birthDate && (
                       <Chip
+                        color="primary"
                         avatar={
                           <Avatar>
                             {moment().diff(rowData.birthDate, "years")}
                           </Avatar>
                         }
+                        variant="outlined"
                         label={moment(rowData.birthDate).format("DD-MMM-yyyy")}
                       />
                     ),
@@ -277,6 +279,7 @@ const Customers = () => {
                 exportButton: true,
                 columnsButton: true,
                 searchAutoFocus: true,
+                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
               }}
               localization={{
                 body: {

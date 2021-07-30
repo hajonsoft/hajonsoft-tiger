@@ -10,14 +10,14 @@ const name = "codeLine";
 const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   const [editMode, setEditMode] = useState(false);
   const [line1, setLine1] = useState(
-    record.codeLine &&
-    record.codeLine.length > 44 &&
-    record.codeLine.substring(0, 44)
+    // record.codeLine &&
+    // record.codeLine.length > 44 &&
+    // record.codeLine.substring(0, 44)
   );
   const [line2, setLine2] = useState(
-    record.codeLine &&
-    record.codeLine.length > 45 &&
-    record.codeLine.substring(44)
+    // record.codeLine &&
+    // record.codeLine.length > 45 &&
+    // record.codeLine.substring(44)
   );
 
   const handleDone = () => {
@@ -33,7 +33,7 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   };
   const handlePDF417 = () => { };
   return (
-    <Grid item xs={6}>
+    <Grid item xs={12}>
       <Card>
         <CardContent>
           <Grid container>

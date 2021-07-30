@@ -2,6 +2,7 @@
 import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
+import NearMeIcon from '@material-ui/icons/NearMe';
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -53,6 +54,7 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
+  ApplyVisa: forwardRef((props, ref) => <NearMeIcon { ...props } ref={ref} /> )
 };
 
 const Dashboard = () => {
@@ -163,7 +165,7 @@ const Dashboard = () => {
               columns={[
                 {
                   title: "Name",
-                  field: "name",
+                  field: "name",      
                   render: (rowData) => (
                     <Button
                       href=""
@@ -190,17 +192,15 @@ const Dashboard = () => {
               }
               detailPanel={(rowData) => <PackageDetail data={rowData} />}
               actions={[
+                // {
+                //   icon: tableIcons.Add,
+                //   tooltip: `Add ${title}`,
+                //   isFreeAction: true,
+                //   onClick: (event) =>
+                //     setState((st) => ({ ...st, mode: "create" })),
+                // },
                 {
-                  icon: tableIcons.Add,
-                  tooltip: `Add ${title}`,
-                  isFreeAction: true,
-                  onClick: (event) =>
-                    setState((st) => ({ ...st, mode: "create" })),
-                },
-                {
-                  icon: () => (
-                    <Button variant="outlined">{`Apply for visa`}</Button>
-                  ),
+                  icon: () => <tableIcons.ApplyVisa color="primary" />,
                   tooltip: `Apply for visa`,
                   onClick: (event, rowData) => {
                     setApplyForVisaOpen(true);
@@ -223,6 +223,7 @@ const Dashboard = () => {
                 grouping: false,
                 exportButton: true,
                 pageSize: 20,
+                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
               }}
               localization={{
                 body: {
@@ -249,3 +250,13 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+// options={{
+//   actionsCellStyle: {
+//     backgroundColor: "#ffccdd",
+//     color: "#FF00dd"
+//   },
+
+  // headerStyle: { backgroundColor: "black", color: "white" }
+// }}

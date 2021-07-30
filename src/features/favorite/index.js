@@ -212,6 +212,7 @@ const Favorite = () => {
                 grouping: true,
                 pageSize: 20,
                 exportButton: true,
+                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
               }}
               localization={{
                 body: {

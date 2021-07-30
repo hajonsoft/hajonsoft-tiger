@@ -22,25 +22,13 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import useTravellerState from "../../Dashboard/redux/useTravellerState";
-import BirthPlace from "./BirthPlace";
 import CoreImage from "./CoreImage";
 import CorePassportImage from "./CorePassportImage";
-import CoreTextField from "./CoreTextField";
-import CustomerArabicName from "./CustomerArabicName";
-import CustomerBirthDate from "./CustomerBirthDate";
 import CustomerCodeline from "./CustomerCodeline";
-import CustomerComments from "./CustomerComments";
-import CustomerIdExpireDate from "./CustomerIdExpireDate";
-import CustomerIdIssueDate from "./CustomerIdIssueDate";
-import CustomerName from "./CustomerName";
-import CustomerNationality from "./CustomerNationality";
-import CustomerPassportExpireDate from "./CustomerPassportExpireDate";
-import CustomerPassportIssueDate from "./CustomerPassportIssueDate";
-import CustomerPassportNumber from "./CustomerPassportNumber";
-import CustomerPhone from "./CustomerPhone";
 import Dropzone from "./Dropzone";
-import Gender from "./Gender";
-import PassportPlaceOfIssue from "./PassportPlaceOfIssue";
+import InputControl from "../../Reservation/components/InputControl";
+import trans from "../../../util/trans";
+import { nationalities } from "../../../data/nationality";
 
 const storage = firebase.storage();
 
@@ -52,14 +40,17 @@ const useStyles = makeStyles((theme) => ({
   cardTitle: {
     textAlign: "left",
     fontSize: "2em",
-    backgroundColor: "silver",
+    background: "white",
+    borderBottom: "1px solid #ccc",
+    marginBottom: "2rem",
   },
   actionsContainer: {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     padding: "10px",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderTop: "1px solid #ccc",
   },
   actionsContainerTopMain: {
     width: "50%",
@@ -72,7 +63,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
+const CRUDForm = ({
+  mode,
+  record,
+  customerKey,
+  title,
+  onClose,
+  onNext,
+}) => {
   const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
   let { packageName } = useParams();
@@ -109,9 +107,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const handleSaveAndNext = async (values)=> {
-    await handleSubmitForm(values,null,onNext);
-  }
+  const handleSaveAndNext = async (values) => {
+    await handleSubmitForm(values, null, onNext);
+  };
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     delete values["passportImage"];
@@ -127,7 +125,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         });
         break;
       case "delete":
-        deleteTraveller({ path: `customer/${packageName}/${record._fid}` , data: values});
+        deleteTraveller({
+          path: `customer/${packageName}/${record._fid}`,
+          data: values,
+        });
         break;
 
       default:
@@ -153,9 +154,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const validSchema = yup.object().shape({
-    name: yup.string().required("Required"),
-    nationality: yup.string().required("Required"),
-    gender: yup.string().required("Required"),
     passportNumber: yup
       .string()
       .required("Required")
@@ -183,6 +181,29 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       .string()
       .required("Required")
       .max(25, "Too long!"),
+    name: yup
+      .string("Enter your Full Name")
+      .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
+      .required("Full name is required (as it appears on passport) "),
+    profession: yup
+      .string("Enter your profession")
+      .required("Profession is required"),
+    gender: yup
+      .string("Select your gender")
+      .required("Gender is required")
+      .test(
+        "not-null",
+        "Please select your gender",
+        (value) => value !== "none"
+      ),
+    nationality: yup
+      .string("Select your country")
+      .required("Nationality is required")
+      .test(
+        "not-null",
+        "Please select your country",
+        (value) => value !== "none"
+      ),
   });
 
   const handleAlignment = (event, newPhotoMode) => {
@@ -204,25 +225,23 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               }
             : record
         }
-        validationSchema={mode !== 'delete' ? validSchema: null}
+        validationSchema={mode !== "delete" ? validSchema : null}
         onSubmit={handleSubmitForm}
       >
-        {({ setFieldValue, values, errors, isSubmitting }) => (
+        {({ setFieldValue, values, errors, isSubmitting, touched }) => (
           <Form>
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
                 title={_.startCase(mode + " " + title)}
                 subheader={customerKey}
-                action={
-                  <CancelOutlinedIcon color="secondary" onClick={onClose} />
-                }
+                action={<CancelOutlinedIcon color="error" onClick={onClose} />}
               />
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item container justify="center">
                     <Grid item xs={4}>
-                    <ToggleButtonGroup
+                      <ToggleButtonGroup
                         value={photoMode}
                         exclusive
                         onChange={handleAlignment}
@@ -234,163 +253,275 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <RecentActorsOutlinedIcon />
                         </ToggleButton>
                       </ToggleButtonGroup>
-                      {photoMode === 'photo' &&  <CoreImage
-                        setImage={(img) => saveImage(values, img)}
-                        record={values}
-                      />}
-                      {photoMode === 'passport' && <CorePassportImage
-                        setImage={(img) => savePassportImage(values, img)}
-                        record={values}
-                      />}
+                      {photoMode === "photo" && (
+                        <CoreImage
+                          setImage={(img) => saveImage(values, img)}
+                          record={values}
+                        />
+                      )}
+                      {photoMode === "passport" && (
+                        <CorePassportImage
+                          setImage={(img) => savePassportImage(values, img)}
+                          record={values}
+                        />
+                      )}
                     </Grid>
-                    <Grid
-                      item
-                      xs={8}
-                      container
-                      direction="column"
-                      justify="space-around"
-                    >
-                      <Grid item container justify="space-between" spacing={4}>
-                        <CustomerName
-                          mode={mode}
-                          value={values.name}
-                          setFieldValue={setFieldValue}
-                        />
-                        <CustomerArabicName
-                          mode={mode}
-                          value={values.nameArabic}
-                          setFieldValue={setFieldValue}
-                        />
-                      </Grid>
-                      <Grid item container justify="space-between" spacing={4}>
-                        <CustomerNationality
-                          mode={mode}
-                          value={values.nationality || popularNationality()}
-                        />
-                        <Gender
-                          value={values.gender || ""}
-                          mode={mode}
-                          xsWidth={6}
-                        />
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        justify="space-between"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <CustomerPassportNumber
-                          mode={mode}
-                          value={values.passportNumber || ""}
-                          setFieldValue={setFieldValue}
-                        />
-                        <PassportPlaceOfIssue
-                          mode={mode}
-                          value={values.passPlaceOfIssue || ""}
-                          setFieldValue={setFieldValue}
-                        />
-                        <CustomerPassportIssueDate
-                          value={values.passIssueDt}
-                          mode={mode}
-                          setFieldValue={setFieldValue}
-                        />
-                        <CustomerPassportExpireDate
-                          value={values.passExpireDt}
-                          mode={mode}
-                          setFieldValue={setFieldValue}
-                        />
-                      </Grid>
+                    <Grid item xs={8} direction="column" justify="space-around">
+                      <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                          <InputControl
+                            name="name"
+                            label={trans("reservation.full-name")}
+                            required
+                            value={values.name}
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputControl
+                            name="nameArabic"
+                            label={trans("reservation.arabic-name")}
+                            value={values.arabicName}
+                            error={
+                              touched.nameArabic && Boolean(errors.nameArabic)
+                            }
+                            helperText={touched.nameArabic && errors.nameArabic}
+                            required={false}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputControl
+                            name="nationality"
+                            label={trans("reservation.nationality")}
+                            required
+                            value={values.nationality}
+                            error={
+                              touched.nationality && Boolean(errors.nationality)
+                            }
+                            helperText={
+                              touched.nationality && errors.nationality
+                            }
+                            options={[
+                              { value: "none", label: "Nationality" },
+                              ...nationalities.map((nationality) => ({
+                                value: nationality.name,
+                                label: nationality.name,
+                              })),
+                            ]}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputControl
+                            name="gender"
+                            label={trans("reservation.gender")}
+                            required
+                            value={values.gender}
+                            error={touched.gender && Boolean(errors.gender)}
+                            helperText={touched.gender && errors.gender}
+                            options={[
+                              { value: "none", label: "Gender" },
+                              { value: "Male", label: "Male" },
+                              { value: "Female", label: "Female" },
+                            ]}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="passportNumber"
+                            label={trans("reservation.passport-number")}
+                            value={values.passportNumber}
+                            error={
+                              touched.passportNumber &&
+                              Boolean(errors.passportNumber)
+                            }
+                            helperText={
+                              touched.passportNumber && errors.passportNumber
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="passPlaceOfIssue"
+                            label={trans("reservation.issued-at")}
+                            value={values.passPlaceOfIssue}
+                            error={
+                              touched.passPlaceOfIssue &&
+                              Boolean(errors.passPlaceOfIssue)
+                            }
+                            helperText={
+                              touched.passPlaceOfIssue &&
+                              errors.passPlaceOfIssue
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="passIssueDt"
+                            label={trans("reservation.passport-issue-date")}
+                            value={values.passIssueDt}
+                            error={
+                              touched.passIssueDt && Boolean(errors.passIssueDt)
+                            }
+                            helperText={
+                              touched.passIssueDt && errors.passIssueDt
+                            }
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="passExpireDt"
+                            label={trans("reservation.passport-expire-date")}
+                            value={values.passExpireDt}
+                            error={
+                              touched.passExpireDt &&
+                              Boolean(errors.passExpireDt)
+                            }
+                            helperText={
+                              touched.passExpireDt && errors.passExpireDt
+                            }
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="birthDate"
+                            label={trans("reservation.birth-date")}
+                            value={values.birthDate}
+                            error={
+                              touched.birthDate && Boolean(errors.birthDate)
+                            }
+                            helperText={touched.birthDate && errors.birthDate}
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="birthPlace"
+                            label={trans("reservation.birth-place")}
+                            value={values.birthPlace}
+                            error={
+                              touched.birthPlace && Boolean(errors.birthPlace)
+                            }
+                            helperText={touched.birthPlace && errors.birthPlace}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <CustomerCodeline
+                            record={record}
+                            setFieldValue={setFieldValue}
+                            mode={mode}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="idNumber"
+                            required={false}
+                            label={trans("reservation.id-number")}
+                            value={values.idNumber}
+                            error={touched.idNumber && Boolean(errors.idNumber)}
+                            helperText={touched.idNumber && errors.idNumber}
+                          />
+                        </Grid>
 
-                      <Grid
-                        item
-                        container
-                        justify="space-between"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <CustomerBirthDate
-                          value={values.birthDate}
-                          mode={mode}
-                          setFieldValue={setFieldValue}
-                        />
-                        <BirthPlace
-                          mode={mode}
-                          value={values.birthPlace || ""}
-                          setFieldValue={setFieldValue}
-                        />
-
-                        <CustomerCodeline
-                          record={record}
-                          setFieldValue={setFieldValue}
-                          mode={mode}
-                        />
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="idNumberIssueDate"
+                            label={trans("reservation.id-issue-date")}
+                            required={false}
+                            value={values.idNumberIssueDate}
+                            error={
+                              touched.idNumberIssueDate &&
+                              Boolean(errors.idNumberIssueDate)
+                            }
+                            helperText={
+                              touched.idNumberIssueDate &&
+                              errors.idNumberIssueDate
+                            }
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="idNumberExpireDate"
+                            label={trans("reservation.id-expire-date")}
+                            value={values.idNumberExpireDate}
+                            required={false}
+                            error={
+                              touched.idNumberExpireDate &&
+                              Boolean(errors.idNumberExpireDate)
+                            }
+                            helperText={
+                              touched.idNumberExpireDate &&
+                              errors.idNumberExpireDate
+                            }
+                            type="date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="profession"
+                            label={trans("reservation.profession")}
+                            value={values.profession}
+                            error={
+                              touched.profession && Boolean(errors.profession)
+                            }
+                            helperText={touched.profession && errors.profession}
+                            required={false}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputControl
+                            name="email"
+                            label={trans("reservation.email")}
+                            value={values.email}
+                            error={touched.email && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
+                            required={false}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="mahramName"
+                            label="Mahram"
+                            value={values.mahramName}
+                            error={
+                              touched.mahramName && Boolean(errors.mahramName)
+                            }
+                            helperText={touched.mahramName && errors.mahramName}
+                            required={false}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md="6">
+                          <InputControl
+                            name="relationship"
+                            label="Relationship"
+                            value={values.relationship}
+                            error={
+                              touched.relationship &&
+                              Boolean(errors.relationship)
+                            }
+                            helperText={
+                              touched.relationship && errors.relationship
+                            }
+                            required={false}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputControl
+                            multiline
+                            required={false}
+                            name="comments"
+                            label="Note"
+                            value={values.comments}
+                            error={touched.comments && Boolean(errors.comments)}
+                            helperText={touched.comments && errors.comments}
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-
-                  <Grid item container alignItems="center" spacing={4}>
-                    <CoreTextField
-                      value={values.idNumber || ""}
-                      name="idNumber"
-                      mode={mode}
-                      maxLength={20}
-                    />
-                    {values.idNumber ? (
-                      <CustomerIdIssueDate
-                        value={values.idNumberIssueDate}
-                        mode={mode}
-                        setFieldValue={setFieldValue}
-                      />
-                    ) : (
-                      <Grid item xs={4}>
-                        {" "}
-                      </Grid>
-                    )}
-                    {values.idNumber ? (
-                      <CustomerIdExpireDate
-                        value={values.idNumberExpireDate}
-                        mode={mode}
-                        setFieldValue={setFieldValue}
-                      />
-                    ) : (
-                      <Grid item xs={4}>
-                        {" "}
-                      </Grid>
-                    )}
-                  </Grid>
-
-                  <Grid item container alignItems="center" spacing={4}>
-                    <CoreTextField
-                      value={values.profession || ""}
-                      name="profession"
-                      mode={mode}
-                      maxLength={25}
-                    />
-                    <CustomerPhone value={values.phone} mode={mode} />
-                    <CoreTextField
-                      value={values.email || ""}
-                      name="email"
-                      mode={mode}
-                    />
-                  </Grid>
-                  <CoreTextField
-                    value={values.mahramName || ""}
-                    name="mahramName"
-                    label="Mahram"
-                    mode={mode}
-                  />
-                  <CoreTextField
-                    value={values.relationship || ""}
-                    name="relationship"
-                    mode={mode}
-                  />
-
-                  <CustomerComments
-                    value={values.comments || ""}
-                    name="comments"
-                    mode={mode}
-                  />
 
                   <Grid item xs={12}>
                     <Typography
@@ -398,7 +529,11 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       align="center"
                       style={{ color: "#f44336" }}
                     >
-                      {JSON.stringify(errors).replace(/"/g, "")}
+                      {errors &&
+                      Object.keys(errors).length === 0 &&
+                      errors.constructor === Object
+                        ? ""
+                        : JSON.stringify(errors).replace(/"/g, "")}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -429,11 +564,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       <Grid item>
                         <Button
                           type="button"
+                          style={{ color: "red", borderColor: "red" }}
                           disabled={isSubmitting}
-                          variant="contained"
-                          color="secondary"
+                          variant="outlined"
+                          color="default"
                           onClick={onClose}
-                          startIcon={<CancelOutlinedIcon />}
+                          startIcon={<CancelOutlinedIcon color="error" />}
                         >
                           Cancel
                         </Button>
@@ -443,7 +579,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <Button
                             type="submit"
                             disabled={isSubmitting}
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             startIcon={<AddOutlinedIcon />}
                           >
@@ -456,9 +592,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <Button
                             type="submit"
                             disabled={isSubmitting}
-                            variant="contained"
-                            color="secondary"
-                            startIcon={<DeleteOutlinedIcon />}
+                            variant="outlined"
+                            style={{ color: "red", borderColor: "red" }}
+                            color="default"
+                            startIcon={<DeleteOutlinedIcon color="error" />}
                           >
                             Delete
                           </Button>
@@ -470,8 +607,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <Button
                               type="submit"
                               disabled={isSubmitting}
-                              variant="contained"
-                              color="primary"
+                              variant="outlined"
+                              color="secondary"
                               startIcon={<SaveOutlinedIcon />}
                             >
                               Save & Close
@@ -481,9 +618,9 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <Button
                               type="button"
                               disabled={isSubmitting}
-                              variant="contained"
+                              variant="outlined"
                               color="primary"
-                              onClick={()=> handleSaveAndNext (values)}
+                              onClick={() => handleSaveAndNext(values)}
                               startIcon={<SaveOutlinedIcon />}
                             >
                               Save & Next
