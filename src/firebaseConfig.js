@@ -1,2 +1,2 @@
-import firebaseConfig from './firebaseConfigs/darelsalam-can';
+import firebaseConfig from './firebaseConfigs/breno-tours';
 export default firebaseConfig;

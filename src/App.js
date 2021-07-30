@@ -1,38 +1,37 @@
 import { ThemeProvider } from "@material-ui/core";
 import { configureStore } from "@reduxjs/toolkit";
 import React, { useState } from "react";
+import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import { IntlProvider } from "react-intl";
-
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
+import Favorite from "./features/favorite";
+import Help from "./features/help";
 import CustomerHome from "./features/Home/CustomerHome";
 import Home from "./features/Home/Home";
+import OnlinePackages from "./features/onlinePackage";
+import HajjPackagesContainer from "./features/onlinePackage/components/HajjPackagesContainer";
+import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
+import TourPackagesContainer from "./features/onlinePackage/components/TourPackagesContainer";
+import UmrahPackagesContainer from "./features/onlinePackage/components/UmrahPackagesContainer";
 import Profile from "./features/Profile";
 import Register from "./features/Register/Register.j";
+import Reservation from "./features/Reservation";
 import ForgotPassword from "./features/SignIn/ForgotPassword";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
 import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
 import SignOut from "./features/SignIn/SignOut";
-import OnlinePackages from "./features/onlinePackage";
-import HajjPackagesContainer from "./features/onlinePackage/components/HajjPackagesContainer";
-import UmrahPackagesContainer from "./features/onlinePackage/components/UmrahPackagesContainer";
-import TourPackagesContainer from "./features/onlinePackage/components/TourPackagesContainer";
-import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
-import reducer from "./redux/reducer";
-import sagas from "./redux/saga";
-import defaultTheme from "./theme/default";
-import Reservation from "./features/Reservation";
-import Favorite from "./features/favorite";
-import Help from "./features/help";
+import Trade from "./features/trade";
 import messages_ar from "./lang/ar.json";
 import messages_en from "./lang/en.json";
 import messages_fr from "./lang/fr.json";
-import Trade from "./features/trade";
-import CRUDForm from "./features/customer/components/CRUDForm";
+import reducer from "./redux/reducer";
+import sagas from "./redux/saga";
+import defaultTheme from "./theme/default";
+
 
 const sagaMiddleware = createSagaMiddleware();
 
