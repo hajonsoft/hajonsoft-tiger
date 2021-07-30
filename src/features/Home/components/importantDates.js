@@ -1,11 +1,10 @@
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { eventsBefore, eventsAfter } from "../../../util/hijri";
-import { Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { eventsAfter, eventsBefore } from "../../../util/hijri";
 
 const ImportantDates = () => {
   return (
-    <Grid container justify="space-between" style={{padding: '1rem'}}>
+    <Grid container justify="space-between" style={{ padding: "1rem" }}>
       <Grid item>
         <Typography variant="body1" align="center" style={{ color: "#0055ba" }}>
           {eventsBefore()}

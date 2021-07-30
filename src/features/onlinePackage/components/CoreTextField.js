@@ -1,8 +1,8 @@
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { ErrorMessage, Field } from "formik";
-import React from "react";
 import _ from "lodash";
+import React from "react";
 
 const CoreTextField = ({
   name,
@@ -12,8 +12,8 @@ const CoreTextField = ({
   autoFocus = false,
   value,
   required = false,
-  maxLength=60,
-  helperText
+  maxLength = 60,
+  helperText,
 }) => {
   return (
     <Grid item xs={xsWidth}>

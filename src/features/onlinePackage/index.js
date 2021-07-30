@@ -146,7 +146,7 @@ const OnlinePackage = () => {
                   field: "description",
                   width: "35%",
                   headerStyle: {
-                    textAlign: "center"
+                    textAlign: "center",
                   },
                   cellStyle: {
                     textAlign: "left",

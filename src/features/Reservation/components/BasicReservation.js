@@ -1,6 +1,7 @@
 import { Button, Paper, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import ExploreIcon from "@material-ui/icons/Explore";
 import clsx from "classnames";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
@@ -8,7 +9,6 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
-import ExploreIcon from "@material-ui/icons/Explore";
 import InputControl from "./InputControl";
 
 const useStyles = makeStyles((theme) => ({
@@ -241,16 +241,33 @@ const BasicReservation = () => {
         </Grid>
       )}
       {reservationNumber && (
-        <div style={{backgroundColor: 'white', width: '100%',  height: '100vh', paddingTop: '4rem'}}>
-        <Grid container direction="column" spacing={4} justify="center"  alignItems="center" >
-          <Grid item>
-            <ExploreIcon fontSize="large" style={{color: '#4caf50'}}/>
+        <div
+          style={{
+            backgroundColor: "white",
+            width: "100%",
+            height: "100vh",
+            paddingTop: "4rem",
+          }}
+        >
+          <Grid
+            container
+            direction="column"
+            spacing={4}
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item>
+              <ExploreIcon fontSize="large" style={{ color: "#4caf50" }} />
+            </Grid>
+            <Grid item>
+              <Typography variant="h5">{reservationNumber}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h4">
+                {trans("reservation.completed")}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography variant="h5">{reservationNumber}</Typography>
-          </Grid>
-          <Grid item><Typography variant="h4">{trans("reservation.completed")}</Typography></Grid>
-        </Grid>
         </div>
       )}
     </div>

@@ -1,10 +1,10 @@
-import { Box, Grid, Typography } from '@material-ui/core';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { Box, Grid, Typography } from "@material-ui/core";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Animated } from "react-animated-css";
 import firebase from "../../../firebaseapp";
-import DoveHeader from '../../Header/DoveHeader';
-import AdvertisemntCard from './AdvertisementCard';
+import DoveHeader from "../../Header/DoveHeader";
+import AdvertisemntCard from "./AdvertisementCard";
 
 const HajjAdvertisements = () => {
   const [onlinePackages, setOnlinePackages] = useState([]);
