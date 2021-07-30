@@ -5,7 +5,7 @@ import React from 'react';
 
 const NationalityStatistics = ({ data }) => {
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{width: "100%"}}>
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>

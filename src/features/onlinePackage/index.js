@@ -20,7 +20,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
-import moment from 'moment';
+import moment from "moment";
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
 import { useList } from "react-firebase-hooks/database";
@@ -141,7 +141,17 @@ const OnlinePackage = () => {
                 { title: "Headline", field: "headline" },
                 { title: "From", field: "departureAirport" },
                 { title: "To", field: "arrivalAirport" },
-                { title: "Description", field: "description" },
+                {
+                  title: "Description",
+                  field: "description",
+                  width: "35%",
+                  headerStyle: {
+                    textAlign: "center",
+                  },
+                  cellStyle: {
+                    textAlign: "left",
+                  },
+                },
                 {
                   title: "Departure",
                   field: "departureDate",
@@ -214,6 +224,12 @@ const OnlinePackage = () => {
                 grouping: true,
                 pageSize: 10,
                 exportButton: true,
+                headerStyle: {
+                  backgroundColor: "#f0f3f7",
+                  color: "#385273",
+                  fontSize: "1.1rem",
+                  paddingLeft: "0px",
+                },
               }}
               localization={{
                 body: {

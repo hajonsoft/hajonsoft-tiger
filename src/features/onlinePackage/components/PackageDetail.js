@@ -3,10 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 
-const PackageDetail = ({
-  mode,
-  value,
-}) => {
+const PackageDetail = ({ mode, value }) => {
   return (
     <Grid item xs={12}>
       <Field

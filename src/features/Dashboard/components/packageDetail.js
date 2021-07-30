@@ -51,7 +51,7 @@ const PackageDetail = ({ data }) => {
   };
   return (
     <Paper style={{ padding: "2rem" }}>
-      <Grid container justify="space-between" alignItems="center">
+      <Grid container justify="space-between" alignItems="flex-start">
         <Grid item>
           {loading && <CircularProgress />}
           {error}

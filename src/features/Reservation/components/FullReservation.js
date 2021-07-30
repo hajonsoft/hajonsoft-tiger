@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddCircle";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import clsx from "classnames";
 import { Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
@@ -18,7 +19,6 @@ import * as yup from "yup";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
-import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import InputControl from "./InputControl";
 
 const storage = firebase.storage();
@@ -621,7 +621,9 @@ const FullReservation = () => {
               <Typography variant="h5">{reservationNumber}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h4">{trans("reservation.completed")}</Typography>
+              <Typography variant="h4">
+                {trans("reservation.completed")}
+              </Typography>
             </Grid>
           </Grid>
         </div>

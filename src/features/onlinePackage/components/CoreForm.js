@@ -13,12 +13,12 @@ import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
 import moment from "moment";
-import { todayHijraDate, eventsNearby } from "../../../util/hijri";
 import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
-import Gender from "./CustomerGender";
+import { eventsNearby, todayHijraDate } from "../../../util/hijri";
 import CoreDateField from "./CoreDateField";
 import CoreTextField from "./CoreTextField";
+import Gender from "./CustomerGender";
 import PackageDetail from "./PackageDetail";
 
 const useStyles = makeStyles((theme) => ({

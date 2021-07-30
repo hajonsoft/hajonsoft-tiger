@@ -1,10 +1,10 @@
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import { IconButton } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import _ from 'lodash';
