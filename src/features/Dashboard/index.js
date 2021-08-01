@@ -192,13 +192,13 @@ const Dashboard = () => {
               }
               detailPanel={(rowData) => <PackageDetail data={rowData} />}
               actions={[
-                // {
-                //   icon: tableIcons.Add,
-                //   tooltip: `Add ${title}`,
-                //   isFreeAction: true,
-                //   onClick: (event) =>
-                //     setState((st) => ({ ...st, mode: "create" })),
-                // },
+                {
+                  icon: tableIcons.Add,
+                  tooltip: `Add ${title}`,
+                  isFreeAction: true,
+                  onClick: (event) =>
+                    setState((st) => ({ ...st, mode: "create" })),
+                },
                 {
                   icon: () => <tableIcons.ApplyVisa color="primary" />,
                   tooltip: `Apply for visa`,

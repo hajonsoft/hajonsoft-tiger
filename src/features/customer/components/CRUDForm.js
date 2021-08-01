@@ -456,10 +456,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
+                            {values.passIssueDt}
                             <InputControl
                               name="passIssueDt"
                               label={trans("reservation.passport-issue-date")}
-                              value={values.passIssueDt}
                               error={
                                 touched.passIssueDt &&
                                 Boolean(errors.passIssueDt)
@@ -471,6 +471,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
+                            {values.passExpireDt}
                             <InputControl
                               name="passExpireDt"
                               label={trans("reservation.passport-expire-date")}
@@ -486,6 +487,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
+                            {values.birthDate}
                             <InputControl
                               name="birthDate"
                               label={trans("reservation.birth-date")}
