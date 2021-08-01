@@ -1,4 +1,5 @@
-export const nationalities = JSON.parse(
+import _ from 'lodash'
+export const nationalities = _.sortBy(JSON.parse(
   `[
       {
           "name": "Ethiopia",
@@ -1426,4 +1427,4 @@ export const nationalities = JSON.parse(
           "telCode": "242"
       }
   ]`
-);
+),'name');

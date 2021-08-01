@@ -13,7 +13,7 @@ import DoveHome from "./features/Home/DoveHome";
 import Home from "./features/Home/Home";
 import OnlinePackages from "./features/onlinePackage";
 import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
-import PackageDetailCardM3li from "./features/onlinePackage/components/PackageDetailCardM3li";
+import AdvertisementDetail from "./features/onlinePackage/components/AdvertisementDetail";
 import ToursAdvertisements from "./features/onlinePackage/components/ToursAdvertisements";
 import UmrahAdvertisements from "./features/onlinePackage/components/UmrahAdvertisements";
 import Profile from "./features/Profile";
@@ -110,7 +110,7 @@ function App() {
               <ToursAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/package/detail/:packageName">
-              <PackageDetailCardM3li />
+              <AdvertisementDetail />
             </PublicRoute>
             <PrivateRoute path="/caravans">
               <Dashboard />

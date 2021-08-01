@@ -113,7 +113,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     delete values["passportImage"];
-    alert(JSON.stringify(values));
     switch (mode) {
       case "create":
         createTraveller({ path: `customer/${packageName}`, data: values });
@@ -266,6 +265,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const dateHelperText = (incomingDate) => {
+    return `${moment(incomingDate).format("dddd DD-MMM-yyyy")} ${moment(
+      incomingDate
+    ).fromNow()}`;
   };
 
   return (
@@ -458,7 +463,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
-                            {values.passIssueDt}
                             <InputControl
                               name="passIssueDt"
                               label={trans("reservation.passport-issue-date")}
@@ -467,13 +471,13 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 Boolean(errors.passIssueDt)
                               }
                               helperText={
-                                touched.passIssueDt && errors.passIssueDt
+                                (touched.passIssueDt && errors.passIssueDt) ||
+                                dateHelperText(values.passIssueDt)
                               }
                               type="date"
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
-                            {values.passExpireDt}
                             <InputControl
                               name="passExpireDt"
                               label={trans("reservation.passport-expire-date")}
@@ -483,13 +487,13 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 Boolean(errors.passExpireDt)
                               }
                               helperText={
-                                touched.passExpireDt && errors.passExpireDt
+                                (touched.passExpireDt && errors.passExpireDt) ||
+                                dateHelperText(values.passExpireDt)
                               }
                               type="date"
                             />
                           </Grid>
                           <Grid item xs={12} md="6">
-                            {values.birthDate}
                             <InputControl
                               name="birthDate"
                               label={trans("reservation.birth-date")}
@@ -497,7 +501,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               error={
                                 touched.birthDate && Boolean(errors.birthDate)
                               }
-                              helperText={touched.birthDate && errors.birthDate}
+                              helperText={
+                                (touched.birthDate && errors.birthDate) ||
+                                dateHelperText(values.birthDate)
+                              }
                               type="date"
                             />
                           </Grid>

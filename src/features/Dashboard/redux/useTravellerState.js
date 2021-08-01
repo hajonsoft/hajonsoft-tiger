@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { travellerSlice } from '../../../redux/reducer';
 
-// Using reducer and state from src\redux\reducer.ts  (^P)
+// Using reducer and state from src\redux\reducer.js  (^P)
 const usePackageState = () => {
 
     const dispatch = useDispatch();

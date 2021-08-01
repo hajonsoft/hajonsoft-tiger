@@ -1,13 +1,13 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
-import { Field } from "formik";
+import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Select from "@material-ui/core/Select";
+import { Field } from "formik";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +53,7 @@ const InputControl = (props) => {
         {label}
       </InputLabel>
       <Grid container alignItems="center">
-        <Grid item xs={"12"}>
+        <Grid item xs={12}>
           <Field
             as={options ? Select : OutlinedInput}
             className={classes.container}
@@ -83,7 +83,7 @@ const InputControl = (props) => {
         </Grid>
       </Grid>
       <FormHelperText error={!helperText || !!error}>
-        {error && helperText ? helperText : null}
+        {helperText}
       </FormHelperText>
     </FormControl>
   );

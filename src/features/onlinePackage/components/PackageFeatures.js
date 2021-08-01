@@ -1,85 +1,99 @@
-import { Box, Button, Grid, Paper, Typography } from '@material-ui/core'
-import moment from 'moment'
-import React from 'react'
-import { useHistory } from 'react-router';
+import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
+import moment from "moment";
+import React from "react";
+import { useHistory } from "react-router";
 const PackageFeatures = ({ detail }) => {
+  const history = useHistory();
 
-    const history = useHistory()
+  return (
+    <Paper
+      elevation={3}
+      style={{
+        paddingTop: "1rem",
+        paddingBottom: "1rem",
+        backgroundColor: "#e8f5e9",
+      }}
+    >
+      <Typography variant="h6" align="center">
+        {detail.name}
+      </Typography>
+      <Typography
+        variant="body1"
+        align="center"
+        gutterBottom
+      >{`${detail.headline}`}</Typography>
+      <Box p={2}>
+        <Typography>{detail.description}</Typography>
+      </Box>
+      <Box p={2}>
+        <Typography variant="h6">Features</Typography>
+        <div>
+          <ul>
+            <li>
+              {detail.departureAirport &&
+                `Departure from: ${detail.departureAirport}`}
+            </li>
+            <li>
+              {detail.departureDate &&
+                `Departure date: ${moment(detail.departureDate).format(
+                  "dddd DD-MMM-YYYY"
+                )} ${moment(detail.departureDate).fromNow()}`}
+            </li>
+            <li>
+              {detail.departureFlight &&
+                `Departure Flight: ${detail.departureFlight}`}
+            </li>
+            <li>
+              {detail.arrivalAirport && `Arrival To: ${detail.arrivalAirport}`}
+            </li>
+            <li>
+              {detail.returnAirport && `Rebound from: ${detail.returnAirport}`}
+            </li>
+            <li>
+              {detail.returnFlight && `Rebound flight: ${detail.returnFlight}`}
+            </li>
+            <li>
+              {detail.returnDate &&
+                `Rebound date: ${moment(detail.returnDate).format(
+                  "dddd DD-MMM-YYYY"
+                )} ${moment(detail.returnDate).fromNow()}`}
+            </li>
+            <li>
+              {detail.arrivalHotel &&
+                `Accommodation upon arrival: ${detail.arrivalHotel}`}
+            </li>
+            <li>
+              {detail.departureHotel &&
+                `Accommodation afterwards: ${detail.departureHotel}`}
+            </li>
+          </ul>
+        </div>
+      </Box>
 
-    const arrivalHotelText = () => {
-        const checkoutDate = moment(detail.checkoutDate);
-        if (!checkoutDate.isValid()) {
-            return 'Call for arrival details'
-        }
-        const arrivalDate = moment(detail.arrivalDate);
-        if (!arrivalDate.isValid()) {
-            return 'Call for arrival details'
-        }
-        const nights = checkoutDate.diff(arrivalDate, 'days') + 1;
-        if (detail.arrivalAirport !== 'JED' && detail.arrivalAirport !== 'MED') {
-            return `${nights} nights in arrival city`
-        }
-        return `${nights} nights in ${detail.arrivalAirport === 'JED' ? 'Makkah' : 'Madinah'}`
-    }
+      <Grid container spacing={2} justify="center">
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ textTransform: "none" }}
+            onClick={() => history.push("/reserve/" + detail.name)}
+          >
+            Book Now
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ textTransform: "none" }}
+            onClick={() => history.push("/reserve/Enquire-" + detail.name)}
+          >
+            Enquire
+          </Button>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
 
-    const returnHotelText = () => {
-        const checkoutDate = moment(detail.checkoutDate);
-        if (!checkoutDate.isValid()) {
-            return 'Call for return details'
-        }
-        const returnDate = moment(detail.returnDate);
-        if (!returnDate.isValid()) {
-            return 'Call for return details'
-        }
-        const nights = returnDate.diff(checkoutDate, 'days');
-        if (detail.arrivalAirport !== 'JED' && detail.arrivalAirport !== 'MED') {
-            return `${nights} nights in departure city`
-        }
-        return `${nights} nights in ${detail.arrivalAirport === 'JED' ? 'Madinah' : 'Makkah'}`
-    }
-
-    const totalDurationText = () => {
-        // Total of 15 days
-        const returnDate = moment(detail.returnDate);
-        if (!returnDate.isValid()) {
-            return 'Call for total nights'
-        }
-        const arrivalDate = moment(detail.arrivalDate);
-        if (!arrivalDate.isValid()) {
-            return 'Call for total nights'
-        }
-        const nights = returnDate.diff(arrivalDate, 'days') + 1;
-        return `Total of ${nights} days`
-    }
-    return (
-        <Paper elevation={3} style={{ paddingTop: '1rem', paddingBottom: '1rem', backgroundColor: "#e8f5e9" }}>
-            <Typography variant="h6" align="center" >{detail.name}</Typography>
-            <Typography variant="body1" align="center" gutterBottom >{`${detail.headline}`}</Typography>
-            <Typography variant="body2" color="textSecondary" align="center" >{`${detail.quadPrice} 4 persons/room`}</Typography>
-
-            <Box p={2}>
-                <Typography variant="h6">Features</Typography>
-                <div>
-                    <ul>
-                        <li>{`Round trip air fare ${detail.departureAirport}/${detail.arrivalAirport}/${detail.returnAirport}/${detail.departureAirport}`}</li>
-                        <li>{arrivalHotelText()}</li>
-                        <li>{returnHotelText()}</li>
-                        <li>{totalDurationText()}</li>
-                    </ul>
-                </div>
-            </Box>
-
-            <Grid container spacing={2} justify="center">
-                <Grid item>
-                    <Button variant="contained" color="primary" style={{ textTransform: 'none' }} onClick={()=> history.push('/reserve/' + detail.name)}>Book Now</Button>
-                </Grid>
-                <Grid item>
-                    <Button variant="outlined" color="primary" style={{ textTransform: 'none' }} onClick={()=> history.push('/reserve/Enquire-' + detail.name)}>Enquire</Button>
-                </Grid>
-            </Grid>
-        </Paper>
-
-    )
-}
-
-export default PackageFeatures
+export default PackageFeatures;

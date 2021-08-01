@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Animated } from "react-animated-css";
 import firebase from "../../../firebaseapp";
 import DoveHeader from "../../Header/DoveHeader";
-import AdvertisemntCard from "./AdvertisementCard";
+import AdvertisementCard from "./AdvertisementCard";
 
 const UmrahAdvertisements = () => {
   const [onlinePackages, setOnlinePackages] = useState([]);
@@ -43,7 +43,7 @@ const UmrahAdvertisements = () => {
               isCurrent(p) && (
                 <Grid item xs={12} lg={4} sm={12} md={6}>
                   <Animated animationIn="bounceInLeft" isVisible={true}>
-                    <AdvertisemntCard detail={p} key={p.name} index={i} />
+                    <AdvertisementCard detail={p} key={p.name} index={i} />
                   </Animated>
                 </Grid>
               )

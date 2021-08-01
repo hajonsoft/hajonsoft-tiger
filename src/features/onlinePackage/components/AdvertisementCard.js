@@ -11,7 +11,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { packageImage } from "../../../util/packageImage";
 
-const AdvertisemntCard = ({ detail, index }) => {
+const AdvertisementCard = ({ detail, index }) => {
   const history = useHistory();
   if (!detail) {
     return null;
@@ -30,7 +30,7 @@ const AdvertisemntCard = ({ detail, index }) => {
           title={detail.name}
         />
         <CardContent>
-          <Typography variant="body1">
+          <Typography variant="body1" noWrap style={{maxLines: 4}}>
             {detail.description || "Call for details."}
           </Typography>
         </CardContent>
@@ -61,4 +61,4 @@ const AdvertisemntCard = ({ detail, index }) => {
   );
 };
 
-export default AdvertisemntCard;
+export default AdvertisementCard;
