@@ -109,9 +109,11 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const handleSaveAndNext = async (values) => {
     await handleSubmitForm(values, null, onNext);
   };
+
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     delete values["passportImage"];
+    alert(JSON.stringify(values));
     switch (mode) {
       case "create":
         createTraveller({ path: `customer/${packageName}`, data: values });
