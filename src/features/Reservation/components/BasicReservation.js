@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
+import ConfirmReservation from "./ConfirmReservation";
 import InputControl from "./InputControl";
 
 const useStyles = makeStyles((theme) => ({
@@ -241,34 +242,7 @@ const BasicReservation = () => {
         </Grid>
       )}
       {reservationNumber && (
-        <div
-          style={{
-            backgroundColor: "white",
-            width: "100%",
-            height: "100vh",
-            paddingTop: "4rem",
-          }}
-        >
-          <Grid
-            container
-            direction="column"
-            spacing={4}
-            justify="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <ExploreIcon fontSize="large" style={{ color: "#4caf50" }} />
-            </Grid>
-            <Grid item>
-              <Typography variant="h5">{reservationNumber}</Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="h4">
-                {trans("reservation.completed")}
-              </Typography>
-            </Grid>
-          </Grid>
-        </div>
+        <ConfirmReservation reservationNumber={reservationNumber} />
       )}
     </div>
   );

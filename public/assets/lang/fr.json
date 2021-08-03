@@ -34,6 +34,7 @@
 	"reservation.submit": "réserve",
 	"reservation.submitting": "Soumission...",
 	"reservation.telephone": "Téléphone",
-	"reservation.completed": "Réservation reçue. Merci",
-	"reservation.upload-your-passport": "Téléchargez votre passeport"
+	"reservation.completed": "Je vous remercie de votre réservation",
+	"reservation.upload-your-passport": "Téléchargez votre passeport",
+	"reservation.completed-subheader" : "Nous vous contacterons pour plus de détails"
 }
