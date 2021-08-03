@@ -9,6 +9,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "src/features/Reservation/components/BasicReservation.js",
+			"bookmarks": [
+				{
+					"line": 259,
+					"column": 41,
+					"label": ""
+				}
+			]
 		}
 	]
 }
