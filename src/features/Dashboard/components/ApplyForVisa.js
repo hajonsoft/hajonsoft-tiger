@@ -225,9 +225,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       <DialogTitle>{`Apply for visa`}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          HAJonSoft uses browser automation to connect to service providers. To
-          apply for visa please follow the steps below or watch the getting
-          started course
+          HAJonSoft uses Hawk technology to connect to service providers. If you are new, you can select "visa by proxy". or <a href="https://hajonsoft.talentlms.com/unit/view/id:2069">Take Course</a>
         </DialogContentText>
 
         <div className={classes.root}>
@@ -432,23 +430,20 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 spacing={2}
               >
                 <Grid item md={12}>
-                  <Box p={2}>
                     <Typography variant="body1">
-                      In order to create a "visa by proxy" request, start by
-                      downloading bundle file then create a community support
-                      Tikcet. -OR-
+                      To create a "visa by proxy" Ticket, start by
+                      downloading the bundle file first. To use Hawk or to install it <a href="https://meetings.hubspot.com/haj-onsoft">schedule a meeting</a> 
                     </Typography>
-                  </Box>
-                  <Box p={2}>
-                    <Typography variant="body1">
-                      Start Hawk and upload the bundle file immediately.
+                  <Box style={{textAlign: 'right', width: '100%'}}>
+                    <Typography variant="body2" align="right">
+                      Useful links
                       <a
                         style={{ marginLeft: "2rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://nodejs.org/"
                       >
-                        Download NodeJs
+                        NodeJs
                       </a>
                       <a
                         style={{ marginLeft: "1rem" }}
@@ -456,7 +451,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                         rel="noopener noreferrer"
                         href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                       >
-                        Download Hawk
+                        Hawk
                       </a>
                     </Typography>
                   </Box>
