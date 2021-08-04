@@ -40,11 +40,11 @@ const helpCards = [
   {
     title: "COMMUNITY SUPPORT",
     linkElement: (
-      <a href="https://via.placeholder.com/800x600?text=Coming...Soon...">Community support</a>
+      <a href="https://on.spiceworks.com/">Support Admin</a>
     ),
     icon: <FavoriteBorderOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
-      "Community support is available by directly contacting a member of our community. This member already agreed to offer his/her services free of charge or at an agreed fee. Click here to view ",
+      "visa by proxy tickets does not cover any payments to provider. You should however audit and verify all data before proceeding with payment. ",
   },
   {
     title: "VIDEO LIBRARY",
