@@ -143,7 +143,7 @@ const validationSchema = yup.object({
     .required("phone number is required"),
 });
 
-const FullReservation = () => {
+const FullReservation = ({ openSuccessModal, isModalOpen }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
   let { packageName } = useParams();
@@ -207,6 +207,7 @@ const FullReservation = () => {
     });
 
     setReservationNumber(reservationResult.key);
+    openSuccessModal()
   };
 
   return (
@@ -595,7 +596,7 @@ const FullReservation = () => {
         </Grid>
       )}
 
-      {reservationNumber && (
+      {reservationNumber && !isModalOpen && (
         <div
           style={{
             backgroundColor: "white",
