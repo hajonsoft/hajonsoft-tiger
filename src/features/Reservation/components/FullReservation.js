@@ -19,6 +19,7 @@ import * as yup from "yup";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
+import ConfirmReservation from "./ConfirmReservation";
 import InputControl from "./InputControl";
 
 const storage = firebase.storage();

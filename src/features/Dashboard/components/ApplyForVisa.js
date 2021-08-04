@@ -225,9 +225,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       <DialogTitle>{`Apply for visa`}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          HAJonSoft uses browser automation to connect to service providers. To
-          apply for visa please follow the steps below or watch the getting
-          started course
+          HAJonSoft uses Hawk technology to connect to service providers. If you are new, you can select "visa by proxy". or <a href="https://hajonsoft.talentlms.com/unit/view/id:2069">Take Course</a>
         </DialogContentText>
 
         <div className={classes.root}>
@@ -247,14 +245,12 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
               <Grid container justify="space-between">
                 <Grid items md={6}>
                   <Button onClick={() => setSelectedTravellers(travellers)}>
-                    {" "}
-                    Select All{" "}
+                    Select All
                   </Button>
                 </Grid>
                 <Grid items md={6} container justify="flex-end">
                   <Button onClick={() => setSelectedTravellers([])}>
-                    {" "}
-                    Deselect All{" "}
+                    Deselect All
                   </Button>
                 </Grid>
                 {travellers &&
@@ -419,11 +415,11 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 3: Download and Send
+                Step 3: Bundle or Send
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                Download travellers in one file and start sending to the
-                selected service provider
+                Bundle passengers and provider info in one file. Upload using
+                Hawk or create "visa by proxy" Ticket
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -434,26 +430,29 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 spacing={2}
               >
                 <Grid item md={12}>
-                  <Box p={2}>
                     <Typography variant="body1">
-                      To send travellers to a service provider. You must have{" "}
+                      To create a "visa by proxy" Ticket, start by
+                      downloading the bundle file first. To use Hawk or to install it <a href="https://meetings.hubspot.com/haj-onsoft">schedule a meeting</a> 
+                    </Typography>
+                  <Box style={{textAlign: 'right', width: '100%'}}>
+                    <Typography variant="body2" align="right">
+                      Useful links
                       <a
+                        style={{ marginLeft: "2rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://nodejs.org/"
                       >
                         NodeJs
-                      </a>{" "}
-                      and{" "}
+                      </a>
                       <a
+                        style={{ marginLeft: "1rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                       >
-                        HAJonSoft Hawk
-                      </a>{" "}
-                      installed. To install NodeJs and Hawk please contact
-                      HAJonSoft support.
+                        Hawk
+                      </a>
                     </Typography>
                   </Box>
                 </Grid>
@@ -464,19 +463,19 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 1 (Required)"
-                      subheader={downloadFileName}
+                      title="Step 1 [Bundle]"
+                      subheader={downloadFileName || "Required"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Download comprehensive traveller data into one file JSON
-                        formatted ready to be submitted to any service provider
+                        Download data bundle file to upload using Hawk or for
+                        "visa by proxy"
                       </Typography>
                     </CardContent>
                     <CardActions>
                       {!downloading && (
                         <Button onClick={handleDownloadZipFileClick}>
-                          Download zip file
+                          Download file
                         </Button>
                       )}
                       {downloading && (
@@ -497,14 +496,13 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 (Option 1)"
-                      subheader={downloadFileName}
+                      title="Step 2 [Hawk]"
+                      subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Once traveller data file has been downloaded. Choose
-                        this option to start Hawk. Hawk is a desktop application
-                        able to send the downloaded file to a service provider
+                        Hawk uploads a bundle file immediately to the service
+                        provider. You can use Hawk manual mode to customize
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -512,7 +510,10 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                         disabled={!downloadFileName}
                         onClick={handleSendDownloadedFile}
                       >
-                        {`Start Send`}
+                        {`Upload Automatic`}
+                      </Button>
+                      <Button onClick={handleOpenHawk}>
+                        {`Upload Manual`}
                       </Button>
                     </CardActions>
                   </Card>
@@ -524,18 +525,19 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 (Option 2)"
-                      subheader={downloadFileName}
+                      title="Step 2 [visa by proxy]"
+                      subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Choose this option to start Hawk desktop application and
-                        perform manual steps. This is an advanced option. If
-                        Hawk did not start restart Hawk setup
+                        We use spicework to manage "visa by proxy" tickets. You
+                        may be required to authenticate.
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={handleOpenHawk}>start hawk</Button>
+                      <Button href="https://hajonsoft.on.spiceworks.com/portal">
+                        Create "visa by proxy" Ticket
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>
