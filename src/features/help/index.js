@@ -40,11 +40,11 @@ const helpCards = [
   {
     title: "COMMUNITY SUPPORT",
     linkElement: (
-      <a href="https://on.spiceworks.com/">Support Admin</a>
+      <span> <a href="https://hajonsoft.on.spiceworks.com/portal">Tickets</a><span> or </span><a href="https://hajonsoft.on.spiceworks.com/portal">join the community</a></span>
     ),
     icon: <FavoriteBorderOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
-      "visa by proxy tickets does not cover any payments to provider. You should however audit and verify all data before proceeding with payment. ",
+      "visa by proxy service does not cover payments to a third party provider. You are the responsible verifier to the data. Track ",
   },
   {
     title: "VIDEO LIBRARY",
