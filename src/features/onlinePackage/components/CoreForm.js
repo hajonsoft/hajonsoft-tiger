@@ -16,10 +16,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
 import { eventsNearby, todayHijraDate } from "../../../util/hijri";
-import CoreDateField from "./CoreDateField";
-import CoreTextField from "./CoreTextField";
 import Gender from "./CustomerGender";
-import PackageDetail from "./PackageDetail";
 import InputControl from "../../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
