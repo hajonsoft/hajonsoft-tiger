@@ -3,7 +3,7 @@ var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
 var moment = require("moment");
-const {nationalities} = require("../data/nationality");
+const { nationalities } = require("../data/nationality");
 
 function getNationality(code) {
   const nat = nationalities.find((x) => x.code === code);
@@ -16,7 +16,7 @@ async function getZipEntries(file) {
   return new Promise(async (resolve, reject) => {
     let files = [];
     let zip = await jszip.loadAsync(file);
-    zip.forEach(function(relativePath, zipEntry) {
+    zip.forEach(function (relativePath, zipEntry) {
       files.push(zipEntry);
     });
     resolve(files);
@@ -25,7 +25,7 @@ async function getZipEntries(file) {
 
 function ParseXmlString(xml) {
   return new Promise((resolve, reject) => {
-    parseString(xml, function(err, result) {
+    parseString(xml, function (err, result) {
       resolve(result);
     });
   });
@@ -48,12 +48,12 @@ async function ParseZip(file) {
           mrz2 = xpath.find(json, "//field[@id='MRZ2']")[0]["$"].fieldvalue;
 
           const parsedData = parse([mrz1, mrz2]).fields;
-          record = {...record, ...parsedData};
+          record = { ...record, ...parsedData };
           record.codeLine = mrz1 + mrz2;
         } catch (er) {
           record.failed = true;
         }
-      } else if (entry.name.includes("VIZ_FACE")) {
+      } else if (entry.name.includes("VIZ_FACE")) { // TODO: Check there is no high quality photo available. If there is then add another else if for it
         let image = await entry.async("blob");
         record.image = image;
       } else if (entry.name.includes("image3")) {
@@ -92,7 +92,7 @@ function parseDetailsFromTxt(file) {
   });
 }
 
-async function getRecords(ComboFiles, ThreeMFiles) {
+async function getRecords(ComboFiles, threeMFiles) {
   return new Promise(async (resolve, reject) => {
     let records = [];
     for (let file of ComboFiles) {
@@ -100,24 +100,29 @@ async function getRecords(ComboFiles, ThreeMFiles) {
       record.id = file.name;
       records.push(record);
     }
-    for (let key of Object.keys(ThreeMFiles)) {
+    for (let key of Object.keys(threeMFiles)) {
       let record = {};
-      let detailsFile = ThreeMFiles[key].find((x) =>
+      let detailsFile = threeMFiles[key].find((x) =>
         x.name.includes("CODELINE")
       );
-      let imageFile = ThreeMFiles[key].find((x) =>
-        x.name.includes("IMAGEPHOTO")
+      let photo = threeMFiles[key].find((x) =>
+        x.name.includes("SCDG2_PHOTO")
       );
-      let threeMPassportImage = ThreeMFiles[key].find((x) =>
-      x.name.includes("IMAGEVIS")
-    );
+      if (!photo) {
+        photo = threeMFiles[key].find((x) =>
+          x.name.includes("IMAGEPHOTO")
+        );
+      }
+      let threeMPassportImage = threeMFiles[key].find((x) =>
+        x.name.includes("IMAGEVIS")
+      );
       if (detailsFile) {
         record = await parseDetailsFromTxt(detailsFile);
       } else {
         record.failed = true;
       }
-      if (imageFile) {
-        record.image = imageFile;
+      if (photo) {
+        record.image = photo;
       }
       if (threeMPassportImage) {
         record.passportImage = threeMPassportImage;
@@ -136,7 +141,7 @@ function formatRecord(record) {
     birthDate = birthDate.subtract(100, "years");
   }
   let passExpireDt = moment(record.expirationDate, "YYMMDD");
-const nationality = getNationality(record.nationality);
+  const nationality = getNationality(record.nationality);
   const formattedRecord = {
     name: record.firstName + " " + record.lastName,
     codeLine: record.codeLine,
