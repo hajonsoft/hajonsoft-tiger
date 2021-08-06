@@ -17,14 +17,16 @@ const hijraMonths = [
   ]
   
   const festivals = [
-    { names: ['New hijra year'], day: 1, month: 1 },
-    { names: ['Ashura', 'Crossing red sea'], day: 10, month: 1 },
-    { names: ['Profit Mohamed Birth'], day: 12, month: 3 },
+    { names: ['Hijri New Year'], day: 1, month: 1 },
+    { names: ['Ashura', 'Crossing The Red Sea'], day: 10, month: 1 },
+    { names: ['Messenger Birth'], day: 12, month: 3 },
     { names: ['Israa'], day: 27, month: 7 },
     { names: ['Mid Shaaban'], day: 15, month: 8 },
     { names: ['Ramadan'], day: 1, month: 9 },
-    { names: ['1 Shawwal'], day: 1, month: 10 },
-    { names: ['Hajj-Akbar'], day: 8, month: 12 },
+    { names: ['Badr'], day: 17, month: 9 },
+    { names: ['Shawwal','Fitr'], day: 1, month: 10 },
+    { names: ['Uhud'], day: 7, month: 10 },
+    { names: ['Adha'], day: 10, month: 12 },
   ]
   
   const eventsBefore = (inputDate = new Date())=> {
@@ -56,7 +58,7 @@ const hijraMonths = [
         output[1].feast = f;
       }
     })
-    return `${output[0].feast.names.join(',')} was ${output[0].daysBefore * -1} days ago`;
+    return `${output[0].feast.names.join(',')} ${output[0].daysBefore * -1} days ago`;
   }
 
   const eventsAfter = (inputDate = new Date())=> {
@@ -88,7 +90,7 @@ const hijraMonths = [
         output[1].feast = f;
       }
     })
-    return `${output[1].feast.names.join(',')} is in ${output[1].daysAfter} days `;
+    return `${output[1].feast.names.join(',')} in ${output[1].daysAfter} days `;
   }
   const eventsNearby = (inputDate) => {
   
@@ -120,7 +122,7 @@ const hijraMonths = [
         output[1].feast = f;
       }
     })
-    return `${output?.[0]?.feast?.names?.join(',')} was ${Math.abs(output?.[0]?.daysBefore)} days ago while ${output?.[1]?.feast?.names?.join(',')} is in ${output?.[1]?.daysAfter} days `;
+    return `${output?.[0]?.feast?.names?.join(',')} ${Math.abs(output?.[0]?.daysBefore)} days ago, ${output?.[1]?.feast?.names?.join(',')} in ${output?.[1]?.daysAfter} days `;
   }
 
   const todayHijraDate = ()=> {
