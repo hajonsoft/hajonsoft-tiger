@@ -77,6 +77,7 @@ const serviceProviders = [
 const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const classes = useStyles();
   const [expandedPanel, setExpandedPanel] = React.useState("");
+  const [pace, setPace] = React.useState(1.5);
   const [selectedTravellers, setSelectedTravellers] = React.useState(
     travellers
   );
@@ -140,6 +141,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   };
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
+    setDownloadFileName('');
+    const startTime = moment();
     const travellersData = getTravellersJSON(selectedTravellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
@@ -163,6 +166,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
+      var elabsed = (moment.duration(moment().diff(startTime)).asSeconds() / selectedTravellers.length).toFixed(1);
+      setPace(elabsed);
       setDownloading(false);
     });
   };
@@ -465,7 +470,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,94%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,90%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
@@ -474,7 +479,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Bundle files may include passwords and/or personal identifying information. Bundle creation time depends on number of travellers.
+                        {`Bundle file may include passwords and/or personal identifying information. Average bundle creation time depends on your speed ~= ${pace} seconds per traveller`}
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -497,7 +502,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,95%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
@@ -526,11 +531,11 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,99%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 [visa by proxy]"
+                      title="- OR - [visa by proxy]"
                       subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>
