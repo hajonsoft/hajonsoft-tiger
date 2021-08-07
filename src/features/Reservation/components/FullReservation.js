@@ -19,7 +19,6 @@ import * as yup from "yup";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
-import ConfirmReservation from "./ConfirmReservation";
 import InputControl from "./InputControl";
 
 const storage = firebase.storage();
@@ -144,7 +143,7 @@ const validationSchema = yup.object({
     .required("phone number is required"),
 });
 
-const FullReservation = () => {
+const FullReservation = ({ openSuccessModal, isModalOpen }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
   let { packageName } = useParams();
@@ -208,6 +207,7 @@ const FullReservation = () => {
     });
 
     setReservationNumber(reservationResult.key);
+    openSuccessModal()
   };
 
   return (
@@ -596,8 +596,38 @@ const FullReservation = () => {
         </Grid>
       )}
 
-      {reservationNumber && (
-        <ConfirmReservation reservationNumber={reservationNumber} />
+      {reservationNumber && !isModalOpen && (
+        <div
+          style={{
+            backgroundColor: "white",
+            width: "100%",
+            height: "100vh",
+            paddingTop: "4rem",
+          }}
+        >
+          <Grid
+            container
+            direction="column"
+            spacing={4}
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item>
+              <FlightTakeoffIcon
+                fontSize="large"
+                style={{ color: "#4caf50" }}
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant="h5">{reservationNumber}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h4">
+                {trans("reservation.completed")}
+              </Typography>
+            </Grid>
+          </Grid>
+        </div>
       )}
     </div>
   );
