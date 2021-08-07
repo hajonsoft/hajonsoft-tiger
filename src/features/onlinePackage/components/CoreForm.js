@@ -16,10 +16,8 @@ import moment from "moment";
 import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
 import { eventsNearby, todayHijraDate } from "../../../util/hijri";
-import CoreDateField from "./CoreDateField";
-import CoreTextField from "./CoreTextField";
 import Gender from "./CustomerGender";
-import PackageDetail from "./PackageDetail";
+import InputControl from "../../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -29,14 +27,17 @@ const useStyles = makeStyles((theme) => ({
   cardTitle: {
     textAlign: "left",
     fontSize: "2em",
-    backgroundColor: "silver",
+    background: "white",
+    borderBottom: "1px solid #ccc",
+    marginBottom: "2rem",
   },
   actionsContainer: {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     padding: "10px",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderTop: "1px solid #ccc",
   },
   actionsContainerTopMain: {
     width: "50%",
@@ -123,21 +124,26 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                   alignItems="center"
                   alignContent="center"
                 >
-                  <CoreTextField
-                    value={values.name}
-                    name="name"
-                    label="Title"
-                    mode={mode}
-                    required={true}
-                    xsWidth={3}
-                  />
-                  <CoreTextField
-                    value={values.headline}
-                    name="headline"
-                    label="Subheader"
-                    mode={mode}
-                    xsWidth={3}
-                  />
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="name"
+                      label="Title"
+                      required
+                      value={values.name}
+                      error={touched.name && Boolean(errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="headline"
+                      label="Subheader"
+                      required
+                      value={values.headline}
+                      error={touched.name && Boolean(errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
+                  </Grid>
                   <Gender
                     value={values.gender}
                     name="gender"
@@ -146,10 +152,16 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     xsWidth={6}
                     onChange={(e) => handleTripTypeChange(e)}
                   />
-                  <PackageDetail
-                    mode={mode}
-                    value={values.description || defaultDescription}
-                  />
+                  <Grid item xs={12}>
+                    <InputControl
+                      multiline
+                      name="description"
+                      label="Detail"
+                      value={values.description || defaultDescription}
+                      error={touched.description && Boolean(errors.description)}
+                      helperText={touched.description && errors.description}
+                    />
+                  </Grid>
                   <Grid item md={12}>
                     <Card>
                       <CardHeader title="Flight" />
@@ -160,77 +172,130 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           alignItems="center"
                           spacing={2}
                         >
-                          <CoreTextField
-                            value={values.departureAirport || ""}
-                            name="departureAirport"
-                            mode={mode}
-                            xsWidth={2}
-                            label="Departure airport or city"
-                          />
-                          <CoreTextField
-                            value={values.departureFlight || ""}
-                            name="departureFlight"
-                            mode={mode}
-                            xsWidth={2}
-                            label="Departure flight or airline"
-                          />
-                          <CoreDateField
-                            setFieldValue={setFieldValue}
-                            value={values.departureDate}
-                            name="departureDate"
-                            onChange={(departureMoment) => {
-                              const departeMomentClone = moment(
-                                departureMoment
-                              );
-                              setFieldValue(
-                                "returnDate",
-                                departureMoment.add(20, "days").format()
-                              );
-                              setFieldValue(
-                                "checkoutDate",
-                                departeMomentClone.add(5, "days").format()
-                              );
-                            }}
-                            mode={mode}
-                            xsWidth={2}
-                          />
-                          <CoreTextField
-                            value={values.arrivalAirport || ""}
-                            name="arrivalAirport"
-                            mode={mode}
-                            xsWidth={2}
-                            label="Arrival airport or city"
-                          />
-
-                          <CoreTextField
-                            value={values.returnAirport}
-                            name="returnAirport"
-                            mode={mode}
-                            xsWidth={2}
-                            label="Rebound airport or city"
-                          />
-                          <CoreTextField
-                            value={values.returnFlight}
-                            name="returnFlight"
-                            mode={mode}
-                            xsWidth={2}
-                            label="Rebound flight or airline"
-                          />
-                          <CoreDateField
-                            setFieldValue={setFieldValue}
-                            value={values.returnDate}
-                            name="returnDate"
-                            mode={mode}
-                            onChange={() => {}}
-                            xsWidth={2}
-                            label="Rebound date"
-                          />
-                          <CoreTextField
-                            value={values.flightNotes}
-                            name="flightNotes"
-                            mode={mode}
-                            xsWidth={10}
-                          />
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              label="Departure airport or city"
+                              value={values.departureAirport || ""}
+                              name="departureAirport"
+                              required
+                              error={
+                                touched.departureAirport &&
+                                Boolean(errors.departureAirport)
+                              }
+                              helperText={
+                                touched.departureAirport &&
+                                errors.departureAirport
+                              }
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.departureFlight &&
+                                Boolean(errors.departureFlight)
+                              }
+                              helperText={
+                                touched.departureFlight &&
+                                errors.departureFlight
+                              }
+                              value={values.departureFlight || ""}
+                              name="departureFlight"
+                              label="Departure flight or airline"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.departureDate &&
+                                Boolean(errors.departureDate)
+                              }
+                              helperText={
+                                touched.departureDate && errors.departureDate
+                              }
+                              value={values.departureDate || ""}
+                              name="departureDate"
+                              label="Departure Date"
+                              type="date"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.arrivalAirport &&
+                                Boolean(errors.arrivalAirport)
+                              }
+                              helperText={
+                                touched.arrivalAirport && errors.arrivalAirport
+                              }
+                              value={values.arrivalAirport || ""}
+                              name="arrivalAirport"
+                              label="Arrival airport or city"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.returnAirport &&
+                                Boolean(errors.returnAirport)
+                              }
+                              helperText={
+                                touched.returnAirport && errors.returnAirport
+                              }
+                              value={values.returnAirport || ""}
+                              name="returnAirport"
+                              label="Rebound airport or city"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.returnFlight &&
+                                Boolean(errors.returnFlight)
+                              }
+                              helperText={
+                                touched.returnFlight && errors.returnFlight
+                              }
+                              value={values.returnFlight || ""}
+                              name="returnFlight"
+                              label="Rebound flight or airline"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.returnDate && Boolean(errors.returnDate)
+                              }
+                              helperText={
+                                touched.returnDate && errors.returnDate
+                              }
+                              value={values.returnDate || ""}
+                              name="returnDate"
+                              label="Rebound date"
+                              type="date"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputControl
+                              required
+                              error={
+                                touched.flightNotes &&
+                                Boolean(errors.flightNotes)
+                              }
+                              helperText={
+                                touched.flightNotes && errors.flightNotes
+                              }
+                              value={values.flightNotes || ""}
+                              name="flightNotes"
+                              label="Flight Notes"
+                              multiline
+                            />
+                          </Grid>
                         </Grid>
                       </CardContent>
                     </Card>
@@ -241,50 +306,90 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     container
                     spacing={2}
                     justify="space-between"
-                    alignItems="center"
+                    alignItems="flex-start"
                   >
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <Card>
                         <CardHeader title="Prices"></CardHeader>
                         <CardContent>
-                          <CoreTextField
-                            value={values.quadPrice || ""}
-                            name="quadPrice"
-                            mode={mode}
-                            xsWidth={12}
-                          />
-                          <CoreTextField
-                            value={values.triplePrice || ""}
-                            name="triplePrice"
-                            mode={mode}
-                            xsWidth={12}
-                          />
-                          <CoreTextField
-                            value={values.doublePrice || ""}
-                            name="doublePrice"
-                            mode={mode}
-                            xsWidth={12}
-                          />
-                          <CoreTextField
-                            value={values.fees || ""}
-                            name="fees"
-                            label="Fees not included"
-                            mode={mode}
-                            xsWidth={12}
-                          />
-                          <CoreTextField
-                            value={values.paymentLink || ""}
-                            name="paymentLink"
-                            mode={mode}
-                            xsWidth={12}
-                          />
+                          <Grid container xs={12} spacing={3}>
+                            <Grid item xs={12}>
+                              <InputControl
+                                required
+                                error={
+                                  touched.quadPrice && Boolean(errors.quadPrice)
+                                }
+                                helperText={
+                                  touched.quadPrice && errors.quadPrice
+                                }
+                                value={values.quadPrice || ""}
+                                name="quadPrice"
+                                label="Quad Price"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <InputControl
+                                required
+                                error={
+                                  touched.triplePrice &&
+                                  Boolean(errors.triplePrice)
+                                }
+                                helperText={
+                                  touched.triplePrice && errors.triplePrice
+                                }
+                                value={values.triplePrice || ""}
+                                name="triplePrice"
+                                label="Tripple Price"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <InputControl
+                                required
+                                error={
+                                  touched.doublePrice &&
+                                  Boolean(errors.doublePrice)
+                                }
+                                helperText={
+                                  touched.doublePrice && errors.doublePrice
+                                }
+                                value={values.doublePrice || ""}
+                                name="doublePrice"
+                                label="Double Price"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <InputControl
+                                required
+                                error={touched.fees && Boolean(errors.fees)}
+                                helperText={touched.fees && errors.fees}
+                                value={values.fees || ""}
+                                name="fees"
+                                label="Fees not included"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <InputControl
+                                required
+                                error={
+                                  touched.paymentLink &&
+                                  Boolean(errors.paymentLink)
+                                }
+                                helperText={
+                                  touched.paymentLink && errors.paymentLink
+                                }
+                                value={values.paymentLink || ""}
+                                name="paymentLink"
+                                label="Payment Link"
+                              />
+                            </Grid>
+                          </Grid>
                         </CardContent>
                       </Card>
                     </Grid>
 
                     <Grid
                       item
-                      xs={9}
+                      xs={8}
                       container
                       spacing={2}
                       justify="space-between"
@@ -294,28 +399,55 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                         <Card>
                           <CardHeader title="Accommodation"></CardHeader>
                           <CardContent>
-                            <CoreTextField
-                              value={values.arrivalHotel}
-                              name="arrivalHotel"
-                              label="Arrival hotel details [First stay]"
-                              mode={mode}
-                              xsWidth={12}
-                            />
-                            <CoreDateField
-                              setFieldValue={setFieldValue}
-                              value={values.checkoutDate}
-                              name="checkoutDate"
-                              onChange={() => {}}
-                              mode={mode}
-                              xsWidth={3}
-                            />
-                            <CoreTextField
-                              value={values.departureHotel}
-                              name="departureHotel"
-                              label="Rebound hotel details [Second stay]"
-                              mode={mode}
-                              xsWidth={12}
-                            />
+                            <Grid container xs={12} spacing={3}>
+                              <Grid item xs={12}>
+                                <InputControl
+                                  required
+                                  error={
+                                    touched.arrivalHotel &&
+                                    Boolean(errors.arrivalHotel)
+                                  }
+                                  helperText={
+                                    touched.arrivalHotel && errors.arrivalHotel
+                                  }
+                                  value={values.arrivalHotel || ""}
+                                  name="arrivalHotel"
+                                  label="Arrival hotel details [First stay]"
+                                />
+                              </Grid>
+                              <Grid item xs={12}>
+                                <InputControl
+                                  required
+                                  error={
+                                    touched.checkoutDate &&
+                                    Boolean(errors.checkoutDate)
+                                  }
+                                  helperText={
+                                    touched.checkoutDate && errors.checkoutDate
+                                  }
+                                  value={values.checkoutDate || ""}
+                                  name="checkoutDate"
+                                  label="Checkout Date"
+                                  type="date"
+                                />
+                              </Grid>
+                              <Grid item xs={12}>
+                                <InputControl
+                                  required
+                                  error={
+                                    touched.departureHotel &&
+                                    Boolean(errors.departureHotel)
+                                  }
+                                  helperText={
+                                    touched.departureHotel &&
+                                    errors.departureHotel
+                                  }
+                                  value={values.departureHotel || ""}
+                                  name="departureHotel"
+                                  label="Rebound hotel details [Second stay]"
+                                />
+                              </Grid>
+                            </Grid>
                           </CardContent>
                         </Card>
                       </Grid>
@@ -341,10 +473,10 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                         <Button
                           type="button"
                           disabled={isSubmitting}
-                          variant="contained"
-                          color="secondary"
+                          variant="outlined"
+                          color="default"
                           onClick={onClose}
-                          startIcon={<CancelOutlinedIcon />}
+                          startIcon={<CancelOutlinedIcon color="error" />}
                         >
                           Cancel
                         </Button>
@@ -354,7 +486,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           <Button
                             type="submit"
                             disabled={isSubmitting}
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             startIcon={<AddOutlinedIcon />}
                           >
@@ -367,7 +499,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           <Button
                             type="submit"
                             disabled={isSubmitting}
-                            variant="contained"
+                            variant="outlined"
                             color="secondary"
                             startIcon={<DeleteOutlinedIcon />}
                           >
@@ -380,7 +512,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           <Button
                             type="submit"
                             disabled={isSubmitting}
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             startIcon={<SaveOutlinedIcon />}
                           >

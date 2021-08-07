@@ -42,16 +42,16 @@ const checkDigitDiagram = {
   Z: 35,
 };
 
-export function createCodeline(traveller) {
+export function createCodeline(passenger) {
   let codeline1;
   let codeline2;
 
-  var names = nameParts(traveller.name);
+  var names = nameParts(passenger.name);
   for (var i = 0; i < names.Count; i++) {
     names[i] = names[i].Trim().Replace(" ", "<");
   }
 
-  var nationality = nationalities.find((p) => p.name === traveller.nationality);
+  var nationality = nationalities.find((p) => p.name === passenger.nationality);
   if (nationality != null) {
     codeline1 =
       "P<" +
@@ -65,23 +65,23 @@ export function createCodeline(traveller) {
       names[2];
     codeline1 = codeline1.padEnd(44, "<").replace(/[-]/g, "<");
     if (codeline1.length > 44) codeline1 = codeline1.substring(0, 44);
-    var icaoPassportNumber = traveller.passportNumber.padEnd(9, "<");
+    var icaoPassportNumber = passenger.passportNumber.padEnd(9, "<");
     codeline2 = icaoPassportNumber;
     codeline2 = codeline2 + checkDigit(icaoPassportNumber); //Check digit
-    if (traveller.birthDate != null)
+    if (passenger.birthDate != null)
       codeline2 =
         codeline2 +
         nationality.code +
-        moment(traveller.birthDate).format("YYMMDD") +
-        checkDigit(moment(traveller.birthDate).format("YYMMDD"));
+        moment(passenger.birthDate).format("YYMMDD") +
+        checkDigit(moment(passenger.birthDate).format("YYMMDD"));
 
-    codeline2 = codeline2 + traveller.gender.substring(0, 1);
+    codeline2 = codeline2 + passenger.gender.substring(0, 1);
 
-    if (traveller.passExpireDt != null)
+    if (passenger.passExpireDt != null)
       codeline2 =
         codeline2 +
-        moment(traveller.passExpireDt).format("YYMMDD") +
-        moment(traveller.passExpireDt).format("YYMMDD");
+        moment(passenger.passExpireDt).format("YYMMDD") +
+        moment(passenger.passExpireDt).format("YYMMDD");
 
     codeline2 = codeline2.padEnd(42, "<") + "0";
 
