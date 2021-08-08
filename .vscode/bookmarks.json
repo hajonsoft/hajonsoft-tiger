@@ -19,6 +19,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "src/features/customer/index.js",
+			"bookmarks": [
+				{
+					"line": 163,
+					"column": 27,
+					"label": ""
+				}
+			]
 		}
 	]
 }

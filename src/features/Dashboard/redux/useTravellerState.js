@@ -17,7 +17,7 @@ const usePackageState = () => {
     }, [])
 
     const fetchData = (fetchInfo) => {
-        dispatch(travellerSlice.actions.fetch(fetchInfo))
+        dispatch(travellerSlice.actions.fetch(fetchInfo || { path: 'customer' }))
     }
     const createData = (createInfo) => {
         dispatch(travellerSlice.actions.create(createInfo))
