@@ -77,6 +77,7 @@ const serviceProviders = [
 const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const classes = useStyles();
   const [expandedPanel, setExpandedPanel] = React.useState("");
+  const [pace, setPace] = React.useState(1.5);
   const [selectedTravellers, setSelectedTravellers] = React.useState(
     travellers
   );
@@ -140,6 +141,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   };
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
+    setDownloadFileName('');
+    const startTime = moment();
     const travellersData = getTravellersJSON(selectedTravellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
@@ -163,6 +166,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
+      var elabsed = (moment.duration(moment().diff(startTime)).asSeconds() / selectedTravellers.length).toFixed(1);
+      setPace(elabsed);
       setDownloading(false);
     });
   };
@@ -225,7 +230,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       <DialogTitle>{`Apply for visa`}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          HAJonSoft uses Hawk technology to connect to service providers. If you are new, you can select "visa by proxy". or <a href="https://hajonsoft.talentlms.com/unit/view/id:2069">Take Course</a>
+          HAJonSoft uses Hawk application to connect to travel service providers. If you are new or using MacOs, you can select "visa by proxy", use eagle or <a href="https://hajonsoft.talentlms.com/catalog/info/id:125">Take a Course</a>
         </DialogContentText>
 
         <div className={classes.root}>
@@ -415,11 +420,10 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 3: Bundle or Send
+                Step 3: Bundle and process
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                Bundle passengers and provider info in one file. Upload using
-                Hawk or create "visa by proxy" Ticket
+                Create a bundle for Hawk processing or create "visa by proxy" Ticket
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -431,8 +435,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
               >
                 <Grid item md={12}>
                     <Typography variant="body1">
-                      To create a "visa by proxy" Ticket, start by
-                      downloading the bundle file first. To use Hawk or to install it <a href="https://meetings.hubspot.com/haj-onsoft">schedule a meeting</a> 
+                      Bundle file is required for Hawk or "visa by proxy". To install Hawk  <a href="https://meetings.hubspot.com/haj-onsoft"> Schedule a meeting</a> 
                     </Typography>
                   <Box style={{textAlign: 'right', width: '100%'}}>
                     <Typography variant="body2" align="right">
@@ -453,13 +456,21 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                       >
                         Hawk
                       </a>
+                      <a
+                        style={{ marginLeft: "1rem" }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/hajonsoft/hajonsoft-eagle"
+                      >
+                        Eagle
+                      </a>
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,94%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,90%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
@@ -468,8 +479,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Download data bundle file to upload using Hawk or for
-                        "visa by proxy"
+                        {`Bundle file may include passwords and/or personal identifying information. Average bundle creation time depends on your speed ~= ${pace} seconds per traveller`}
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -492,7 +502,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,95%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
@@ -502,7 +512,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Hawk uploads a bundle file immediately to the service
-                        provider. You can use Hawk manual mode to customize
+                        provider. For MacOs we recommend eagle.
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -521,11 +531,11 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,99%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 [visa by proxy]"
+                      title="- OR - [visa by proxy]"
                       subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>

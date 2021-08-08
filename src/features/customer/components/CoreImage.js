@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
   pickImage: {
     position: "absolute",
-    top: "50%",
+    top: "80%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     color: "blue",
@@ -78,12 +78,12 @@ const CoreImage = ({ record, setImage }) => {
         <CardContent>
           <img
             src={url}
-            alt={"customer"}
+            alt={url}
             className={classes.imgContainer}
             style={{ display: url ? "block" : "none" }}
           ></img>
           <Link
-            href="#"
+            href={url}
             className={classes.pickImage}
             style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
             onClick={() => _fileInput.click()}

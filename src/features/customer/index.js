@@ -73,6 +73,7 @@ const Customers = () => {
   const {
     data: travellers,
     updateData: updateTraveller,
+    fetchData: fetchTravellers,
     loading,
     error,
   } = useTravellerState();
@@ -160,8 +161,10 @@ const Customers = () => {
               mode={state.mode}
               record={state.record}
               title={title}
-              onClose={() =>
+              onClose={() => {
                 setState((st) => ({ ...st, mode: "list", record: {} }))
+                fetchTravellers();
+              }
               }
               onNext={bringNext}
             />

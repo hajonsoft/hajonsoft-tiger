@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Basic({ packageName, onClose }) {
+function DropZone({ packageName, onClose }) {
   const classes = useStyles();
   const [imports, setImports] = useState({});
   const [isImported, setIsImported] = useState(false);
@@ -171,6 +171,7 @@ function Basic({ packageName, onClose }) {
                       onClick={() => {
                         setIsImported(false);
                         setImports({});
+                        onClose();
                       }}
                       startIcon={<RefreshOutlined />}
                     >
@@ -212,4 +213,4 @@ function Basic({ packageName, onClose }) {
   );
 }
 
-export default Basic;
+export default DropZone;
