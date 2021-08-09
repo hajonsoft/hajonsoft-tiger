@@ -49,15 +49,16 @@ const useStyles = makeStyles((theme) => ({
 
 const CRUDForm = ({ mode, record, title, onClose }) => {
   const classes = useStyles();
-  const { createData: createTraveller, deleteData: deleteTraveller } = useTravellerState();
+  const { createData: createPassenger, deleteData: deletePassenger } = useTravellerState();
 
   const handleSubmitForm = (values, actions) => {
     switch (mode) {
       case "create":
-        createTraveller({ path: `customer/${_.startCase(values.name)}`, traveller: { name: 'default' } })
+        createPassenger({ path: `customer/${_.startCase(values.name)}`, traveller: { name: 'default' } })
         break;
       case "delete":
-        deleteTraveller({ path: `customer/${values.name}` })
+        deletePassenger({ path: `customer/${values.name}` })
+        onClose();
         break;
 
       default:

@@ -11,13 +11,13 @@ const usePackageState = () => {
 
     useEffect(() => {
         if (Object.keys(data).length === 0) {
-            fetchData({ path: 'customer' });
+            fetchData({ path: '/customer' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchData = (fetchInfo) => {
-        dispatch(travellerSlice.actions.fetch(fetchInfo || { path: 'customer' }))
+        dispatch(travellerSlice.actions.fetch(fetchInfo || { path: '/customer' }))
     }
     const createData = (createInfo) => {
         dispatch(travellerSlice.actions.create(createInfo))
