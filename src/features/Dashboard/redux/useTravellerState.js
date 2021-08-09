@@ -11,7 +11,7 @@ const usePackageState = () => {
 
     useEffect(() => {
         if (Object.keys(data).length === 0) {
-            fetchData({ path: 'customer' });
+            fetchData({ path: '/customer' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

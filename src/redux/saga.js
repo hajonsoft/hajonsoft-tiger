@@ -66,7 +66,7 @@ function* deleteCaravanSaga(action) {
   try {
     yield call(travellerService.deleteTraveller, action.payload);
     yield put(travellerSlice.actions.deleteSuccess(action.payload));
-    yield put(travellerSlice.actions.fetch({ path: '/' + action.payload.path.split('/')[0] }));
+    yield put(travellerSlice.actions.fetch({path: '/customer'}));
   } catch (e) {
     yield put(travellerSlice.actions.fail(e.message));
   }

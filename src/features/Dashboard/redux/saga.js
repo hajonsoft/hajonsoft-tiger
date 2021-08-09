@@ -36,35 +36,35 @@ function* deleteVisaSystemsFlow() {
 function* retrieveCaravanSaga(action) {
   try {
     const result = yield call(travellerService.getTravellers, action.payload);
-    yield put(travellerService.actions.fetchSuccess(result));
+    yield put(travellerSlice.actions.fetchSuccess(result));
   } catch (e) {
-    yield put(travellerService.actions.fail(e.message));
+    yield put(travellerSlice.actions.fail(e.message));
   }
 }
 function* createCaravanSaga(action) {
   try {
     const result = yield call(travellerService.createTraveller, action.payload);
-    yield put(travellerService.actions.createSuccess({ ...result }));
-    yield put(travellerService.actions.fetch({path: '/customer'}));
+    yield put(travellerSlice.actions.createSuccess({ ...result }));
+    yield put(travellerSlice.actions.fetch({path: '/customer'}));
   } catch (e) {
-    yield put(travellerService.actions.fail(e.message));
+    yield put(travellerSlice.actions.fail(e.message));
   }
 }
 function* updateCaravanSaga(action) {
   try {
     yield call(travellerService.updateTraveller, action.payload);
-    yield put(travellerService.actions.updateSuccess(action.payload));
+    yield put(travellerSlice.actions.updateSuccess(action.payload));
   } catch (e) {
-    yield put(travellerService.actions.fail(e.message));
+    yield put(travellerSlice.actions.fail(e.message));
   }
 }
 function* deleteCaravanSaga(action) {
   try {
     yield call(travellerService.deleteSystem, action.payload);
-    yield put(travellerService.actions.deleteSuccess(action.payload));
-    yield put(travellerService.actions.fetch(action.payload.split('/')[0]));
+    yield put(travellerSlice.actions.deleteSuccess(action.payload));
+    yield put(travellerSlice.actions.fetch({path: '/' + action.payload.split('/')[0]}));
   } catch (e) {
-    yield put(travellerService.actions.fail(e.message));
+    yield put(travellerSlice.actions.fail(e.message));
   }
 }
 

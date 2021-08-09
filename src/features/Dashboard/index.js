@@ -1,5 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
+import {
+  Button, CircularProgress, Grid, Typography, DialogContentText,
+  Dialog,
+  DialogTitle,
+  DialogContent, DialogActions,
+} from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
 import NearMeIcon from '@material-ui/icons/NearMe';
@@ -60,7 +65,7 @@ const tableIcons = {
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [filteredCaravans, setFilteredCaravans] = useState({});
-  const { data: caravans, loading, error, fetchData: fetchCaravans } = useTravellerState();
+  const { data: caravans, loading, error, fetchData: fetchCaravans, deleteData: deleteCaravan } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
@@ -127,6 +132,11 @@ const Dashboard = () => {
     }
   };
 
+  const handleOnConfirmDelete = () => {
+    deleteCaravan({ path: `/customer/${state.record.name}` });
+    setState((st) => ({ ...st, mode: "list", record: {} }))
+  }
+
   return (
     <React.Fragment>
       <div
@@ -149,7 +159,7 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           )}
-          {!loading && state.mode !== "list" && (
+          {!loading && state.mode !== "list" && state.mode !== "delete" && (
             <CRUDForm
               mode={state.mode}
               record={state.record}
@@ -248,6 +258,34 @@ const Dashboard = () => {
         caravan={state?.record?.name}
         travellers={filteredCaravans[state?.record?.name]}
       />
+      <Dialog
+        open={state.mode === 'delete'}
+        onClose={() => setState((st) => ({
+          ...st,
+          mode: "list",
+          record: {},
+        }))}
+      >
+        <DialogTitle >are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText >
+            {`You want to delete ${state.record.name} caravan? This is a permenant deletion and can not be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setState((st) => ({
+            ...st,
+            mode: "list",
+            record: {},
+          }))} color="error" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={() => handleOnConfirmDelete()} style={{ backgroundColor: "#ef5350", color: "#fff" }} variant="contained" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </React.Fragment>
   );
 };
