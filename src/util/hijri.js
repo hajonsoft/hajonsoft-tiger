@@ -58,7 +58,7 @@ const hijraMonths = [
         output[1].feast = f;
       }
     })
-    return `${output[0].feast.names.join(',')} ${output[0].daysBefore * -1} days ago`;
+    return `${output?.[0]?.feast?.names?.join(',')} ${output?.[0]?.daysBefore * -1} days ago`;
   }
 
   const eventsAfter = (inputDate = new Date())=> {
