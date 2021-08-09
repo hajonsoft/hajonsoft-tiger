@@ -54,20 +54,20 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
-  ApplyVisa: forwardRef((props, ref) => <NearMeIcon { ...props } ref={ref} /> )
+  ApplyVisa: forwardRef((props, ref) => <NearMeIcon {...props} ref={ref} />)
 };
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [filteredTravellers, setFilteredTravellers] = useState({});
-  const { data: travellers, loading, error } = useTravellerState();
+  const [filteredCaravans, setFilteredCaravans] = useState({});
+  const { data: caravans, loading, error, fetchData: fetchCaravans } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
 
   useEffect(() => {
     if (!loading) {
-      setFilteredTravellers(travellers);
+      setFilteredCaravans(caravans);
     }
   }, [loading]);
 
@@ -95,8 +95,8 @@ const Dashboard = () => {
       const stats = {};
       let total = 0;
 
-      for (const grp in travellers) {
-        const groupResult = travellers[grp].filter((traveller) =>
+      for (const grp in caravans) {
+        const groupResult = caravans[grp].filter((traveller) =>
           moment(traveller.passExpireDt).isBefore(expireDate)
         );
         if (groupResult.length) {
@@ -154,7 +154,10 @@ const Dashboard = () => {
               mode={state.mode}
               record={state.record}
               title={title}
-              onClose={() => setState((st) => ({ ...st, mode: "list" }))}
+              onClose={() => {
+                setState((st) => ({ ...st, mode: "list" }));
+                fetchCaravans();
+              }}
             />
           )}
           {!loading && state.mode === "list" && (
@@ -165,7 +168,7 @@ const Dashboard = () => {
               columns={[
                 {
                   title: "Name",
-                  field: "name",      
+                  field: "name",
                   render: (rowData) => (
                     <Button
                       href=""
@@ -183,11 +186,11 @@ const Dashboard = () => {
                 },
               ]}
               data={
-                filteredTravellers
-                  ? Object.keys(filteredTravellers).map((v) => ({
-                      name: v,
-                      total: filteredTravellers[v].length,
-                    }))
+                filteredCaravans
+                  ? Object.keys(filteredCaravans).map((v) => ({
+                    name: v,
+                    total: filteredCaravans[v].length,
+                  }))
                   : []
               }
               detailPanel={(rowData) => <PackageDetail data={rowData} />}
@@ -243,7 +246,7 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={state?.record?.name}
-        travellers={filteredTravellers[state?.record?.name]}
+        travellers={filteredCaravans[state?.record?.name]}
       />
     </React.Fragment>
   );
