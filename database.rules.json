@@ -1,5 +1,11 @@
 {
   "rules": {
+    "customer": {
+      "online": {
+        ".read" : true,
+          ".write": true
+      }
+    },
     ".read": "auth != null && (auth.uid == 'ZDq8HnHTGoOzU45HgTEs8MHNq7j2' || auth.uid == 'JcM9ey9R3KbC6QchwlxNVvwqkHJ3')",
     ".write": "auth != null && (auth.uid == 'ZDq8HnHTGoOzU45HgTEs8MHNq7j2' || auth.uid == 'JcM9ey9R3KbC6QchwlxNVvwqkHJ3')",
     "$uid": {

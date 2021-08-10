@@ -1,13 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  Button, CircularProgress, Grid, Typography, DialogContentText,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  DialogContentText,
   Dialog,
   DialogTitle,
-  DialogContent, DialogActions,
+  DialogContent,
+  DialogActions,
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
-import NearMeIcon from '@material-ui/icons/NearMe';
+import NearMeIcon from "@material-ui/icons/NearMe";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -59,13 +64,19 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
-  ApplyVisa: forwardRef((props, ref) => <NearMeIcon {...props} ref={ref} />)
+  ApplyVisa: forwardRef((props, ref) => <NearMeIcon {...props} ref={ref} />),
 };
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [filteredCaravans, setFilteredCaravans] = useState({});
-  const { data: caravans, loading, error, fetchData: fetchCaravans, deleteData: deleteCaravan } = useTravellerState();
+  const {
+    data: caravans,
+    loading,
+    error,
+    fetchData: fetchCaravans,
+    deleteData: deleteCaravan,
+  } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
@@ -134,8 +145,8 @@ const Dashboard = () => {
 
   const handleOnConfirmDelete = () => {
     deleteCaravan({ path: `/customer/${state.record.name}` });
-    setState((st) => ({ ...st, mode: "list", record: {} }))
-  }
+    setState((st) => ({ ...st, mode: "list", record: {} }));
+  };
 
   return (
     <React.Fragment>
@@ -171,81 +182,98 @@ const Dashboard = () => {
             />
           )}
           {!loading && state.mode === "list" && (
-            <MaterialTable
-              onSearchChange={handleOnSearchChange}
-              icons={tableIcons}
-              title={<Title />}
-              columns={[
-                {
-                  title: "Name",
-                  field: "name",
-                  render: (rowData) => (
-                    <Button
-                      href=""
-                      color="primary"
-                      onClick={() => history.push(`${rowData.name}/customers`)}
-                      style={{ textTransform: "none" }}
-                    >
-                      {rowData.name}{" "}
-                    </Button>
-                  ),
-                },
-                {
-                  title: "Total",
-                  field: "total",
-                },
-              ]}
-              data={
-                filteredCaravans
-                  ? Object.keys(filteredCaravans).map((v) => ({
-                    name: v,
-                    total: filteredCaravans[v].length,
-                  }))
-                  : []
-              }
-              detailPanel={(rowData) => <PackageDetail data={rowData} />}
-              actions={[
-                {
-                  icon: tableIcons.Add,
-                  tooltip: `Add ${title}`,
-                  isFreeAction: true,
-                  onClick: (event) =>
-                    setState((st) => ({ ...st, mode: "create" })),
-                },
-                {
-                  icon: () => <tableIcons.ApplyVisa color="primary" />,
-                  tooltip: `Apply for visa`,
-                  onClick: (event, rowData) => {
-                    setApplyForVisaOpen(true);
-                    setState((st) => ({ ...st, record: rowData }));
+            <>
+              <Grid container spacing={2} style={{ padding: "1rem" }}>
+                <Grid item>
+                  <Typography color="textPrimary">Upcoming</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">Past</Typography>
+                </Grid>
+              </Grid>
+              <MaterialTable
+                onSearchChange={handleOnSearchChange}
+                icons={tableIcons}
+                title={<Title />}
+                columns={[
+                  {
+                    title: "Name",
+                    field: "name",
+                    render: (rowData) => (
+                      <Button
+                        href=""
+                        color="primary"
+                        onClick={() =>
+                          history.push(`${rowData.name}/customers`)
+                        }
+                        style={{ textTransform: "none" }}
+                      >
+                        {rowData.name}{" "}
+                      </Button>
+                    ),
                   },
-                },
-                {
-                  icon: () => <tableIcons.Delete color="error" />,
-                  tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) =>
-                    setState((st) => ({
-                      ...st,
-                      mode: "delete",
-                      record: rowData,
-                    })),
-                },
-              ]}
-              options={{
-                actionsColumnIndex: -1,
-                grouping: false,
-                exportButton: true,
-                pageSize: 20,
-                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
-              }}
-              localization={{
-                body: {
-                  emptyDataSourceMessage: `No ${pluralize(
-                    title
-                  )} to display, click + button above to add a ${title}`,
-                },
-              }}
-            />
+                  {
+                    title: "Total",
+                    field: "total",
+                  },
+                ]}
+                data={
+                  filteredCaravans
+                    ? Object.keys(filteredCaravans).map((v) => ({
+                        name: v,
+                        total: filteredCaravans[v].length,
+                      }))
+                    : []
+                }
+                detailPanel={(rowData) => <PackageDetail data={rowData} />}
+                actions={[
+                  {
+                    icon: tableIcons.Add,
+                    tooltip: `Add ${title}`,
+                    isFreeAction: true,
+                    onClick: (event) =>
+                      setState((st) => ({ ...st, mode: "create" })),
+                  },
+                  {
+                    icon: () => <tableIcons.ApplyVisa color="primary" />,
+                    tooltip: `Apply for visa`,
+                    onClick: (event, rowData) => {
+                      setApplyForVisaOpen(true);
+                      setState((st) => ({ ...st, record: rowData }));
+                    },
+                  },
+                  {
+                    icon: () => <tableIcons.Delete color="error" />,
+                    tooltip: `Delete ${title}`,
+                    onClick: (event, rowData) =>
+                      setState((st) => ({
+                        ...st,
+                        mode: "delete",
+                        record: rowData,
+                      })),
+                  },
+                ]}
+                options={{
+                  actionsColumnIndex: -1,
+                  grouping: false,
+                  exportButton: true,
+                  pageSize: 20,
+                  headerStyle: {
+                    backgroundColor: "#f0f3f7",
+                    color: "#385273",
+                    fontSize: "1.1rem",
+                    paddingLeft: "0px",
+                  },
+                }}
+                localization={{
+                  body: {
+                    emptyDataSourceMessage: `No ${pluralize(
+                      title
+                    )} to display, click + button above to add a ${title}`,
+                  },
+                }}
+              />
+            </>
           )}
         </div>
       </div>
@@ -259,39 +287,50 @@ const Dashboard = () => {
         travellers={filteredCaravans[state?.record?.name]}
       />
       <Dialog
-        open={state.mode === 'delete'}
-        onClose={() => setState((st) => ({
-          ...st,
-          mode: "list",
-          record: {},
-        }))}
+        open={state.mode === "delete"}
+        onClose={() =>
+          setState((st) => ({
+            ...st,
+            mode: "list",
+            record: {},
+          }))
+        }
       >
-        <DialogTitle >are you sure?</DialogTitle>
+        <DialogTitle>are you sure?</DialogTitle>
         <DialogContent>
-          <DialogContentText >
+          <DialogContentText>
             {`You want to delete ${state.record.name} caravan? This is a permenant deletion and can not be undone.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setState((st) => ({
-            ...st,
-            mode: "list",
-            record: {},
-          }))} color="error" variant="outlined">
+          <Button
+            onClick={() =>
+              setState((st) => ({
+                ...st,
+                mode: "list",
+                record: {},
+              }))
+            }
+            color="error"
+            variant="outlined"
+          >
             Cancel
           </Button>
-          <Button onClick={() => handleOnConfirmDelete()} style={{ backgroundColor: "#ef5350", color: "#fff" }} variant="contained" autoFocus>
+          <Button
+            onClick={() => handleOnConfirmDelete()}
+            style={{ backgroundColor: "#ef5350", color: "#fff" }}
+            variant="contained"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-
     </React.Fragment>
   );
 };
 
 export default Dashboard;
-
 
 // options={{
 //   actionsCellStyle: {
@@ -299,5 +338,5 @@ export default Dashboard;
 //     color: "#FF00dd"
 //   },
 
-  // headerStyle: { backgroundColor: "black", color: "white" }
+// headerStyle: { backgroundColor: "black", color: "white" }
 // }}
