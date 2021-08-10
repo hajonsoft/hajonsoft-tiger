@@ -327,6 +327,15 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           record={values}
                         />
                       )}
+                      {mode === "create" && (
+                        <Grid container item xs style={{padding: '1rem'}}>
+                          <Dropzone
+                            onClose={onClose}
+                            saveToFirebase={handleSubmitForm}
+                            packageName={packageName}
+                          ></Dropzone>
+                        </Grid>
+                      )}
                     </Grid>
                     <Grid
                       item
@@ -663,15 +672,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               </CardContent>
               <CardActions className={classes.actionsContainer}>
                 <Grid container spacing={2}>
-                  {mode === "create" && (
-                    <Grid container item xs>
-                      <Dropzone
-                        onClose={onClose}
-                        saveToFirebase={handleSubmitForm}
-                        packageName={packageName}
-                      ></Dropzone>
-                    </Grid>
-                  )}
                   {mode !== "create" && (
                     <Grid container item xs>
                       <Typography
