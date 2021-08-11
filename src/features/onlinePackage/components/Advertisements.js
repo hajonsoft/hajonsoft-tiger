@@ -7,6 +7,7 @@ import AdvertisementCard from "./AdvertisementCard";
 
 const Advertisements = () => {
   const [advertisements, setOnlinePackages] = useState([]);
+  
   useEffect(() => {
     firebase
       .database()
