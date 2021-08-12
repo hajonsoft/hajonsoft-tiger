@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tabs,
+  Tab,
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
@@ -70,6 +72,7 @@ const tableIcons = {
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [filteredCaravans, setFilteredCaravans] = useState({});
+  const [activeTab, setActiveTab] = useState({});
   const {
     data: caravans,
     loading,
@@ -148,6 +151,10 @@ const Dashboard = () => {
     setState((st) => ({ ...st, mode: "list", record: {} }));
   };
 
+  const handleOnTabChange = (e,value)=> {
+    setActiveTab(value);
+  }
+
   return (
     <React.Fragment>
       <div
@@ -183,14 +190,15 @@ const Dashboard = () => {
           )}
           {!loading && state.mode === "list" && (
             <>
-              <Grid container spacing={2} style={{ padding: "1rem" }}>
-                <Grid item>
-                  <Typography color="textPrimary">Upcoming</Typography>
-                </Grid>
-                <Grid item>
-                  <Typography color="textSecondary">Past</Typography>
-                </Grid>
-              </Grid>
+              <Tabs
+                value={activeTab}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={handleOnTabChange}
+              >
+                <Tab label="Upcoming" style={{textTransform: 'none'}}/>
+                <Tab label="Past" style={{textTransform: 'none'}}/>
+              </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
                 icons={tableIcons}

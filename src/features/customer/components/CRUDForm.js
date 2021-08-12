@@ -598,13 +598,23 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               required={false}
                             />
                           </Grid>
-                          <Grid item xs={12}>
+                          <Grid item xs={6}>
                             <InputControl
                               name="email"
                               label={trans("reservation.email")}
                               value={values.email}
                               error={touched.email && Boolean(errors.email)}
                               helperText={touched.email && errors.email}
+                              required={false}
+                            />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <InputControl
+                              name="phone"
+                              label={trans("reservation.telephone")}
+                              value={values.phone}
+                              error={touched.phone && Boolean(errors.phone)}
+                              helperText={touched.phone && errors.phone}
                               required={false}
                             />
                           </Grid>
