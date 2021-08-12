@@ -11,7 +11,50 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import firebase from "../../../firebaseapp";
+import firebaseArabicName from "../../arabicName/firebaseArabicName";
 const storage = firebase.storage();
+
+const getFullArabicName = (arabicNameDictionary) => {
+  const cursor = Object.values(arabicNameDictionary);
+  let fullArabicName = "";
+  for (let i = 0; i < cursor.length; i++) {
+    if (arabicNameDictionary[`"${i}"`]) {
+      fullArabicName += " " + arabicNameDictionary[`"${i}"`];
+    }
+  }
+
+  return fullArabicName.trim();
+};
+
+const handleTranslateName = async (englishName, cb) => {
+  const names = englishName?.split(" ").filter((name) => name?.trim());
+  if (names.length === 0) {
+    return;
+  }
+  const translationResult = {};
+  try {
+    for (let i = 0; i < names.length; i++) {
+      firebaseArabicName
+        .database()
+        .ref(`/${names[i].toLowerCase()}`)
+        .once("value")
+        .then((snapshot) => {
+          const result = snapshot.val();
+          translationResult[`"${i}"`] = result;
+
+          const fullArabicName = getFullArabicName(translationResult);
+
+          if (!fullArabicName || fullArabicName.length === 0) {
+            cb(false);
+          } else {
+            cb(fullArabicName);
+          }
+        });
+    }
+  } catch (err) {
+    cb(false);
+  }
+};
 
 const saveCustomerToFirebase = async (values, packageName, callback) => {
   let image = values.image;
@@ -20,36 +63,45 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   let passportImage = values.passportImage;
   delete values["passportImage"];
 
-  const customerRef = firebase.database().ref(`customer/${packageName}`);
-  customerRef.push(values);
+  const englishName = values["name"];
 
-  if (image) {
-    const metadata = {
-      contentType: "image/jpeg",
-    };
-    const fileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}.jpg`;
-    let ref = storage.ref(fileName);
-    ref
-      .put(image, metadata)
-      .then((snap) => {
-        callback({ success: true });
-      })
-      .catch((error) => {
-        callback({ error });
-      });
-  } else {
-    callback({ success: true });
-  }
+  handleTranslateName(englishName, (arabicName) => {
+    if (arabicName) {
+      values["nameArabic"] = arabicName;
+    }
 
-  if (passportImage) {
-    const metadata = {
-      contentType: "image/jpeg",
-    };
-    const passportFileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}_passport.jpg`;
-    let ref = storage.ref(passportFileName);
-    ref
-      .put(passportImage, metadata);
-  }
+    const customerRef = firebase.database().ref(`customer/${packageName}`);
+    customerRef.push(values);
+
+    if (image) {
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+      const fileName = `${values.nationality ||
+        "unknown"}/${values.passportNumber || "unknown"}.jpg`;
+      let ref = storage.ref(fileName);
+      ref
+        .put(image, metadata)
+        .then((snap) => {
+          callback({ success: true });
+        })
+        .catch((error) => {
+          callback({ error });
+        });
+    } else {
+      callback({ success: true });
+    }
+
+    if (passportImage) {
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+      const passportFileName = `${values.nationality ||
+        "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
+      let ref = storage.ref(passportFileName);
+      ref.put(passportImage, metadata);
+    }
+  });
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -82,13 +134,17 @@ function Basic({ packageName, onClose }) {
         let record = { ...imports[event.data.id] };
         record.status = "failed";
 
-        setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+        setImports((prev) =>
+          Object.assign({}, prev, { [event.data.id]: record })
+        );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
 
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
-          setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+          setImports((prev) =>
+            Object.assign({}, prev, { [event.data.id]: record })
+          );
         });
       }
     };
@@ -117,7 +173,9 @@ function Basic({ packageName, onClose }) {
   const importsLength = Object.keys(imports).length;
 
   const progress =
-    (Object.values(imports).filter((x) => x.status !== "not imported yet").length / importsLength) *
+    (Object.values(imports).filter((x) => x.status !== "not imported yet")
+      .length /
+      importsLength) *
     100;
 
   const failed = Object.values(imports).filter((x) => x.status === "failed");
@@ -181,7 +239,10 @@ function Basic({ packageName, onClose }) {
               </Grid>
             ) : (
               <Card className={classes.progressBarContainer}>
-                <LinearProgress variant="determinate" value={progress}></LinearProgress>
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                ></LinearProgress>
               </Card>
             )
           ) : (
@@ -202,7 +263,10 @@ function Basic({ packageName, onClose }) {
                 <div style={{ textAlign: "center" }}>
                   <SaveAltOutlined></SaveAltOutlined>
                 </div>
-                <div>Drop your 3M files from c:\HajOnSoft or Combo smart zip files from c:\Program files\gx\demos\prDemoSDL\log</div>
+                <div>
+                  Drop your 3M files from c:\HajOnSoft or Combo smart zip files
+                  from c:\Program files\gx\demos\prDemoSDL\log
+                </div>
               </div>
             </div>
           )}
