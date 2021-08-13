@@ -1,21 +1,11 @@
 {
 	"files": [
 		{
-			"path": "src/features/onlinePackage/components/Advertisements.js",
+			"path": "src/features/Dashboard/index.js",
 			"bookmarks": [
 				{
-					"line": 40,
-					"column": 29,
-					"label": ""
-				}
-			]
-		},
-		{
-			"path": "src/features/Reservation/components/BasicReservation.js",
-			"bookmarks": [
-				{
-					"line": 259,
-					"column": 41,
+					"line": 130,
+					"column": 13,
 					"label": ""
 				}
 			]

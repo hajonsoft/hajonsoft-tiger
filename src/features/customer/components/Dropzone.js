@@ -4,7 +4,7 @@ import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import Worker from "../../../workers/parser.worker";
 import CustomerImportCard from "./CustomerImportCard";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -27,7 +27,8 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
     const metadata = {
       contentType: "image/jpeg",
     };
-    const fileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}.jpg`;
+    const fileName = `${values.nationality ||
+      "unknown"}/${values.passportNumber || "unknown"}.jpg`;
     let ref = storage.ref(fileName);
     ref
       .put(image, metadata)
@@ -45,10 +46,10 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
     const metadata = {
       contentType: "image/jpeg",
     };
-    const passportFileName = `${values.nationality || 'unknown'}/${values.passportNumber || 'unknown'}_passport.jpg`;
+    const passportFileName = `${values.nationality ||
+      "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
     let ref = storage.ref(passportFileName);
-    ref
-      .put(passportImage, metadata);
+    ref.put(passportImage, metadata);
   }
 };
 
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Basic({ packageName, onClose }) {
+function DropZone({ packageName, onClose }) {
   const classes = useStyles();
   const [imports, setImports] = useState({});
   const [isImported, setIsImported] = useState(false);
@@ -82,13 +83,17 @@ function Basic({ packageName, onClose }) {
         let record = { ...imports[event.data.id] };
         record.status = "failed";
 
-        setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+        setImports((prev) =>
+          Object.assign({}, prev, { [event.data.id]: record })
+        );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
 
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
-          setImports((prev) => Object.assign({}, prev, { [event.data.id]: record }));
+          setImports((prev) =>
+            Object.assign({}, prev, { [event.data.id]: record })
+          );
         });
       }
     };
@@ -117,7 +122,9 @@ function Basic({ packageName, onClose }) {
   const importsLength = Object.keys(imports).length;
 
   const progress =
-    (Object.values(imports).filter((x) => x.status !== "not imported yet").length / importsLength) *
+    (Object.values(imports).filter((x) => x.status !== "not imported yet")
+      .length /
+      importsLength) *
     100;
 
   const failed = Object.values(imports).filter((x) => x.status === "failed");
@@ -148,11 +155,11 @@ function Basic({ packageName, onClose }) {
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
-                <Grid item container xs={12} justify="flex-end">
+                <Grid item container xs={12} justify="flex-end" spacing={2} alignItems="center">
                   <Grid item>
                     <Button
                       type="button"
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       onClick={() => {
                         setIsImported(false);
@@ -171,6 +178,7 @@ function Basic({ packageName, onClose }) {
                       onClick={() => {
                         setIsImported(false);
                         setImports({});
+                        onClose();
                       }}
                       startIcon={<RefreshOutlined />}
                     >
@@ -181,28 +189,38 @@ function Basic({ packageName, onClose }) {
               </Grid>
             ) : (
               <Card className={classes.progressBarContainer}>
-                <LinearProgress variant="determinate" value={progress}></LinearProgress>
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                ></LinearProgress>
               </Card>
             )
           ) : (
             <div
               {...getRootProps({
-                className: "dropzone",
                 style: {
                   display: "flex",
-                  width: "100%",
-                  height: "100%",
                   justifyContent: "center",
                   alignItems: "center",
+                  border: '2px dashed silver',
+                  color: 'silver',
+                  padding: '1rem'
                 },
               })}
             >
               <input {...getInputProps()} />
               <div>
-                <div style={{ textAlign: "center" }}>
-                  <SaveAltOutlined></SaveAltOutlined>
+                <div style={{ textAlign: "center"}}>
+                  <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
-                <div>Drop your 3M files from c:\HajOnSoft or Combo smart zip files from c:\Program files\gx\demos\prDemoSDL\log</div>
+                <Typography variant="h5" gutterBottom>
+                  Drop Scanned Passports here...
+                </Typography>
+                <Typography>
+                  If you use 3M/Gemalto drop all files (.jpg, .txt, .bin) or
+                  just .zip for Combo Smart. For files Check c:\hajonsoft or
+                  c:\program files\gx\demos\prdemosdl\log
+                </Typography>
               </div>
             </div>
           )}
@@ -212,4 +230,4 @@ function Basic({ packageName, onClose }) {
   );
 }
 
-export default Basic;
+export default DropZone;

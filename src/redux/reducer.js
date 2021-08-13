@@ -1,5 +1,6 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
+import moment from "moment";
 
 // TODO: Obviously this reducer implementation was intended to b generic but it doen't work for /visaSystem correctly. or at least it needs to be reviewed
 // state.data is confusing
@@ -22,36 +23,33 @@ const applyFail = (state, action) => {
 const fetchTravellersSuccess = (state, action) => {
   state.loading = false;
   state.error = "";
-  state.data = _.omit(state.data, "No data found");
-  const caravans = { ...action.payload };
+  const caravans = action.payload;
+
+  // Ignore timezones otherwise dates will be zone aware.
   const caravanNames = Object.keys(caravans);
   for (const caravan of caravanNames) {
-    for (const traveller of caravans[caravan]) {
-      if (traveller.passIssueDt && traveller.passIssueDt.length > 10) {
-        traveller.passIssueDt = traveller.passIssueDt.substring(0, 10);
-      }
-      if (traveller.passExpireDt && traveller.passExpireDt.length > 10) {
-        traveller.passExpireDt = traveller.passExpireDt.substring(0, 10);
-      }
-      if (traveller.birthDate && traveller.birthDate.length > 10) {
-        traveller.birthDate = traveller.birthDate.substring(0, 10);
-      }
+    for (const passenger of caravans[caravan]) {
+      passenger.passIssueDt = omitTimezone(passenger.passIssueDt);
+      passenger.passExpireDt = omitTimezone(passenger.passExpireDt);
+      passenger.birthDate = omitTimezone(passenger.birthDate);
     }
   }
-  state.data = { ...caravans };
+  state.data = caravans;
 };
+
+const omitTimezone = (fullDate) => {
+  const fullMomentWithoutTimezone = moment(fullDate, "YYYY-MM-DD");
+  if (fullMomentWithoutTimezone.isValid()) {
+    return fullMomentWithoutTimezone.format("YYYY-MM-DD");
+  }
+  return fullDate;
+}
 
 const applyCreateSuccess = (state, action) => {
   state.loading = false;
   state.error = "";
-  state.data = _.omit(state.data, "No data found");
-  const caravan = Object.keys(action.payload)[0];
-  if (!Object.keys(state.data).includes(caravan)) {
-    state.data[caravan] = [];
-  }
-  state.data[caravan].push(
-    Object.values(Object.values(action.payload)[0])[0][0]
-  );
+  state.data = { ...state.data }
+  // return state.data;  //We no longer update redux after create, or delete. client must perform a refresh for sort defaults
 };
 
 const applyFetchVisaSystemSuccess = (state, action) => {
@@ -80,8 +78,8 @@ const applyUpdateSuccess = (state, action) => {
 const applyDeleteSuccess = (state, action) => {
   state.loading = false;
   state.error = "";
-
-  //TODO: Implement delete success. Make sure this delete is relevant to the correct slice
+  state.data = { ...state.data }
+  // state.data; //We no longer update redux after create, or delete. client must perform a refresh for sort defaults
 };
 
 const applyDeleteVisaSystemSuccess = (state, action) => {

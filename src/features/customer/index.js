@@ -1,6 +1,11 @@
 import {
   Breadcrumbs,
   CircularProgress,
+  DialogContentText,
+  Dialog,
+  DialogTitle,
+  DialogContent, DialogActions,
+  Button,
   Grid,
   Typography,
 } from "@material-ui/core";
@@ -71,8 +76,10 @@ const Customers = () => {
   let { packageName } = useParams();
 
   const {
-    data: travellers,
-    updateData: updateTraveller,
+    data: passengers,
+    updateData: updatePassenger,
+    fetchData: fetchPassengers,
+    deleteData: deletePassenger,
     loading,
     error,
   } = useTravellerState();
@@ -83,7 +90,7 @@ const Customers = () => {
     customerKey: 0,
   });
 
-  const title = "Traveller";
+  const title = "Passenger";
   const history = useHistory();
 
   if (loading) {
@@ -135,17 +142,25 @@ const Customers = () => {
       </div>
     );
   };
+
   const bringNext = () => {
-    let nextTraveller = travellers[packageName][0];
+    let nextPassenger = passengers[packageName][0];
     if (state.record && state.record._fid) {
-      for (let i = 0; i < travellers[packageName].length - 1; i++) {
-        if (travellers[packageName][i]._fid === state.record._fid) {
-          nextTraveller = travellers[packageName][i + 1];
+      for (let i = 0; i < passengers[packageName].length - 1; i++) {
+        if (passengers[packageName][i]._fid === state.record._fid) {
+          nextPassenger = passengers[packageName][i + 1];
         }
       }
     }
-    setState((st) => ({ ...st, mode: "update", record: nextTraveller }));
+    setState((st) => ({ ...st, mode: "update", record: nextPassenger }));
   };
+
+  const handleOnConfirmDelete = (deletePassengerInfo) => {
+    deletePassenger({ path: `/customer/${packageName}/${deletePassengerInfo._fid}`, data: deletePassengerInfo });
+    fetchPassengers();
+    setState((st) => ({ ...st, mode: "list", record: {} }))
+  }
+
   return (
     <React.Fragment>
       <div
@@ -155,13 +170,15 @@ const Customers = () => {
       >
         <AppHeader />
         <div>
-          {state.mode !== "list" && (
+          {state.mode !== "list" && state.mode !== "delete" && (
             <CRUDForm
               mode={state.mode}
               record={state.record}
               title={title}
-              onClose={() =>
+              onClose={() => {
                 setState((st) => ({ ...st, mode: "list", record: {} }))
+                fetchPassengers();
+              }
               }
               onNext={bringNext}
             />
@@ -207,7 +224,7 @@ const Customers = () => {
                 },
                 { title: "Email", field: "email" },
               ]}
-              data={travellers[packageName] ? travellers[packageName] : []}
+              data={passengers[packageName] ? passengers[packageName] : []}
               detailPanel={(rowData) => <CustomerDetail customer={rowData} />}
               actions={[
                 {
@@ -231,7 +248,7 @@ const Customers = () => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    updateTraveller({
+                    updatePassenger({
                       path: `customer/${packageName}/${rowData._fid}`,
                       data: { ...rowData, favorite: !rowData.favorite },
                     });
@@ -293,6 +310,35 @@ const Customers = () => {
       <Snackbar open={!!error} autoHideDuration={6000}>
         <Alert severity="error">{error}</Alert>
       </Snackbar>
+
+      <Dialog
+        open={state.mode === 'delete'}
+        onClose={() => setState((st) => ({
+          ...st,
+          mode: "list",
+          record: {},
+        }))}
+      >
+        <DialogTitle >are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText >
+            {`You want to delete ${state.record.name}. This is a permenant deletion and can not be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setState((st) => ({
+            ...st,
+            mode: "list",
+            record: {},
+          }))} color="error" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={() => handleOnConfirmDelete(state.record)} style={{ backgroundColor: "#ef5350", color: "#fff" }} variant="contained" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </React.Fragment>
   );
 };

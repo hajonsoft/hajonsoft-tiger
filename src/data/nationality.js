@@ -1,6 +1,12 @@
 import _ from 'lodash'
 export const nationalities = _.sortBy(JSON.parse(
-  `[
+    `[
+        {
+            "name": "",
+            "arabicName": "",
+            "code": "",
+            "telCode": ""
+        },
       {
           "name": "Ethiopia",
           "arabicName": "إثيوبيــــا",
@@ -1427,4 +1433,4 @@ export const nationalities = _.sortBy(JSON.parse(
           "telCode": "242"
       }
   ]`
-),'name');
+), 'name');

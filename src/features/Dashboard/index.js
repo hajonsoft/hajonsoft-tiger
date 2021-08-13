@@ -1,8 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  DialogContentText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
-import NearMeIcon from '@material-ui/icons/NearMe';
+import NearMeIcon from "@material-ui/icons/NearMe";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -54,20 +66,27 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
-  ApplyVisa: forwardRef((props, ref) => <NearMeIcon { ...props } ref={ref} /> )
+  ApplyVisa: forwardRef((props, ref) => <NearMeIcon {...props} ref={ref} />),
 };
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [filteredTravellers, setFilteredTravellers] = useState({});
-  const { data: travellers, loading, error } = useTravellerState();
+  const [filteredCaravans, setFilteredCaravans] = useState({});
+  const [activeTab, setActiveTab] = useState({});
+  const {
+    data: caravans,
+    loading,
+    error,
+    fetchData: fetchCaravans,
+    deleteData: deleteCaravan,
+  } = useTravellerState();
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
 
   useEffect(() => {
     if (!loading) {
-      setFilteredTravellers(travellers);
+      setFilteredCaravans(caravans);
     }
   }, [loading]);
 
@@ -95,8 +114,8 @@ const Dashboard = () => {
       const stats = {};
       let total = 0;
 
-      for (const grp in travellers) {
-        const groupResult = travellers[grp].filter((traveller) =>
+      for (const grp in caravans) {
+        const groupResult = caravans[grp].filter((traveller) =>
           moment(traveller.passExpireDt).isBefore(expireDate)
         );
         if (groupResult.length) {
@@ -127,6 +146,15 @@ const Dashboard = () => {
     }
   };
 
+  const handleOnConfirmDelete = () => {
+    deleteCaravan({ path: `/customer/${state.record.name}` });
+    setState((st) => ({ ...st, mode: "list", record: {} }));
+  };
+
+  const handleOnTabChange = (e,value)=> {
+    setActiveTab(value);
+  }
+
   return (
     <React.Fragment>
       <div
@@ -149,90 +177,111 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           )}
-          {!loading && state.mode !== "list" && (
+          {!loading && state.mode !== "list" && state.mode !== "delete" && (
             <CRUDForm
               mode={state.mode}
               record={state.record}
               title={title}
-              onClose={() => setState((st) => ({ ...st, mode: "list" }))}
+              onClose={() => {
+                setState((st) => ({ ...st, mode: "list" }));
+                fetchCaravans();
+              }}
             />
           )}
           {!loading && state.mode === "list" && (
-            <MaterialTable
-              onSearchChange={handleOnSearchChange}
-              icons={tableIcons}
-              title={<Title />}
-              columns={[
-                {
-                  title: "Name",
-                  field: "name",      
-                  render: (rowData) => (
-                    <Button
-                      href=""
-                      color="primary"
-                      onClick={() => history.push(`${rowData.name}/customers`)}
-                      style={{ textTransform: "none" }}
-                    >
-                      {rowData.name}{" "}
-                    </Button>
-                  ),
-                },
-                {
-                  title: "Total",
-                  field: "total",
-                },
-              ]}
-              data={
-                filteredTravellers
-                  ? Object.keys(filteredTravellers).map((v) => ({
-                      name: v,
-                      total: filteredTravellers[v].length,
-                    }))
-                  : []
-              }
-              detailPanel={(rowData) => <PackageDetail data={rowData} />}
-              actions={[
-                {
-                  icon: tableIcons.Add,
-                  tooltip: `Add ${title}`,
-                  isFreeAction: true,
-                  onClick: (event) =>
-                    setState((st) => ({ ...st, mode: "create" })),
-                },
-                {
-                  icon: () => <tableIcons.ApplyVisa color="primary" />,
-                  tooltip: `Apply for visa`,
-                  onClick: (event, rowData) => {
-                    setApplyForVisaOpen(true);
-                    setState((st) => ({ ...st, record: rowData }));
+            <>
+              <Tabs
+                value={activeTab}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={handleOnTabChange}
+              >
+                <Tab label="Upcoming" style={{textTransform: 'none'}}/>
+                <Tab label="Past" style={{textTransform: 'none'}}/>
+              </Tabs>
+              <MaterialTable
+                onSearchChange={handleOnSearchChange}
+                icons={tableIcons}
+                title={<Title />}
+                columns={[
+                  {
+                    title: "Name",
+                    field: "name",
+                    render: (rowData) => (
+                      <Button
+                        href=""
+                        color="primary"
+                        onClick={() =>
+                          history.push(`${rowData.name}/customers`)
+                        }
+                        style={{ textTransform: "none" }}
+                      >
+                        {rowData.name}{" "}
+                      </Button>
+                    ),
                   },
-                },
-                {
-                  icon: () => <tableIcons.Delete color="error" />,
-                  tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) =>
-                    setState((st) => ({
-                      ...st,
-                      mode: "delete",
-                      record: rowData,
-                    })),
-                },
-              ]}
-              options={{
-                actionsColumnIndex: -1,
-                grouping: false,
-                exportButton: true,
-                pageSize: 20,
-                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
-              }}
-              localization={{
-                body: {
-                  emptyDataSourceMessage: `No ${pluralize(
-                    title
-                  )} to display, click + button above to add a ${title}`,
-                },
-              }}
-            />
+                  {
+                    title: "Total",
+                    field: "total",
+                  },
+                ]}
+                data={
+                  filteredCaravans
+                    ? Object.keys(filteredCaravans).map((v) => ({
+                        name: v,
+                        total: filteredCaravans[v].length,
+                      }))
+                    : []
+                }
+                detailPanel={(rowData) => <PackageDetail data={rowData} />}
+                actions={[
+                  {
+                    icon: tableIcons.Add,
+                    tooltip: `Add ${title}`,
+                    isFreeAction: true,
+                    onClick: (event) =>
+                      setState((st) => ({ ...st, mode: "create" })),
+                  },
+                  {
+                    icon: () => <tableIcons.ApplyVisa color="primary" />,
+                    tooltip: `Apply for visa`,
+                    onClick: (event, rowData) => {
+                      setApplyForVisaOpen(true);
+                      setState((st) => ({ ...st, record: rowData }));
+                    },
+                  },
+                  {
+                    icon: () => <tableIcons.Delete color="error" />,
+                    tooltip: `Delete ${title}`,
+                    onClick: (event, rowData) =>
+                      setState((st) => ({
+                        ...st,
+                        mode: "delete",
+                        record: rowData,
+                      })),
+                  },
+                ]}
+                options={{
+                  actionsColumnIndex: -1,
+                  grouping: false,
+                  exportButton: true,
+                  pageSize: 20,
+                  headerStyle: {
+                    backgroundColor: "#f0f3f7",
+                    color: "#385273",
+                    fontSize: "1.1rem",
+                    paddingLeft: "0px",
+                  },
+                }}
+                localization={{
+                  body: {
+                    emptyDataSourceMessage: `No ${pluralize(
+                      title
+                    )} to display, click + button above to add a ${title}`,
+                  },
+                }}
+              />
+            </>
           )}
         </div>
       </div>
@@ -243,14 +292,53 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={state?.record?.name}
-        travellers={filteredTravellers[state?.record?.name]}
+        travellers={filteredCaravans[state?.record?.name]}
       />
+      <Dialog
+        open={state.mode === "delete"}
+        onClose={() =>
+          setState((st) => ({
+            ...st,
+            mode: "list",
+            record: {},
+          }))
+        }
+      >
+        <DialogTitle>are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {`You want to delete ${state.record.name} caravan? This is a permenant deletion and can not be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() =>
+              setState((st) => ({
+                ...st,
+                mode: "list",
+                record: {},
+              }))
+            }
+            color="error"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleOnConfirmDelete()}
+            style={{ backgroundColor: "#ef5350", color: "#fff" }}
+            variant="contained"
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 };
 
 export default Dashboard;
-
 
 // options={{
 //   actionsCellStyle: {
@@ -258,5 +346,5 @@ export default Dashboard;
 //     color: "#FF00dd"
 //   },
 
-  // headerStyle: { backgroundColor: "black", color: "white" }
+// headerStyle: { backgroundColor: "black", color: "white" }
 // }}
