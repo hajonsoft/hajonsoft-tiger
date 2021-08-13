@@ -16,11 +16,11 @@ const DoveFooter = () => {
       >
         <Grid item md={9}>
           <Button
-            variant="contained"
-            color="secondary"
+            color="primary"
+            variant="outlined"
             size="large"
             fullWidth
-            style={{ textTransform: "none", backgroundColor: "#66bb6a" }}
+            style={{ textTransform: "none" }}
             onClick={() => history.push("/reserve/interest")}
           >
             Register expression of interest
@@ -28,16 +28,13 @@ const DoveFooter = () => {
         </Grid>
         <Grid item md={2} container justify="flex-end" alignItems="center">
           <Grid item>
-            <Button onClick={() => history.push("/admin")}>Admin</Button>
-          </Grid>
-          <Grid item>
-            <img
+            <Button onClick={() => history.push("/admin")}>            <img
               onClick={() => history.push("/admin")}
               src={hummingBird}
               alt="humming bird"
               width="64"
               height="64"
-            ></img>
+            ></img></Button>
           </Grid>
         </Grid>
       </Grid>

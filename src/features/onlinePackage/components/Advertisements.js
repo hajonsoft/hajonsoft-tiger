@@ -1,9 +1,10 @@
-import { Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Animated } from "react-animated-css";
 import firebase from "../../../firebaseapp";
 import AdvertisementCard from "./AdvertisementCard";
+import interested from "../../../images/interested.svg";
 
 const Advertisements = () => {
   const [advertisements, setOnlinePackages] = useState([]);
@@ -25,7 +26,6 @@ const Advertisements = () => {
       moment(p.returnDate).isAfter(moment())
     );
   };
-
   return (
     <Grid
       container
@@ -49,6 +49,12 @@ const Advertisements = () => {
               </Grid>
             )
         )}
+
+      {advertisements.length === 0 && (
+        <Box style={{ display: "flex", justifyContent: "center" }}>
+          <img src={interested} alt="interested" width="60%" height="60%" />
+        </Box>
+      )}
     </Grid>
   );
 };

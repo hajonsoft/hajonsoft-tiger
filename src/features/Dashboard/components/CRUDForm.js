@@ -1,3 +1,4 @@
+import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,13 +9,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import _ from "lodash";
 import React from "react";
-import * as yup from 'yup';
-import { eventsNearby } from '../../../util/hijri';
+import * as yup from "yup";
+import { eventsNearby } from "../../../util/hijri";
 import CoreTextField from "../../customer/components/CoreTextField";
-import useTravellerState from '../redux/useTravellerState';
+import useTravellerState from "../redux/useTravellerState";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -43,21 +44,28 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   deleteButton: {
-    color: theme.palette.error.main
-  }
+    color: theme.palette.error.main,
+  },
 }));
 
 const CRUDForm = ({ mode, record, title, onClose }) => {
   const classes = useStyles();
-  const { createData: createTraveller, deleteData: deleteTraveller } = useTravellerState();
+  const {
+    createData: createPassenger,
+    deleteData: deletePassenger,
+  } = useTravellerState();
 
   const handleSubmitForm = (values, actions) => {
     switch (mode) {
       case "create":
-        createTraveller({ path: `customer/${_.startCase(values.name)}`, traveller: { name: 'default' } })
+        createPassenger({
+          path: `customer/${_.startCase(values.name)}`,
+          traveller: { name: "default" },
+        });
         break;
       case "delete":
-        deleteTraveller({ path: `customer/${values.name}` })
+        deletePassenger({ path: `customer/${values.name}` });
+        onClose();
         break;
 
       default:
@@ -67,7 +75,7 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
   };
 
   const validSchema = yup.object().shape({
-    name: yup.string().required('Required'),
+    name: yup.string().required("Required"),
   });
 
   return (
@@ -84,9 +92,7 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
                 className={classes.cardTitle}
                 title={_.startCase(mode + " " + title)}
                 subheader={eventsNearby()}
-                action={
-                  <CancelOutlinedIcon onClick={onClose} />
-                }
+                action={<CancelOutlinedIcon onClick={onClose} />}
               />
               <CardContent>
                 <Grid container spacing={4}>
@@ -98,6 +104,18 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
                       xsWidth={12}
                       required
                       autoFocus
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Field
+                      required
+                      as={TextField}
+                      fullWidth
+                      name="departureDate"
+                      label="Departure Date"
+                      disabled={mode === "delete"}
+                      autoComplete="off"
+                      type="date"
                     />
                   </Grid>
                 </Grid>

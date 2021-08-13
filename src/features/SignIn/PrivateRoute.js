@@ -8,9 +8,7 @@ function PrivateRoute({ children, ...rest }) {
 
   if (loading) {
     return (
-      <div>
-        <p>Initialising User...</p>
-      </div>
+      null
     );
   }
   if (error) {
