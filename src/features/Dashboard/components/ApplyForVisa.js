@@ -512,7 +512,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     <CardContent>
                       <Typography variant="body2">
                         Hawk uploads a bundle file immediately to the service
-                        provider. For MacOs we recommend eagle.
+                        provider. For MacOs we recommend using eagle directly. To setup eagle please schedule a meeting.
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -540,8 +540,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        We use spicework to manage "visa by proxy" tickets. You
-                        may be required to authenticate.
+                        We use spicework to manage "visa by proxy" tickets. Email to <a href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedTravellers?.length} PAX&body=Embassy is ...`}>help@hajonsoft.on.spiceworks.com</a> or fill a form. either way you must attach the bundle file
                       </Typography>
                     </CardContent>
                     <CardActions>
