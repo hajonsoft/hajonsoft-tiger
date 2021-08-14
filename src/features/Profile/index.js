@@ -1,3 +1,4 @@
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -6,15 +7,13 @@ import CardHeader from "@material-ui/core/CardHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import firebaseConfig from "../../firebaseConfig";
 import firebase from "../../firebaseapp";
-import { Grid } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import firebaseConfig from "../../firebaseConfig";
 // import InputControl from "./InputControl";
-import InputControl  from "../Reservation/components/InputControl";
+import InputControl from "../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     fontSize: "2em",
     backgroundColor: "white",
-    borderBottom: "1px solid #ccc"
+    borderBottom: "1px solid #ccc",
   },
   actionsContainer: {
     display: "flex",
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "10px",
     backgroundColor: "white",
-    borderTop: "1px solid #ccc"
+    borderTop: "1px solid #ccc",
   },
   actionsContainerTopMain: {
     width: "50%",
@@ -50,22 +49,25 @@ const Profile = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const [record,setRecord] = useState({});
+  const [record, setRecord] = useState({});
 
   useEffect(() => {
-    firebase.database().ref(`protected/profile`).once('value', snapshot=> {
-      if (snapshot.toJSON()) {
-        setRecord(snapshot.toJSON())
-      }
-    })
-  }, [])
+    firebase
+      .database()
+      .ref(`protected/profile`)
+      .once("value", (snapshot) => {
+        if (snapshot.toJSON()) {
+          setRecord(snapshot.toJSON());
+        }
+      });
+  }, []);
 
-  const onClose = ()=> history.push('/caravans');
+  const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
     const updateRef = firebase.database().ref(`protected/profile`);
-    updateRef.set(values).catch(err => {
-      alert(err.message)
+    updateRef.set(values).catch((err) => {
+      alert(err.message);
     });
     onClose();
   };
@@ -91,12 +93,15 @@ const Profile = () => {
               <CardHeader
                 className={classes.cardTitle}
                 title={`${firebaseConfig.projectId} Profile`}
-                action={
-                  <CancelOutlinedIcon color="error" onClick={onClose} />
-                }
+                action={<CancelOutlinedIcon color="error" onClick={onClose} />}
               />
               <CardContent>
-                <Grid container justify="space-between" spacing={2} style={{padding: "1rem 2rem"}}>
+                <Grid
+                  container
+                  justify="space-between"
+                  spacing={2}
+                  style={{ padding: "1rem 2rem" }}
+                >
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
@@ -133,7 +138,9 @@ const Profile = () => {
                       label="Facebook Page URL"
                       required
                       value={values.facebookPage}
-                      error={touched.facebookPage && Boolean(errors.facebookPage)}
+                      error={
+                        touched.facebookPage && Boolean(errors.facebookPage)
+                      }
                       helperText={touched.facebookPage && errors.facebookPage}
                     />
                   </Grid>
@@ -156,7 +163,7 @@ const Profile = () => {
                   disabled={isSubmitting}
                   variant="outlined"
                   color="default"
-                  style={{color: "red", borderColor: "red"}}
+                  style={{ color: "red", borderColor: "red" }}
                   onClick={onClose}
                   startIcon={<CancelOutlinedIcon />}
                 >
