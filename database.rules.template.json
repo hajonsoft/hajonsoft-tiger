@@ -1,5 +1,11 @@
 {
   "rules": {
+    "customer": {
+      "online": {
+        ".read" : true,
+          ".write": true
+      }
+    },
     ".read": "auth != null && (auth.uid == 'UUID1' || auth.uid == 'UUID2')",
     ".write": "auth != null && (auth.uid == 'UUID1' || auth.uid == 'UUID2')",
     "$uid": {

@@ -9,6 +9,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "src/features/Dashboard/components/ApplyForVisa.js",
+			"bookmarks": [
+				{
+					"line": 542,
+					"column": 94,
+					"label": ""
+				}
+			]
 		}
 	]
 }
