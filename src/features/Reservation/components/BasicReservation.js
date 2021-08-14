@@ -67,7 +67,7 @@ const validationSchema = yup.object({
     .required("Number of companions is required"),
 });
 
-const BasicReservation = ({ openSuccessModal, isModalOpen }) => {
+const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
   const classes = useStyles();
   const { packageName } = useParams();
   const [reservationNumber, setReservationNumber] = useState("");
@@ -76,7 +76,7 @@ const BasicReservation = ({ openSuccessModal, isModalOpen }) => {
     const reservationRef = firebase.database().ref(`customer/online`);
     const pushResult = reservationRef.push({ ...values, packageName });
     setReservationNumber(pushResult.key);
-    openSuccessModal();
+    openSuccessModal()
   };
 
   return (
