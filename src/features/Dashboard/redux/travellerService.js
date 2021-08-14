@@ -1,4 +1,6 @@
 import firebase from './../../../firebaseapp';
+import _ from 'lodash';
+
 // called from saga src\redux\saga.js ^p
 // reducer at src\redux\reducer.js ^p
 const travellerService = {
@@ -8,8 +10,9 @@ const travellerService = {
     },
     createTraveller: async ({ path, data }) => {
         if (!data) data = { name: 'Default Traveller' }
-        const result = await firebase.database().ref(path).push(data);
-        return { ...data, _fid: result.key };
+        const dataWithoutUndefined = _.omit(data, _.filter(_.keys(data), function(key) { return _.isUndefined(data[key]) }));
+        const result = await firebase.database().ref(path).push(dataWithoutUndefined);
+        return { ...dataWithoutUndefined, _fid: result.key };
     },
     updateTraveller: async ({ path, data }) => {
         const updateRef = firebase.database().ref(path);

@@ -13,9 +13,8 @@ import firebase from "../../firebaseapp";
 import trans from "../../util/trans";
 import BasicReservation from "./components/BasicReservation";
 import FullReservation from "./components/FullReservation";
-import SuccessImg from './success.png';
+import reservationCompleteImage from '../../images/reservation-complete.svg';
 
-console.log(SuccessImg)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -194,7 +193,7 @@ const Reservation = ({ lang, onLanguageChange }) => {
           <div className={classes.paper}>
             <h2 style={{ textAlign: "center" }} >A Reservation has been booked for you</h2>
             <div style={{ width: "25%", height: 150, margin: "1rem auto" }}>
-              <img src={SuccessImg} alt="success-icon" style={{ width: "100%", height: "100%" }} />
+              <img src={reservationCompleteImage} alt="success-icon" style={{ width: "100%", height: "100%" }} />
             </div>
             <div className={classes.paymentBtnContainer}>
               <Button color="default" variant="contained" className={classes.viewReservationBtn} onClick={handleClose} >View Reservation Number</Button>
