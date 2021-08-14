@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { travellerSlice } from '../../../redux/reducer';
 
 // Using reducer and state from src\redux\reducer.js  (^P)
+// Saga from src/features/Dashboard/redux/saga.js
 const usePackageState = () => {
 
     const dispatch = useDispatch();

@@ -19,6 +19,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "src/features/customer/components/CRUDForm.js",
+			"bookmarks": [
+				{
+					"line": 235,
+					"column": 13,
+					"label": ""
+				}
+			]
 		}
 	]
 }
