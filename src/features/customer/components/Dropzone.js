@@ -26,30 +26,31 @@ const getFullArabicName = (arabicNameDictionary) => {
   return fullArabicName.trim();
 };
 
-const handleTranslateName = async (englishName, cb) => {
+const handleTranslateName = async (englishName, isArabic, cb) => {
+  if(!isArabic) {
+    cb(false)
+    return;
+  }
   const names = englishName?.split(" ").filter((name) => name?.trim());
   if (names.length === 0) {
     return;
   }
   const translationResult = {};
+  let fullArabicName;
   try {
     for (let i = 0; i < names.length; i++) {
-      firebaseArabicName
+      const snapshot = await firebaseArabicName
         .database()
         .ref(`/${names[i].toLowerCase()}`)
-        .once("value")
-        .then((snapshot) => {
-          const result = snapshot.val();
-          translationResult[`"${i}"`] = result;
-
-          const fullArabicName = getFullArabicName(translationResult);
-
-          if (!fullArabicName || fullArabicName.length === 0) {
-            cb(false);
-          } else {
-            cb(fullArabicName);
-          }
-        });
+        .once("value");
+      const result = snapshot.val();
+      translationResult[`"${i}"`] = result;
+      fullArabicName = getFullArabicName(translationResult);
+    }
+    if (!fullArabicName || fullArabicName.length === 0) {
+      cb(false);
+    } else {
+      cb(fullArabicName);
     }
   } catch (err) {
     cb(false);
@@ -64,8 +65,9 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   delete values["passportImage"];
 
   const englishName = values["name"];
+  const isArabic = values["isArabic"]
 
-  handleTranslateName(englishName, (arabicName) => {
+  handleTranslateName(englishName, isArabic,  (arabicName) => {
     if (arabicName) {
       values["nameArabic"] = arabicName;
     }
@@ -139,7 +141,7 @@ function Basic({ packageName, onClose }) {
         );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
-
+        console.log(event.data.import)
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
           setImports((prev) =>
