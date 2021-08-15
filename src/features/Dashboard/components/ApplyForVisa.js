@@ -33,7 +33,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import moment from "moment";
 import React, { useState } from "react";
 import firebaseConfig from "../../../firebaseConfig";
-import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
+import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
@@ -143,7 +143,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
     setDownloading(true);
     setDownloadFileName('');
     const startTime = moment();
-    const travellersData = getTravellersJSON(selectedTravellers);
+    const travellersData = getPassengersJSON(selectedTravellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
