@@ -115,6 +115,9 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
                       label="Departure Date"
                       disabled={mode === "delete"}
                       autoComplete="off"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       type="date"
                     />
                   </Grid>

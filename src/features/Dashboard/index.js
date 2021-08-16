@@ -72,7 +72,7 @@ const tableIcons = {
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [filteredCaravans, setFilteredCaravans] = useState({});
-  const [activeTab, setActiveTab] = useState({});
+  const [activeTab, setActiveTab] = useState(0);
   const {
     data: caravans,
     loading,

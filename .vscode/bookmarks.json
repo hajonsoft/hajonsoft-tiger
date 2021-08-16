@@ -11,21 +11,11 @@
 			]
 		},
 		{
-			"path": "src/features/Dashboard/components/ApplyForVisa.js",
+			"path": "src/features/Dashboard/components/CRUDForm.js",
 			"bookmarks": [
 				{
-					"line": 542,
-					"column": 94,
-					"label": ""
-				}
-			]
-		},
-		{
-			"path": "src/features/customer/components/CRUDForm.js",
-			"bookmarks": [
-				{
-					"line": 235,
-					"column": 13,
+					"line": 115,
+					"column": 50,
 					"label": ""
 				}
 			]
