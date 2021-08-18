@@ -1,11 +1,21 @@
 {
 	"files": [
 		{
-			"path": "src/features/onlinePackage/components/Advertisements.js",
+			"path": "src/features/Dashboard/index.js",
 			"bookmarks": [
 				{
-					"line": 40,
-					"column": 29,
+					"line": 130,
+					"column": 13,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "src/features/Dashboard/components/CRUDForm.js",
+			"bookmarks": [
+				{
+					"line": 115,
+					"column": 50,
 					"label": ""
 				}
 			]

@@ -33,7 +33,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import moment from "moment";
 import React, { useState } from "react";
 import firebaseConfig from "../../../firebaseConfig";
-import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
+import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
@@ -77,6 +77,7 @@ const serviceProviders = [
 const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const classes = useStyles();
   const [expandedPanel, setExpandedPanel] = React.useState("");
+  const [pace, setPace] = React.useState(1.5);
   const [selectedTravellers, setSelectedTravellers] = React.useState(
     travellers
   );
@@ -140,7 +141,9 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   };
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
-    const travellersData = getTravellersJSON(selectedTravellers);
+    setDownloadFileName('');
+    const startTime = moment();
+    const travellersData = getPassengersJSON(selectedTravellers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
@@ -163,6 +166,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
+      var elabsed = (moment.duration(moment().diff(startTime)).asSeconds() / selectedTravellers.length).toFixed(1);
+      setPace(elabsed);
       setDownloading(false);
     });
   };
@@ -225,9 +230,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       <DialogTitle>{`Apply for visa`}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          HAJonSoft uses browser automation to connect to service providers. To
-          apply for visa please follow the steps below or watch the getting
-          started course
+          HAJonSoft uses Hawk application to connect to travel service providers. If you are new or using MacOs, you can select "visa by proxy", use eagle or <a href="https://hajonsoft.talentlms.com/catalog/info/id:125">Take a Course</a>
         </DialogContentText>
 
         <div className={classes.root}>
@@ -247,14 +250,12 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
               <Grid container justify="space-between">
                 <Grid items md={6}>
                   <Button onClick={() => setSelectedTravellers(travellers)}>
-                    {" "}
-                    Select All{" "}
+                    Select All
                   </Button>
                 </Grid>
                 <Grid items md={6} container justify="flex-end">
                   <Button onClick={() => setSelectedTravellers([])}>
-                    {" "}
-                    Deselect All{" "}
+                    Deselect All
                   </Button>
                 </Grid>
                 {travellers &&
@@ -419,11 +420,10 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 3: Download and Send
+                Step 3: Bundle and process
               </Typography>
               <Typography className={classes.secondaryHeading}>
-                Download travellers in one file and start sending to the
-                selected service provider
+                Create a bundle for Hawk processing or create "visa by proxy" Ticket
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -434,49 +434,58 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 spacing={2}
               >
                 <Grid item md={12}>
-                  <Box p={2}>
                     <Typography variant="body1">
-                      To send travellers to a service provider. You must have{" "}
+                      Bundle file is required for Hawk or "visa by proxy". To install Hawk  <a href="https://meetings.hubspot.com/haj-onsoft"> Schedule a meeting</a> 
+                    </Typography>
+                  <Box style={{textAlign: 'right', width: '100%'}}>
+                    <Typography variant="body2" align="right">
+                      Useful links
                       <a
+                        style={{ marginLeft: "2rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://nodejs.org/"
                       >
                         NodeJs
-                      </a>{" "}
-                      and{" "}
+                      </a>
                       <a
+                        style={{ marginLeft: "1rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                       >
-                        HAJonSoft Hawk
-                      </a>{" "}
-                      installed. To install NodeJs and Hawk please contact
-                      HAJonSoft support.
+                        Hawk
+                      </a>
+                      <a
+                        style={{ marginLeft: "1rem" }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/hajonsoft/hajonsoft-eagle"
+                      >
+                        Eagle
+                      </a>
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,94%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,90%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 1 (Required)"
-                      subheader={downloadFileName}
+                      title="Step 1 [Bundle]"
+                      subheader={downloadFileName || "Required"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Download comprehensive traveller data into one file JSON
-                        formatted ready to be submitted to any service provider
+                        {`Bundle file may include passwords and/or personal identifying information. Average bundle creation time depends on your speed ~= ${pace} seconds per traveller`}
                       </Typography>
                     </CardContent>
                     <CardActions>
                       {!downloading && (
                         <Button onClick={handleDownloadZipFileClick}>
-                          Download zip file
+                          Download file
                         </Button>
                       )}
                       {downloading && (
@@ -493,18 +502,17 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,95%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 (Option 1)"
-                      subheader={downloadFileName}
+                      title="Step 2 [Hawk]"
+                      subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Once traveller data file has been downloaded. Choose
-                        this option to start Hawk. Hawk is a desktop application
-                        able to send the downloaded file to a service provider
+                        Hawk uploads a bundle file immediately to the service
+                        provider. For MacOs we recommend using eagle directly. To setup eagle please schedule a meeting.
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -512,7 +520,10 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                         disabled={!downloadFileName}
                         onClick={handleSendDownloadedFile}
                       >
-                        {`Start Send`}
+                        {`Upload Automatic`}
+                      </Button>
+                      <Button onClick={handleOpenHawk}>
+                        {`Upload Manual`}
                       </Button>
                     </CardActions>
                   </Card>
@@ -520,22 +531,22 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                 <Grid item md={4}>
                   <Card
                     raised
-                    style={{ backgroundColor: "hsl(240,50%,97%)" }}
+                    style={{ backgroundColor: "hsl(240,50%,99%)" }}
                     className={classes.sendCard}
                   >
                     <CardHeader
-                      title="Step 2 (Option 2)"
-                      subheader={downloadFileName}
+                      title="- OR - [visa by proxy]"
+                      subheader={downloadFileName || "Optional"}
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        Choose this option to start Hawk desktop application and
-                        perform manual steps. This is an advanced option. If
-                        Hawk did not start restart Hawk setup
+                        We use spicework to manage "visa by proxy" tickets. Email to <a href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedTravellers?.length} PAX&body=Embassy is ...`}>help@hajonsoft.on.spiceworks.com</a> or fill a form. either way you must attach the bundle file
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={handleOpenHawk}>start hawk</Button>
+                      <Button href="https://hajonsoft.on.spiceworks.com/portal">
+                        Create "visa by proxy" Ticket
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>

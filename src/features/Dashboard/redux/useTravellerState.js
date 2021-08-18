@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { travellerSlice } from '../../../redux/reducer';
 
 // Using reducer and state from src\redux\reducer.js  (^P)
+// Saga from src/features/Dashboard/redux/saga.js
 const usePackageState = () => {
 
     const dispatch = useDispatch();
@@ -11,13 +12,13 @@ const usePackageState = () => {
 
     useEffect(() => {
         if (Object.keys(data).length === 0) {
-            fetchData({ path: 'customer' });
+            fetchData({ path: '/customer' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchData = (fetchInfo) => {
-        dispatch(travellerSlice.actions.fetch(fetchInfo))
+        dispatch(travellerSlice.actions.fetch(fetchInfo || { path: '/customer' }))
     }
     const createData = (createInfo) => {
         dispatch(travellerSlice.actions.create(createInfo))

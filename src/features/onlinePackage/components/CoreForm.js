@@ -16,10 +16,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
 import { eventsNearby, todayHijraDate } from "../../../util/hijri";
-import CoreDateField from "./CoreDateField";
-import CoreTextField from "./CoreTextField";
 import Gender from "./CustomerGender";
-import PackageDetail from "./PackageDetail";
 import InputControl from "../../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
@@ -180,7 +177,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                               label="Departure airport or city"
                               value={values.departureAirport || ""}
                               name="departureAirport"
-                              required
+                              required={false}
                               error={
                                 touched.departureAirport &&
                                 Boolean(errors.departureAirport)
@@ -193,7 +190,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.departureFlight &&
                                 Boolean(errors.departureFlight)
@@ -209,7 +206,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.departureDate &&
                                 Boolean(errors.departureDate)
@@ -225,7 +222,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.arrivalAirport &&
                                 Boolean(errors.arrivalAirport)
@@ -240,7 +237,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.returnAirport &&
                                 Boolean(errors.returnAirport)
@@ -255,7 +252,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.returnFlight &&
                                 Boolean(errors.returnFlight)
@@ -270,7 +267,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.returnDate && Boolean(errors.returnDate)
                               }
@@ -285,7 +282,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <InputControl
-                              required
+                              required={false}
                               error={
                                 touched.flightNotes &&
                                 Boolean(errors.flightNotes)
@@ -318,7 +315,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                           <Grid container xs={12} spacing={3}>
                             <Grid item xs={12}>
                               <InputControl
-                                required
+                                required={false}
                                 error={
                                   touched.quadPrice && Boolean(errors.quadPrice)
                                 }
@@ -332,7 +329,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             </Grid>
                             <Grid item xs={12}>
                               <InputControl
-                                required
+                                required={false}
                                 error={
                                   touched.triplePrice &&
                                   Boolean(errors.triplePrice)
@@ -347,7 +344,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             </Grid>
                             <Grid item xs={12}>
                               <InputControl
-                                required
+                                required={false}
                                 error={
                                   touched.doublePrice &&
                                   Boolean(errors.doublePrice)
@@ -362,7 +359,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             </Grid>
                             <Grid item xs={12}>
                               <InputControl
-                                required
+                                required={false}
                                 error={touched.fees && Boolean(errors.fees)}
                                 helperText={touched.fees && errors.fees}
                                 value={values.fees || ""}
@@ -372,7 +369,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             </Grid>
                             <Grid item xs={12}>
                               <InputControl
-                                required
+                                required={false}
                                 error={
                                   touched.paymentLink &&
                                   Boolean(errors.paymentLink)
@@ -405,7 +402,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                             <Grid container xs={12} spacing={3}>
                               <Grid item xs={12}>
                                 <InputControl
-                                  required
+                                  required={false}
                                   error={
                                     touched.arrivalHotel &&
                                     Boolean(errors.arrivalHotel)
@@ -420,7 +417,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                               </Grid>
                               <Grid item xs={12}>
                                 <InputControl
-                                  required
+                                  required={false}
                                   error={
                                     touched.checkoutDate &&
                                     Boolean(errors.checkoutDate)
@@ -436,7 +433,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                               </Grid>
                               <Grid item xs={12}>
                                 <InputControl
-                                  required
+                                  required={false}
                                   error={
                                     touched.departureHotel &&
                                     Boolean(errors.departureHotel)

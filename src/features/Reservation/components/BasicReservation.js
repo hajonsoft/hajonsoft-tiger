@@ -73,8 +73,8 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
   const [reservationNumber, setReservationNumber] = useState("");
 
   const handleSubmitForm = async (values, actions) => {
-    const reservationRef = firebase.database().ref(`customer/${packageName}`);
-    const pushResult = reservationRef.push(values);
+    const reservationRef = firebase.database().ref(`customer/online`);
+    const pushResult = reservationRef.push({ ...values, packageName });
     setReservationNumber(pushResult.key);
     openSuccessModal()
   };

@@ -1,22 +1,20 @@
-import React from "react";
-import FullReservation from "./components/FullReservation";
-import BasicReservation from "./components/BasicReservation";
 import { Box, Button, Grid, MenuItem, Select, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import ExploreIcon from "@material-ui/icons/Explore";
-import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
-import { useList } from "react-firebase-hooks/database";
-import firebase from "../../firebaseapp";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import trans from "../../util/trans";
-import { useParams } from "react-router-dom";
-import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import SuccessImg from './success.png';
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import ExploreIcon from "@material-ui/icons/Explore";
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import firebase from "../../firebaseapp";
+import trans from "../../util/trans";
+import BasicReservation from "./components/BasicReservation";
+import FullReservation from "./components/FullReservation";
+import reservationCompleteImage from '../../images/reservation-complete.svg';
 
-console.log(SuccessImg)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +76,25 @@ const Reservation = ({ lang, onLanguageChange }) => {
   const params = useParams();
   const [open, setOpen] = React.useState(false);
 
+  const [advertisementData, setAdvertisementData] = React.useState({});
+
+  useEffect(() => {
+    async function getPackageSnapshot() {
+      if (params.packageName) {
+        const allAdvertisementsSnapshot = await firebase.database().ref(`protected/onlinePackage`).once('value');
+        const allAdvertisments = allAdvertisementsSnapshot.val();
+        const allAdvertismentsKeys = Object.keys(allAdvertisments);
+        for (const advertisementKey of allAdvertismentsKeys) {
+          if (allAdvertisments[advertisementKey].name === params.packageName) {
+            setAdvertisementData(allAdvertisments[advertisementKey])
+            return;
+          }
+        }
+      }
+    };
+    getPackageSnapshot();
+  }, [params.packageName]);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -90,16 +107,6 @@ const Reservation = ({ lang, onLanguageChange }) => {
     setValue(newValue);
   };
 
-  const [snapshots] = useList(
-    firebase.database().ref("protected/onlinePackage")
-  );
-
-  const getPaymentLink = () => {
-    if (!snapshots) return "https://breno-tours.web.app/";
-    return snapshots
-      .map((s) => s.val())
-      .find((val) => val.name === params.packageName)?.paymentLink;
-  };
 
   return (
     <>
@@ -184,14 +191,13 @@ const Reservation = ({ lang, onLanguageChange }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 style={{textAlign: "center"}} >A Reservation has been booked for you</h2>
-            <div style={{width: "25%", height: 150, margin: "1rem auto"}}> 
-              <img src={SuccessImg} alt="success-icon" style={{width: "100%", height: "100%"}} />
+            <h2 style={{ textAlign: "center" }} >A Reservation has been booked for you</h2>
+            <div style={{ width: "25%", height: 150, margin: "1rem auto" }}>
+              <img src={reservationCompleteImage} alt="success-icon" style={{ width: "100%", height: "100%" }} />
             </div>
-            <div className={classes.paymentBtnContainer}> 
-
+            <div className={classes.paymentBtnContainer}>
               <Button color="default" variant="contained" className={classes.viewReservationBtn} onClick={handleClose} >View Reservation Number</Button>
-              <Button color="primary" variant="contained" className={classes.paymentBtn} href={getPaymentLink()} >Continue to Payment</Button>
+              {advertisementData.paymentLink && <Button color="primary" variant="contained" className={classes.paymentBtn} href={advertisementData.paymentLink} >Continue to Payment</Button>}
             </div>
           </div>
         </Fade>
