@@ -8,56 +8,141 @@ import Typography from "@material-ui/core/Typography";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 import SchoolIcon from "@material-ui/icons/School";
 import React from "react";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import { packageImage } from "../../../util/packageImage";
+
+const useStyles = makeStyles((theme) => ({
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  cardMedia: {
+    paddingTop: "56.25%", // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  title: {
+    fontSize: "1rem",
+    fontWeight: 800,
+    color: "#14618e",
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+  },
+  subTitle: {
+    fontSize: "1.5rem",
+    fontWeight: 600,
+    color: "#2D3848",
+  },
+  description: {
+    color: "#718196",
+    display: "box",
+    lineClamp: 3,
+    boxOrient: "vertical",
+    overflow: "hidden",
+  },
+}));
 
 const AdvertisementCard = ({ detail, index }) => {
   const history = useHistory();
+  const classes = useStyles();
   if (!detail) {
     return null;
   }
+
   return (
-    <div>
-      <Card raised variant="outlined" style={{ backgroundColor: "#e8f5e9" }}>
-        <CardHeader
-          title={detail.name}
-          subheader={detail.headline}
-        ></CardHeader>
-        <CardMedia
-          component="img"
-          alt={detail.name}
-          image={packageImage(detail.gender, index)}
-          title={detail.name}
-        />
-        <CardContent>
-          <Typography variant="body1" noWrap style={{maxLines: 4}}>
-            {detail.description || "Call for details."}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            title={`Make reservation to ${detail.name}`}
-            variant="contained"
-            color="primary"
-            style={{ textTransform: "none" }}
-            onClick={() => history.push(`/reserve/${detail.name}`)}
-            endIcon={<EventSeatIcon />}
-          >
-            Reserve
-          </Button>
-          <Button
-            title={`Learn more about ${detail.name} package`}
-            onClick={() => history.push(`/package/detail/${detail.name}`)}
-            variant="outlined"
-            color="primary"
-            style={{ textTransform: "none" }}
-            endIcon={<SchoolIcon />}
-          >
-            Learn More
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
+    // <Grid item key={Math.random().toString()} xs={12} sm={6} md={4}>
+    <Card className={classes.card}>
+      <CardMedia
+        className={classes.cardMedia}
+        image={packageImage(detail.gender, index)}
+        title={detail.name}
+      />
+      <CardContent className={classes.cardContent}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="h2"
+          className={classes.title}
+        >
+          {detail.name}
+        </Typography>
+        <Typography component="h1" className={classes.subTitle}>
+          {detail.headline}
+        </Typography>
+        <Typography
+          variant="body1"
+          className={classes.description}
+          style={{ maxLines: 4 }}
+        >
+          {detail.description || "Call for details."}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          title={`Make reservation to ${detail.name}`}
+          color="primary"
+          style={{color: "#14618e"}}
+          onClick={() => history.push(`/reserve/${detail.name}`)}
+        >
+          Reserve
+        </Button>
+        <Button
+          title={`Learn more about ${detail.name} package`}
+          onClick={() => history.push(`/package/detail/${detail.name}`)}
+          size="lg"
+          style={{color: "#14618e"}}
+          color="primary"
+        >
+          Learn More
+        </Button>
+      </CardActions>
+    </Card>
+    // </Grid>
+    // <div>
+    //   <Card raised variant="outlined" style={{ backgroundColor: "#e8f5e9" }}>
+    //     <CardHeader
+    //       title={detail.name}
+    //       subheader={detail.headline}
+    //     ></CardHeader>
+    //     <CardMedia
+    //       component="img"
+    //       alt={detail.name}
+    //       image={packageImage(detail.gender, index)}
+    //       title={detail.name}
+    //     />
+    //     <CardContent>
+    //       <Typography variant="body1" noWrap style={{maxLines: 4}} >
+    //         {detail.description || "Call for details."}
+    //       </Typography>
+    //     </CardContent>
+    //     <CardActions>
+    // <Button
+    //   title={`Make reservation to ${detail.name}`}
+    //   variant="contained"
+    //   color="primary"
+    //   style={{ textTransform: "none" }}
+    //   onClick={() => history.push(`/reserve/${detail.name}`)}
+    //   endIcon={<EventSeatIcon />}
+    // >
+    //   Reserve
+    // </Button>
+    //       <Button
+    // title={`Learn more about ${detail.name} package`}
+    // onClick={() => history.push(`/package/detail/${detail.name}`)}
+    //         variant="outlined"
+    //         color="primary"
+    // style={{ textTransform: "none" }}
+    // endIcon={<SchoolIcon />}
+    //       >
+    //         Learn More
+    //       </Button>
+    //     </CardActions>
+    //   </Card>
+    // </div>
   );
 };
 

@@ -8,7 +8,7 @@ import Footer from "./components/Footer"
 
 const DoveHome = () => {
   return (
-    <div style={{ background: "url(" + roundedPlus + ")", minHeight: "100vh" }}>
+    <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}>
       <DoveHeader />
       <ImportantDates />
       <Advertisements />

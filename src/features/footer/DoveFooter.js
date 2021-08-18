@@ -6,7 +6,7 @@ import hummingBird from "../../images/humming-bird.svg";
 const DoveFooter = () => {
   const history = useHistory();
   return (
-    <Paper outlined style={{ width: "100%", backgroundColor: "#e8f5e9" }}>
+    <Paper outlined style={{ width: "100%", boxShadow: "none", backgroundColor: "#fff", marginBottom: "6rem", marginTop: "2rem" }}>
       <Grid
         container
         justify="space-between"
@@ -14,13 +14,14 @@ const DoveFooter = () => {
         spacing={2}
         style={{ padding: "1rem" }}
       >
-        <Grid item md={9}>
+        <Grid item md={2} />
+        <Grid item md={3}>
           <Button
             color="primary"
             variant="outlined"
             size="large"
             fullWidth
-            style={{ textTransform: "none" }}
+            style={{ textTransform: "none", color: "#14618e", borderColor: "#14618e" }}
             onClick={() => history.push("/reserve/interest")}
           >
             Register expression of interest
