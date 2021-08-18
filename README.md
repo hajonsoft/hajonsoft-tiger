@@ -141,6 +141,9 @@ Quick time
 Kap
 Vidyard
 
+Krisp for noise cancelling
+https://www.descript.com/ for trancription
+
 If the camera is open in a video we usually start with
 My name is ... and my job is to ... so you can .....
 
