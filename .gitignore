@@ -83,3 +83,4 @@ typings/
 
 # firebase folder
 /.firebase/
+/.vscode

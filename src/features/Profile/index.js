@@ -1,3 +1,4 @@
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -6,29 +7,32 @@ import CardHeader from "@material-ui/core/CardHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import firebaseConfig from "../../firebaseConfig";
 import firebase from "../../firebaseapp";
-import { Grid } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import firebaseConfig from "../../firebaseConfig";
+// import InputControl from "./InputControl";
+import InputControl from "../Reservation/components/InputControl";
+
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    width: "90%",
-    margin: "25px auto",
+    width: "75%",
+    margin: "50px auto",
   },
   cardTitle: {
     textAlign: "left",
     fontSize: "2em",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderBottom: "1px solid #ccc",
   },
   actionsContainer: {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     padding: "10px",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderTop: "1px solid #ccc",
   },
   actionsContainerTopMain: {
     width: "50%",
@@ -45,21 +49,26 @@ const Profile = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const [record,setRecord] = useState({});
+  const [record, setRecord] = useState({});
 
   useEffect(() => {
-    firebase.database().ref(`protected/profile`).once('value', snapshot=> {
-      if (snapshot.toJSON()) {
-        setRecord(snapshot.toJSON())
-      }
-    })
-  }, [])
+    firebase
+      .database()
+      .ref(`protected/profile`)
+      .once("value", (snapshot) => {
+        if (snapshot.toJSON()) {
+          setRecord(snapshot.toJSON());
+        }
+      });
+  }, []);
 
-  const onClose = ()=> history.push('/caravans');
+  const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
     const updateRef = firebase.database().ref(`protected/profile`);
-    updateRef.set(values);
+    updateRef.set(values).catch((err) => {
+      alert(err.message);
+    });
     onClose();
   };
   return (
@@ -84,20 +93,67 @@ const Profile = () => {
               <CardHeader
                 className={classes.cardTitle}
                 title={`${firebaseConfig.projectId} Profile`}
-                action={
-                  <CancelOutlinedIcon color="secondary" onClick={onClose} />
-                }
+                action={<CancelOutlinedIcon color="error" onClick={onClose} />}
               />
               <CardContent>
-                <Grid container justify="space-between">
-                  <Grid item>
-                    <Field as={TextField} label="Name" fullWidth autoFocus name="name" InputLabelProps={{shrink: true}}/>
+                <Grid
+                  container
+                  justify="space-between"
+                  spacing={2}
+                  style={{ padding: "1rem 2rem" }}
+                >
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="name"
+                      label="Company Name"
+                      required
+                      value={values.name}
+                      error={touched.name && Boolean(errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
                   </Grid>
-                  <Grid item>
-                    <Field as={TextField} label="Telephone" fullWidth name="tel"  InputLabelProps={{shrink: true}}/>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="tel"
+                      label="Telephone Number"
+                      required
+                      value={values.tel}
+                      error={touched.tel && Boolean(errors.tel)}
+                      helperText={touched.tel && errors.tel}
+                    />
                   </Grid>
-                  <Grid item>
-                    <Field as={TextField} label="Address" fullWidth name="address"  InputLabelProps={{shrink: true}}/>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="address"
+                      label="Company Address"
+                      required
+                      value={values.address}
+                      error={touched.address && Boolean(errors.address)}
+                      helperText={touched.address && errors.address}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="facebookPage"
+                      label="Facebook Page URL"
+                      required
+                      value={values.facebookPage}
+                      error={
+                        touched.facebookPage && Boolean(errors.facebookPage)
+                      }
+                      helperText={touched.facebookPage && errors.facebookPage}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="about"
+                      label="About Us"
+                      required
+                      value={values.about}
+                      error={touched.about && Boolean(errors.about)}
+                      multiline
+                      helperText={touched.about && errors.about}
+                    />
                   </Grid>
                 </Grid>
               </CardContent>
@@ -105,8 +161,9 @@ const Profile = () => {
                 <Button
                   type="button"
                   disabled={isSubmitting}
-                  variant="contained"
-                  color="secondary"
+                  variant="outlined"
+                  color="default"
+                  style={{ color: "red", borderColor: "red" }}
                   onClick={onClose}
                   startIcon={<CancelOutlinedIcon />}
                 >
@@ -116,7 +173,7 @@ const Profile = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                   startIcon={<SaveOutlinedIcon />}
                 >

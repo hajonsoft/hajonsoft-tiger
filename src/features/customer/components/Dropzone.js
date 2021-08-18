@@ -4,7 +4,7 @@ import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import Worker from "../../../workers/parser.worker";
 import CustomerImportCard from "./CustomerImportCard";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Basic({ packageName, onClose }) {
+function DropZone({ packageName, onClose }) {
   const classes = useStyles();
   const [imports, setImports] = useState({});
   const [isImported, setIsImported] = useState(false);
@@ -208,11 +208,11 @@ function Basic({ packageName, onClose }) {
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
-                <Grid item container xs={12} justify="flex-end">
+                <Grid item container xs={12} justify="flex-end" spacing={2} alignItems="center">
                   <Grid item>
                     <Button
                       type="button"
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       onClick={() => {
                         setIsImported(false);
@@ -231,6 +231,7 @@ function Basic({ packageName, onClose }) {
                       onClick={() => {
                         setIsImported(false);
                         setImports({});
+                        onClose();
                       }}
                       startIcon={<RefreshOutlined />}
                     >
@@ -250,20 +251,20 @@ function Basic({ packageName, onClose }) {
           ) : (
             <div
               {...getRootProps({
-                className: "dropzone",
                 style: {
                   display: "flex",
-                  width: "100%",
-                  height: "100%",
                   justifyContent: "center",
                   alignItems: "center",
+                  border: '2px dashed silver',
+                  color: 'silver',
+                  padding: '1rem'
                 },
               })}
             >
               <input {...getInputProps()} />
               <div>
-                <div style={{ textAlign: "center" }}>
-                  <SaveAltOutlined></SaveAltOutlined>
+                <div style={{ textAlign: "center"}}>
+                  <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
                 <div>
                   Drop your 3M files from c:\HajOnSoft or Combo smart zip files
@@ -278,4 +279,4 @@ function Basic({ packageName, onClose }) {
   );
 }
 
-export default Basic;
+export default DropZone;

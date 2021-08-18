@@ -17,6 +17,7 @@ import RecentActorsOutlinedIcon from "@material-ui/icons/RecentActorsOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import TranslateIcon from "@material-ui/icons/Translate";
 import TwitterIcon from "@material-ui/icons/Twitter";
+import Alert from "@material-ui/lab/Alert";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Form, Formik } from "formik";
@@ -231,6 +232,14 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     window.open(url, "_blank");
   };
 
+  const handleAcceptOnlineReservation = (data) => {
+    createTraveller({ path: `customer/${record.packageName}`, data });
+    deleteTraveller({
+      path: `customer/online/${record._fid}`
+    });
+    onClose()
+  };
+
   const getFullArabicName = (arabicNameDictionary) => {
     const cursor = Object.values(arabicNameDictionary);
     let fullArabicName = "";
@@ -282,11 +291,11 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         initialValues={
           mode === "create"
             ? {
-                nationality: popularNationality(),
-                passExpireDt: moment().add(6, "month"),
-                passIssueDt: moment().subtract(7, "days"),
-                birthDate: moment().subtract(7, "days"),
-              }
+              nationality: popularNationality(),
+              passExpireDt: moment().add(6, "month"),
+              passIssueDt: moment().subtract(7, "days"),
+              birthDate: moment().subtract(7, "days"),
+            }
             : record
         }
         validationSchema={mode !== "delete" ? validSchema : null}
@@ -294,6 +303,20 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       >
         {({ setFieldValue, values, errors, isSubmitting, touched }) => (
           <Form>
+            {packageName === 'online' && record.packageName &&
+
+              <Alert severity="info" style={{ width: '100%' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <Typography variant="h5" >
+                    {record.packageName}
+                  </Typography>
+                  <div style={{marginLeft: '2rem'}}>
+                    <Button color="primary" size="small" variant="contained" onClick={() => handleAcceptOnlineReservation(values)} >Accept Reservation</Button>
+                  </div>
+                </div>
+
+              </Alert>
+            }
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
@@ -329,6 +352,15 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           record={values}
                         />
                       )}
+                      {mode === "create" && (
+                        <Grid container item xs style={{ padding: '1rem' }}>
+                          <Dropzone
+                            onClose={onClose}
+                            saveToFirebase={handleSubmitForm}
+                            packageName={packageName}
+                          ></Dropzone>
+                        </Grid>
+                      )}
                     </Grid>
                     <Grid
                       item
@@ -344,7 +376,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         justify="space-around"
                       >
                         <Grid container spacing={3} alignItems="center">
-                          <Grid item xs={10}>
+                          <Grid item xs={9}>
                             <InputControl
                               name="name"
                               label={trans("reservation.full-name")}
@@ -354,25 +386,25 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               helperText={touched.name && errors.name}
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={3}>
                             <IconButton>
-                              <FacebookIcon
+                              <FacebookIcon fontSize="small"
                                 onClick={() => handleFacebookClick(values.name)}
                               />
                             </IconButton>
                             <IconButton>
-                              <TwitterIcon
+                              <TwitterIcon fontSize="small"
                                 onClick={() => handleTwitterClick(values.name)}
                               />
                             </IconButton>
-                            <IconButton>
-                              <FontAwesomeIcon
+                            <IconButton >
+                              <FontAwesomeIcon size="sm"
                                 icon={faGoogle}
                                 onClick={() => handleGoogleClick(values.name)}
                               />
                             </IconButton>
                           </Grid>
-                          <Grid item xs={10}>
+                          <Grid item xs={9}>
                             <InputControl
                               name="nameArabic"
                               label={trans("reservation.arabic-name")}
@@ -386,7 +418,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               required={false}
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={3}>
                             <IconButton>
                               <TranslateIcon
                                 onClick={() =>
@@ -591,13 +623,23 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               required={false}
                             />
                           </Grid>
-                          <Grid item xs={12}>
+                          <Grid item xs={6}>
                             <InputControl
                               name="email"
                               label={trans("reservation.email")}
                               value={values.email}
                               error={touched.email && Boolean(errors.email)}
                               helperText={touched.email && errors.email}
+                              required={false}
+                            />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <InputControl
+                              name="phone"
+                              label={trans("reservation.telephone")}
+                              value={values.phone}
+                              error={touched.phone && Boolean(errors.phone)}
+                              helperText={touched.phone && errors.phone}
                               required={false}
                             />
                           </Grid>
@@ -654,8 +696,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         style={{ color: "#f44336" }}
                       >
                         {errors &&
-                        Object.keys(errors).length === 0 &&
-                        errors.constructor === Object
+                          Object.keys(errors).length === 0 &&
+                          errors.constructor === Object
                           ? ""
                           : JSON.stringify(errors).replace(/"/g, "")}
                       </Typography>
@@ -665,15 +707,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               </CardContent>
               <CardActions className={classes.actionsContainer}>
                 <Grid container spacing={2}>
-                  {mode === "create" && (
-                    <Grid container item xs>
-                      <Dropzone
-                        onClose={onClose}
-                        saveToFirebase={handleSubmitForm}
-                        packageName={packageName}
-                      ></Dropzone>
-                    </Grid>
-                  )}
                   {mode !== "create" && (
                     <Grid container item xs>
                       <Typography

@@ -1,4 +1,9 @@
-import { Breadcrumbs, CircularProgress, Typography } from "@material-ui/core";
+import {
+  Breadcrumbs,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
@@ -133,110 +138,119 @@ const OnlinePackage = () => {
           )}
 
           {state.mode === "list" && (
-            <MaterialTable
-              icons={tableIcons}
-              title={<Title />}
-              columns={[
-                { title: "Title", field: "name" },
-                { title: "Headline", field: "headline" },
-                { title: "From", field: "departureAirport" },
-                { title: "To", field: "arrivalAirport" },
-                {
-                  title: "Description",
-                  field: "description",
-                  width: "35%",
+            <>
+              <Grid container spacing={2} style={{padding: '1rem'}}>
+                <Grid item>
+                  <Typography color="textPrimary">Upcoming</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">Past</Typography>
+                </Grid>
+              </Grid>
+              <MaterialTable
+                icons={tableIcons}
+                title={<Title />}
+                columns={[
+                  { title: "Title", field: "name" },
+                  { title: "Headline", field: "headline" },
+                  { title: "From", field: "departureAirport" },
+                  { title: "To", field: "arrivalAirport" },
+                  {
+                    title: "Description",
+                    field: "description",
+                    width: "35%",
+                    headerStyle: {
+                      textAlign: "center",
+                    },
+                    cellStyle: {
+                      textAlign: "left",
+                    },
+                  },
+                  {
+                    title: "Departure",
+                    field: "departureDate",
+                    render: (rowData) =>
+                      `${moment(rowData.departureDate).format(
+                        "DD-MMM-yyyy"
+                      )} [${moment().diff(rowData.departureDate, "days")}]`,
+                  },
+                  {
+                    title: "Checkout",
+                    field: "checkoutDate",
+                    render: (rowData) =>
+                      `${moment(rowData.checkoutDate).format(
+                        "DD-MMM-yyyy"
+                      )} [${moment().diff(rowData.checkoutDate, "days")}]`,
+                  },
+                  {
+                    title: "Return",
+                    field: "returnDate",
+                    render: (rowData) =>
+                      `${moment(rowData.returnDate).format(
+                        "DD-MMM-yyyy"
+                      )} [${moment().diff(rowData.returnDate, "days")}]`,
+                  },
+                ]}
+                data={snapshots && snapshots.map((s) => s.val())}
+                // detailPanel={(rowData) => (
+                //   <CustomerDetail
+                //     customer={rowData}
+                //     customerKey={snapshots.map((s) => s.key)[rowData.tableData.id]}
+                //   />
+                // )}
+                actions={[
+                  {
+                    icon: tableIcons.Add,
+                    tooltip: `Add ${title}`,
+                    isFreeAction: true,
+                    onClick: (event) =>
+                      setState((st) => ({ ...st, mode: "create" })),
+                  },
+                  {
+                    icon: () => <tableIcons.Edit color="action" />,
+                    tooltip: `Edit ${title}`,
+                    onClick: (event, rowData) =>
+                      setState((st) => ({
+                        ...st,
+                        mode: "update",
+                        record: rowData,
+                        customerKey: snapshots.map((s) => s.key)[
+                          rowData.tableData.id
+                        ],
+                      })),
+                  },
+                  {
+                    icon: () => <tableIcons.Delete color="error" />,
+                    tooltip: `Delete ${title}`,
+                    onClick: (event, rowData) =>
+                      setState((st) => ({
+                        ...st,
+                        mode: "delete",
+                        record: rowData,
+                        customerKey: snapshots.map((s) => s.key)[
+                          rowData.tableData.id
+                        ],
+                      })),
+                  },
+                ]}
+                options={{
+                  actionsColumnIndex: -1,
+                  pageSize: 10,
+                  exportButton: true,
                   headerStyle: {
-                    textAlign: "center",
+                    backgroundColor: "#f0f3f7",
+                    color: "#385273",
+                    fontSize: "1.1rem",
+                    paddingLeft: "0px",
                   },
-                  cellStyle: {
-                    textAlign: "left",
+                }}
+                localization={{
+                  body: {
+                    emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
                   },
-                },
-                {
-                  title: "Departure",
-                  field: "departureDate",
-                  render: (rowData) =>
-                    `${moment(rowData.departureDate).format(
-                      "DD-MMM-yyyy"
-                    )} [${moment().diff(rowData.departureDate, "days")}]`,
-                },
-                {
-                  title: "Checkout",
-                  field: "checkoutDate",
-                  render: (rowData) =>
-                    `${moment(rowData.checkoutDate).format(
-                      "DD-MMM-yyyy"
-                    )} [${moment().diff(rowData.checkoutDate, "days")}]`,
-                },
-                {
-                  title: "Return",
-                  field: "returnDate",
-                  render: (rowData) =>
-                    `${moment(rowData.returnDate).format(
-                      "DD-MMM-yyyy"
-                    )} [${moment().diff(rowData.returnDate, "days")}]`,
-                },
-              ]}
-              data={snapshots && snapshots.map((s) => s.val())}
-              // detailPanel={(rowData) => (
-              //   <CustomerDetail
-              //     customer={rowData}
-              //     customerKey={snapshots.map((s) => s.key)[rowData.tableData.id]}
-              //   />
-              // )}
-              actions={[
-                {
-                  icon: tableIcons.Add,
-                  tooltip: `Add ${title}`,
-                  isFreeAction: true,
-                  onClick: (event) =>
-                    setState((st) => ({ ...st, mode: "create" })),
-                },
-                {
-                  icon: () => <tableIcons.Edit color="action" />,
-                  tooltip: `Edit ${title}`,
-                  onClick: (event, rowData) =>
-                    setState((st) => ({
-                      ...st,
-                      mode: "update",
-                      record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[
-                        rowData.tableData.id
-                      ],
-                    })),
-                },
-                {
-                  icon: () => <tableIcons.Delete color="error" />,
-                  tooltip: `Delete ${title}`,
-                  onClick: (event, rowData) =>
-                    setState((st) => ({
-                      ...st,
-                      mode: "delete",
-                      record: rowData,
-                      customerKey: snapshots.map((s) => s.key)[
-                        rowData.tableData.id
-                      ],
-                    })),
-                },
-              ]}
-              options={{
-                actionsColumnIndex: -1,
-                grouping: true,
-                pageSize: 10,
-                exportButton: true,
-                headerStyle: {
-                  backgroundColor: "#f0f3f7",
-                  color: "#385273",
-                  fontSize: "1.1rem",
-                  paddingLeft: "0px",
-                },
-              }}
-              localization={{
-                body: {
-                  emptyDataSourceMessage: `No ${title} to display, click + button above to add a new one`,
-                },
-              }}
-            />
+                }}
+              />
+            </>
           )}
         </div>
       </div>

@@ -1,10 +1,10 @@
 ﻿### HAJonSoft Tiger
 
-Home of the Nest which is Dove 🕊  and Humming Bird combined. The code repo is called Tiger 🐅 (Animal). 
-Repo uses an animal name while customer facing modules will use a bird name.
+Home for Nest suite of applications. Nest is Dove 🕊  and Humming Bird combined. The code repo is called Tiger 🐅 (Animal). 
+Repo uses an animal name while customer facing modules will use a bird name. I am starting to come up with names for every thing otherwise everything is same as everything. 
 
-* Humming Bird (Bird) allows a Munazim to login to own firebase account to administer travellers, apply for visa, scan passports or print reports.
-* Dove (Bird) allows travellers to find and reserve trips
+* Humming Bird (Bird) allows a Munazim to login to own firebase account to administer passengers, apply for visa, scan passports or print reports.
+* Dove (Bird) allows passengers to find and reserve trips
 
 
 To learn about HAJonSoft repos please watch this video [![image](https://user-images.githubusercontent.com/9623964/121062683-40adc680-c77a-11eb-8cc0-7488bd23c13e.png)](https://share.vidyard.com/watch/obRrErJQBGMkwu6khqmUiZ?)
@@ -18,7 +18,7 @@ yarn start
 
 ### Environment Resolution
 
-To start Nest locally. First edit src/firebaseConfig.js to point to the desired Munazim account 
+To start Nest locally you can connect to specific travel company here src/firebaseConfig.js. Change the import 
 
 ex. `import firebaseConfig from './firebaseConfigs/breno-tours'; `
 
@@ -34,13 +34,15 @@ yarn start
 
 # Commit format
 
-Commits should start with one of the following words
+I come a cross an interesting commit message format and I try to use it 
 fix: To express a fix to the code ex. `fix: build error`
 feat: To introduce a new feature to the code base ex. `feat: apply for visa`
 refactor: Code refactor ex. `refactor: apply for visa`
 doc: Update to documentation only ex. `docs: spell check`
 style: Update to style only ex. `style: apply for visa`
 test: Create or update test ex. `test: apply for visa`
+
+Sometimes it helps me with commit messages.
 
 # Git and SSH
 
@@ -77,6 +79,7 @@ git config user.name YOUR_USER_NAME
 git config user.email YOUR_EMAIL
 
 ### Scrum
+
 We use ZenHub to manage stories and epics. install ZenHub extension to see epics and stories right in your google chrome when browsing github.
 
 Virtual standup is held on slack using `/remind me every [day/hour] at [time] to [your message]`
@@ -138,12 +141,15 @@ Quick time
 Kap
 Vidyard
 
+Krisp for noise cancelling
+https://www.descript.com/ for trancription
+
 If the camera is open in a video we usually start with
 My name is ... and my job is to ... so you can .....
 
 ### Puppeteer
 
-We use puppeteer to submit travellers to various visa websites. Video https://youtu.be/BMtcwF96j6I
+We use puppeteer to submit passengers to various visa websites. Video https://youtu.be/BMtcwF96j6I
 
 
 ### Hubspot
@@ -153,6 +159,10 @@ Hubspot is an interesting customer management system and it has now all the HAJo
 ### Spiceworks
 
 We use https://on.spiceworks.com/ to manage "visa by proxy" tickets. login with hajonsoft@gmail.com
+
+### Patreon
+
+Our patreon page is https://www.patreon.com/Hajonsoft if you want to edit login using hajonsoft@gmail.com
 
 # Credits
 
@@ -190,9 +200,8 @@ url-handler registry https://stackoverflow.com/questions/389204/how-do-i-create-
 
 ## Vision
 
-Revolutionize the industry by creating an integrated digital platform for travel agents, travellers and our employees who serve them – by harnessing
-science and technology to help travellers achieve the best possible travel experience.
-
+Revolutionize the industry by creating an integrated digital platform for travel agents, passengers and our employees who serve them – by harnessing
+science and technology to help passengers achieve the best possible travel experience.
 
 ## We need your help!
 

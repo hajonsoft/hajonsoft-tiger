@@ -199,11 +199,12 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
 
     const reservationReference = firebase
       .database()
-      .ref(`customer/${packageName}`);
+      .ref(`customer/online`);
     const reservationResult = reservationReference.push({
       ...values,
       photoFileName,
       passportFileName,
+      packageName
     });
 
     setReservationNumber(reservationResult.key);

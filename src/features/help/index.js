@@ -40,7 +40,7 @@ const helpCards = [
   {
     title: "COMMUNITY SUPPORT",
     linkElement: (
-      <span> <a href="https://hajonsoft.on.spiceworks.com/portal">Tickets</a><span> or </span><a href="https://hajonsoft.on.spiceworks.com/portal">join the community</a></span>
+      <span> <a href="https://hajonsoft.on.spiceworks.com/portal">Tickets</a><span> or </span><a href="https://on.spiceworks.com">join the community</a></span>
     ),
     icon: <FavoriteBorderOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
