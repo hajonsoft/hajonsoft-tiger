@@ -1,17 +1,62 @@
-import React, { useEffect, useState, useRef } from "react";
-import Dropzone from "react-dropzone";
-import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
-import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
-import Worker from "../../../workers/parser.worker";
-import CustomerImportCard from "./CustomerImportCard";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
+import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import Alert from "@material-ui/lab/Alert";
+import React, { useEffect, useRef, useState } from "react";
+import Dropzone from "react-dropzone";
+import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
+import Worker from "../../../workers/parser.worker";
+import firebaseArabicName from "../../arabicName/firebaseArabicName";
+import CustomerImportCard from "./CustomerImportCard";
 const storage = firebase.storage();
+
+const getFullArabicName = (arabicNameDictionary) => {
+  const cursor = Object.values(arabicNameDictionary);
+  let fullArabicName = "";
+  for (let i = 0; i < cursor.length; i++) {
+    if (arabicNameDictionary[`"${i}"`]) {
+      fullArabicName += " " + arabicNameDictionary[`"${i}"`];
+    }
+  }
+
+  return fullArabicName.trim();
+};
+
+const handleTranslateName = async (englishName, isArabic, cb) => {
+  if(!isArabic) {
+    cb(false)
+    return;
+  }
+  const names = englishName?.split(" ").filter((name) => name?.trim());
+  if (names.length === 0) {
+    return;
+  }
+  const translationResult = {};
+  let fullArabicName;
+  try {
+    for (let i = 0; i < names.length; i++) {
+      const snapshot = await firebaseArabicName
+        .database()
+        .ref(`/${names[i].toLowerCase()}`)
+        .once("value");
+      const result = snapshot.val();
+      translationResult[`"${i}"`] = result;
+      fullArabicName = getFullArabicName(translationResult);
+    }
+    if (!fullArabicName || fullArabicName.length === 0) {
+      cb(false);
+    } else {
+      cb(fullArabicName);
+    }
+  } catch (err) {
+    cb(false);
+  }
+};
 
 const saveCustomerToFirebase = async (values, packageName, callback) => {
   let image = values.image;
@@ -20,37 +65,47 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   let passportImage = values.passportImage;
   delete values["passportImage"];
 
-  const customerRef = firebase.database().ref(`customer/${packageName}`);
-  customerRef.push(values);
+  const englishName = values["name"];
+  const passengerNationality = values["nationality"];
+  const isArabic = nationalities.find(nationality=> nationality.name === passengerNationality)?.isArabic;
 
-  if (image) {
-    const metadata = {
-      contentType: "image/jpeg",
-    };
-    const fileName = `${values.nationality ||
-      "unknown"}/${values.passportNumber || "unknown"}.jpg`;
-    let ref = storage.ref(fileName);
-    ref
-      .put(image, metadata)
-      .then((snap) => {
-        callback({ success: true });
-      })
-      .catch((error) => {
-        callback({ error });
-      });
-  } else {
-    callback({ success: true });
-  }
+  handleTranslateName(englishName, isArabic,  (arabicName) => {
+    if (arabicName) {
+      values["nameArabic"] = arabicName;
+    }
 
-  if (passportImage) {
-    const metadata = {
-      contentType: "image/jpeg",
-    };
-    const passportFileName = `${values.nationality ||
-      "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
-    let ref = storage.ref(passportFileName);
-    ref.put(passportImage, metadata);
-  }
+    const customerRef = firebase.database().ref(`customer/${packageName}`);
+    customerRef.push(values);
+
+    if (image) {
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+      const fileName = `${values.nationality ||
+        "unknown"}/${values.passportNumber || "unknown"}.jpg`;
+      let ref = storage.ref(fileName);
+      ref
+        .put(image, metadata)
+        .then((snap) => {
+          callback({ success: true });
+        })
+        .catch((error) => {
+          callback({ error });
+        });
+    } else {
+      callback({ success: true });
+    }
+
+    if (passportImage) {
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+      const passportFileName = `${values.nationality ||
+        "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
+      let ref = storage.ref(passportFileName);
+      ref.put(passportImage, metadata);
+    }
+  });
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -88,7 +143,7 @@ function DropZone({ packageName, onClose }) {
         );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
-
+        console.log(event.data.import)
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
           setImports((prev) =>
@@ -213,14 +268,10 @@ function DropZone({ packageName, onClose }) {
                 <div style={{ textAlign: "center"}}>
                   <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
-                <Typography variant="h5" gutterBottom>
-                  Drop Scanned Passports here...
-                </Typography>
-                <Typography>
-                  If you use 3M/Gemalto drop all files (.jpg, .txt, .bin) or
-                  just .zip for Combo Smart. For files Check c:\hajonsoft or
-                  c:\program files\gx\demos\prdemosdl\log
-                </Typography>
+                <div>
+                  Drop your 3M files from c:\HajOnSoft or Combo smart zip files
+                  from c:\Program files\gx\demos\prDemoSDL\log
+                </div>
               </div>
             </div>
           )}

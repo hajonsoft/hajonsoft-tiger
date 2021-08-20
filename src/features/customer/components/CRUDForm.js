@@ -406,7 +406,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="nameArabic"
                               label={trans("reservation.arabic-name")}
-                              value={values.arabicName}
+                              value={values.nameArabic}
                               error={
                                 touched.nameArabic && Boolean(errors.nameArabic)
                               }

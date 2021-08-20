@@ -15,7 +15,6 @@ import BasicReservation from "./components/BasicReservation";
 import FullReservation from "./components/FullReservation";
 import reservationCompleteImage from '../../images/reservation-complete.svg';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -106,7 +105,6 @@ const Reservation = ({ lang, onLanguageChange }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
 
   return (
     <>
