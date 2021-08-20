@@ -1,17 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import Dropzone from "react-dropzone";
-import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
-import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
-import Worker from "../../../workers/parser.worker";
-import CustomerImportCard from "./CustomerImportCard";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
+import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import Alert from "@material-ui/lab/Alert";
+import React, { useEffect, useRef, useState } from "react";
+import Dropzone from "react-dropzone";
+import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
+import Worker from "../../../workers/parser.worker";
 import firebaseArabicName from "../../arabicName/firebaseArabicName";
+import CustomerImportCard from "./CustomerImportCard";
 const storage = firebase.storage();
 
 const getFullArabicName = (arabicNameDictionary) => {
@@ -65,7 +66,8 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   delete values["passportImage"];
 
   const englishName = values["name"];
-  const isArabic = values["isArabic"]
+  const passengerNationality = values["nationality"];
+  const isArabic = nationalities.find(nationality=> nationality.name === passengerNationality)?.isArabic;
 
   handleTranslateName(englishName, isArabic,  (arabicName) => {
     if (arabicName) {
