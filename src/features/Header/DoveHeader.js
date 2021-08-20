@@ -39,7 +39,7 @@ const DoveHeader = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        {profile && profile.tel && <Typography variant="body1">{`Call us ${profile.tel}`}</Typography>}
+                        <Typography variant="body1">{`Call us ${profile?.tel}`}</Typography>
                     </Grid>
                 </Grid>
             </Toolbar>

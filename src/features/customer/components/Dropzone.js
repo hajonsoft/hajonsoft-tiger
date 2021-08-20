@@ -4,7 +4,7 @@ import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import Worker from "../../../workers/parser.worker";
 import CustomerImportCard from "./CustomerImportCard";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -26,30 +26,31 @@ const getFullArabicName = (arabicNameDictionary) => {
   return fullArabicName.trim();
 };
 
-const handleTranslateName = async (englishName, cb) => {
+const handleTranslateName = async (englishName, isArabic, cb) => {
+  if(!isArabic) {
+    cb(false)
+    return;
+  }
   const names = englishName?.split(" ").filter((name) => name?.trim());
   if (names.length === 0) {
     return;
   }
   const translationResult = {};
+  let fullArabicName;
   try {
     for (let i = 0; i < names.length; i++) {
-      firebaseArabicName
+      const snapshot = await firebaseArabicName
         .database()
         .ref(`/${names[i].toLowerCase()}`)
-        .once("value")
-        .then((snapshot) => {
-          const result = snapshot.val();
-          translationResult[`"${i}"`] = result;
-
-          const fullArabicName = getFullArabicName(translationResult);
-
-          if (!fullArabicName || fullArabicName.length === 0) {
-            cb(false);
-          } else {
-            cb(fullArabicName);
-          }
-        });
+        .once("value");
+      const result = snapshot.val();
+      translationResult[`"${i}"`] = result;
+      fullArabicName = getFullArabicName(translationResult);
+    }
+    if (!fullArabicName || fullArabicName.length === 0) {
+      cb(false);
+    } else {
+      cb(fullArabicName);
     }
   } catch (err) {
     cb(false);
@@ -64,8 +65,9 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   delete values["passportImage"];
 
   const englishName = values["name"];
+  const isArabic = values["isArabic"]
 
-  handleTranslateName(englishName, (arabicName) => {
+  handleTranslateName(englishName, isArabic,  (arabicName) => {
     if (arabicName) {
       values["nameArabic"] = arabicName;
     }
@@ -110,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Basic({ packageName, onClose }) {
+function DropZone({ packageName, onClose }) {
   const classes = useStyles();
   const [imports, setImports] = useState({});
   const [isImported, setIsImported] = useState(false);
@@ -139,7 +141,7 @@ function Basic({ packageName, onClose }) {
         );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
-
+        console.log(event.data.import)
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
           setImports((prev) =>
@@ -206,11 +208,11 @@ function Basic({ packageName, onClose }) {
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
-                <Grid item container xs={12} justify="flex-end">
+                <Grid item container xs={12} justify="flex-end" spacing={2} alignItems="center">
                   <Grid item>
                     <Button
                       type="button"
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       onClick={() => {
                         setIsImported(false);
@@ -229,6 +231,7 @@ function Basic({ packageName, onClose }) {
                       onClick={() => {
                         setIsImported(false);
                         setImports({});
+                        onClose();
                       }}
                       startIcon={<RefreshOutlined />}
                     >
@@ -248,20 +251,20 @@ function Basic({ packageName, onClose }) {
           ) : (
             <div
               {...getRootProps({
-                className: "dropzone",
                 style: {
                   display: "flex",
-                  width: "100%",
-                  height: "100%",
                   justifyContent: "center",
                   alignItems: "center",
+                  border: '2px dashed silver',
+                  color: 'silver',
+                  padding: '1rem'
                 },
               })}
             >
               <input {...getInputProps()} />
               <div>
-                <div style={{ textAlign: "center" }}>
-                  <SaveAltOutlined></SaveAltOutlined>
+                <div style={{ textAlign: "center"}}>
+                  <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
                 <div>
                   Drop your 3M files from c:\HajOnSoft or Combo smart zip files
@@ -276,4 +279,4 @@ function Basic({ packageName, onClose }) {
   );
 }
 
-export default Basic;
+export default DropZone;

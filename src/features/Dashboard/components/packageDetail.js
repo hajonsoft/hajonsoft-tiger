@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
 //TODO: Redesign, talk to customers to get feedback
 import React, { useState } from "react";
-import { getTravellersJSON, zipWithPhotos } from "../helpers/common";
+import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useTravellerState from "../redux/useTravellerState";
 import ApplyForVisa from "./ApplyForVisa";
 import BioStatistics from "./BioStatistics";
@@ -25,7 +25,7 @@ const PackageDetail = ({ data }) => {
 
   const handleShareClick = async () => {
     setShareProgress({ loading: true, value: 0 });
-    const travellersData = getTravellersJSON(travellers, data);
+    const travellersData = getPassengersJSON(travellers, data);
     const jsonData = JSON.stringify(travellersData);
     const zip = await zipWithPhotos(
       jsonData,

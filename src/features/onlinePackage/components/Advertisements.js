@@ -8,6 +8,7 @@ import interested from "../../../images/interested.svg";
 
 const Advertisements = () => {
   const [advertisements, setOnlinePackages] = useState([]);
+  
   useEffect(() => {
     firebase
       .database()
