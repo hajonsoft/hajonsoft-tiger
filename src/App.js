@@ -79,14 +79,14 @@ function App() {
             <PublicRoute exact path="/">
               <DoveHome />
             </PublicRoute>
-            <PublicRoute exact path="/admin">
+            {/* <PublicRoute exact path="/admin">
               <Home onLanguageChange={handleLanguageChange} lang={language} />
-            </PublicRoute>
+            </PublicRoute> */}
             <PublicRoute path="/register">
               <Register />
             </PublicRoute>
             <PublicRoute path="/login">
-              <SignIn />
+              <SignIn onLanguageChange={handleLanguageChange} lang={language} />
             </PublicRoute>
             <PublicRoute path="/forgot-password">
               <ForgotPassword />

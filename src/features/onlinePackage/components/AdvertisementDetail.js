@@ -25,18 +25,16 @@ const AdvertisementDetail = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}>
       <DoveHeader />
-      <Box mx={2} mt={2}>
         <Grid container spacing={2} style={{ marginTop: "1rem" }}>
-          <Grid item xs={12} lg={4} sm={12} md={4}>
+          <Grid item xs={12} md={6} >
             <img
               src={packageImage(detail.gender, 0)}
               alt={detail.gender}
               style={{
                 width: "100%",
                 height: "auto",
-                border: "5px solid #ffffff",
               }}
             />
             <Box ml={2}>
@@ -54,11 +52,10 @@ const AdvertisementDetail = () => {
               )}
             </Box>
           </Grid>
-          <Grid item xs={12} lg={8} sm={12} md={8}>
+          <Grid item xs={12} md={6} >
             <PackageFeatures detail={detail} />
           </Grid>
         </Grid>
-      </Box>
     </div>
   );
 };

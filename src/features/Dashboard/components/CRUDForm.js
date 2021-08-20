@@ -107,6 +107,7 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
                     />
                   </Grid>
                   <Grid item>
+                    <p> Hello World </p>
                     <Field
                       required
                       as={TextField}

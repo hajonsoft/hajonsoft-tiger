@@ -49,18 +49,19 @@ const Footer = () => {
         alignItems="flex-start"
         style={{
           padding: "2rem",
+          paddingLeft: "8rem"
           // width: "80%",
           // margin: "0 auto"
         }}
       >
-        <Grid item md={3} style={{ padding: "0px 1rem", marginLeft: "auto" }}>
-          <Typography className={classes.textHead}>Company</Typography>
+        <Grid item md={3} style={{ padding: "0px 1rem", }} >
+          <Typography className={classes.textHead} >Company</Typography>
           <Typography className={classes.textBody}>About Us</Typography>
           <Typography className={classes.textBody}> Blog</Typography>
           <Typography className={classes.textBody}> Careers</Typography>
           <Typography className={classes.textBody}>Contact Us</Typography>
         </Grid>
-        <Grid item md={3} style={{ padding: "0px 1rem", marginLeft: "auto" }}>
+        <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Support</Typography>
           <Typography className={classes.textBody}>Help Center</Typography>
           <Typography className={classes.textBody}>Safety Center</Typography>
@@ -68,14 +69,14 @@ const Footer = () => {
             Community Guidelines
           </Typography>
         </Grid>
-        <Grid item md={3} style={{ padding: "0px 1rem", marginLeft: "auto" }}>
+        <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Legal</Typography>
           <Typography className={classes.textBody}>Cookies Policy</Typography>
           <Typography className={classes.textBody}>Privacy Policy</Typography>
           <Typography className={classes.textBody}>Terms of Service</Typography>
           <Typography className={classes.textBody}>Law Enforcement</Typography>
         </Grid>
-        <Grid item md={3} style={{ padding: "0px 1rem", marginLeft: "auto" }}>
+        <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Social Media</Typography>
           <Typography className={classes.textBody}>Instagram</Typography>
           <Typography className={classes.textBody}>Facebook</Typography>

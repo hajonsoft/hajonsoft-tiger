@@ -28,7 +28,7 @@ const DoveHeader = () => {
             </Helmet>
             <Toolbar>
                 <Grid container justify="space-between" alignItems="center">
-                    <Grid item><Typography variant="h4" align="center" style={{fontFamily: "Roboto", color: "#14618e"}}>{profile.name}</Typography></Grid>
+                    <Grid item><Typography onClick={() => history.push("/")} variant="h4" align="center" style={{fontFamily: "Roboto", color: "#14618e", cursor: "pointer" }}>{profile.name}</Typography></Grid>
                     <Grid item >
                         <Grid container spacing={2} justify="center">
                             <Grid item><Button onClick={() => history.push('/')}>home</Button></Grid>

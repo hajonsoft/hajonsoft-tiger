@@ -29,8 +29,8 @@ const DoveFooter = () => {
         </Grid>
         <Grid item md={2} container justify="flex-end" alignItems="center">
           <Grid item>
-            <Button onClick={() => history.push("/admin")}>            <img
-              onClick={() => history.push("/admin")}
+            <Button onClick={() => history.push("/login")}>            <img
+              onClick={() => history.push("/login")}
               src={hummingBird}
               alt="humming bird"
               width="64"
