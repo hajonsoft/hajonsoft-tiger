@@ -15,8 +15,6 @@ import BasicReservation from "./components/BasicReservation";
 import FullReservation from "./components/FullReservation";
 import SuccessImg from '../../images/reservation-complete.svg';
 
-console.log(SuccessImg)
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

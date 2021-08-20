@@ -273,8 +273,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     ).fromNow()}`;
   };
 
-  console.log(record, "__record__")
-
   return (
     <React.Fragment>
       <Formik
