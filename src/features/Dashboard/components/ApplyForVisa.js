@@ -74,12 +74,12 @@ const serviceProviders = [
   { value: "mot", name: "LOCAL | Egypt Tourism" },
 ];
 
-const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
+const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const classes = useStyles();
   const [expandedPanel, setExpandedPanel] = React.useState("");
   const [pace, setPace] = React.useState(1.5);
-  const [selectedTravellers, setSelectedTravellers] = React.useState(
-    travellers
+  const [selectedPassengers, setSelectedPassengers] = React.useState(
+    passengers
   );
   const [serviceProviderAddMode, setServiceProviderAddMode] = React.useState(
     false
@@ -100,8 +100,8 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
 
   React.useEffect(() => {
-    setSelectedTravellers(travellers);
-  }, [travellers]);
+    setSelectedPassengers(passengers);
+  }, [passengers]);
 
   const {
     data: visaSystems,
@@ -143,7 +143,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
     setDownloading(true);
     setDownloadFileName('');
     const startTime = moment();
-    const travellersData = getPassengersJSON(selectedTravellers);
+    const travellersData = getPassengersJSON(selectedPassengers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
@@ -166,7 +166,7 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
-      var elabsed = (moment.duration(moment().diff(startTime)).asSeconds() / selectedTravellers.length).toFixed(1);
+      var elabsed = (moment.duration(moment().diff(startTime)).asSeconds() / selectedPassengers.length).toFixed(1);
       setPace(elabsed);
       setDownloading(false);
     });
@@ -207,14 +207,14 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
     tempLink.click();
   };
 
-  const handleCheckTraveller = (checkStatus, traveller) => {
+  const handleCheckPassenger = (checkStatus, passenger) => {
     if (checkStatus) {
-      setSelectedTravellers(
-        (prevState) => (prevState = [...prevState, traveller])
+      setSelectedPassengers(
+        (prevState) => (prevState = [...prevState, passenger])
       );
     } else {
-      setSelectedTravellers((prevState) =>
-        prevState.filter((t) => t._fid !== traveller._fid)
+      setSelectedPassengers((prevState) =>
+        prevState.filter((t) => t._fid !== passenger._fid)
       );
     }
   };
@@ -235,46 +235,46 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
 
         <div className={classes.root}>
           <Accordion
-            expanded={expandedPanel === "travellersPanel"}
-            onChange={handlePanelChange("travellersPanel")}
+            expanded={expandedPanel === "passengersPanel"}
+            onChange={handlePanelChange("passengersPanel")}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>
-                Step 1: Choose Travellers
+                Step 1: Choose Passengers
               </Typography>
               <Typography
                 className={classes.secondaryHeading}
-              >{`${selectedTravellers?.length}/${travellers?.length} Travellers [${caravan} caravan]`}</Typography>
+              >{`${selectedPassengers?.length}/${passengers?.length} Passengers [${caravan} caravan]`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container justify="space-between">
                 <Grid items md={6}>
-                  <Button onClick={() => setSelectedTravellers(travellers)}>
+                  <Button onClick={() => setSelectedPassengers(passengers)}>
                     Select All
                   </Button>
                 </Grid>
                 <Grid items md={6} container justify="flex-end">
-                  <Button onClick={() => setSelectedTravellers([])}>
+                  <Button onClick={() => setSelectedPassengers([])}>
                     Deselect All
                   </Button>
                 </Grid>
-                {travellers &&
-                  travellers.map((traveller) => (
-                    <Grid item key={traveller._fid}>
+                {passengers &&
+                  passengers.map((passenger) => (
+                    <Grid item key={passenger._fid}>
                       <FormControlLabel
                         control={
                           <Checkbox
                             checked={
-                              selectedTravellers?.filter(
-                                (t) => t._fid === traveller._fid
+                              selectedPassengers?.filter(
+                                (t) => t._fid === passenger._fid
                               ).length > 0
                             }
                             onChange={(e) =>
-                              handleCheckTraveller(e.target.checked, traveller)
+                              handleCheckPassenger(e.target.checked, passenger)
                             }
                           />
                         }
-                        label={traveller.name}
+                        label={passenger.name}
                       />
                     </Grid>
                   ))}
@@ -540,11 +540,11 @@ const ApplyForVisa = ({ open, onClose, travellers, caravan }) => {
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        We use spicework to manage "visa by proxy" tickets. Email to <a href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedTravellers?.length} PAX&body=Embassy is ...`}>help@hajonsoft.on.spiceworks.com</a> or fill a form. either way you must attach the bundle file
+                        We use spicework to manage "visa by proxy" tickets. Email to <a href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedPassengers?.length} PAX&body=Embassy is ...`}>help@hajonsoft.on.spiceworks.com</a> or fill a form. either way you must attach the bundle file
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button href="https://hajonsoft.on.spiceworks.com/portal">
+                      <Button href="https://hajonsoft.on.spiceworks.com/portal" target="_blank">
                         Create "visa by proxy" Ticket
                       </Button>
                     </CardActions>

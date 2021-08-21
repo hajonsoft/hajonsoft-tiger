@@ -292,7 +292,7 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={state?.record?.name}
-        travellers={filteredCaravans[state?.record?.name]}
+        passengers={filteredCaravans[state?.record?.name]}
       />
       <Dialog
         open={state.mode === "delete"}
