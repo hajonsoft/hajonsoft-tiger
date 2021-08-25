@@ -119,7 +119,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
             </Box>
 
             <Typography
-              style={{ color: "#14618e" }}
+              style={{ color: "#4caf50" }}
               variant="h6"
               gutterBottom
               align="center"
@@ -215,12 +215,12 @@ const SignIn = ({ onLanguageChange, lang }) => {
                     <Box mt={2}>
                       <Button
                         variant="contained"
-                        // color="#14618e"
+                        // color="#4caf50"
                         style={{
                           textTransform: "none",
                           color: "white",
-                          background: "#14618e",
-                          borderColor: "#14618e",
+                          background: "#4caf50",
+                          borderColor: "#4caf50",
                         }}
                         type="submit"
                         startIcon={
@@ -252,8 +252,8 @@ const SignIn = ({ onLanguageChange, lang }) => {
               variant="outlined"
               style={{
                 textTransform: "none",
-                color: "#14618e",
-                borderColor: "#14618e",
+                color: "#4caf50",
+                borderColor: "#4caf50",
               }}
               onClick={handleGoogleSignin}
               startIcon={<FontAwesomeIcon icon={faGoogle} />}
@@ -263,8 +263,8 @@ const SignIn = ({ onLanguageChange, lang }) => {
           </Grid>
 
           <Grid item>
-            <Box style={{ color: "#14618e" }} >
-              <Link href="#" style={{ color: "#14618e" }} onClick={() => history.push("#")}>
+            <Box style={{ color: "#4caf50" }} >
+              <Link href="#" style={{ color: "#4caf50" }} onClick={() => history.push("#")}>
                 Need to Register?
               </Link>
             </Box>

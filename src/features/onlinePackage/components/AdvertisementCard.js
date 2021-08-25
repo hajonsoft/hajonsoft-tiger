@@ -24,11 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
+    minHeight: "150px"
   },
   title: {
     fontSize: "1rem",
     fontWeight: 800,
-    color: "#14618e",
+    color: "#4caf50",
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
@@ -85,7 +86,7 @@ const AdvertisementCard = ({ detail, index }) => {
         <Button
           title={`Make reservation to ${detail.name}`}
           color="primary"
-          style={{color: "#14618e"}}
+          style={{color: "#4caf50"}}
           onClick={() => history.push(`/reserve/${detail.name}`)}
         >
           Reserve
@@ -94,55 +95,13 @@ const AdvertisementCard = ({ detail, index }) => {
           title={`Learn more about ${detail.name} package`}
           onClick={() => history.push(`/package/detail/${detail.name}`)}
           size="lg"
-          style={{color: "#14618e"}}
+          style={{color: "#4caf50"}}
           color="primary"
         >
           Learn More
         </Button>
       </CardActions>
     </Card>
-    // </Grid>
-    // <div>
-    //   <Card raised variant="outlined" style={{ backgroundColor: "#e8f5e9" }}>
-    //     <CardHeader
-    //       title={detail.name}
-    //       subheader={detail.headline}
-    //     ></CardHeader>
-    //     <CardMedia
-    //       component="img"
-    //       alt={detail.name}
-    //       image={packageImage(detail.gender, index)}
-    //       title={detail.name}
-    //     />
-    //     <CardContent>
-    //       <Typography variant="body1" noWrap style={{maxLines: 4}} >
-    //         {detail.description || "Call for details."}
-    //       </Typography>
-    //     </CardContent>
-    //     <CardActions>
-    // <Button
-    //   title={`Make reservation to ${detail.name}`}
-    //   variant="contained"
-    //   color="primary"
-    //   style={{ textTransform: "none" }}
-    //   onClick={() => history.push(`/reserve/${detail.name}`)}
-    //   endIcon={<EventSeatIcon />}
-    // >
-    //   Reserve
-    // </Button>
-    //       <Button
-    // title={`Learn more about ${detail.name} package`}
-    // onClick={() => history.push(`/package/detail/${detail.name}`)}
-    //         variant="outlined"
-    //         color="primary"
-    // style={{ textTransform: "none" }}
-    // endIcon={<SchoolIcon />}
-    //       >
-    //         Learn More
-    //       </Button>
-    //     </CardActions>
-    //   </Card>
-    // </div>
   );
 };
 

@@ -21,7 +21,7 @@ const DoveFooter = () => {
             variant="outlined"
             size="large"
             fullWidth
-            style={{ textTransform: "none", color: "#14618e", borderColor: "#14618e" }}
+            style={{ textTransform: "none", color: "#4caf50", borderColor: "#4caf50" }}
             onClick={() => history.push("/reserve/interest")}
           >
             Register expression of interest
