@@ -120,7 +120,7 @@ const PackageDetail = ({ data }) => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={data.name}
-        travellers={travellers[data.name]}
+        passengers={travellers[data.name]}
       />
     </Paper>
   );

@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
@@ -133,6 +133,9 @@ function App() {
             <PrivateRoute path="/favorite">
               <Favorite />
             </PrivateRoute>
+            <PublicRoute path="*">
+              <Redirect to="/" />
+            </PublicRoute>
           </Provider>
         </Router>
       </IntlProvider>
