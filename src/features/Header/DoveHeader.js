@@ -31,11 +31,11 @@ const DoveHeader = () => {
                     <Grid item><Typography onClick={() => history.push("/")} variant="h4" align="center" style={{fontFamily: "Roboto", color: "#4caf50", cursor: "pointer" }}>{profile.name}</Typography></Grid>
                     <Grid item >
                         <Grid container spacing={2} justify="center">
-                            <Grid item><Button onClick={() => history.push('/')}>home</Button></Grid>
-                            <Grid item><Button onClick={() => history.push('/hajj-packages')}>hajj</Button></Grid>
-                            <Grid item><Button onClick={() => history.push('/umrah-packages')}>umrah</Button></Grid>
-                            <Grid item><Button onClick={() => history.push('/tours')}>tours</Button></Grid>
-                            <Grid item><Button onClick={() => history.push('/contact')}>contact us</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/')}>home</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/hajj-packages')}>hajj</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/umrah-packages')}>umrah</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/tours')}>tours</Button></Grid>
+                            {/* <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/contact')}>contact us</Button></Grid> */}
                         </Grid>
                     </Grid>
                     {/* <Grid item>

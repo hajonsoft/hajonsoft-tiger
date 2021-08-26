@@ -16,23 +16,26 @@ import * as yup from "yup";
 import { eventsNearby } from "../../../util/hijri";
 import CoreTextField from "../../customer/components/CoreTextField";
 import useTravellerState from "../redux/useTravellerState";
+import InputControl from "../../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    width: "60%",
-    margin: "25px auto",
+    width: "75%",
+    margin: "50px auto",
   },
   cardTitle: {
     textAlign: "left",
     fontSize: "2em",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderBottom: "1px solid #ccc",
   },
   actionsContainer: {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     padding: "10px",
-    backgroundColor: "silver",
+    backgroundColor: "white",
+    borderTop: "1px solid #ccc",
   },
   actionsContainerTopMain: {
     width: "50%",
@@ -85,86 +88,90 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
         onSubmit={handleSubmitForm}
         validationSchema={validSchema}
       >
-        {({ values, isSubmitting }) => (
+        {({
+          setFieldValue,
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
           <Form>
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
                 title={_.startCase(mode + " " + title)}
                 subheader={eventsNearby()}
-                action={<CancelOutlinedIcon onClick={onClose} />}
+                action={<CancelOutlinedIcon onClick={onClose} color="error" style={{cursor: "pointer"}} />}
               />
               <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item container>
-                    <CoreTextField
+                <Grid
+                  container
+                  justify="space-between"
+                  spacing={2}
+                  style={{ padding: "1rem 2rem" }}
+                >
+                  <Grid item xs={12}>
+                    <InputControl
                       name="name"
-                      value={values.name}
-                      mode={mode}
-                      xsWidth={12}
+                      label="Company Name"
                       required
-                      autoFocus
+                      value={values.name}
+                      error={touched.name && Boolean(errors.name)}
+                      helperText={touched.name && errors.name}
                     />
                   </Grid>
-                  <Grid item>
-                    <p> Hello World </p>
-                    <Field
-                      required
-                      as={TextField}
-                      fullWidth
+                  <Grid item xs={12}>
+                    <InputControl
                       name="departureDate"
                       label="Departure Date"
-                      disabled={mode === "delete"}
-                      autoComplete="off"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
                       type="date"
+                      required
+                      value={values.departureDate}
+                      error={
+                        touched.departureDate && Boolean(errors.departureDate)
+                      }
+                      helperText={touched.departureDate && errors.departureDate}
                     />
                   </Grid>
                 </Grid>
               </CardContent>
-              <CardActions>
-                <Grid container justify="flex-end" spacing={2}>
-                  <Grid item>
-                    <Button
-                      type="button"
-                      disabled={isSubmitting}
-                      variant="contained"
-                      color="secondary"
-                      onClick={onClose}
-                      startIcon={<CancelOutlinedIcon />}
-                    >
-                      Cancel
-                    </Button>
-                  </Grid>
-                  {mode === "create" && (
-                    <Grid item>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<AddOutlinedIcon />}
-                      >
-                        {`Create ${title}`}
-                      </Button>
-                    </Grid>
-                  )}
-                  {mode === "delete" && (
-                    <Grid item>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        variant="contained"
-                        className={classes.deleteButton}
-                        startIcon={<DeleteOutlinedIcon />}
-                      >
-                        {`Delete ${title}`}
-                      </Button>
-                    </Grid>
-                  )}
-                </Grid>
+              <CardActions className={classes.actionsContainer}>
+                <Button
+                  type="button"
+                  disabled={isSubmitting}
+                  variant="outlined"
+                  color="default"
+                  style={{ color: "red", borderColor: "red" }}
+                  onClick={onClose}
+                  startIcon={<CancelOutlinedIcon />}
+                >
+                  Cancel
+                </Button>
+                {mode === "create" && (
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AddOutlinedIcon />}
+                  >
+                    {`Create ${title}`}
+                  </Button>
+                )}
+                {mode === "delete" && (
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    variant="outlined"
+                    className={classes.deleteButton}
+                    startIcon={<DeleteOutlinedIcon />}
+                  >
+                    {`Delete ${title}`}
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Form>
