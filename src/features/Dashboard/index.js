@@ -160,6 +160,7 @@ const Dashboard = () => {
       <div
         style={{
           backgroundColor: "#e3f2fd",
+          minHeight: "100vh"
         }}
       >
         <AppHeader />

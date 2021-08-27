@@ -10,7 +10,6 @@ import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
 import DoveHome from "./features/Home/DoveHome";
-import Home from "./features/Home/Home";
 import OnlinePackages from "./features/onlinePackage";
 import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import AdvertisementDetail from "./features/onlinePackage/components/AdvertisementDetail";
@@ -79,14 +78,14 @@ function App() {
             <PublicRoute exact path="/">
               <DoveHome />
             </PublicRoute>
-            <PublicRoute exact path="/admin">
+            {/* <PublicRoute exact path="/admin">
               <Home onLanguageChange={handleLanguageChange} lang={language} />
-            </PublicRoute>
+            </PublicRoute> */}
             <PublicRoute path="/register">
               <Register />
             </PublicRoute>
             <PublicRoute path="/login">
-              <SignIn />
+              <SignIn onLanguageChange={handleLanguageChange} lang={language} />
             </PublicRoute>
             <PublicRoute path="/forgot-password">
               <ForgotPassword />
