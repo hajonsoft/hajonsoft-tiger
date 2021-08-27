@@ -19,7 +19,6 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import firebase from "../../../firebaseapp";
 import { packageImage } from "../../../util/packageImage";
 import DoveHeader from "../../Header/DoveHeader";
-import PackageFeatures from "./PackageFeatures";
 import Footer from "../../Home/components/Footer";
 import StarIcon from "@material-ui/icons/Star";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
@@ -96,7 +95,6 @@ const AdvertisementDetail = () => {
           margin: "0px 2.5rem",
           paddingTop: "1rem",
           maxWidth: "1400px",
-          margin: "auto",
         }}
       >
         <Grid item md={8}>

@@ -10,7 +10,6 @@ import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
 import DoveHome from "./features/Home/DoveHome";
-import Home from "./features/Home/Home";
 import OnlinePackages from "./features/onlinePackage";
 import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import AdvertisementDetail from "./features/onlinePackage/components/AdvertisementDetail";
