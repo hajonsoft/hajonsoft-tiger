@@ -1,6 +1,8 @@
 import { nationalities } from "../data/nationality";
 import { nameParts } from "./nameParts";
 import moment from "moment";
+import { generate } from 'mrz-gen';
+
 
 const checkDigitDiagram = {
   "<": 0,
@@ -42,61 +44,88 @@ const checkDigitDiagram = {
   Z: 35,
 };
 
+// export function createCodeline(passenger) {
+//   let codeline1;
+//   let codeline2;
+
+//   var names = nameParts(passenger.name);
+//   for (var i = 0; i < names.Count; i++) {
+//     names[i] = names[i].Trim().Replace(" ", "<");
+//   }
+
+//   var nationality = nationalities.find((p) => p.name === passenger.nationality);
+//   if (nationality != null) {
+//     codeline1 =
+//       "P<" +
+//       nationality.code +
+//       names[3] +
+//       "<<" +
+//       names[0] +
+//       "<" +
+//       names[1] +
+//       "<" +
+//       names[2];
+//     codeline1 = codeline1.padEnd(44, "<").replace(/[-]/g, "<");
+//     if (codeline1.length > 44) codeline1 = codeline1.substring(0, 44);
+//     var icaoPassportNumber = passenger.passportNumber.padEnd(9, "<");
+//     codeline2 = icaoPassportNumber;
+//     codeline2 = codeline2 + checkDigit(icaoPassportNumber); //Check digit
+//     if (passenger.birthDate != null)
+//       codeline2 =
+//         codeline2 +
+//         nationality.code +
+//         moment(passenger.birthDate).format("YYMMDD") +
+//         checkDigit(moment(passenger.birthDate).format("YYMMDD"));
+
+//     codeline2 = codeline2 + passenger.gender.substring(0, 1);
+
+//     if (passenger.passExpireDt != null)
+//       codeline2 =
+//         codeline2 +
+//         moment(passenger.passExpireDt).format("YYMMDD") +
+//         moment(passenger.passExpireDt).format("YYMMDD");
+
+//     codeline2 = codeline2.padEnd(42, "<") + "0";
+
+//     //Composite check digit for characters of machine readable data of the lower line in positions 1 to 10, 14 to 20 and 22 to 43, including values for
+//     //letters that are a part of the number fields and their check digits.
+//     const compositeCheckDigit = checkDigit(
+//       codeline2.substring(0, 10) +
+//         codeline2.substring(13, 20) +
+//         codeline2.substring(21, 43)
+//     );
+//     codeline2 = codeline2 + compositeCheckDigit.replace(/[-]/g, "<");
+//   }
+
+//   return codeline1 + codeline2;
+// }
+
+
 export function createCodeline(passenger) {
-  let codeline1;
-  let codeline2;
 
   var names = nameParts(passenger.name);
   for (var i = 0; i < names.Count; i++) {
     names[i] = names[i].Trim().Replace(" ", "<");
   }
 
-  var nationality = nationalities.find((p) => p.name === passenger.nationality);
-  if (nationality != null) {
-    codeline1 =
-      "P<" +
-      nationality.code +
-      names[3] +
-      "<<" +
-      names[0] +
-      "<" +
-      names[1] +
-      "<" +
-      names[2];
-    codeline1 = codeline1.padEnd(44, "<").replace(/[-]/g, "<");
-    if (codeline1.length > 44) codeline1 = codeline1.substring(0, 44);
-    var icaoPassportNumber = passenger.passportNumber.padEnd(9, "<");
-    codeline2 = icaoPassportNumber;
-    codeline2 = codeline2 + checkDigit(icaoPassportNumber); //Check digit
-    if (passenger.birthDate != null)
-      codeline2 =
-        codeline2 +
-        nationality.code +
-        moment(passenger.birthDate).format("YYMMDD") +
-        checkDigit(moment(passenger.birthDate).format("YYMMDD"));
+  const code = generate({
+    user: {
+      firstName: names[0],
+      lastName: names.slice(1).join(' '),
+      passportNumber: passenger.passportNumber,
+      countryCode: nationalities.find((p) => p.name === passenger.nationality)?.code,
+      nationality: nationalities.find((p) => p.name === passenger.nationality)?.code,
+      birthday: moment(passenger.birthDate).format('DD.MM.YYYY'),
+      gender: passenger.gender.substring(0,1),
+      validUntilDay: moment(passenger.passExpireDt).format('DD.MM.YYYY'),
+      personalNumber: '',
+    },
+  });
 
-    codeline2 = codeline2 + passenger.gender.substring(0, 1);
-
-    if (passenger.passExpireDt != null)
-      codeline2 =
-        codeline2 +
-        moment(passenger.passExpireDt).format("YYMMDD") +
-        moment(passenger.passExpireDt).format("YYMMDD");
-
-    codeline2 = codeline2.padEnd(42, "<") + "0";
-
-    //Composite check digit for characters of machine readable data of the lower line in positions 1 to 10, 14 to 20 and 22 to 43, including values for
-    //letters that are a part of the number fields and their check digits.
-    const compositeCheckDigit = checkDigit(
-      codeline2.substring(0, 10) +
-        codeline2.substring(13, 20) +
-        codeline2.substring(21, 43)
-    );
-    codeline2 = codeline2 + compositeCheckDigit.replace(/[-]/g, "<");
+return code;
   }
 
-  return codeline1 + codeline2;
-}
+
 
 function checkDigit(passportNumber) {
   //http://www.highprogrammer.com/alan/numbers/mrp.html#checkdigit
