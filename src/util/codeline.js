@@ -105,7 +105,7 @@ export function createCodeline(passenger) {
 
   var names = nameParts(passenger.name);
   for (var i = 0; i < names.Count; i++) {
-    names[i] = names[i].Trim().Replace(" ", "<");
+    names[i] = names[i].Trim();
   }
 
   const code = generate({
