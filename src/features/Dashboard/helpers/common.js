@@ -36,6 +36,7 @@ export function getPassengersJSON(passengers, data) {
       },
       name: {
         full: passenger.name.replace(/[^A-Z ]/g, " "),
+        given: _nameParts.slice(0,-1).join(' '),
         first: _nameParts[0],
         last: _nameParts[3],
         father: _nameParts[1],
@@ -43,6 +44,7 @@ export function getPassengersJSON(passengers, data) {
       },
       nameArabic: {
         full: passenger.nameArabic,
+        given: _nameArabicParts.slice(0,-1).join(' '),
         first: _nameArabicParts[0],
         last: _nameArabicParts[3],
         father: _nameArabicParts[1],
@@ -78,11 +80,12 @@ export function getPassengersJSON(passengers, data) {
         yyyy: moment(passenger.passExpireDt).format("YYYY"),
       },
       birthPlace: passenger.birthPlace,
-      profession: passenger.profession,
-      address: passenger.address,
+      profession: passenger.profession || 'unknown',
+      address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
       codeline: passenger.codeLine || createCodeline(passenger),
+      codeline2: passenger.codeLine || createCodeline(passenger).substring(0,44+27),
     };
   });
 
@@ -106,9 +109,13 @@ export async function zipWithPhotos(data, packageData) {
     const passportUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
     );
+    const vaccineUrl = await getStorageUrl(
+      `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
+    );
     traveller.images = {
       photo: photoUrl,
       passport: passportUrl,
+      vaccine: vaccineUrl,
     };
   }
   const jsonData = JSON.stringify(data);
