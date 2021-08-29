@@ -465,6 +465,14 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         style={{ marginLeft: "1rem" }}
                         target="_blank"
                         rel="noopener noreferrer"
+                        href="https://git-scm.com/downloads"
+                      >
+                        git
+                      </a>
+                      <a
+                        style={{ marginLeft: "1rem" }}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         href="https://github.com/hajonsoft/hajonsoft-eagle"
                       >
                         Eagle

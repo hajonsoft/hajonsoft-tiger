@@ -113,7 +113,7 @@ export async function zipWithPhotos(data, packageData) {
       `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
     );
     if (!vaccineUrl) {
-      vaccineUrl = passportUrl,
+      vaccineUrl = passportUrl;
     }
     traveller.images = {
       photo: photoUrl,
