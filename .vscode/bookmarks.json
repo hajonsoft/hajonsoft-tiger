@@ -19,6 +19,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "src/features/Dashboard/helpers/common.js",
+			"bookmarks": [
+				{
+					"line": 87,
+					"column": 50,
+					"label": ""
+				}
+			]
 		}
 	]
 }
