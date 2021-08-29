@@ -151,6 +151,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         password: exportVisaSystem.password,
         name: exportVisaSystem.usap,
       },
+      info: {
+        pax: travellersData.length,
+        caravan: sanitizeCaravanName(caravan),
+        munazim: '',
+      },
       travellers: travellersData,
     };
     const zip = await zipWithPhotos(data, null);
