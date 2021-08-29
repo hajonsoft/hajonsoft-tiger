@@ -151,6 +151,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         password: exportVisaSystem.password,
         name: exportVisaSystem.usap,
       },
+      info: {
+        pax: travellersData.length,
+        caravan: sanitizeCaravanName(caravan),
+        munazim: '',
+      },
       travellers: travellersData,
     };
     const zip = await zipWithPhotos(data, null);
@@ -455,6 +460,14 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                       >
                         Hawk
+                      </a>
+                      <a
+                        style={{ marginLeft: "1rem" }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://git-scm.com/downloads"
+                      >
+                        git
                       </a>
                       <a
                         style={{ marginLeft: "1rem" }}
