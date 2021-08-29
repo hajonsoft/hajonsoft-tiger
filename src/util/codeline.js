@@ -98,12 +98,12 @@ export function createCodeline(passenger) {
   return codeline1 + codeline2;
 }
 
-function checkDigit(passportNumber) {
+function checkDigit(inputData) {
   //http://www.highprogrammer.com/alan/numbers/mrp.html#checkdigit
   let multiplier = 7;
   let total = 0;
-  for (let i = 0; i < passportNumber.length; i++) {
-    total = total + checkDigitDiagram[passportNumber[i]] * multiplier;
+  for (let i = 0; i < inputData.length; i++) {
+    total = total + checkDigitDiagram[inputData[i]] * multiplier;
     if (multiplier === 7) multiplier = 3;
     else if (multiplier === 3) multiplier = 1;
     else if (multiplier === 1) multiplier = 7;

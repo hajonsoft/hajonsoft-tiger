@@ -36,6 +36,7 @@ export function getPassengersJSON(passengers, data) {
       },
       name: {
         full: passenger.name.replace(/[^A-Z ]/g, " "),
+        given: _nameParts.slice(0, -1).join(' ').trim(),
         first: _nameParts[0],
         last: _nameParts[3],
         father: _nameParts[1],
@@ -43,6 +44,7 @@ export function getPassengersJSON(passengers, data) {
       },
       nameArabic: {
         full: passenger.nameArabic,
+        given: _nameArabicParts.slice(0, -1).join(' '),
         first: _nameArabicParts[0],
         last: _nameArabicParts[3],
         father: _nameArabicParts[1],
@@ -78,11 +80,12 @@ export function getPassengersJSON(passengers, data) {
         yyyy: moment(passenger.passExpireDt).format("YYYY"),
       },
       birthPlace: passenger.birthPlace,
-      profession: passenger.profession,
-      address: passenger.address,
+      profession: passenger.profession || 'unknown',
+      address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
       codeline: passenger.codeLine || createCodeline(passenger),
+      shortCodeline: (passenger.codeLine || createCodeline(passenger))?.substring(0, 44 + 27),
     };
   });
 
@@ -91,24 +94,31 @@ export function getPassengersJSON(passengers, data) {
 
 export async function zipWithPhotos(data, packageData) {
   var zip = new jszip();
-  let travellerArray;
+  let passengers;
   if (packageData && packageData.name) {
-    travellerArray = data[packageData.name];
+    passengers = data[packageData.name];
   } else {
-    travellerArray = data.travellers;
+    passengers = data.travellers;
   }
-  const travellersCount = travellerArray.length;
+  const travellersCount = passengers.length;
   for (let index = 0; index < travellersCount; index++) {
-    const traveller = travellerArray[index];
+    const traveller = passengers[index];
     const photoUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
     );
     const passportUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
     );
+    let vaccineUrl = await getStorageUrl(
+      `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
+    );
+    if (!vaccineUrl) {
+      vaccineUrl = passportUrl;
+    }
     traveller.images = {
       photo: photoUrl,
       passport: passportUrl,
+      vaccine: vaccineUrl,
     };
   }
   const jsonData = JSON.stringify(data);

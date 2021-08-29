@@ -75,10 +75,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const classes = useStyles();
   let { packageName } = useParams();
   const {
-    data: travellers,
-    createData: createTraveller,
-    updateData: updateTraveller,
-    deleteData: deleteTraveller,
+    data: passengers,
+    createData: createPassenger,
+    updateData: updatePassenger,
+    deleteData: deletePassenger,
   } = useTravellerState();
 
   const savePassportImage = (values, image) => {
@@ -116,17 +116,17 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        createTraveller({ path: `customer/${packageName}`, data: values });
+        createPassenger({ path: `customer/${packageName}`, data: values });
         break;
       case "update":
         delete values.tableData;
-        updateTraveller({
+        updatePassenger({
           path: `customer/${packageName}/${record._fid}`,
           data: values,
         });
         break;
       case "delete":
-        deleteTraveller({
+        deletePassenger({
           path: `customer/${packageName}/${record._fid}`,
           data: values,
         });
@@ -140,8 +140,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const popularNationality = () => {
-    if (travellers) {
-      const grouped = _.groupBy(travellers[packageName], "nationality");
+    if (passengers) {
+      const grouped = _.groupBy(passengers[packageName], "nationality");
       let count = 0;
       let popularNationality = "";
       Object.keys(grouped).forEach((k) => {
@@ -233,8 +233,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    createTraveller({ path: `customer/${record.packageName}`, data });
-    deleteTraveller({
+    createPassenger({ path: `customer/${record.packageName}`, data });
+    deletePassenger({
       path: `customer/online/${record._fid}`
     });
     onClose()
@@ -406,7 +406,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="nameArabic"
                               label={trans("reservation.arabic-name")}
-                              value={values.arabicName}
+                              value={values.nameArabic}
                               error={
                                 touched.nameArabic && Boolean(errors.nameArabic)
                               }

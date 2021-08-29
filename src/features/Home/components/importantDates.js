@@ -6,12 +6,12 @@ const ImportantDates = () => {
   return (
     <Grid container justify="space-between" style={{ padding: "1rem" }}>
       <Grid item>
-        <Typography variant="body1" align="center" style={{ color: "#0055ba" }}>
+        <Typography variant="body1" align="center" style={{ color: "#4caf50" }}>
           {eventsBefore()}
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body1" align="center" style={{ color: "#003b82" }}>
+        <Typography variant="body1" align="center" style={{ color: "#4caf50" }}>
           {eventsAfter()}
         </Typography>
       </Grid>

@@ -3,14 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
 import DoveHome from "./features/Home/DoveHome";
-import Home from "./features/Home/Home";
 import OnlinePackages from "./features/onlinePackage";
 import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import AdvertisementDetail from "./features/onlinePackage/components/AdvertisementDetail";
@@ -79,14 +78,14 @@ function App() {
             <PublicRoute exact path="/">
               <DoveHome />
             </PublicRoute>
-            <PublicRoute exact path="/admin">
+            {/* <PublicRoute exact path="/admin">
               <Home onLanguageChange={handleLanguageChange} lang={language} />
-            </PublicRoute>
+            </PublicRoute> */}
             <PublicRoute path="/register">
               <Register />
             </PublicRoute>
             <PublicRoute path="/login">
-              <SignIn />
+              <SignIn onLanguageChange={handleLanguageChange} lang={language} />
             </PublicRoute>
             <PublicRoute path="/forgot-password">
               <ForgotPassword />
@@ -133,6 +132,9 @@ function App() {
             <PrivateRoute path="/favorite">
               <Favorite />
             </PrivateRoute>
+            <PublicRoute path="*">
+              <Redirect to="/" />
+            </PublicRoute>
           </Provider>
         </Router>
       </IntlProvider>
