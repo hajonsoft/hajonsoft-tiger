@@ -151,6 +151,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
 
   const [photoURL, setPhotoURL] = useState("");
   const [passportURL, setPassportURL] = useState("");
+  const [vaccineURL, setVaccineURL] = useState("");
 
   function uploadImageHandler(cb) {
     inputRef.current.click();
@@ -165,10 +166,11 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
   }
 
   const handleSubmitForm = async (values, actions) => {
-    if (!photoURL || !passportURL) {
+    if (!photoURL || !passportURL || !vaccineURL) {
       alert("upload all required photos");
       return;
     }
+
     const photoFileName = `${values.nationality ||
       "unknown"}/${values.passportNumber || "unknown"}.jpg`;
     let photoRef = storage.ref(photoFileName);
@@ -197,18 +199,30 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
         return;
       });
 
-    const reservationReference = firebase
-      .database()
-      .ref(`customer/online`);
+    const vaccineFileName = `${values.nationality || "unknown"}/${values.passportNumber || "unknown"}_vaccine.jpg`;
+    let vaccineRef = storage.ref(vaccineFileName);
+
+    vaccineRef
+      .putString(vaccineURL, "data_url")
+      .then((snap) => {
+        console.log(snap, 1);
+      })
+      .catch((error) => {
+        alert("An error  occurred");
+        return;
+      });
+
+    const reservationReference = firebase.database().ref(`customer/online`);
     const reservationResult = reservationReference.push({
       ...values,
       photoFileName,
       passportFileName,
-      packageName
+      vaccineFileName,
+      packageName,
     });
 
     setReservationNumber(reservationResult.key);
-    openSuccessModal()
+    openSuccessModal();
   };
 
   return (
@@ -568,6 +582,39 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                             error={touched.comments && Boolean(errors.comments)}
                             helperText={touched.comments && errors.comments}
                           />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography>
+                            {/* {trans("reservation.upload-your-passport")} */}
+                            Upload vaccing image
+                          </Typography>
+                          <Box
+                            className={classes.passportBox}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              uploadImageHandler((val) => setVaccineURL(val));
+                            }}
+                          >
+                            {vaccineURL ? (
+                              <img
+                                src={vaccineURL}
+                                width="100%"
+                                height="100%"
+                                alt="passport"
+                                style={{ objectFit: "cover" }}
+                              />
+                            ) : (
+                              <>
+                                <AddCircleOutlineIcon
+                                  color="primary"
+                                  fontSize="large"
+                                />
+                                <Typography>
+                                  upload vaccing image
+                                </Typography>
+                              </>
+                            )}
+                          </Box>
                         </Grid>
                       </Grid>
                       <Grid
