@@ -37,7 +37,8 @@ import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
 
-import{ Cryptr } from ('cryptr');
+const Cryptr  = require('cryptr');
+
 const cryptr = new Cryptr(firebaseConfig.projectId);
 
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
@@ -127,8 +128,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       path: "visaSystem",
       data: {
         usap: selectedServiceProvider,
-        username: cryptr.encrypt(serviceProviderUsername),
-        password: cryptr.encrypt(serviceProviderPassword),
+        username: serviceProviderUsername,
+        password: serviceProviderPassword,
       },
     });
     setServiceProviderAddMode(false);
@@ -147,8 +148,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: exportVisaSystem.username,
-        password: exportVisaSystem.password,
+        username: cryptr.encrypt(exportVisaSystem.username),
+        password: cryptr.encrypt(exportVisaSystem.password),
         name: exportVisaSystem.usap,
       },
       info: {
