@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CorePassportImage = ({ record, setImage }) => {
+const CoreVaccineImage = ({ record, setImage }) => {
   const [url, setUrl] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
@@ -48,17 +48,11 @@ const CorePassportImage = ({ record, setImage }) => {
   };
 
   useEffect(() => {
-    if (record.passportImage) {
-      setUrl(URL.createObjectURL(record.passportImage));
-    }
-  }, [record.passportImage]);
-
-  useEffect(() => {
     async function getImage() {
       if (record && record.nationality && record.passportNumber) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${record.nationality}/${record.passportNumber}_passport.jpg`)
+          .ref(`${record.nationality}/${record.passportNumber}_vaccine.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);
@@ -89,7 +83,7 @@ const CorePassportImage = ({ record, setImage }) => {
             style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
             onClick={() => _fileInput.click()}
           >
-            Change Passport Image
+            Change Vaccing Image
           </Link>
         </CardContent>
       </Card>
@@ -103,4 +97,4 @@ const CorePassportImage = ({ record, setImage }) => {
   );
 };
 
-export default CorePassportImage;
+export default CoreVaccineImage;
