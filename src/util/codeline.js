@@ -77,13 +77,15 @@ export function createCodeline(passenger) {
 
     codeline2 = codeline2 + passenger.gender.substring(0, 1);
 
-    if (passenger.passExpireDt != null)
+    if (passenger.passExpireDt != null) {
       codeline2 =
         codeline2 +
-        moment(passenger.passExpireDt).format("YYMMDD") +
-        moment(passenger.passExpireDt).format("YYMMDD");
-
-    codeline2 = codeline2.padEnd(42, "<") + "0";
+        moment(passenger.passExpireDt).format("YYMMDD")
+    }
+    codeline2 = codeline2 + checkDigit(moment(passenger.passExpireDt).format("YYMMDD"));
+     const filler = "<".repeat( 42- codeline2.length)
+    codeline2 = codeline2 + filler;
+    codeline2 = codeline2 + checkDigit(filler);
 
     //Composite check digit for characters of machine readable data of the lower line in positions 1 to 10, 14 to 20 and 22 to 43, including values for
     //letters that are a part of the number fields and their check digits.
