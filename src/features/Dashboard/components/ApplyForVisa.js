@@ -36,6 +36,11 @@ import firebaseConfig from "../../../firebaseConfig";
 import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
+
+const Cryptr  = require('cryptr');
+
+const cryptr = new Cryptr(firebaseConfig.projectId);
+
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
 
 const useStyles = makeStyles((theme) => ({
@@ -143,8 +148,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: exportVisaSystem.username,
-        password: exportVisaSystem.password,
+        username: cryptr.encrypt(exportVisaSystem.username),
+        password: cryptr.encrypt(exportVisaSystem.password),
         name: exportVisaSystem.usap,
       },
       info: {
