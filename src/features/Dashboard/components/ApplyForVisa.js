@@ -68,7 +68,7 @@ const serviceProviders = [
   { value: "wtu", name: "UMRAH | Way to umrah (legacy)" },
   { value: "gma", name: "UMRAH | Gabul ya hajj (difficult)" },
   { value: "twf", name: "UMRAH | Tawaf (slow)" },
-  { value: "enj", name: "All | Enjaz" },
+  { value: "enj", name: "ALL TYPES | Enjaz" },
   { value: "ehr", name: "HAJ | Ehaj (Reservation)" },
   { value: "ehj", name: "HAJ | Ehaj (Submit)" },
   { value: "vst", name: "VISIT | Visit Saudi " },
