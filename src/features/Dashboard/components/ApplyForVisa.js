@@ -36,6 +36,11 @@ import firebaseConfig from "../../../firebaseConfig";
 import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useVisaSystemState from "../redux/useVisaSystemState";
 
+
+const Cryptr  = require('cryptr');
+
+const cryptr = new Cryptr(firebaseConfig.projectId);
+
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
 
 const useStyles = makeStyles((theme) => ({
@@ -60,17 +65,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const serviceProviders = [
   { value: "bau", name: "UMRAH | Bab al umrah (Recommended)" },
-
   { value: "wtu", name: "UMRAH | Way to umrah (legacy)" },
-
   { value: "gma", name: "UMRAH | Gabul ya hajj (difficult)" },
-
   { value: "twf", name: "UMRAH | Tawaf (slow)" },
+  { value: "enj", name: "ALL TYPES | Enjaz" },
   { value: "ehr", name: "HAJ | Ehaj (Reservation)" },
   { value: "ehj", name: "HAJ | Ehaj (Submit)" },
-
   { value: "vst", name: "VISIT | Visit Saudi " },
-
   { value: "mot", name: "LOCAL | Egypt Tourism" },
 ];
 
@@ -147,14 +148,15 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: exportVisaSystem.username,
-        password: exportVisaSystem.password,
+        username: cryptr.encrypt(exportVisaSystem.username),
+        password: cryptr.encrypt(exportVisaSystem.password),
         name: exportVisaSystem.usap,
       },
       info: {
         pax: travellersData.length,
         caravan: sanitizeCaravanName(caravan),
-        munazim: '',
+        caravanUrl: `https://${firebaseConfig.projectId}/${caravan}/customers`,
+        munazim: firebaseConfig.projectId,
       },
       travellers: travellersData,
     };

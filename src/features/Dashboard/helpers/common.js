@@ -85,7 +85,6 @@ export function getPassengersJSON(passengers, data) {
       passportNumber: passenger.passportNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
       codeline: passenger.codeLine || createCodeline(passenger),
-      shortCodeline: (passenger.codeLine || createCodeline(passenger))?.substring(0, 44 + 27),
     };
   });
 

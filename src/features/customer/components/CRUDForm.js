@@ -34,8 +34,10 @@ import useTravellerState from "../../Dashboard/redux/useTravellerState";
 import InputControl from "../../Reservation/components/InputControl";
 import CoreImage from "./CoreImage";
 import CorePassportImage from "./CorePassportImage";
+import CoreVaccineImage from "./CoreVaccineImage"
 import CustomerCodeline from "./CustomerCodeline";
 import Dropzone from "./Dropzone";
+import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 
 const storage = firebase.storage();
 
@@ -89,6 +91,19 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         name: values.name,
       };
       const fileName = `${values.nationality}/${values.passportNumber}_passport.jpg`;
+      let ref = storage.ref(fileName);
+      ref.put(image, metadata);
+    }
+  };
+
+  const saveVaccineImage = (values, image) => {
+    if (image) {
+      const metadata = {
+        contentType: "image/jpeg",
+        passportNumber: values.passportNumber,
+        name: values.name,
+      };
+      const fileName = `${values.nationality}/${values.passportNumber}_vaccine.jpg`;
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }
@@ -337,7 +352,11 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         <ToggleButton value="passport" aria-label="centered">
                           <RecentActorsOutlinedIcon />
                         </ToggleButton>
+                        <ToggleButton value="vaccine" aria-label="centered">
+                          <LocalHospitalIcon />
+                        </ToggleButton>
                       </ToggleButtonGroup>
+                      <br />
                       {photoMode === "photo" && (
                         <CoreImage
                           setImage={(img) => savePhoto(values, img)}
@@ -349,6 +368,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           setImage={(img) => savePassportImage(values, img)}
                           record={values}
                         />
+                      )}
+                      {photoMode === "vaccine" && (
+                        <CoreVaccineImage
+                        setImage={(img) => saveVaccineImage(values, img)}
+                        record={values}
+                      />
                       )}
                       {mode === "create" && (
                         <Grid container item xs style={{ padding: '1rem' }}>
