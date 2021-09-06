@@ -1,5 +1,7 @@
 ﻿# Sign up process
 
+`zsh nest <project ID>`
+
 To signup a new customer (a.k.a Munazim or travel agent), please see this video https://share.vidyard.com/watch/X3B3RdTUC7htQ3Eu91U4P3?
 
 ### Steps
