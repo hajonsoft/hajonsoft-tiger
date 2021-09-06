@@ -114,6 +114,16 @@ const Profile = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <InputControl
+                      name="email"
+                      label="Email Address"
+                      required
+                      value={values.email}
+                      error={touched.email && Boolean(errors.email)}
+                      helperText="This email address will be used to communicate with you when you send visa by proxy request"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputControl
                       name="tel"
                       label="Telephone Number"
                       required
