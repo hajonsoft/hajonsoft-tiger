@@ -621,7 +621,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     >
                       <CardHeader
                         title="Step 1 [Bundle]"
-                        subheader={downloadFileName || "Required"}
+                        subheader={downloadFileName ? downloadFileName : "Required"}
                       />
                       <CardContent>
                         <Typography variant="body2">
@@ -653,7 +653,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     >
                       <CardHeader
                         title="Step 2 [Hawk]"
-                        subheader={downloadFileName || "Optional"}
+                        subheader={downloadFileName? `node . file=${downloadFileName}` : "Optional"}
                       />
                       <CardContent>
                         <Typography variant="body2">
@@ -683,7 +683,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     >
                       <CardHeader
                         title="- OR - [visa by proxy]"
-                        subheader={downloadFileName || "Optional"}
+                        subheader={`http://hajonsoft.on.spiceworks.com/portal`}
                       />
                       <CardContent>
                         <Typography variant="body2">
@@ -737,7 +737,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             {sendingMail && !emailSuccess && (
               <>
                 {" "}
-                <h2 style={{ textAlign: "center" }}>Sending your mail...</h2>
+                <h2 style={{ textAlign: "center" }}>{`Creating visa by proxy request for ${selectedPassengers.length} passengers`}</h2>
                 <div
                   style={{
                     display: "flex",
@@ -777,8 +777,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   />
                 </div>
                 <Typography style={{ textAlign: "center" }}>
-                  {" "}
-                  Your ticket has been successfully created!!!{" "}
+                  Your "visa by proxy" request has been created. Please check your email.
                 </Typography>
                 <div className={classes.mailBtnContainer}>
                   <Button
