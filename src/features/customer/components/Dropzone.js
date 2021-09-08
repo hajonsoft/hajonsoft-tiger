@@ -1,10 +1,12 @@
-import { Grid } from "@material-ui/core";
+import { Grid , Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import { makeStyles } from "@material-ui/core/styles";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
@@ -192,6 +194,18 @@ function DropZone({ packageName, onClose }) {
     }, 1000);
   }
 
+  const handle3MClick = () => {
+    const tempLink = document.createElement("a");
+    tempLink.href = new URL("hawk://mode=open,host=3m");
+    tempLink.click();
+  };
+
+  const handleComboClick = () => {
+    const tempLink = document.createElement("a");
+    tempLink.href = new URL("hawk://mode=open,host=combo");
+    tempLink.click();
+  };
+
   return (
     <Dropzone onDrop={handleFileDrop}>
       {({ getRootProps, getInputProps }) => (
@@ -277,15 +291,25 @@ function DropZone({ packageName, onClose }) {
                 <div style={{ textAlign: "center" }}>
                   <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
-                <div>Drop your files here.</div>
-                <div>
-                  <a href="file:///c:/HajOnSoft"> 3M AT9000 MK2/Gemalto (.txt, .jpg)</a>
-                </div>
-                <div>
-                  <a href="file:///c:/Program files/gx/demos/prDemoSDL/log">
-                    Combo Smart (.zip)
-                  </a>
-                </div>
+                <Grid
+                  container
+                  justify="center"
+                  alignItems="center"
+                  spacing={2}
+                >
+                  <Grid item><Typography variant="subtitle1" color="textSecondary"> Drop your scan files here </Typography></Grid>
+                  <Grid item>
+                    <FileCopyOutlinedIcon />
+                  </Grid>
+                  <Grid item container justify="space-between" style={{marginTop: '10rem'}}>
+                    <Grid item>
+                      <Button onClick={handle3MClick} startIcon={<FolderOpenOutlinedIcon />} size="small">3M</Button>
+                    </Grid>
+                    <Grid item>
+                      <Button onClick={handleComboClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >Combo smart</Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </div>
             </div>
           )}
