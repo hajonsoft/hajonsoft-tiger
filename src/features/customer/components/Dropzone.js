@@ -28,8 +28,8 @@ const getFullArabicName = (arabicNameDictionary) => {
 };
 
 const handleTranslateName = async (englishName, isArabic, cb) => {
-  if(!isArabic) {
-    cb(false)
+  if (!isArabic) {
+    cb(false);
     return;
   }
   const names = englishName?.split(" ").filter((name) => name?.trim());
@@ -67,9 +67,11 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
 
   const englishName = values["name"];
   const passengerNationality = values["nationality"];
-  const isArabic = nationalities.find(nationality=> nationality.name === passengerNationality)?.isArabic;
+  const isArabic = nationalities.find(
+    (nationality) => nationality.name === passengerNationality
+  )?.isArabic;
 
-  handleTranslateName(englishName, isArabic,  (arabicName) => {
+  handleTranslateName(englishName, isArabic, (arabicName) => {
     if (arabicName) {
       values["nameArabic"] = arabicName;
     }
@@ -143,7 +145,7 @@ function DropZone({ packageName, onClose }) {
         );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
-        console.log(event.data.import)
+        console.log(event.data.import);
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
           setImports((prev) =>
@@ -210,7 +212,14 @@ function DropZone({ packageName, onClose }) {
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
-                <Grid item container xs={12} justify="flex-end" spacing={2} alignItems="center">
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  justify="flex-end"
+                  spacing={2}
+                  alignItems="center"
+                >
                   <Grid item>
                     <Button
                       type="button"
@@ -257,20 +266,25 @@ function DropZone({ packageName, onClose }) {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  border: '2px dashed silver',
-                  color: 'silver',
-                  padding: '1rem'
+                  border: "2px dashed silver",
+                  color: "silver",
+                  padding: "1rem",
                 },
               })}
             >
               <input {...getInputProps()} />
               <div>
-                <div style={{ textAlign: "center"}}>
+                <div style={{ textAlign: "center" }}>
                   <SaveAltOutlined fontSize="large"></SaveAltOutlined>
                 </div>
+                <div>Drop your files here.</div>
                 <div>
-                  Drop your 3M files from c:\HajOnSoft or Combo smart zip files
-                  from c:\Program files\gx\demos\prDemoSDL\log
+                  <a href="file:///c:/HajOnSoft"> 3M AT9000 MK2/Gemalto (.txt, .jpg)</a>
+                </div>
+                <div>
+                  <a href="file:///c:/Program files/gx/demos/prDemoSDL/log">
+                    Combo Smart (.zip)
+                  </a>
                 </div>
               </div>
             </div>
