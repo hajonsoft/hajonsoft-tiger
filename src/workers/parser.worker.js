@@ -2,7 +2,7 @@ const jszip = require("jszip");
 var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
-const imageConverter = require('imagemagick');
+const imageConverter = require("imagemagick");
 var moment = require("moment");
 const { nationalities } = require("../data/nationality");
 
@@ -17,7 +17,7 @@ async function getZipEntries(file) {
   return new Promise(async (resolve, reject) => {
     let files = [];
     let zip = await jszip.loadAsync(file);
-    zip.forEach(function (relativePath, zipEntry) {
+    zip.forEach(function(relativePath, zipEntry) {
       files.push(zipEntry);
     });
     resolve(files);
@@ -26,7 +26,7 @@ async function getZipEntries(file) {
 
 function ParseXmlString(xml) {
   return new Promise((resolve, reject) => {
-    parseString(xml, function (err, result) {
+    parseString(xml, function(err, result) {
       resolve(result);
     });
   });
@@ -55,13 +55,20 @@ async function ParseZip(file) {
         } catch (er) {
           record.failed = true;
         }
-      } else if (entry.name.includes("VIZ_FACE")) { //  && !zipEntries.find(oneZipEntry => oneZipEntry.name.match(qualityPhotoRegex))) {
+      } else if (entry.name.includes("VIZ_FACE")) {
+        //  && !zipEntries.find(oneZipEntry => oneZipEntry.name.match(qualityPhotoRegex))) {
         let image = await entry.async("blob");
         record.image = image;
-      } else if (entry.name.match(qualityPhotoRegex)) {
-        let qualityImage = await entry.async("blob");
-        record.vxgenPhoto = qualityImage; // This is the high quality image but since it is in jp2 format and we can't convert from jp2 to jpg on the browser. we will ignore it for now
+        // } else if (entry.name.match(qualityPhotoRegex)) {
+        //   let qualityImage = await entry.async("blob");
+        //   record.vxgenPhoto = qualityImage; // This is the high quality image but since it is in jp2 format and we can't convert from jp2 to jpg on the browser. we will ignore it for now
       } else if (entry.name.includes("image3")) {
+        let passportImage = await entry.async("blob");
+        record.passportImage = passportImage;
+      } else if (entry.name.includes("image2")) {
+        let passportImage = await entry.async("blob");
+        record.passportImage = passportImage;
+      } else if (entry.name.includes("image1")) {
         let passportImage = await entry.async("blob");
         record.passportImage = passportImage;
       }
@@ -81,7 +88,10 @@ function parseDetailsFromTxt(codelineFile) {
       let codeline = reader.result;
       let record = {};
       try {
-        codeline = codeline.replace('/\r\n/', '').replace('/\n/', '').replace('/\r/', '');
+        codeline = codeline
+          .replace("/\r\n/", "")
+          .replace("/\n/", "")
+          .replace("/\r/", "");
         let mrz1 = codeline.substring(0, 44),
           mrz2 = codeline.substring(45, 89);
         let parsed = parse([mrz1, mrz2]);
@@ -110,13 +120,9 @@ async function getRecords(ComboFiles, drop3MBinder) {
       let detailsFile = drop3MBinder[key].find((x) =>
         x.name.match(/CODELINE/i)
       );
-      let photo = drop3MBinder[key].find((x) =>
-        x.name.match(/SCDG2_PHOTO/i)
-      );
+      let photo = drop3MBinder[key].find((x) => x.name.match(/SCDG2_PHOTO/i));
       if (!photo) {
-        photo = drop3MBinder[key].find((x) =>
-          x.name.match(/IMAGEPHOTO/i)
-        );
+        photo = drop3MBinder[key].find((x) => x.name.match(/IMAGEPHOTO/i));
       }
       let threeMPassportImage = drop3MBinder[key].find((x) =>
         x.name.match(/IMAGEVIS/i)
@@ -174,7 +180,7 @@ function defaultIssueDate(passExpireDt, record) {
     case "Austria":
     case "South Africa":
     case "Algeria":
-      if (age > 0 && age < 19 ) {
+      if (age > 0 && age < 19) {
         issueDate = passExpireDt.subtract(5, "years").add(1, "days");
       }
       issueDate = passExpireDt.subtract(10, "years").add(1, "days");
