@@ -88,6 +88,7 @@ const CorePassportImage = ({ record, setImage }) => {
             className={classes.pickImage}
             style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
             onClick={() => _fileInput.click()}
+            disabled={!record.nationality || !record.passportNumber}
           >
             Change Passport Image
           </Link>

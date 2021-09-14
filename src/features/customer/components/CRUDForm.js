@@ -117,6 +117,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         name: values.name,
       };
       const fileName = `${values.nationality}/${values.passportNumber}.jpg`;
+      console.log('%c 🌰 fileName: ', 'font-size:20px;background-color: #FCA650;color:#fff;', fileName);
       let ref = storage.ref(fileName);
       ref.put(image, metadata);
     }
