@@ -84,10 +84,11 @@ const CoreImage = ({ record, setImage }) => {
             style={{ display: url ? "block" : "none" }}
           ></img>
           <Link
-            href={url}
+            href="#"
             className={classes.pickImage}
             style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
             onClick={() => _fileInput.click()}
+            disabled={!record.nationality || !record.passportNumber}
           >
             Change Image
           </Link>
