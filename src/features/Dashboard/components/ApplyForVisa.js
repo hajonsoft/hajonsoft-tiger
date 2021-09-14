@@ -574,6 +574,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         {" "}
                         Schedule a meeting
                       </a>
+                      <a href="https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR">
+                        {" "}
+                        or watch Install Hawk video
+                      </a>
                     </Typography>
                     <Box style={{ textAlign: "right", width: "100%" }}>
                       <Typography variant="body2" align="right">
