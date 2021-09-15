@@ -177,7 +177,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
           const base64 = await zip.generateAsync({
             type: "base64",
-            mimeType: "application/zip" 
+            mimeType: "application/zip"
           });
 
           const data = {
@@ -270,7 +270,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     };
     const zip = await zipWithPhotos(data, null);
 
-    zip.generateAsync({ type: "blob" }).then(function(content) {
+    zip.generateAsync({ type: "blob" }).then(function (content) {
       const newFile = new Blob([content], { type: "application/zip" });
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
@@ -311,9 +311,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const tempLink = document.createElement("a");
     tempLink.href = new URL(
       "hawk://mode=send,fileName=" +
-        downloadFileName +
-        ",host=" +
-        firebaseConfig.projectId
+      downloadFileName +
+      ",host=" +
+      firebaseConfig.projectId
     );
     tempLink.click();
   };
@@ -574,9 +574,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         {" "}
                         Schedule a meeting
                       </a>
-                      <a href="https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR">
-                        {" "}
-                        or watch Install Hawk video
+                      ` - OR - `
+                      <a href="https://hajonsoft.talentlms.com/unit/view/id:2124">
+                        or watch Install video
                       </a>
                     </Typography>
                     <Box style={{ textAlign: "right", width: "100%" }}>
@@ -594,14 +594,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           style={{ marginLeft: "1rem" }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
-                        >
-                          Hawk
-                        </a>
-                        <a
-                          style={{ marginLeft: "1rem" }}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           href="https://git-scm.com/downloads"
                         >
                           git
@@ -610,9 +602,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           style={{ marginLeft: "1rem" }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://github.com/hajonsoft/hajonsoft-eagle"
+                          href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                         >
-                          Eagle
+                          Hawk
                         </a>
                       </Typography>
                     </Box>
@@ -657,7 +649,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     >
                       <CardHeader
                         title="Step 2 [Hawk]"
-                        subheader={downloadFileName? `node . file=${downloadFileName}` : "Optional"}
+                        subheader={downloadFileName ? `node . file=${downloadFileName}` : "Optional"}
                       />
                       <CardContent>
                         <Typography variant="body2">
