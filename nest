@@ -4,23 +4,16 @@ firebase use --add $1
 git checkout master
 firebase auth:export --format json users
 cat users
-echo '\nUsers exported, There should be two users. If not, please create users manually in firebase and restart nest, otherwise press any key to continue'
-read
 firebase apps:sdkconfig > $1.js
-echo "firebaseConfig exported: press any key to continue"
-read 
-echo "Now will setup serviceAccount, make sure to login to github as hajonsoft when prompted"
 firebase init hosting:github < nest-input
-echo "serviceAccount configured in both firebase and github, press any key to continue"
-read
 mv $1.js src/firebaseConfigs
 cp .github/workflows/template .github/workflows/$1.yml
 node nest-script $1
 firebase deploy --only database
 firebase deploy --only storage
 rm .github/workflows/firebase-hosting-pull-request.yml
-npm run build
-firebase deploy --only hosting
+# npm run build
+# firebase deploy --only hosting
 git add .
 git reset HEAD -- src/firebaseConfig.js
 git commit -m $1
