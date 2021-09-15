@@ -1,6 +1,8 @@
-import { Grid, Box, Typography, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import firebase from "../../../firebaseapp";
+
 
 const useStyles = makeStyles((theme) => ({
   textHead: {
@@ -17,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 const Footer = () => {
   const [record, setRecord] = useState({});
   const classes = useStyles();
+  const history = useHistory();
+
 
   useEffect(() => {
     firebase
@@ -57,24 +61,20 @@ const Footer = () => {
         <Grid item md={3} style={{ padding: "0px 1rem", }} >
           <Typography className={classes.textHead} >Company</Typography>
           <Typography className={classes.textBody}>About Us</Typography>
-          <Typography className={classes.textBody}> Blog</Typography>
-          <Typography className={classes.textBody}> Careers</Typography>
           <Typography className={classes.textBody}>Contact Us</Typography>
+          <Button href="#" onClick={() => history.push("/login")} color="primary" style={{ marginLeft: 0, paddingLeft: 0, textTransform: 'none' }}>Admin Login</Button>
         </Grid>
         <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Support</Typography>
+          <Typography className={classes.textBody}>Support Center</Typography>
           <Typography className={classes.textBody}>Help Center</Typography>
           <Typography className={classes.textBody}>Safety Center</Typography>
-          <Typography className={classes.textBody}>
-            Community Guidelines
-          </Typography>
         </Grid>
         <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Legal</Typography>
-          <Typography className={classes.textBody}>Cookies Policy</Typography>
           <Typography className={classes.textBody}>Privacy Policy</Typography>
           <Typography className={classes.textBody}>Terms of Service</Typography>
-          <Typography className={classes.textBody}>Law Enforcement</Typography>
+          <Button href="#" onClick={() => history.push("/reserve/interest")} color="primary" style={{ marginLeft: 0, paddingLeft: 0, textTransform: 'none' }}>Join the waitlist</Button>
         </Grid>
         <Grid item md={3} style={{ padding: "0px 1rem", }}>
           <Typography className={classes.textHead}>Social Media</Typography>
