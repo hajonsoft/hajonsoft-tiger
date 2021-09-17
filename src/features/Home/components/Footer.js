@@ -21,7 +21,7 @@ const Footer = () => {
   const classes = useStyles();
   const history = useHistory();
 
-
+  console.log(record);
   useEffect(() => {
     firebase
       .database()
@@ -32,10 +32,6 @@ const Footer = () => {
         }
       });
   }, []);
-
-  console.log(record, "hello record");
-
-  if (!record || !record.about) return null;
 
   return (
     <Box
