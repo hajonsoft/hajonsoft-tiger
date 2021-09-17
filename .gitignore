@@ -84,3 +84,7 @@ typings/
 # firebase folder
 /.firebase/
 /.vscode
+
+# firebase working files
+users
+database.rules.json
