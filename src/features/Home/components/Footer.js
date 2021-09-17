@@ -35,7 +35,7 @@ const Footer = () => {
 
   console.log(record, "hello record");
 
-  if (!record || !record.about) return null;
+  // if (!record || !record.about) return null;
 
   return (
     <Box
