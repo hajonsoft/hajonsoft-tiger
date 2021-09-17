@@ -35,6 +35,7 @@ const DoveHeader = () => {
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/hajj-packages')}>hajj</Button></Grid>
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/umrah-packages')}>umrah</Button></Grid>
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/tours')}>tours</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/login')}>Admin Login</Button></Grid>
                             {/* <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/contact')}>contact us</Button></Grid> */}
                         </Grid>
                     </Grid>
