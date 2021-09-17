@@ -114,24 +114,11 @@ const CRUDForm = ({ mode, record, title, onClose }) => {
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
-                      label="Company Name"
+                      label="Name"
                       required
                       value={values.name}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <InputControl
-                      name="departureDate"
-                      label="Departure Date"
-                      type="date"
-                      required
-                      value={values.departureDate}
-                      error={
-                        touched.departureDate && Boolean(errors.departureDate)
-                      }
-                      helperText={touched.departureDate && errors.departureDate}
                     />
                   </Grid>
                 </Grid>
