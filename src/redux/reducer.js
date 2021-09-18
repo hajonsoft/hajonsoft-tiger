@@ -2,7 +2,7 @@ import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 import moment from "moment";
 
-// TODO: Obviously this reducer implementation was intended to b generic but it doen't work for /visaSystem correctly. or at least it needs to be reviewed
+// TODO:RTK 5 Obviously this reducer implementation was intended to b generic but it doen't work for /visaSystem correctly. or at least it needs to be reviewed
 // state.data is confusing
 
 const emptyState = {

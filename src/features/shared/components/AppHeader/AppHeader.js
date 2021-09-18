@@ -18,14 +18,14 @@ import firebaseConfig from "../../../../firebaseConfig";
 import useTravellerState from "../../../Dashboard/redux/useTravellerState";
 
 const AppHeader = () => {
-  const [user] = useAuthState(firebase.auth());
+  const [user] = useAuthState(firebase.auth()); // TODO:RTK 4 Not needed once RTK query is used
   const isMobile = useMediaQuery("(max-width: 600px)");
   const projectName = `${_.startCase(
     firebaseConfig.projectId.replace(/[0-9]/g, "").replace(/-/g, " ")
   )}`;
 
   let history = useHistory();
-  const { data: travellers } = useTravellerState();
+  const { data: travellers } = useTravellerState(); // TODO:RTK 4 Not needed
 
   const handleLogout = () => {
     firebase.auth().signOut();

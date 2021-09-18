@@ -9,6 +9,8 @@ import travellerService from "../features/Dashboard/redux/travellerService";
 import { authService } from "./firebaseAuthService";
 import { travellerSlice, userSlice } from "./reducer";
 
+// TODO: RTK 5 This type of saga is not required any more. The calls and flow here should be mapped to the correct slice
+
 //reducer from src\redux\reducer.js ^p
 function* sagas() {
   yield all([

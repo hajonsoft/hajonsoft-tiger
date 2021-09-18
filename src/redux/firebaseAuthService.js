@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+// TODO:RTK 5 This type of login or register is not required any more
 
 export const authService = {
     login: async (user) => {

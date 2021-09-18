@@ -31,26 +31,33 @@ import reducer from "./redux/reducer";
 import sagas from "./redux/saga";
 import defaultTheme from "./theme/default";
 
-const sagaMiddleware = createSagaMiddleware();
-
+const sagaMiddleware = createSagaMiddleware(); //TODO:RTK not needed 
+// TODO:RTK 1 move to file store.js
 const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),
   devTools: process.env.NODE_ENV !== "production",
 });
-sagaMiddleware.run(sagas);
+sagaMiddleware.run(sagas); //TODO:RTK 1 Saga is not needed but the saga code should go to slices
 
 const messages = {
   fr: messages_fr,
   ar: messages_ar,
   en: messages_en,
 };
-const browserLanguage = navigator.language.split(/[-_]/)[0];
+const browserLanguage = () => {
+  
+  const navigatorLang = navigator.language.split(/[-_]/)[0];
+  if (navigatorLang === "en" || navigatorLang === "ar" || navigatorLang === "fr") {
+    return navigatorLang;
+  }
+  return 'en'
+}
 
 function App() {
   const [language, setLanguage] = useState(
-    localStorage.getItem("langOverride") || browserLanguage
+    localStorage.getItem("langOverride") || browserLanguage()
   );
   const [languageDirection, setLanguageDirection] = useState(
     localStorage.getItem("langOverride") === "ar" ? "rtl" : "ltr"
@@ -78,9 +85,6 @@ function App() {
             <PublicRoute exact path="/">
               <DoveHome />
             </PublicRoute>
-            {/* <PublicRoute exact path="/admin">
-              <Home onLanguageChange={handleLanguageChange} lang={language} />
-            </PublicRoute> */}
             <PublicRoute path="/register">
               <Register />
             </PublicRoute>

@@ -3,7 +3,7 @@ import {
   responsiveFontSizes
 } from "@material-ui/core";
 import { amber, blue, lightBlue, lightGreen, orange, red } from "@material-ui/core/colors";
-
+// TODO:THM Is orange better as a secondary or green?
 const defaultTheme = createMuiTheme({
     palette: {
       primary: lightBlue, //name for 500 is DeepSkyBlue 2196f3

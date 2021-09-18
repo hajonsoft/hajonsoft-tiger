@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
-//TODO: Redesign, talk to customers to get feedback
+//TODO:PKG Redesign, talk to customers to get feedback
 import React, { useState } from "react";
 import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
 import useTravellerState from "../redux/useTravellerState";

@@ -76,10 +76,10 @@ const Dashboard = () => {
   const {
     data: caravans,
     loading,
-    error,
+  error,
     fetchData: fetchCaravans,
     deleteData: deleteCaravan,
-  } = useTravellerState();
+  } = useTravellerState(); // TODO:RTK 4 No need. RTK Query should take care of it
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
@@ -340,12 +340,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-// options={{
-//   actionsCellStyle: {
-//     backgroundColor: "#ffccdd",
-//     color: "#FF00dd"
-//   },
-
-// headerStyle: { backgroundColor: "black", color: "white" }
-// }}
