@@ -57,10 +57,10 @@ const dispatch = useDispatch();
   const handleSubmitForm = (values, actions) => {
     switch (mode) {
       case "create":
-        dispatch(createUpcomingCaravan(`${_.startCase(values.name)}`,{ name: "default" } ))
+        dispatch(createUpcomingCaravan(`${values.name}` ))
         break;
       case "delete":
-        dispatch(deleteUpcomingCaravan(`customer/${values.name}`,))
+        dispatch(deleteUpcomingCaravan(`customer/${values.name}`))
         onClose();
         break;
 
@@ -82,13 +82,9 @@ const dispatch = useDispatch();
         validationSchema={validSchema}
       >
         {({
-          setFieldValue,
           values,
           errors,
           touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
           isSubmitting,
         }) => (
           <Form>
@@ -109,11 +105,12 @@ const dispatch = useDispatch();
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
-                      label="Name"
+                      label="Caravan Name"
                       required
                       value={values.name}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
+                      autoFocus={true}
                     />
                   </Grid>
                 </Grid>

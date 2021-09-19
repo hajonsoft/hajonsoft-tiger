@@ -354,8 +354,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       Deselect All
                     </Button>
                   </Grid>
-                  {passengers &&
-                    passengers.map((passenger) => (
+                  {passengers && passengers.length > 0 &&
+                    passengers?.map((passenger) => (
                       <Grid item key={passenger._fid}>
                         <FormControlLabel
                           control={

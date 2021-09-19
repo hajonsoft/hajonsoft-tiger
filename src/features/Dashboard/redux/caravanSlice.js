@@ -6,12 +6,10 @@ export const getUpcomingCaravans = createAsyncThunk('caravan/upcoming', async ()
     return flatten(result)
 });
 
-export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (data) => {
-    //TODO:RTK 5 Validate shape of data
-    if (!data) {
-        data = { name: 'Default Passenger' }
-    }
-    const result = await firebase.database().ref('/customer').push(data);
+export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (name) => {
+    const result = await firebase.database().ref(`/customer/${name}`).push({
+        name: 'Default passenger'
+    });
     return result;
 });
 
@@ -21,16 +19,14 @@ export const updateUpcomingCaravan = createAsyncThunk('caravan/update', async (c
     return { updated: data };
 });
 
-export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (caravanId) => {
-    const removeRef = firebase.database().ref(`/customer/${caravanId}`);
-    removeRef.remove();
-    // TODO:RTK 5 use the logic below to delete passenger photos
-    // if (data && data.nationality && data.passportNumber) {
-    //     const photoRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}.jpg`);
-    //     photoRef.delete();
-    //     const passportRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}_passport.jpg`);
-    //     passportRef.delete();
-    // }
+export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (caravanName) => {
+    if (caravanName.startsWith('/')) {
+        const removeRef = firebase.database().ref(`/customer${caravanName}`);
+        removeRef.remove();
+    } else {
+        const removeRef = firebase.database().ref(`/customer/${caravanName}`);
+        removeRef.remove();
+    }
 });
 
 
@@ -71,6 +67,9 @@ const caravanSlice = createSlice({
             state.error = action.payload;
         });
         builder.addCase(createUpcomingCaravan.pending, (state, action) => {
+            state.data = {...state.data, [action.meta.arg]: {
+                name: 'Default passenger'
+            }}
             state.loading = true;
         });
         builder.addCase(createUpcomingCaravan.fulfilled, (state, action) => {
@@ -84,6 +83,7 @@ const caravanSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(updateUpcomingCaravan.fulfilled, (state, action) => {
+            // Not implemented
             state.loading = false;
         });
         builder.addCase(updateUpcomingCaravan.rejected, (state, action) => {
@@ -94,6 +94,7 @@ const caravanSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(deleteUpcomingCaravan.fulfilled, (state, action) => {
+            delete state.data[action.meta.arg];
             state.loading = false;
         });
         builder.addCase(deleteUpcomingCaravan.rejected, (state, action) => {

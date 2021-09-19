@@ -37,6 +37,7 @@ const InputControl = (props) => {
     multiline,
     options,
     type,
+    autoFocus,
   } = props;
   const classes = useStyles(props);
 
@@ -69,6 +70,7 @@ const InputControl = (props) => {
             multiline={multiline}
             rows={multiline ? 4 : undefined}
             error={!!error}
+            autoFocus={autoFocus}
           >
             {options &&
               options.map((option) => (
