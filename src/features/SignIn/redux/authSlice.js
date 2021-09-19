@@ -1,0 +1,46 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import firebase from '../../../firebaseapp';
+
+export const loginWithGoogle = createAsyncThunk('auth/google', async () => {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope("email");
+    const user = await firebase.auth().signInWithPopup(provider);
+    return user;
+})
+export const signoutWithGoogle = createAsyncThunk('auth/signout', async () => {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope("email");
+    await firebase.auth().signOut();
+})
+
+export const signinSlice = createSlice({
+    name: 'auth',
+    initialState: {
+        data: {},
+        loading: false,
+        error: '',
+    },
+    extraReducers: (builder) => {
+        builder.addCase(loginWithGoogle.pending, (state, action) => {
+                state.loading = true;
+        });
+        builder.addCase(loginWithGoogle.fulfilled, (state, action) => {
+            state.data = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(loginWithGoogle.rejected, (state, action) => {
+            state.error = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(signoutWithGoogle.fulfilled, (state, action) => {
+            state.data = {}
+            state.loading = false;
+        });
+        builder.addCase(signoutWithGoogle.rejected, (state, action) => {
+            state.error = action.payload;
+            state.loading = false;
+        });
+    }
+});
+
+export default signinSlice.reducer;

@@ -25,8 +25,9 @@ import MaterialTable from "material-table";
 import moment from 'moment';
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import useTravellerState from '../Dashboard/redux/useTravellerState';
+import { updatePassenger } from "../customer/redux/passengerSlice";
 import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
@@ -60,12 +61,11 @@ const tableIcons = {
   )),
 };
 const Favorite = () => {
-  const {
-    data: travellers,
-    updateData: updateTraveller,
-    loading,
-    error,
-  } = useTravellerState();
+
+  const passengers = useSelector(state => state.customer.data);
+  const loading = useSelector(state => state.customer.loading);
+  const error = useSelector(state => state.customer.error);
+  const dispatch = useDispatch();
 
   const [state, setstate] = useState({
     mode: "list",
@@ -113,10 +113,10 @@ const Favorite = () => {
     );
   };
   const favoriteData = () => {
-    const keys = Object.keys(travellers);
+    const keys = Object.keys(passengers);
     let output = [];
     keys.forEach((k) => {
-      const values = travellers[k].filter((x) => x.favorite);
+      const values = passengers[k].filter((x) => x.favorite);
       values.forEach((v) => (v._groupName = k));
       output = output.concat(values);
     });
@@ -166,7 +166,7 @@ const Favorite = () => {
                 <CustomerDetail
                   customer={rowData}
                   customerKey={
-                    travellers.map((s) => s.key)[rowData.tableData.id]
+                    passengers.map((s) => s.key)[rowData.tableData.id]
                   }
                 />
               )}
@@ -185,10 +185,7 @@ const Favorite = () => {
                     if (Array.isArray(rowData)) {
                       return; //TODO process multiple selection edits
                     }
-                    updateTraveller({
-                      path: `customer/${rowData._groupName}/${rowData._fid}`,
-                      data: { ...rowData, favorite: !rowData.favorite },
-                    });
+                    dispatch(updatePassenger(`${rowData._groupName}/${rowData._fid}`, { ...rowData, favorite: !rowData.favorite },))
                   },
                 }),
                 {

@@ -1,24 +1,20 @@
 import { ThemeProvider } from "@material-ui/core";
-import { configureStore } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Redirect } from "react-router-dom";
-import createSagaMiddleware from "redux-saga";
 import Customers from "./features/customer";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
 import DoveHome from "./features/Home/DoveHome";
 import OnlinePackages from "./features/onlinePackage";
-import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import AdvertisementDetail from "./features/onlinePackage/components/AdvertisementDetail";
+import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import ToursAdvertisements from "./features/onlinePackage/components/ToursAdvertisements";
 import UmrahAdvertisements from "./features/onlinePackage/components/UmrahAdvertisements";
-import Profile from "./features/Profile";
-import Register from "./features/Register/Register.j";
+import Profile from "./features/profile";
 import Reservation from "./features/Reservation";
-import ForgotPassword from "./features/SignIn/ForgotPassword";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
 import PublicRoute from "./features/SignIn/PublicRoute";
 import SignIn from "./features/SignIn/SignIn";
@@ -27,19 +23,8 @@ import Trade from "./features/trade";
 import messages_ar from "./lang/ar.json";
 import messages_en from "./lang/en.json";
 import messages_fr from "./lang/fr.json";
-import reducer from "./redux/reducer";
-import sagas from "./redux/saga";
+import { store } from './redux/store';
 import defaultTheme from "./theme/default";
-
-const sagaMiddleware = createSagaMiddleware(); //TODO:RTK not needed 
-// TODO:RTK 1 move to file store.js
-const store = configureStore({
-  reducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
-  devTools: process.env.NODE_ENV !== "production",
-});
-sagaMiddleware.run(sagas); //TODO:RTK 1 Saga is not needed but the saga code should go to slices
 
 const messages = {
   fr: messages_fr,
@@ -47,7 +32,7 @@ const messages = {
   en: messages_en,
 };
 const browserLanguage = () => {
-  
+
   const navigatorLang = navigator.language.split(/[-_]/)[0];
   if (navigatorLang === "en" || navigatorLang === "ar" || navigatorLang === "fr") {
     return navigatorLang;
@@ -85,14 +70,8 @@ function App() {
             <PublicRoute exact path="/">
               <DoveHome />
             </PublicRoute>
-            <PublicRoute path="/register">
-              <Register />
-            </PublicRoute>
             <PublicRoute path="/login">
               <SignIn onLanguageChange={handleLanguageChange} lang={language} />
-            </PublicRoute>
-            <PublicRoute path="/forgot-password">
-              <ForgotPassword />
             </PublicRoute>
             <PublicRoute path="/logout">
               <SignOut />

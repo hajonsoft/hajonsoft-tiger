@@ -27,6 +27,21 @@
 					"line": 39,
 					"column": 11,
 					"label": ""
+				},
+				{
+					"line": 183,
+					"column": 32,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "src/redux/store.js",
+			"bookmarks": [
+				{
+					"line": 3,
+					"column": 14,
+					"label": ""
 				}
 			]
 		}

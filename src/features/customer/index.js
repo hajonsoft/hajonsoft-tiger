@@ -1,13 +1,6 @@
 import {
-  Breadcrumbs,
-  CircularProgress,
-  DialogContentText,
-  Dialog,
-  DialogTitle,
-  DialogContent, DialogActions,
-  Button,
-  Grid,
-  Typography,
+  Breadcrumbs, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid,
+  Typography
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
@@ -38,11 +31,12 @@ import MaterialTable from "material-table";
 import moment from "moment";
 import pluralize from "pluralize";
 import React, { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import useTravellerState from "../Dashboard/redux/useTravellerState";
 import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
+import { deletePassenger, updatePassenger } from "./redux/passengerSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -74,15 +68,11 @@ const tableIcons = {
 };
 const Customers = () => {
   let { packageName } = useParams();
+  const dispatch = useDispatch();
 
-  const {
-    data: passengers,
-    updateData: updatePassenger,
-    fetchData: fetchPassengers,
-    deleteData: deletePassenger,
-    loading,
-    error,
-  } = useTravellerState();
+  const passengers = useSelector(state => state.customer.data);
+  const loading = useSelector(state => state.customer.loading);
+  const error = useSelector(state => state.customer.error);
 
   const [state, setState] = useState({
     mode: "list",
@@ -156,8 +146,7 @@ const Customers = () => {
   };
 
   const handleOnConfirmDelete = (deletePassengerInfo) => {
-    deletePassenger({ path: `/customer/${packageName}/${deletePassengerInfo._fid}`, data: deletePassengerInfo });
-    fetchPassengers();
+    dispatch(deletePassenger(`${packageName}/${deletePassengerInfo._fid}`))
     setState((st) => ({ ...st, mode: "list", record: {} }))
   }
 
@@ -177,7 +166,6 @@ const Customers = () => {
               title={title}
               onClose={() => {
                 setState((st) => ({ ...st, mode: "list", record: {} }))
-                fetchPassengers();
               }
               }
               onNext={bringNext}
@@ -246,12 +234,9 @@ const Customers = () => {
                     : `favor ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection edits
+                      return;
                     }
-                    updatePassenger({
-                      path: `customer/${packageName}/${rowData._fid}`,
-                      data: { ...rowData, favorite: !rowData.favorite },
-                    });
+                    dispatch(updatePassenger(`${packageName}/${rowData._fid}`, { ...rowData, favorite: !rowData.favorite }))
                   },
                 }),
                 {
@@ -259,7 +244,7 @@ const Customers = () => {
                   tooltip: `Edit ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection edits
+                      return;
                     }
                     setState((st) => ({
                       ...st,

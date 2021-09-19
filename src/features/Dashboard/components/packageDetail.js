@@ -1,54 +1,23 @@
 import {
-  faHandsHelping,
-  faPassport,
-  faPrint,
-  faShareSquare,
+  faPrint
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
 //TODO:PKG Redesign, talk to customers to get feedback
 import React, { useState } from "react";
-import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
-import useTravellerState from "../redux/useTravellerState";
+import { useSelector } from "react-redux";
 import ApplyForVisa from "./ApplyForVisa";
 import BioStatistics from "./BioStatistics";
-import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import NationalityStatistics from "./NationalityStatistics";
 
 const PackageDetail = ({ data }) => {
-  const { data: travellers, loading, error } = useTravellerState();
-  const [shareProgress, setShareProgress] = useState({
-    loading: false,
-    value: 0,
-  });
+  const passengers = useSelector(state => state.customer.data);
+  const loading = useSelector(state => state.customer.loading);
+  const error = useSelector(state => state.customer.error);
+
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
 
-  const handleShareClick = async () => {
-    setShareProgress({ loading: true, value: 0 });
-    const travellersData = getPassengersJSON(travellers, data);
-    const jsonData = JSON.stringify(travellersData);
-    const zip = await zipWithPhotos(
-      jsonData,
-      travellers,
-      data,
-      setShareProgress
-    );
 
-    zip.generateAsync({ type: "blob" }).then(function(content) {
-      const newFile = new Blob([content], { type: "application/zip" });
-      var csvURL = window.URL.createObjectURL(newFile);
-      const tempLink = document.createElement("a");
-      tempLink.href = csvURL;
-      tempLink.setAttribute("download", `${data.name}.zip`);
-      tempLink.click();
-    });
-
-    setShareProgress({ loading: false, value: 100 });
-  };
-
-  const handleApplyForVisa = () => {
-    setApplyForVisaOpen(true);
-  };
   return (
     <Paper style={{ padding: "2rem" }}>
       <Grid container justify="space-between" alignItems="flex-start">
@@ -56,7 +25,7 @@ const PackageDetail = ({ data }) => {
           {loading && <CircularProgress />}
           {error}
           {!loading && (
-            <BioStatistics data={Object.values(travellers[data.name])} />
+            <BioStatistics data={Object.values(passengers[data.name])} />
           )}
         </Grid>
         <Grid item>
@@ -64,39 +33,12 @@ const PackageDetail = ({ data }) => {
           {error}
           {!loading && (
             <NationalityStatistics
-              data={Object.values(travellers[data.name])}
+              data={Object.values(passengers[data.name])}
             />
           )}
         </Grid>
         <Grid item>
           <Grid container direction="column" spacing={2}>
-            <Grid item xs={12}>
-              <Button
-                onClick={handleApplyForVisa}
-                style={{ width: "100%" }}
-                endIcon={<FontAwesomeIcon icon={faPassport} />}
-              >
-                Apply for visa
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ width: "100%" }}
-                onClick={handleShareClick}
-                endIcon={<FontAwesomeIcon icon={faShareSquare} />}
-                startIcon={
-                  shareProgress.loading && (
-                    <CircularProgressWithLabel
-                      variant="determinate"
-                      size={30}
-                      value={shareProgress.value}
-                    />
-                  )
-                }
-              >
-                Share
-              </Button>
-            </Grid>
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
@@ -108,9 +50,17 @@ const PackageDetail = ({ data }) => {
             <Grid item xs={12}>
               <Button
                 style={{ width: "100%" }}
-                endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
+                endIcon={<FontAwesomeIcon icon={faPrint} />}
               >
-                Assist
+                Cards
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                style={{ width: "100%" }}
+                endIcon={<FontAwesomeIcon icon={faPrint} />}
+              >
+                Bracelets
               </Button>
             </Grid>
           </Grid>
@@ -120,7 +70,7 @@ const PackageDetail = ({ data }) => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={data.name}
-        passengers={travellers[data.name]}
+        passengers={passengers[data.name]}
       />
     </Paper>
   );

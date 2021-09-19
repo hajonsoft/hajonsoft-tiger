@@ -30,7 +30,6 @@ import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
 import firebaseArabicName from "../../arabicName/firebaseArabicName";
-import useTravellerState from "../../Dashboard/redux/useTravellerState";
 import InputControl from "../../Reservation/components/InputControl";
 import CoreImage from "./CoreImage";
 import CorePassportImage from "./CorePassportImage";
@@ -38,6 +37,8 @@ import CoreVaccineImage from "./CoreVaccineImage"
 import CustomerCodeline from "./CustomerCodeline";
 import Dropzone from "./Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
+import { useDispatch, useSelector } from "react-redux";
+import { createPassenger, deletePassenger, updatePassenger } from "../redux/passengerSlice";
 
 const storage = firebase.storage();
 
@@ -75,13 +76,9 @@ const useStyles = makeStyles((theme) => ({
 const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
+  const dispatch = useDispatch();
   let { packageName } = useParams();
-  const {
-    data: passengers,
-    createData: createPassenger,
-    updateData: updatePassenger,
-    deleteData: deletePassenger,
-  } = useTravellerState();
+  const passengers = useSelector(state => state.passenger.data);
 
   const savePassportImage = (values, image) => {
     if (image) {
@@ -132,22 +129,15 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        createPassenger({ path: `customer/${packageName}`, data: values });
+        dispatch(createPassenger({[packageName]: values}))
         break;
       case "update":
         delete values.tableData;
-        updatePassenger({
-          path: `customer/${packageName}/${record._fid}`,
-          data: values,
-        });
+        dispatch(updatePassenger(`${packageName}/${record._fid}`, values))
         break;
       case "delete":
-        deletePassenger({
-          path: `customer/${packageName}/${record._fid}`,
-          data: values,
-        });
+        dispatch(deletePassenger(`${packageName}/${record._fid}`))
         break;
-
       default:
         console.log("unknown mode");
     }
@@ -249,10 +239,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    createPassenger({ path: `customer/${record.packageName}`, data });
-    deletePassenger({
-      path: `customer/online/${record._fid}`
-    });
+    dispatch(createPassenger(record.packageName, data));
+    dispatch(deletePassenger(`online/${record._fid}`)); //TODO:RTK 5 make sure the creation of the path doesnot duplicate /
     onClose()
   };
 

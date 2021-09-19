@@ -7,12 +7,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import firebase from "../../firebaseapp";
 import logo from "../../images/logo.jpg";
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
+import { loginWithGoogle } from "./redux/authSlice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,8 +21,10 @@ const useStyles = makeStyles((theme) => ({
     background: "rgb(63 113 136 / 9%)",
   },
 }));
+
 const SignIn = ({ onLanguageChange, lang }) => {
   const mediaMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const dispatch = useDispatch();
 
   const classes = useStyles();
   const [language, setLanguage] = useState(lang);
@@ -31,14 +33,12 @@ const SignIn = ({ onLanguageChange, lang }) => {
     onLanguageChange(e.target.value);
   };
 
-  const [user] = useAuthState(firebase.auth()); //TODO:RTK 2 not needed
+  const auth = useSelector(state => state?.auth?.data);
 
   const handleGoogleSignin = () => {
-    let provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope("email");
-    firebase.auth().signInWithPopup(provider);
-  }; // TODO:RTK 1 use think in slice and get a hook? probably a hook ican't be realized since this is a code with the toolkit directly and not a restful call
-  if (user) {
+    dispatch(loginWithGoogle())
+  };
+  if (auth?.user?.uid) {
     return <Redirect to="/caravans" />;
   }
   return (

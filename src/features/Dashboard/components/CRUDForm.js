@@ -11,10 +11,11 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { Form, Formik } from "formik";
 import _ from "lodash";
 import React from "react";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { eventsNearby } from "../../../util/hijri";
-import useTravellerState from "../redux/useTravellerState";
 import InputControl from "../../Reservation/components/InputControl";
+import { createUpcomingCaravan, deleteUpcomingCaravan } from "../redux/caravanSlice";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -51,21 +52,15 @@ const useStyles = makeStyles((theme) => ({
 
 const CRUDForm = ({ mode, record, title, onClose }) => {
   const classes = useStyles();
-  const {
-    createData: createPassenger,
-    deleteData: deletePassenger,
-  } = useTravellerState();
+const dispatch = useDispatch();
 
   const handleSubmitForm = (values, actions) => {
     switch (mode) {
       case "create":
-        createPassenger({
-          path: `customer/${_.startCase(values.name)}`,
-          traveller: { name: "default" },
-        });
+        dispatch(createUpcomingCaravan(`${_.startCase(values.name)}`,{ name: "default" } ))
         break;
       case "delete":
-        deletePassenger({ path: `customer/${values.name}` });
+        dispatch(deleteUpcomingCaravan(`customer/${values.name}`,))
         onClose();
         break;
 

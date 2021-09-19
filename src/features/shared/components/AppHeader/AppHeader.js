@@ -6,39 +6,39 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import _ from "lodash";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import firebase from "../../../../firebaseapp";
 import firebaseConfig from "../../../../firebaseConfig";
-import useTravellerState from "../../../Dashboard/redux/useTravellerState";
+import { signoutWithGoogle } from "../../../SignIn/redux/authSlice";
 
 const AppHeader = () => {
-  const [user] = useAuthState(firebase.auth()); // TODO:RTK 4 Not needed once RTK query is used
+  const authData = useSelector(state => state.auth?.data);
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const dispatch = useDispatch();
   const projectName = `${_.startCase(
     firebaseConfig.projectId.replace(/[0-9]/g, "").replace(/-/g, " ")
   )}`;
 
   let history = useHistory();
-  const { data: travellers } = useTravellerState(); // TODO:RTK 4 Not needed
+  const passengers = useSelector(state => state.customer?.data);
 
   const handleLogout = () => {
-    firebase.auth().signOut();
+    dispatch(signoutWithGoogle())
     history.push("/logout");
   };
 
   const favoriteCount = () => {
     let totalFavorites = 0;
-    if (travellers) {
-      const keys = Object.keys(travellers);
+    if (passengers) {
+      const keys = Object.keys(passengers);
       keys.forEach(
         (k) =>
-          (totalFavorites += travellers[k].filter((t) => t.favorite).length)
+          (totalFavorites += passengers[k].filter((t) => t.favorite).length)
       );
     }
 
@@ -114,7 +114,7 @@ const AppHeader = () => {
                       textTransform: "none",
                     }}
                   >
-                    {user.email}
+                    {authData.user?.email}
                   </Button>
                 </Grid>
               </Grid>

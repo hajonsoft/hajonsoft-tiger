@@ -41,7 +41,9 @@ import AppHeader from "../shared/components/AppHeader/AppHeader";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import useTravellerState from "./redux/useTravellerState";
+import { useDispatch, useSelector } from "react-redux";
+import { getPassengers } from "../customer/redux/passengerSlice";
+import { deleteUpcomingCaravan } from "./redux/caravanSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -71,24 +73,20 @@ const tableIcons = {
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [filteredCaravans, setFilteredCaravans] = useState({});
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const {
-    data: caravans,
-    loading,
-  error,
-    fetchData: fetchCaravans,
-    deleteData: deleteCaravan,
-  } = useTravellerState(); // TODO:RTK 4 No need. RTK Query should take care of it
+  const caravans = useSelector(state => state.caravan.data);
+  const loading = useSelector(state => state.caravan.loading);
+  const error = useSelector(state => state.caravan.error);
+
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
 
   useEffect(() => {
-    if (!loading) {
-      setFilteredCaravans(caravans);
-    }
-  }, [loading]);
+    dispatch(getPassengers())
+    window.scrollTo(0,0);
+  }, []);
 
   const Title = () => {
     return (
@@ -147,7 +145,7 @@ const Dashboard = () => {
   };
 
   const handleOnConfirmDelete = () => {
-    deleteCaravan({ path: `/customer/${state.record.name}` });
+    dispatch(deleteUpcomingCaravan(state.record.name));
     setState((st) => ({ ...st, mode: "list", record: {} }));
   };
 
@@ -185,7 +183,6 @@ const Dashboard = () => {
               title={title}
               onClose={() => {
                 setState((st) => ({ ...st, mode: "list" }));
-                fetchCaravans();
               }}
             />
           )}
@@ -227,10 +224,10 @@ const Dashboard = () => {
                   },
                 ]}
                 data={
-                  filteredCaravans
-                    ? Object.keys(filteredCaravans).map((v) => ({
+                  caravans
+                    ? Object.keys(caravans).map((v) => ({
                         name: v,
-                        total: filteredCaravans[v].length,
+                        total: caravans[v].length,
                       }))
                     : []
                 }
@@ -293,7 +290,7 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={state?.record?.name}
-        passengers={filteredCaravans[state?.record?.name]}
+        passengers={caravans[state?.record?.name]}
       />
       <Dialog
         open={state.mode === "delete"}
