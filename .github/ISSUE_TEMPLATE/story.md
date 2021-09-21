@@ -7,7 +7,102 @@ assignees: ''
 
 ---
 
-As USER/TRAVELLER/ADMIN to HAJonSoft I want to 
+As [Passenger/Munazim/support engineer]  I want to 
+
+**Description**
+As a crop consultant creating a custom application work order,
+
+I need to see a list of all the application fees that I have added to my custom application work order,
+
+so that:
+
+I can confirm which ones I still need to add.
+
+I can see the details of the ones that I have already added.
+
+
+**Acceptance Criteria**
+GIVEN I am a crop consultant creating a custom application work order in the Unified Experience,
+
+WHEN I DO have Service Fees added to my product payload for a Custom Application work order in the unified platform,
+
+THEN those Service Fee line items are listed on the work order draft,
+
+AND each product displays the following properties:
+
+Fee Name
+
+Fee Category
+
+SKU
+
+Quantity
+
+Unit Price
+
+Total Price
+
+NOTES: 
+The subheader above the Service Fee cards should read 'Service Fees'
+
+currently implemented as 'Application'
+
+Fee name and Fee Category do not have labels, just display the values.
+
+Other labels should be SKU, Quantity, Unit Price, Total Price
+
+The Quantity should have the selling unit of measure after the value
+
+The Unit Price should have / and selling unit of measure after the value
+
+Here is the Figma link:
+
+https://www.figma.com/file/w7WiXHsvEd5dm0Mf8WVHYI/Custom-App?node-id=2394%3A103256 - Connect to preview 
+
+Here is how the UX Design looks:
+
+
+
+
+Description
+As a crop consultant placing a custom application work order in the unified hub,
+
+I want the submit button to remain disabled until I have valid value in all of the required data fields,
+
+so that I don’t inadvertently overlook a field that is required,
+
+which could result in my customer’s work order sitting unprocessed in the backend system and therefore being delayed.
+
+
+Acceptance Criteria
+GIVEN that I am editing a custom application work order in the unified hub,
+
+WHEN I DO NOT have valid values in all of the required data fields for a custom application work order,
+
+THEN the Submit Work Order button is disabled.
+
+AND WHEN I DO have valid values in all of the required data fields for a custom application work order,
+
+THEN the Submit Work Order button is enabled.
+
+The required data fields are:
+
+Requested application date
+
+Application type
+
+Dilution
+
+Job Acres
+
+Crop
+
+Add Field (at least one)
+
+Add Product (at least one chem or fert)
+
+Assumption:
+We assume that the Bonsai buttons will allow for a disabled state.
 
 ### Considerations ✍
 
