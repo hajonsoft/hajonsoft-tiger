@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 const getProfile = createAsyncThunk('profile/get', async () => {
-
+// Get profile from /protected/profile
 })
 
 const createProfile = createAsyncThunk('profile/create', async () => {
