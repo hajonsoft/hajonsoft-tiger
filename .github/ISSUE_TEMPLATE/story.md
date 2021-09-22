@@ -42,20 +42,24 @@ Unit Price
 
 Total Price
 
-NOTES: 
-The subheader above the Service Fee cards should read 'Service Fees'
+NOTES:
+This is going to use the same design as the qty, price and total container for straight chem/fert Qty field.
 
-currently implemented as 'Application'
+This should go below the Price entry field.
 
-Fee name and Fee Category do not have labels, just display the values.
+It will use base selling unit of measure for the UOMs for quantity and price.
 
-Other labels should be SKU, Quantity, Unit Price, Total Price
+It starts out as – for each value that hasn’t had a user-entered value.
 
-The Quantity should have the selling unit of measure after the value
+Once a user enters a value, it dynamically updates.
 
-The Unit Price should have / and selling unit of measure after the value
+The Total calculates and displays once there is a qty AND price entered.  
 
-Here is the Figma link:
+If I delete either price or qty, the displayed value for qty and/or price goes back to --.
+
+AND, the displayed Total goes back to --.
+
+Here is the Figma design:
 
 https://www.figma.com/file/w7WiXHsvEd5dm0Mf8WVHYI/Custom-App?node-id=2394%3A103256 - Connect to preview 
 
