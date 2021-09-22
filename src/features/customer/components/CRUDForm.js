@@ -38,7 +38,7 @@ import CustomerCodeline from "./CustomerCodeline";
 import Dropzone from "./Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { useDispatch, useSelector } from "react-redux";
-import { createPassenger, deletePassenger, updatePassenger } from "../redux/passengerSlice";
+import { createPassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
 
 const storage = firebase.storage();
 
@@ -78,7 +78,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   let { packageName } = useParams();
-  const passengers = useSelector(state => state.passenger.data);
+  const caravans = useSelector(state => state.caravan?.data);
+  const passengers = caravans[packageName];
 
   const savePassportImage = (values, image) => {
     if (image) {
@@ -106,7 +107,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const savePhoto = (values, image) => {
+  const savePortrait = (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
@@ -129,7 +130,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        dispatch(createPassenger({[packageName]: values}))
+        dispatch(createPassenger({caravanName: packageName, passenger: values}))
         break;
       case "update":
         delete values.tableData;
@@ -348,7 +349,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       <br />
                       {photoMode === "photo" && (
                         <CoreImage
-                          setImage={(img) => savePhoto(values, img)}
+                          setImage={(img) => savePortrait(values, img)}
                           record={values}
                         />
                       )}

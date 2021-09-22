@@ -25,7 +25,7 @@ const AppHeader = () => {
   )}`;
 
   let history = useHistory();
-  const passengers = useSelector(state => state.customer?.data);
+  const passengers = useSelector(state => state.passenger?.data);
 
   const handleLogout = () => {
     dispatch(signoutWithGoogle())
@@ -114,7 +114,7 @@ const AppHeader = () => {
                       textTransform: "none",
                     }}
                   >
-                    {authData.user?.email}
+                    {`${authData.name} ${authData.email}`}
                   </Button>
                 </Grid>
               </Grid>

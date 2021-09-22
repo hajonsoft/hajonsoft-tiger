@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 function PrivateRoute({ children, ...rest }) {
 
-  const authData = useSelector(state => state.auth.data);
-  const loading = useSelector(state => state.auth.loading);
-  const error = useSelector(state => state.auth.error);
-
+  const authData = useSelector(state => state.auth?.data);
+  const loading = useSelector(state => state.auth?.loading);
+  const error = useSelector(state => state.auth?.error);
   if (loading) {
     return (
       null
@@ -23,7 +22,7 @@ function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        authData?.user?.uid ? (
+        authData?.name? (
           children
         ) : (
           <Redirect

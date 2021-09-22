@@ -30,13 +30,14 @@ import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
 import moment from "moment";
 import pluralize from "pluralize";
+import _ from 'lodash';
 import React, { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
-import { deletePassenger, updatePassenger } from "./redux/passengerSlice";
+import { deletePassenger, updatePassenger } from "../Dashboard/redux/caravanSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -70,9 +71,10 @@ const Customers = () => {
   let { packageName } = useParams();
   const dispatch = useDispatch();
 
-  const passengers = useSelector(state => state.customer.data);
-  const loading = useSelector(state => state.customer.loading);
-  const error = useSelector(state => state.customer.error);
+  const caravans = useSelector(state => state.caravan?.data);
+  const loading = useSelector(state => state.caravan?.loading);
+  const error = useSelector(state => state.caravan?.error);
+  const passengers = _.cloneDeep(caravans?.[packageName]);
 
   const [state, setState] = useState({
     mode: "list",
@@ -134,10 +136,10 @@ const Customers = () => {
   };
 
   const bringNext = () => {
-    let nextPassenger = passengers[packageName][0];
+    let nextPassenger = passengers[0];
     if (state.record && state.record._fid) {
-      for (let i = 0; i < passengers[packageName].length - 1; i++) {
-        if (passengers[packageName][i]._fid === state.record._fid) {
+      for (let i = 0; i < passengers.length - 1; i++) {
+        if (passengers[i]._fid === state.record._fid) {
           nextPassenger = passengers[packageName][i + 1];
         }
       }
@@ -212,7 +214,8 @@ const Customers = () => {
                 },
                 { title: "Email", field: "email" },
               ]}
-              data={passengers[packageName] ? passengers[packageName] : []}
+
+              data={passengers}
               detailPanel={(rowData) => <CustomerDetail customer={rowData} />}
               actions={[
                 {

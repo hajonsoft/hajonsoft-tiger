@@ -33,12 +33,12 @@ const SignIn = ({ onLanguageChange, lang }) => {
     onLanguageChange(e.target.value);
   };
 
-  const auth = useSelector(state => state?.auth?.data);
+  const authData = useSelector(state => state?.auth?.data);
 
   const handleGoogleSignin = () => {
     dispatch(loginWithGoogle())
   };
-  if (auth?.user?.uid) {
+  if (authData?.name) {
     return <Redirect to="/caravans" />;
   }
   return (

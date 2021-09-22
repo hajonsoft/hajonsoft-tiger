@@ -25,7 +25,12 @@ export const signinSlice = createSlice({
                 state.loading = true;
         });
         builder.addCase(loginWithGoogle.fulfilled, (state, action) => {
-            state.data = action.payload;
+            const user = {
+                name: action.payload.user.displayName,
+                email: action.payload.user.email,
+                photoURL: action.payload.user.photoURL,
+            }
+            state.data = user;            
             state.loading = false;
         });
         builder.addCase(loginWithGoogle.rejected, (state, action) => {
