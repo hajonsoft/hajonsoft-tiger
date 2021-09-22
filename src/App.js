@@ -13,7 +13,7 @@ import AdvertisementDetail from "./features/onlinePackage/components/Advertiseme
 import HajjAdvertisements from "./features/onlinePackage/components/HajjAdvertisements";
 import ToursAdvertisements from "./features/onlinePackage/components/ToursAdvertisements";
 import UmrahAdvertisements from "./features/onlinePackage/components/UmrahAdvertisements";
-import Profile from "./features/profile";
+import Profile from "./features/profile/index";
 import Reservation from "./features/Reservation";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
 import PublicRoute from "./features/SignIn/PublicRoute";
