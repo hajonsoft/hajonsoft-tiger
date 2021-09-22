@@ -3,7 +3,7 @@ import authReducer from '../features/SignIn/redux/authSlice';
 import caravanReducer from '../features/Dashboard/redux/caravanSlice';
 import visaSystemReducer from '../features/Dashboard/redux/visaSystemSlice';
 import adReducer from '../features/onlinePackage/redux/adSlice'
-import profileReducer from '../features/profile/redux/profileSlice'
+import profileReducer from '../features/Profile/redux/profileSlice'
 
 export const store = configureStore({
     reducer: {
