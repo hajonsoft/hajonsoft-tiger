@@ -50,7 +50,7 @@ const AppHeader = () => {
       <Toolbar style={{ color: "#fff" }}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={2}>
-            <Typography variant="h6">HAJonSoft</Typography>
+            <Typography variant="subtitle1" style={{ color: 'indigo' }}>{`HAJonSoft | ${projectName}`}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton onClick={() => history.push("/favorite")}>
@@ -63,25 +63,25 @@ const AppHeader = () => {
           {!isMobile && (
             <Grid item xs={6}>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/caravans")}
               >
                 Caravans
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/market")}
               >
                 Online
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/trade")}
               >
                 Trade
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/help")}
               >
                 Support
@@ -99,29 +99,20 @@ const AppHeader = () => {
             aria-label="Sign out"
           >
             <Grid item>
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item>{projectName}</Grid>
-                <Grid item>
-                  <Button
-                    onClick={() => history.push("/profile")}
-                    style={{
-                      color: "#fff",
-                      textTransform: "none",
-                    }}
-                  >
-                    {`${authData.name} ${authData.email}`}
-                  </Button>
-                </Grid>
+              <Grid item>
+                <Button
+                  onClick={() => history.push("/profile")}
+                  style={{
+                    textTransform: "none",
+                  }}
+                >
+                  {`${authData.email}`}
+                </Button>
               </Grid>
             </Grid>
 
             <Grid item>
-              <Button onClick={handleLogout} style={{ color: "#fff" }}>
+              <Button onClick={handleLogout}>
                 Sign out
               </Button>
             </Grid>

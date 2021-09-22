@@ -33,7 +33,7 @@ const InputControl = (props) => {
     error,
     helperText,
     placeholder,
-    required,
+    required=false,
     multiline,
     options,
     type,
