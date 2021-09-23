@@ -44,8 +44,8 @@ export const updatePassenger = createAsyncThunk('caravan/update-passenger', asyn
     return passenger;
 })
 
-export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({packageName, passenger}) => {
-    const removeRef = firebase.database().ref(`/customer/${packageName}/${passenger._fid}`);
+export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({name, passenger}) => {
+    const removeRef = firebase.database().ref(`/customer/${name}/${passenger._fid}`);
     removeRef.remove();
     try {
         if (passenger && passenger.nationality && passenger.passportNumber) {
@@ -59,6 +59,10 @@ export const deletePassenger = createAsyncThunk('caravan/delete-passenger', asyn
     }
 })
 
+export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-passenger', async ({name, passenger}) => {
+    const removeRef = firebase.database().ref(`/online/${name}/${passenger._fid}`);
+    removeRef.remove();
+})
 
 const flatten = (snapshot) => {
     const output = {};
@@ -134,6 +138,10 @@ const caravanSlice = createSlice({
         });
         builder.addCase(deletePassenger.fulfilled, (state, action) => {
             state.data[action.meta.arg.packageName] =  state.data[action.meta.arg.packageName]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid );
+            state.loading = false;
+        });
+        builder.addCase(deleteOnlinePassenger.fulfilled, (state, action) => {
+            state.data["online"] =  state.data["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid );
             state.loading = false;
         });
         builder.addCase(updatePassenger.fulfilled, (state, action) => {

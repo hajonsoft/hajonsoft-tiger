@@ -53,6 +53,7 @@ const Profile = () => {
   const [record, setRecord] = useState({});
   const authData = useSelector(state => state.auth?.data);
 
+  //TODO:RTK:profile replace this code with dispatch(getProfile()) and useSelector
   useEffect(() => {
     firebase
       .database()
@@ -67,6 +68,7 @@ const Profile = () => {
   const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
+    // TODO:RTK replace with dispatch(updateProfile(newprofile))
     const updateRef = firebase.database().ref(`protected/profile`);
     updateRef.set(values).catch((err) => {
       alert(err.message);

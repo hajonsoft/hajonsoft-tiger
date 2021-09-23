@@ -38,7 +38,7 @@ import CustomerCodeline from "./CustomerCodeline";
 import Dropzone from "./Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { useDispatch, useSelector } from "react-redux";
-import { createPassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
+import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
 
 const storage = firebase.storage();
 
@@ -130,14 +130,14 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        dispatch(createPassenger({caravanName: packageName, passenger: values}))
+        dispatch(createPassenger({name: packageName, passenger: values}))
         break;
       case "update":
         delete values.tableData;
         dispatch(updatePassenger({name: packageName, passenger: values}));
         break;
       case "delete":
-        dispatch(deletePassenger({packageName, record}));
+        dispatch(deletePassenger({name: packageName, passenger: record}));
         break;
       default:
         console.log("unknown mode");
@@ -240,8 +240,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    dispatch(createPassenger(record.packageName, data));
-    dispatch(deletePassenger(`online/${record._fid}`)); //TODO:RTK 5 make sure the creation of the path doesnot duplicate /
+    dispatch(createPassenger({name: packageName, passenger: data}));
+    dispatch(deleteOnlinePassenger(record._fid));
     onClose()
   };
 

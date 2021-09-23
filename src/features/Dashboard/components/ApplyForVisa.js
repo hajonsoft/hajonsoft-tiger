@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
 import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
-import { createVisaSystems, deleteVisaSystems } from "../redux/visaSystemSlice";
+import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
 
 const Cryptr = require("cryptr");
 
@@ -190,9 +190,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   React.useEffect(() => {
     setSelectedPassengers(passengers);
-  }, [passengers]);
+    dispatch(getVisaSystems());
+  }, [dispatch, passengers]);
 
-  const visaSystems = useSelector(state => state.visaSystem.data);
+  const visaSystems = useSelector(state => state.visaSystem?.data);
 
   const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
@@ -208,7 +209,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   };
 
   const handleDoneAddServiceProviderProfile = () => {
-    dispatch(createVisaSystems({
+    dispatch(createVisaSystem({
       usap: selectedServiceProvider,
       username: serviceProviderUsername,
       password: serviceProviderPassword,
@@ -216,7 +217,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     setServiceProviderAddMode(false);
   };
   const handleOnDeleteServiceProviderProfile = (visaSystemIndex) => {
-    dispatch(deleteVisaSystems(visaSystems[visaSystemIndex]._fid))
+    dispatch(deleteVisaSystem(visaSystems[visaSystemIndex]._fid))
   };
 
   const handleDownloadZipFileClick = async () => {

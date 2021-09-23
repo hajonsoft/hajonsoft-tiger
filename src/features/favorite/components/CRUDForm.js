@@ -70,7 +70,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     switch (mode) {
       case "update":
         delete values.tableData;
-        dispatch(updatePassenger(`${record._groupName}/${record._fid}`, values)) // TODO:RTK 5 make sure path is combined correctly
+        dispatch(updatePassenger({name: record._groupName, passenger: record}))
         break;
       default:
         console.log("unknown mode");

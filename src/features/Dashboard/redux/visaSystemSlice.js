@@ -2,21 +2,20 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import firebase from '../../../firebaseapp';
 
 
-export const getVisaSystems = createAsyncThunk('visaSystems/systems', async ()=> {
-    const result = await firebase.database().ref('/visaSystem').once('value');
-    return flatten(result)
+export const getVisaSystems = createAsyncThunk('visaSystem/systems', async ()=> {
+    const visaSystems = await firebase.database().ref('/visaSystem').once('value');
+    return flatten(visaSystems)
 })
 
-export const createVisaSystems = createAsyncThunk('visaSystems/create', async (data)=> {
+export const createVisaSystem = createAsyncThunk('visaSystem/create', async (data)=> {
     if (!data) return;
     const result = await firebase.database().ref('/visaSystem').push(data);
-    return result;
+    return result.key;
 })
 
-export const deleteVisaSystems = createAsyncThunk('visaSystems/delete', async (visaSystemId)=> {
+export const deleteVisaSystem = createAsyncThunk('visaSystem/delete', async (visaSystemId)=> {
     const removeRef = firebase.database().ref(`/visaSystem/${visaSystemId}`);
     removeRef.remove();
-    
 })
 
 const visaSystemSlice = createSlice({
@@ -31,30 +30,35 @@ const visaSystemSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(getVisaSystems.fulfilled, (state, action) => {
-            state.loading = false;
             state.data = action.payload;
+            state.loading = false;
         });
         builder.addCase(getVisaSystems.rejected, (state, action) => {
+            state.error = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(createVisaSystem.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(createVisaSystem.fulfilled, (state, action) => {
+            state.data = [...state.data, {
+                _fid: action.payload,
+                ...action.meta.arg
+            }]; 
+            state.loading = false;
+        });
+        builder.addCase(createVisaSystem.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
-        builder.addCase(createVisaSystems.pending, (state, action) => {
+        builder.addCase(deleteVisaSystem.pending, (state, action) => {
             state.loading = true;
         });
-        builder.addCase(createVisaSystems.fulfilled, (state, action) => {
+        builder.addCase(deleteVisaSystem.fulfilled, (state, action) => {
+            state.data = state.data.filter(visaSystem => visaSystem._fid !== action.meta.arg )
             state.loading = false;
         });
-        builder.addCase(createVisaSystems.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        });
-        builder.addCase(deleteVisaSystems.pending, (state, action) => {
-            state.loading = true;
-        });
-        builder.addCase(deleteVisaSystems.fulfilled, (state, action) => {
-            state.loading = false;
-        });
-        builder.addCase(deleteVisaSystems.rejected, (state, action) => {
+        builder.addCase(deleteVisaSystem.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
