@@ -14,8 +14,9 @@ import { Form, Formik } from "formik";
 import _ from "lodash";
 import moment from 'moment';
 import React from "react";
+import { useDispatch } from "react-redux";
 import firebase from "../../../firebaseapp";
-import useTravellerState from '../../Dashboard/redux/useTravellerState';
+import { updatePassenger } from "../../Dashboard/redux/caravanSlice";
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
 import CustomerBirthDate from './CustomerBirthDate';
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
-  const { updateData: updateTraveller } = useTravellerState();
+  const dispatch = useDispatch();
 
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     let image = values.image;
@@ -69,7 +70,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
     switch (mode) {
       case "update":
         delete values.tableData;
-        updateTraveller({ path: `customer/${record._groupName}/${record._fid}`, data: values })
+        dispatch(updatePassenger({name: record._groupName, passenger: record}))
         break;
       default:
         console.log("unknown mode");

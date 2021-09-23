@@ -4,28 +4,24 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
-  Dialog,
+  CardHeader, Checkbox,
+  CircularProgress, Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  Grid,
+  FormControl, FormControlLabel, Grid,
   IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import Backdrop from "@material-ui/core/Backdrop";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import Slide from "@material-ui/core/Slide";
@@ -33,14 +29,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import emailjs from "emailjs-com";
 import moment from "moment";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
-import firebase from "../../../firebaseapp";
-import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
-import useVisaSystemState from "../redux/useVisaSystemState";
-import emailjs from "emailjs-com";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
+import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
+import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
 
 const Cryptr = require("cryptr");
 
@@ -114,6 +110,8 @@ const serviceProviders = [
 
 const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [expandedPanel, setExpandedPanel] = React.useState("");
   const [pace, setPace] = React.useState(1.5);
   const [selectedPassengers, setSelectedPassengers] = React.useState(
@@ -141,81 +139,61 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   async function sendEmail() {
     setSendingMail(true);
-    firebase
-      .database()
-      .ref(`protected/profile`)
-      .once("value", async (snapshot) => {
-        if (snapshot.toJSON()) {
-          const profileData = snapshot.toJSON();
-          const userEmail = profileData.email;
+    const travellersData = getPassengersJSON(selectedPassengers);
+    const exportVisaSystem = visaSystems[selectedVisaSystem];
+    const zipData = {
+      system: {
+        username: cryptr.encrypt(exportVisaSystem.username),
+        password: cryptr.encrypt(exportVisaSystem.password),
+        name: exportVisaSystem.usap,
+      },
+      info: {
+        pax: travellersData.length,
+        caravan: sanitizeCaravanName(caravan),
+        caravanUrl: `https://${firebaseConfig.projectId}/${caravan}/customers`,
+        munazim: firebaseConfig.projectId,
+      },
+      travellers: travellersData,
+    };
+    const zip = await zipWithPhotos(zipData, null);
 
-          if (!userEmail) {
-            setSendingMail(false);
-            alert("Please update your email on your profile and try again!!!");
-            return;
-          }
+    const base64 = await zip.generateAsync({
+      type: "base64",
+      mimeType: "application/zip"
+    });
 
-          setSendingMail(true);
+    const data = {
+      summary: `vpx:${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})`,
+      description: `${travellersData.map(traveller => traveller.name)}`,
+      variable_7e6p61s: base64,
+    };
 
-          const travellersData = getPassengersJSON(selectedPassengers);
-          const exportVisaSystem = visaSystems[selectedVisaSystem];
-          const zipData = {
-            system: {
-              username: cryptr.encrypt(exportVisaSystem.username),
-              password: cryptr.encrypt(exportVisaSystem.password),
-              name: exportVisaSystem.usap,
-            },
-            info: {
-              pax: travellersData.length,
-              caravan: sanitizeCaravanName(caravan),
-              caravanUrl: `https://${firebaseConfig.projectId}/${caravan}/customers`,
-              munazim: firebaseConfig.projectId,
-            },
-            travellers: travellersData,
-          };
-          const zip = await zipWithPhotos(zipData, null);
-
-          const base64 = await zip.generateAsync({
-            type: "base64",
-            mimeType: "application/zip"
-          });
-
-          const data = {
-            summary: "VISA BY PROXY",
-            description: `This is submitted from ${window.location.origin} website with this email ${userEmail} `,
-            variable_7e6p61s: base64,
-          };
-
-          emailjs
-            .send(
-              "service_kn4unr3",
-              "template_38lq7dh",
-              data,
-              "user_ZvrCHg40AuHimkNbZAhtA"
-            )
-            .then(
-              (result) => {
-                console.log(result.text);
-                setEmailSuccess(true);
-              },
-              (error) => {
-                setEmailSuccess(false);
-                // console.log(error.text);
-              }
-            );
+    emailjs
+      .send(
+        "service_kn4unr3",
+        "template_38lq7dh",
+        data,
+        "user_ZvrCHg40AuHimkNbZAhtA"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setEmailSuccess(true);
+        },
+        (error) => {
+          setEmailSuccess(false);
+          // console.log(error.text);
         }
-      });
+      );
+        
   }
 
   React.useEffect(() => {
     setSelectedPassengers(passengers);
-  }, [passengers]);
+    dispatch(getVisaSystems());
+  }, [dispatch, passengers]);
 
-  const {
-    data: visaSystems,
-    createData: createVisaSystem,
-    deleteData: deleteVisaSystem,
-  } = useVisaSystemState();
+  const visaSystems = useSelector(state => state.visaSystem?.data);
 
   const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
@@ -231,21 +209,15 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   };
 
   const handleDoneAddServiceProviderProfile = () => {
-    createVisaSystem({
-      path: "visaSystem",
-      data: {
-        usap: selectedServiceProvider,
-        username: serviceProviderUsername,
-        password: serviceProviderPassword,
-      },
-    });
+    dispatch(createVisaSystem({
+      usap: selectedServiceProvider,
+      username: serviceProviderUsername,
+      password: serviceProviderPassword,
+    }))
     setServiceProviderAddMode(false);
   };
   const handleOnDeleteServiceProviderProfile = (visaSystemIndex) => {
-    deleteVisaSystem({
-      path: "visaSystem/" + visaSystems[visaSystemIndex]._fid,
-      fid: visaSystems[visaSystemIndex]._fid,
-    });
+    dispatch(deleteVisaSystem(visaSystems[visaSystemIndex]._fid))
   };
 
   const handleDownloadZipFileClick = async () => {
@@ -383,8 +355,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       Deselect All
                     </Button>
                   </Grid>
-                  {passengers &&
-                    passengers.map((passenger) => (
+                  {passengers && passengers.length > 0 &&
+                    passengers?.map((passenger) => (
                       <Grid item key={passenger._fid}>
                         <FormControlLabel
                           control={

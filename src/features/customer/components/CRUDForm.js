@@ -30,7 +30,6 @@ import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import trans from "../../../util/trans";
 import firebaseArabicName from "../../arabicName/firebaseArabicName";
-import useTravellerState from "../../Dashboard/redux/useTravellerState";
 import InputControl from "../../Reservation/components/InputControl";
 import CoreImage from "./CoreImage";
 import CorePassportImage from "./CorePassportImage";
@@ -38,6 +37,8 @@ import CoreVaccineImage from "./CoreVaccineImage"
 import CustomerCodeline from "./CustomerCodeline";
 import Dropzone from "./Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
+import { useDispatch, useSelector } from "react-redux";
+import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
 
 const storage = firebase.storage();
 
@@ -75,13 +76,10 @@ const useStyles = makeStyles((theme) => ({
 const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
+  const dispatch = useDispatch();
   let { packageName } = useParams();
-  const {
-    data: passengers,
-    createData: createPassenger,
-    updateData: updatePassenger,
-    deleteData: deletePassenger,
-  } = useTravellerState();
+  const caravans = useSelector(state => state.caravan?.data);
+  const passengers = caravans[packageName];
 
   const savePassportImage = (values, image) => {
     if (image) {
@@ -109,7 +107,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const savePhoto = (values, image) => {
+  const savePortrait = (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
@@ -132,22 +130,15 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        createPassenger({ path: `customer/${packageName}`, data: values });
+        dispatch(createPassenger({name: packageName, passenger: values}))
         break;
       case "update":
         delete values.tableData;
-        updatePassenger({
-          path: `customer/${packageName}/${record._fid}`,
-          data: values,
-        });
+        dispatch(updatePassenger({name: packageName, passenger: values}));
         break;
       case "delete":
-        deletePassenger({
-          path: `customer/${packageName}/${record._fid}`,
-          data: values,
-        });
+        dispatch(deletePassenger({name: packageName, passenger: record}));
         break;
-
       default:
         console.log("unknown mode");
     }
@@ -249,10 +240,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    createPassenger({ path: `customer/${record.packageName}`, data });
-    deletePassenger({
-      path: `customer/online/${record._fid}`
-    });
+    dispatch(createPassenger({name: packageName, passenger: data}));
+    dispatch(deleteOnlinePassenger(record._fid));
     onClose()
   };
 
@@ -309,6 +298,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               passExpireDt: moment().add(6, "month"),
               passIssueDt: moment().subtract(7, "days"),
               birthDate: moment().subtract(7, "days"),
+              profession: 'unknown',
             }
             : record
         }
@@ -360,7 +350,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       <br />
                       {photoMode === "photo" && (
                         <CoreImage
-                          setImage={(img) => savePhoto(values, img)}
+                          setImage={(img) => savePortrait(values, img)}
                           record={values}
                         />
                       )}
@@ -524,6 +514,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="passIssueDt"
                               label={trans("reservation.passport-issue-date")}
+                              value={moment(values?.passIssueDt).format("YYYY-MM-DD")} 
                               error={
                                 touched.passIssueDt &&
                                 Boolean(errors.passIssueDt)
@@ -535,11 +526,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               type="date"
                             />
                           </Grid>
+                          {/* //TODO: Make sure the date conversion ignores time zone otherwies date will depend on location */}
                           <Grid item xs={12} md="6">
                             <InputControl
                               name="passExpireDt"
                               label={trans("reservation.passport-expire-date")}
-                              value={values.passExpireDt}
+                              value={moment(values?.passExpireDt).format("YYYY-MM-DD")} 
                               error={
                                 touched.passExpireDt &&
                                 Boolean(errors.passExpireDt)
@@ -555,7 +547,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="birthDate"
                               label={trans("reservation.birth-date")}
-                              value={values.birthDate}
+                              value={moment(values?.birthDate).format("YYYY-MM-DD")} 
                               error={
                                 touched.birthDate && Boolean(errors.birthDate)
                               }
@@ -604,7 +596,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               name="idNumberIssueDate"
                               label={trans("reservation.id-issue-date")}
                               required={false}
-                              value={values.idNumberIssueDate}
+                              value={moment(values?.idNumberIssueDate).format("YYYY-MM-DD")} 
                               error={
                                 touched.idNumberIssueDate &&
                                 Boolean(errors.idNumberIssueDate)
@@ -620,7 +612,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="idNumberExpireDate"
                               label={trans("reservation.id-expire-date")}
-                              value={values.idNumberExpireDate}
+                              value={moment(values?.idNumberExpireDate).format("YYYY-MM-DD")} 
                               required={false}
                               error={
                                 touched.idNumberExpireDate &&
@@ -637,7 +629,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="profession"
                               label={trans("reservation.profession")}
-                              value={values.profession}
+                              value={values.profession || 'unknown'}
                               error={
                                 touched.profession && Boolean(errors.profession)
                               }
