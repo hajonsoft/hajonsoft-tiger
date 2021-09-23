@@ -38,21 +38,25 @@ export const createPassenger = createAsyncThunk('caravan/create-passenger', asyn
     return flatten(result);
 });
 
-export const updatePassenger = createAsyncThunk('caravan/update-passenger', async (passengerPath, passenger) => {
-    // const result = await firebase.database().ref(`/customer/${passengerPath}`).push(passenger);
-    // return result;
+export const updatePassenger = createAsyncThunk('caravan/update-passenger', async ({name, passenger}) => {
+    const updateRef = await firebase.database().ref(`/customer/${name}/${passenger._fid}`);
+    await updateRef.update(passenger);
+    return passenger;
 })
 
-export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async () => {
-
-
-    // TODO:RTK 5 use the logic below to delete passenger photos
-    // if (data && data.nationality && data.passportNumber) {
-    //     const photoRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}.jpg`);
-    //     photoRef.delete();
-    //     const passportRef = firebase.storage().ref(`${data.nationality}/${data.passportNumber}_passport.jpg`);
-    //     passportRef.delete();
-    // }
+export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({packageName, passenger}) => {
+    const removeRef = firebase.database().ref(`/customer/${packageName}/${passenger._fid}`);
+    removeRef.remove();
+    try {
+        if (passenger && passenger.nationality && passenger.passportNumber) {
+            const photoRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`);
+            photoRef.delete();
+            const passportRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}_passport.jpg`);
+            passportRef.delete();
+        }
+    } catch (err) {
+        console.log(err);
+    }
 })
 
 
@@ -127,6 +131,15 @@ const caravanSlice = createSlice({
         builder.addCase(deleteUpcomingCaravan.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        });
+        builder.addCase(deletePassenger.fulfilled, (state, action) => {
+            state.data[action.meta.arg.packageName] =  state.data[action.meta.arg.packageName]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid );
+            state.loading = false;
+        });
+        builder.addCase(updatePassenger.fulfilled, (state, action) => {
+            const updatedPassenger = state.data[action.meta.arg.name].filter(passenger => passenger._fid !== action.meta.arg.passenger._fid) ;
+            state.data[action.meta.arg.name] = [...updatedPassenger, action.meta.arg.passenger]
+            state.loading = false;
         });
     }
 });

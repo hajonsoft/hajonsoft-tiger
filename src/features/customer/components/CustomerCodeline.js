@@ -10,17 +10,17 @@ const name = "codeLine";
 const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   const [editMode, setEditMode] = useState(false);
   const [line1, setLine1] = useState(
-    // record.codeLine &&
-    // record.codeLine.length > 44 &&
-    // record.codeLine.substring(0, 44)
+    record.codeLine &&
+    record.codeLine.length > 44 &&
+    record.codeLine.substring(0, 44)
   );
   const [line2, setLine2] = useState(
-    // record.codeLine &&
-    // record.codeLine.length > 45 &&
-    // record.codeLine.substring(44)
+    record.codeLine &&
+    record.codeLine.length > 45 &&
+    record.codeLine.substring(44)
   );
 
-  const handleDone = () => {
+  const handleOnApply = () => {
     setFieldValue(name, line1 + line2);
     setEditMode(false);
   };
@@ -38,7 +38,7 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
         <CardContent>
           <Grid container>
             <Grid item xs={12}>
-              {!editMode && <div>{line1}</div>}
+              {!editMode && <div style={{fontFamily: 'verdana, san serif', letterSpacing: '1px', fontSize: '15px', marginBottom: '8px', fontWeight: '500'}}>{line1}</div>}
               {editMode && (
                 <div>
                   <TextField
@@ -62,7 +62,7 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
               )}
             </Grid>
             <Grid item xs={12}>
-              {!editMode && <div>{line2}</div>}
+              {!editMode && <div style={{fontFamily: 'verdana, san serif', letterSpacing: '1px', fontSize: '15px', marginBottom: '8px', fontWeight: '500'}}>{line2}</div>}
 
               {editMode && (
                 <div>
@@ -90,12 +90,13 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
         </CardContent>
         <CardActions>
           {!editMode && <Button onClick={() => setEditMode(true)}>Edit</Button>}
+          {!editMode && <Button onClick={handlePDF417}>PDF417</Button>}
+          {!editMode && <Button onClick={() => {} }>Download</Button>}
 
           {editMode && (
             <div>
               <Button onClick={handleGenerateCodeline}>Generate</Button>
-              <Button onClick={handlePDF417}>PDF417</Button>
-              <Button onClick={handleDone}>Finish</Button>
+              <Button onClick={handleOnApply}>Apply</Button>
             </div>
           )}
         </CardActions>

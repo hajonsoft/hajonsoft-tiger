@@ -134,10 +134,10 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
         break;
       case "update":
         delete values.tableData;
-        dispatch(updatePassenger(`${packageName}/${record._fid}`, values))
+        dispatch(updatePassenger({name: packageName, passenger: values}));
         break;
       case "delete":
-        dispatch(deletePassenger(`${packageName}/${record._fid}`))
+        dispatch(deletePassenger({packageName, record}));
         break;
       default:
         console.log("unknown mode");
@@ -298,6 +298,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               passExpireDt: moment().add(6, "month"),
               passIssueDt: moment().subtract(7, "days"),
               birthDate: moment().subtract(7, "days"),
+              profession: 'unknown',
             }
             : record
         }
@@ -513,6 +514,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="passIssueDt"
                               label={trans("reservation.passport-issue-date")}
+                              value={moment(values?.passIssueDt).format("YYYY-MM-DD")} 
                               error={
                                 touched.passIssueDt &&
                                 Boolean(errors.passIssueDt)
@@ -524,11 +526,12 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               type="date"
                             />
                           </Grid>
+                          {/* //TODO: Make sure the date conversion ignores time zone otherwies date will depend on location */}
                           <Grid item xs={12} md="6">
                             <InputControl
                               name="passExpireDt"
                               label={trans("reservation.passport-expire-date")}
-                              value={values.passExpireDt}
+                              value={moment(values?.passExpireDt).format("YYYY-MM-DD")} 
                               error={
                                 touched.passExpireDt &&
                                 Boolean(errors.passExpireDt)
@@ -544,7 +547,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="birthDate"
                               label={trans("reservation.birth-date")}
-                              value={values.birthDate}
+                              value={moment(values?.birthDate).format("YYYY-MM-DD")} 
                               error={
                                 touched.birthDate && Boolean(errors.birthDate)
                               }
@@ -593,7 +596,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               name="idNumberIssueDate"
                               label={trans("reservation.id-issue-date")}
                               required={false}
-                              value={values.idNumberIssueDate}
+                              value={moment(values?.idNumberIssueDate).format("YYYY-MM-DD")} 
                               error={
                                 touched.idNumberIssueDate &&
                                 Boolean(errors.idNumberIssueDate)
@@ -609,7 +612,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="idNumberExpireDate"
                               label={trans("reservation.id-expire-date")}
-                              value={values.idNumberExpireDate}
+                              value={moment(values?.idNumberExpireDate).format("YYYY-MM-DD")} 
                               required={false}
                               error={
                                 touched.idNumberExpireDate &&
@@ -626,7 +629,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="profession"
                               label={trans("reservation.profession")}
-                              value={values.profession}
+                              value={values.profession || 'unknown'}
                               error={
                                 touched.profession && Boolean(errors.profession)
                               }

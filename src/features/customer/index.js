@@ -147,8 +147,8 @@ const Customers = () => {
     setState((st) => ({ ...st, mode: "update", record: nextPassenger }));
   };
 
-  const handleOnConfirmDelete = (deletePassengerInfo) => {
-    dispatch(deletePassenger(`${packageName}/${deletePassengerInfo._fid}`))
+  const handleOnConfirmDelete = (passenger) => {
+    dispatch(deletePassenger({packageName, passenger}))
     setState((st) => ({ ...st, mode: "list", record: {} }))
   }
 

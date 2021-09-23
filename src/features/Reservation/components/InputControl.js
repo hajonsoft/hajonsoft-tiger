@@ -33,11 +33,12 @@ const InputControl = (props) => {
     error,
     helperText,
     placeholder,
-    required=false,
+    required,
     multiline,
     options,
     type,
     autoFocus,
+    value,
   } = props;
   const classes = useStyles(props);
 
@@ -71,6 +72,7 @@ const InputControl = (props) => {
             rows={multiline ? 4 : undefined}
             error={!!error}
             autoFocus={autoFocus}
+            value={value}
           >
             {options &&
               options.map((option) => (
