@@ -125,7 +125,7 @@ export async function zipWithPhotos(data, packageData) {
   return zip;
 }
 
-const getStorageUrl = async (blobPath) => {
+export const getStorageUrl = async (blobPath) => {
   try {
     const blobRef = storage.ref(blobPath);
     const blobUrl = await blobRef.getDownloadURL();
