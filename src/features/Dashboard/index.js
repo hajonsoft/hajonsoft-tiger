@@ -89,7 +89,7 @@ const Dashboard = () => {
       setFilteredCaravans(caravans);
     }
   }, [loading]);
-
+  
   const Title = () => {
     return (
       <Grid container spacing={2} alignItems="center">

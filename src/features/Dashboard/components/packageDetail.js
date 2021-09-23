@@ -1,11 +1,4 @@
-import {
-  faHandsHelping,
-  faPassport,
-  faPrint,
-  faShareSquare,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Paper, Tabs, Tab, Box, Typography, ButtonGroup } from "@material-ui/core";
 //TODO: Redesign, talk to customers to get feedback
 import React, { useState } from "react";
 import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
@@ -14,14 +7,79 @@ import ApplyForVisa from "./ApplyForVisa";
 import BioStatistics from "./BioStatistics";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import NationalityStatistics from "./NationalityStatistics";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHandsHelping,
+  faPassport,
+  faPrint,
+  faShareSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  actionBox: {
+    padding: "1rem", borderRadius: "4px", background: "#e3f0fdab",
+    "&:hover": {
+      cursor: "pointer",
+      background: "rgb(227, 242, 253)"
+    }
+  },
+  actionText: {
+    fontSize: "18px", fontWeight: "bold", color: "#03a9f4"
+  },
+  actionIconContainer: {
+    paddingTop: ".5rem", display: "flex", justifyContent: "flex-end", alignItems: "center"
+  }
+});
+
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+
 
 const PackageDetail = ({ data }) => {
-  const { data: travellers, loading, error } = useTravellerState();
+  const { data: travellers, loading, error, updateData } = useTravellerState();
   const [shareProgress, setShareProgress] = useState({
     loading: false,
     value: 0,
   });
+  const classes = useStyles()
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+
+
+  // const updateCaravan = () => {
+  //   updateData({
+  //     path: `customer/${data.name}/upcoming`,
+  //     data: { _fid: "upcoming" },
+  //   });
+  // }
+
 
   const handleShareClick = async () => {
     setShareProgress({ loading: true, value: 0 });
@@ -34,7 +92,7 @@ const PackageDetail = ({ data }) => {
       setShareProgress
     );
 
-    zip.generateAsync({ type: "blob" }).then(function(content) {
+    zip.generateAsync({ type: "blob" }).then(function (content) {
       const newFile = new Blob([content], { type: "application/zip" });
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
@@ -49,17 +107,39 @@ const PackageDetail = ({ data }) => {
   const handleApplyForVisa = () => {
     setApplyForVisaOpen(true);
   };
+
+  const handleOnTabChange = (e, value) => {
+    setActiveTab(value);
+  }
+
   return (
-    <Paper style={{ padding: "2rem" }}>
-      <Grid container justify="space-between" alignItems="flex-start">
-        <Grid item>
+    <>
+      <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <Tabs
+          value={activeTab}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={handleOnTabChange}
+        >
+          <Tab label="Gender Stats" style={{ textTransform: 'none' }}  {...a11yProps(0)} />
+          <Tab label="Nationality Stats" style={{ textTransform: 'none' }} {...a11yProps(1)} />
+          <Tab label="Actions" style={{ textTransform: 'none' }} {...a11yProps(2)} />
+        </Tabs>
+        <ButtonGroup color="primary" variant="outlined" color="primary" style={{ marginRight: "2rem" }} >
+          <Button disabled>Upcoming</Button>
+          <Button style={{ background: "rgb(227, 242, 253)" }} >Add to Past</Button>
+        </ButtonGroup>
+
+      </Box>
+      <Paper style={{ padding: "2rem" }}>
+        <TabPanel value={activeTab} index={0}>
           {loading && <CircularProgress />}
           {error}
           {!loading && (
             <BioStatistics data={Object.values(travellers[data.name])} />
           )}
-        </Grid>
-        <Grid item>
+        </TabPanel>
+        <TabPanel value={activeTab} index={1}>
           {loading && <CircularProgress />}
           {error}
           {!loading && (
@@ -67,62 +147,45 @@ const PackageDetail = ({ data }) => {
               data={Object.values(travellers[data.name])}
             />
           )}
-        </Grid>
-        <Grid item>
-          <Grid container direction="column" spacing={2}>
-            <Grid item xs={12}>
-              <Button
-                onClick={handleApplyForVisa}
-                style={{ width: "100%" }}
-                endIcon={<FontAwesomeIcon icon={faPassport} />}
-              >
-                Apply for visa
-              </Button>
+        </TabPanel>
+        <TabPanel value={activeTab} index={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Grid container spacing={3} style={{ maxWidth: "500px" }}>
+            <Grid item md={6}>
+              <Box onClick={handleApplyForVisa} className={classes.actionBox} >
+                <Typography className={classes.actionText} > Apply for visa </Typography>
+                <Box className={classes.actionIconContainer} >
+                  <FontAwesomeIcon color="#03a9f4" size="2x" icon={faPassport} />
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ width: "100%" }}
-                onClick={handleShareClick}
-                endIcon={<FontAwesomeIcon icon={faShareSquare} />}
-                startIcon={
-                  shareProgress.loading && (
-                    <CircularProgressWithLabel
-                      variant="determinate"
-                      size={30}
-                      value={shareProgress.value}
-                    />
-                  )
-                }
-              >
-                Share
-              </Button>
+            <Grid item md={6}>
+              <Box onClick={handleShareClick} className={classes.actionBox} >
+                <Typography className={classes.actionText} > Share </Typography>
+                <Box className={classes.actionIconContainer} >
+                  <FontAwesomeIcon color="#03a9f4" size="2x" icon={faShareSquare} />
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ width: "100%" }}
-                endIcon={<FontAwesomeIcon icon={faPrint} />}
-              >
-                Reports
-              </Button>
+            <Grid item md={6}>
+              <Box onClick={handleShareClick} className={classes.actionBox} >
+                <Typography className={classes.actionText} > Reports </Typography>
+                <Box className={classes.actionIconContainer} >
+                  <FontAwesomeIcon color="#03a9f4" size="2x" icon={faPrint} />
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ width: "100%" }}
-                endIcon={<FontAwesomeIcon icon={faHandsHelping} />}
-              >
-                Assist
-              </Button>
+            <Grid item md={6}>
+              <Box onClick={handleShareClick} className={classes.actionBox} >
+                <Typography className={classes.actionText} > Assist </Typography>
+                <Box className={classes.actionIconContainer} >
+                  <FontAwesomeIcon color="#03a9f4" size="2x" icon={faHandsHelping} />
+                </Box>
+              </Box>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <ApplyForVisa
-        open={applyForVisaOpen}
-        onClose={() => setApplyForVisaOpen(false)}
-        caravan={data.name}
-        passengers={travellers[data.name]}
-      />
-    </Paper>
+        </TabPanel>
+      </Paper>
+    </>
   );
 };
 
