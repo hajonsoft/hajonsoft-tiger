@@ -16,6 +16,9 @@ To learn about HAJonSoft repos please watch this video [![image](https://user-im
 
 yarn start
 
+
+For redux code walkthrough see video (public)
+https://drive.google.com/file/d/1gl3-zDJ306pjZTFNpzU6rxknu-n1I-oT/view?usp=sharing
 ### Environment Resolution
 
 To start Nest locally you can connect to specific travel company here src/firebaseConfig.js. Change the import 
