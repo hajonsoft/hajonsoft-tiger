@@ -13,7 +13,7 @@ export const signoutWithGoogle = createAsyncThunk('auth/signout', async () => {
     await firebase.auth().signOut();
 })
 
-export const signinSlice = createSlice({
+export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         data: {},
@@ -48,4 +48,4 @@ export const signinSlice = createSlice({
     }
 });
 
-export default signinSlice.reducer;
+export default authSlice.reducer;

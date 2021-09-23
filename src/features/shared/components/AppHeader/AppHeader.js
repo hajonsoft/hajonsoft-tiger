@@ -99,18 +99,18 @@ const AppHeader = () => {
             aria-label="Sign out"
           >
             <Grid item>
-              <Grid item>
-                <Button
-                  onClick={() => history.push("/profile")}
-                  style={{
-                    textTransform: "none",
-                  }}
-                >
-                  {`${authData.email}`}
-                </Button>
-              </Grid>
+              <Button
+                onClick={() => history.push("/profile")}
+                style={{
+                  textTransform: "none",
+                }}
+              >
+                {`${authData.email}`}
+              </Button>
             </Grid>
-
+            <Grid item>
+              <img src={authData.photoURL} alt="profile" style={{width: '32px', height: '32px', borderRadius: '16px'}} />
+            </Grid>
             <Grid item>
               <Button onClick={handleLogout}>
                 Sign out
