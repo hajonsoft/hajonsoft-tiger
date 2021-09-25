@@ -68,17 +68,17 @@ function App() {
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
-              <DoveHome />
+              <DoveHome onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
             </PublicRoute>
             <PublicRoute path="/login">
-              <SignIn onLanguageChange={handleLanguageChange} lang={language} />
+              <SignIn onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
             </PublicRoute>
             <PublicRoute path="/logout">
               <SignOut />
             </PublicRoute>
             <PublicRoute path="/reserve/:packageName">
               <Reservation
-                onLanguageChange={handleLanguageChange}
+                onLanguageChange={(l) => handleLanguageChange(l)}
                 lang={language}
               />
             </PublicRoute>
@@ -92,7 +92,7 @@ function App() {
               <ToursAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/package/detail/:packageName">
-              <AdvertisementDetail />
+              <AdvertisementDetail onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
             </PublicRoute>
             <PrivateRoute path="/caravans">
               <Dashboard />

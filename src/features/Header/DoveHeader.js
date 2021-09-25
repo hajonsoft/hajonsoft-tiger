@@ -31,7 +31,7 @@ const DoveHeader = () => {
                     <Grid item><Typography onClick={() => history.push("/")} variant="h4" align="center" style={{fontFamily: "Roboto", color: "#4caf50", cursor: "pointer" }}>{profile.name}</Typography></Grid>
                     <Grid item >
                         <Grid container spacing={2} justify="center">
-                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/')}>home</Button></Grid>
+                            <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/')}>{t('home.home')}</Button></Grid>
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/hajj-packages')}>{t('hajj')}</Button></Grid>
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/umrah-packages')}>{t('umrah')}</Button></Grid>
                             <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/tours')}>{t('tours')}</Button></Grid>
@@ -39,9 +39,6 @@ const DoveHeader = () => {
                             {/* <Grid item><Button style={{color: "#4caf50"}} onClick={() => history.push('/contact')}>contact us</Button></Grid> */}
                         </Grid>
                     </Grid>
-                    {/* <Grid item>
-                        <Typography variant="body1">{`Call us ${profile?.tel}`}</Typography>
-                    </Grid> */}
                 </Grid>
             </Toolbar>
         </AppBar>

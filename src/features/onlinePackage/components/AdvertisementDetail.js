@@ -22,6 +22,7 @@ import DoveHeader from "../../Header/DoveHeader";
 import Footer from "../../Home/components/Footer";
 import StarIcon from "@material-ui/icons/Star";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
+import t from '../../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AdvertisementDetail = () => {
+const AdvertisementDetail = ({ onLanguageChange, lang }) => {
   const classes = useStyles();
   const { packageName } = useParams();
   const [detail, setDetail] = useState({});
@@ -66,24 +67,6 @@ const AdvertisementDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(detail, "this is the detail!!!");
-
-  //   arrivalAirport: "Jeddah"
-  // arrivalHotel: "Hilton 5 stars hotel. Half board with haram view"
-  // checkoutDate: "2022-08-07T11:56:00-07:00"
-  // departureAirport: "Los angeles"
-  // departureDate: "2022-08-02T11:56:00-07:00"
-  // departureFlight: "American airlines"
-  // departureHotel: "Al Haram 4 star hotel. Full board. Few steps to haram"
-  // description: "Spiritual experience designed to provide the best in customer service, hospitality and comfort. We are dedicated to help you have a great experience with personalized services and peace of mind."
-  // doublePrice: "5000"
-  // headline: "Flexible departure"
-  // name: "Demand umrah"
-  // paymentLink: "https://buy.stripe.com/test_4gw9DB0COfii2qs5kl"
-  // returnAirport: "Medinah"
-  // returnDate: "2022-08-22T11:56:00-07:00"
-  // returnFlight: "Turkish airlines"
-
   return (
     <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}>
       <DoveHeader />
@@ -101,7 +84,7 @@ const AdvertisementDetail = () => {
           <Box>
             <Typography className={classes.sectionHeader}>
               {" "}
-              TRAVEL DATES:{" "}
+              {t('travel-dates')}{" "}
             </Typography>
             <List component="ul">
               <ListItem>
@@ -135,7 +118,7 @@ const AdvertisementDetail = () => {
                   <ScheduleIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.sectionText}>
-                  Tentative Return Date is{" "}
+                  {t('tentative-return-date-is')}{" "}
                   <span className={classes.sectionDateText}>
                     {" "}
                     {moment(detail.returnDate).format("dddd DD-MMM-YYYY")}(
@@ -146,9 +129,7 @@ const AdvertisementDetail = () => {
               <ListItem>
                 <ListItemText className={classes.sectionText}>
                   <span className={classes.sectionWarningText}> NOTE: </span>{" "}
-                  Traveling dates are subject to change due to airline
-                  scheduling, Hijri Calendar, and any updates from the Ministry
-                  of Hajj
+                  {t('traveling-dates-are-subject-to-change-due-to-airline-scheduling-hijri-calendar-and-any-updates-from-the-ministry-of-hajj')}
                 </ListItemText>
               </ListItem>
             </List>
@@ -156,7 +137,7 @@ const AdvertisementDetail = () => {
           <Box>
             <Typography className={classes.sectionHeader}>
               {" "}
-              PACKAGE ACCOMMODATION:{" "}
+              {t('package-accommodation')}{" "}
             </Typography>
             <Grid container spacing={3} style={{ padding: "1rem 0px" }}>
               <Grid item md={3}>
@@ -196,7 +177,7 @@ const AdvertisementDetail = () => {
           <Box>
             <Typography className={classes.sectionHeader}>
               {" "}
-              FLIGHT DETAILS:{" "}
+              {t('flight-details')}{" "}
             </Typography>
             <Grid container spacing={3} style={{ padding: "1rem 0px" }}>
               <Grid item md={3}>
@@ -214,7 +195,7 @@ const AdvertisementDetail = () => {
               </Grid>
               <Grid item md={3}>
                 <Typography className={classes.sectionDateText}>
-                  RETURN FLIGHT:
+                  {t('return-flight')}
                 </Typography>
               </Grid>
               <Grid item md={6}>
@@ -244,7 +225,7 @@ const AdvertisementDetail = () => {
               
               onClick={() => history.push("/reserve/" + detail.name)}
             >
-              Book Now
+              {t('book-now')}
             </Button>
 
             <Button
@@ -255,7 +236,7 @@ const AdvertisementDetail = () => {
               
               variant="contained"
             >
-              Enquire
+              {t('enquire')}
             </Button>
           </Box>
         </Grid>
@@ -271,7 +252,7 @@ const AdvertisementDetail = () => {
           />
         </Grid>
       </Grid>
-      <Footer />
+      <Footer  onLanguageChange={(l) => onLanguageChange(l)} lang={lang}/>
     </div>
   );
 };

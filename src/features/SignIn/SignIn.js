@@ -2,18 +2,18 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
-  Button, Grid, MenuItem, Paper, Select, Typography,
+  Button, Grid, Paper, Typography,
   useMediaQuery
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import logo from "../../images/logo.jpg";
+import t from '../../shared/util/trans';
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
-import t from '../../shared/util/trans'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,12 +28,6 @@ const SignIn = ({ onLanguageChange, lang }) => {
   const dispatch = useDispatch();
 
   const classes = useStyles();
-  const [language, setLanguage] = useState(lang);
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-    onLanguageChange(e.target.value);
-  };
-
   const authData = useSelector(state => state?.auth?.data);
 
   const handleGoogleSignin = () => {
@@ -95,27 +89,9 @@ const SignIn = ({ onLanguageChange, lang }) => {
               {t('login-with-google')}
             </Button>
           </Grid>
-
-          <Grid item mb={4}>
-            <Select
-              value={language}
-              onChange={handleLanguageChange}
-              variant="standard"
-            >
-              <MenuItem value="en">
-                <Typography variant="body1">English</Typography>
-              </MenuItem>
-              <MenuItem value="ar">
-                <Typography variant="body1">اللغه العربيه</Typography>
-              </MenuItem>
-              <MenuItem value="fr">
-                <Typography variant="body1">Française</Typography>
-              </MenuItem>
-            </Select>
-          </Grid>
         </Grid>
       </div>
-      <Footer />
+      <Footer  onLanguageChange={(l) => onLanguageChange(l)}lang={lang} />
     </div>
   );
 };
