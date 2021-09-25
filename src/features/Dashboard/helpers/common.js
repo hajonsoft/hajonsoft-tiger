@@ -2,8 +2,8 @@ import jszip from "jszip";
 import moment from "moment";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
-import { createCodeline } from "../../../util/codeline";
-import { nameParts } from "../../../util/nameParts";
+import { createCodeline } from "../../../shared/util/codeline";
+import { nameParts } from "../../../shared/util/nameParts";
 
 const storage = firebase.storage();
 

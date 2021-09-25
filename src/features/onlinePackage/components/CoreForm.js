@@ -15,7 +15,7 @@ import _ from "lodash";
 import moment from "moment";
 import React, { useState } from "react";
 import firebase from "../../../firebaseapp";
-import { eventsNearby, todayHijraDate } from "../../../util/hijri";
+import { eventsNearby, todayHijraDate } from "../../../shared/util/hijri";
 import Gender from "./CustomerGender";
 import InputControl from "../../Reservation/components/InputControl";
 

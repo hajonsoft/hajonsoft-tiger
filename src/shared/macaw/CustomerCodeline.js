@@ -3,7 +3,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
-import { createCodeline } from '../../../util/codeline';
+import { createCodeline } from '../util/codeline';
 
 const name = "codeLine";
 

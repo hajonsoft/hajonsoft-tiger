@@ -34,6 +34,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
+import t from '../../../shared/util/trans';
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
 import { getPassengersJSON, zipWithPhotos, getStorageUrl } from "../helpers/common";
 import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
@@ -113,7 +114,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const dispatch = useDispatch();
 
   const [expandedPanel, setExpandedPanel] = React.useState("");
-  const [pace, setPace] = React.useState(1.5);
   const [selectedPassengers, setSelectedPassengers] = React.useState(
     passengers
   );
@@ -298,7 +298,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
     setDownloadFileName("");
-    const startTime = moment();
     const travellersData = getPassengersJSON(selectedPassengers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
@@ -328,11 +327,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
-      var elabsed = (
-        moment.duration(moment().diff(startTime)).asSeconds() /
-        selectedPassengers.length
-      ).toFixed(1);
-      setPace(elabsed);
+      // var elabsed = (
+      //   moment.duration(moment().diff(startTime)).asSeconds() /
+      //   selectedPassengers.length
+      // ).toFixed(1);
       setDownloading(false);
     });
   };
@@ -394,14 +392,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         maxWidth="lg"
         keepMounted
       >
-        <DialogTitle>{`Apply for visa`}</DialogTitle>
+        <DialogTitle>{t('apply-for-visa')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            HAJonSoft uses Hawk application to connect to travel service
-            providers. If you are new or using MacOs, you can select "visa by
-            proxy", use eagle or{" "}
+            {t('hajonsoft-uses-hawk-application-to-connect-to-travel-service-providers-if-you-are-new-or-using-macos-you-can-select-visa-by-proxy-use-eagle-or')}{" "}
             <a href="https://hajonsoft.talentlms.com/catalog/info/id:125">
-              Take a Course
+              {t('take-a-course')}
             </a>
           </DialogContentText>
 
@@ -412,22 +408,22 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  Step 1: Choose Passengers
+                  {t('step-1-choose-passengers')}
                 </Typography>
                 <Typography
                   className={classes.secondaryHeading}
-                >{`${selectedPassengers?.length}/${passengers?.length} Passengers [${caravan} caravan]`}</Typography>
+                >{`${selectedPassengers?.length}/${passengers?.length} [${caravan}]`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container justify="space-between">
                   <Grid items md={6}>
                     <Button onClick={() => setSelectedPassengers(passengers)}>
-                      Select All
+                      {t('select-all')}
                     </Button>
                   </Grid>
                   <Grid items md={6} container justify="flex-end">
                     <Button onClick={() => setSelectedPassengers([])}>
-                      Deselect All
+                      {t('deselect-all')}
                     </Button>
                   </Grid>
                   {passengers && passengers.length > 0 &&
@@ -462,7 +458,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  Step 2: Choose Service Provider Profile
+                  {t('step-2-choose-service-provider-profile')}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
                   {getSelectedServiceProviderProfile()}
@@ -474,7 +470,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     <Grid container alignItems="center">
                       <Grid item md={11}>
                         <FormControl fullWidth variant="filled">
-                          <InputLabel>Service Provider Profile</InputLabel>
+                          <InputLabel>{t('service-provider-profile')}</InputLabel>
                           <Select
                             value={selectedVisaSystem}
                             onChange={(e) =>
@@ -534,7 +530,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       spacing={2}
                     >
                       <Grid item md={12}>
-                        Enter service provider profile details then press Done
+                        {t('enter-service-provider-profile-details-then-press-done')}
                       </Grid>
                       <Grid item md={8}>
                         <Select
@@ -577,7 +573,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Button
                           onClick={() => setServiceProviderAddMode(false)}
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </Grid>
                       <Grid item md={1}>
@@ -585,7 +581,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           onClick={handleDoneAddServiceProviderProfile}
                           color="primary"
                         >
-                          Done
+                          {t('done')}
                         </Button>
                       </Grid>
                     </Grid>
@@ -599,11 +595,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  Step 3: Bundle and process
+                  {t('step-3-bundle-and-process')}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
-                  Create a bundle for Hawk processing or create "visa by proxy"
-                  Ticket
+                  {t('create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket')}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -615,20 +610,19 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                 >
                   <Grid item md={12}>
                     <Typography variant="body1">
-                      Bundle file is required for Hawk or "visa by proxy". To
-                      install Hawk{" "}
+                      {t('bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk')}{" "}
                       <a href="https://meetings.hubspot.com/haj-onsoft">
                         {" "}
-                        Schedule a meeting
+                        {t('schedule-a-meeting')}
                       </a>
                       ` - OR - `
                       <a href="https://hajonsoft.talentlms.com/unit/view/id:2124">
-                        or watch Install video
+                        {t('or-watch-install-video')}
                       </a>
                     </Typography>
                     <Box style={{ textAlign: "right", width: "100%" }}>
                       <Typography variant="body2" align="right">
-                        Useful links
+                        {t('useful-links')}
                         <a
                           style={{ marginLeft: "2rem" }}
                           target="_blank"
@@ -663,18 +657,18 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       className={classes.sendCard}
                     >
                       <CardHeader
-                        title="Step 1 [Bundle]"
+                        title={t('step-1-bundle')}
                         subheader={downloadFileName ? downloadFileName : "Required"}
                       />
                       <CardContent>
                         <Typography variant="body2">
-                          {`Bundle file may include passwords and/or personal identifying information. Average bundle creation time depends on your speed ~= ${pace} seconds per traveller`}
+                          {t('bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller')}
                         </Typography>
                       </CardContent>
                       <CardActions>
                         {!downloading && (
                           <Button onClick={handleDownloadZipFileClick}>
-                            Download file
+                            {t('download-now')}
                           </Button>
                         )}
                         {downloading && (
@@ -695,14 +689,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       className={classes.sendCard}
                     >
                       <CardHeader
-                        title="Step 2 [Hawk]"
+                        title={t('step-2-hawk')}
                         subheader={downloadFileName ? `node . file=${downloadFileName}` : "Optional"}
                       />
                       <CardContent>
                         <Typography variant="body2">
-                          Hawk uploads a bundle file immediately to the service
-                          provider. For MacOs we recommend using eagle directly.
-                          To setup eagle please schedule a meeting.
+                          {t('hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting')}
                         </Typography>
                       </CardContent>
                       <CardActions>
@@ -710,10 +702,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           disabled={!downloadFileName}
                           onClick={handleSendDownloadedFile}
                         >
-                          {`Upload Automatic`}
+                          {t('hawk-bundle')}
                         </Button>
                         <Button onClick={handleOpenHawk}>
-                          {`Upload Manual`}
+                          {t('open')}
                         </Button>
                       </CardActions>
                     </Card>
@@ -725,26 +717,23 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       className={classes.sendCard}
                     >
                       <CardHeader
-                        title="- OR - [visa by proxy]"
+                        title={t('or-visa-by-proxy')}
                         subheader={`http://hajonsoft.on.spiceworks.com/portal`}
                       />
                       <CardContent>
                         <Typography variant="body2">
-                          We use spicework to manage "visa by proxy" tickets.
-                          Email to{" "}
+                          {t('we-use-spicework-to-manage-visa-by-proxy-tickets-email-to')}{" "}
                           <a
                             href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedPassengers?.length} PAX&body=Embassy is ...`}
                           >
                             help@hajonsoft.on.spiceworks.com
                           </a>{" "}
-                          or click the button below to automatically send a
-                          ticket. Note that this might take some seconds to
-                          send.
+                          {t('or-click-the-button-below-to-automatically-send-a-ticket-note-that-this-might-take-some-seconds-to-send')}
                         </Typography>
                       </CardContent>
                       <CardActions>
                         <Button onClick={sendEmail} target="_blank">
-                          Create "visa by proxy" Ticket
+                          {t('create-visa-by-proxy-ticket')}
                         </Button>
                       </CardActions>
                     </Card>
@@ -756,7 +745,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onClose}>{t('close')}</Button>
         </DialogActions>
       </Dialog>
 
@@ -799,7 +788,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     style={{ textAlign: "center", paddingTop: "1rem" }}
                   >
                     {" "}
-                    This might take some time, please do not refresh page{" "}
+                    {t('this-might-take-some-time-please-do-not-refresh-page')}{" "}
                   </Typography>
                 </div>{" "}
               </>
@@ -807,7 +796,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             {emailSuccess === false && sendingMail && (
               <p style={{ textAlign: "center" }}>
                 {" "}
-                Couldn't create ticket. Please try again{" "}
+                {t('couldnt-create-ticket-please-try-again')}{" "}
               </p>
             )}
             {emailSuccess === true && sendingMail && (
@@ -820,7 +809,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   />
                 </div>
                 <Typography style={{ textAlign: "center" }}>
-                  Your "visa by proxy" request has been created. Please check your email.
+                  {t('your-visa-by-proxy-request-has-been-created-please-check-your-email')}
                 </Typography>
                 <div className={classes.mailBtnContainer}>
                   <Button
@@ -832,7 +821,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       setEmailSuccess(false);
                     }}
                   >
-                    Continue to App
+                    {t('continue-to-app')}
                   </Button>
                 </div>
               </>

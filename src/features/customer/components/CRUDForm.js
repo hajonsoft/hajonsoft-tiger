@@ -28,17 +28,18 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
-import trans from "../../../util/trans";
+import trans from "../../../shared/util/trans";
 import firebaseArabicName from "../../arabicName/firebaseArabicName";
 import InputControl from "../../Reservation/components/InputControl";
-import CoreImage from "./CoreImage";
-import CorePassportImage from "./CorePassportImage";
-import CoreVaccineImage from "./CoreVaccineImage"
-import CustomerCodeline from "./CustomerCodeline";
-import Dropzone from "./Dropzone";
+import CoreImage from "../../../shared/macaw/CoreImage";
+import CorePassportImage from "../../../shared/macaw/CorePassportImage";
+import CoreVaccineImage from "../../../shared/macaw/CoreVaccineImage"
+import CustomerCodeline from "../../../shared/macaw/CustomerCodeline";
+import Dropzone from "../../../shared/macaw/Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { useDispatch, useSelector } from "react-redux";
 import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
+import t from '../../../shared/util/trans';
 
 const storage = firebase.storage();
 
@@ -315,7 +316,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                     {record.packageName}
                   </Typography>
                   <div style={{marginLeft: '2rem'}}>
-                    <Button color="primary" size="small" variant="contained" onClick={() => handleAcceptOnlineReservation(values)} >Accept Reservation</Button>
+                    <Button color="primary" size="small" variant="contained" onClick={() => handleAcceptOnlineReservation(values)} >{t('accept-reservation')}</Button>
                   </div>
                 </div>
 
@@ -662,7 +663,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <Grid item xs={12} md="6">
                             <InputControl
                               name="mahramName"
-                              label="Mahram"
+                              label={t('mahram')}
                               value={values.mahramName}
                               error={
                                 touched.mahramName && Boolean(errors.mahramName)
@@ -676,7 +677,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <Grid item xs={12} md="6">
                             <InputControl
                               name="relationship"
-                              label="Relationship"
+                              label={t('relationship')}
                               value={values.relationship}
                               error={
                                 touched.relationship &&
@@ -693,7 +694,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               multiline
                               required={false}
                               name="comments"
-                              label="Note"
+                              label={t('note')}
                               value={values.comments}
                               error={
                                 touched.comments && Boolean(errors.comments)
@@ -745,7 +746,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           onClick={onClose}
                           startIcon={<CancelOutlinedIcon color="error" />}
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </Grid>
                       {mode === "create" && (
@@ -757,7 +758,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             color="primary"
                             startIcon={<AddOutlinedIcon />}
                           >
-                            Create
+                            {t('create')}
                           </Button>
                         </Grid>
                       )}
@@ -771,7 +772,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             color="default"
                             startIcon={<DeleteOutlinedIcon color="error" />}
                           >
-                            Delete
+                            {t('delete')}
                           </Button>
                         </Grid>
                       )}
@@ -785,7 +786,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               color="secondary"
                               startIcon={<SaveOutlinedIcon />}
                             >
-                              Save & Close
+                              {t('save-and-close')}
                             </Button>
                           </Grid>
                           <Grid item>
@@ -797,7 +798,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               onClick={() => handleSaveAndNext(values)}
                               startIcon={<SaveOutlinedIcon />}
                             >
-                              Save & Next
+                              {t('save-and-next')}
                             </Button>
                           </Grid>
                         </React.Fragment>

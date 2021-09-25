@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router";
 
 import logo from "../../images/logo-dark.png";
-import trans from "../../util/trans";
+import trans from "../../shared/util/trans";
 
 const useStyles = makeStyles((theme) => ({
   container: {

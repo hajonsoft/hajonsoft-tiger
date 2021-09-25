@@ -17,7 +17,7 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import { useParams } from "react-router-dom";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import firebase from "../../../firebaseapp";
-import { packageImage } from "../../../util/packageImage";
+import { packageImage } from "../../../shared/util/packageImage";
 import DoveHeader from "../../Header/DoveHeader";
 import Footer from "../../Home/components/Footer";
 import StarIcon from "@material-ui/icons/Star";

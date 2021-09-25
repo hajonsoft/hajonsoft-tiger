@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { packageImage } from "../../../util/packageImage";
+import { packageImage } from "../../../shared/util/packageImage";
 
 const useStyles = makeStyles((theme) => ({
   card: {

@@ -10,7 +10,7 @@ import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import firebase from "../../firebaseapp";
-import trans from "../../util/trans";
+import trans from "../../shared/util/trans";
 import BasicReservation from "./components/BasicReservation";
 import FullReservation from "./components/FullReservation";
 import reservationCompleteImage from '../../images/reservation-complete.svg';

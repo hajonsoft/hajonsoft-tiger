@@ -13,6 +13,7 @@ import logo from "../../images/logo.jpg";
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
+import t from '../../shared/util/trans'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -72,11 +73,11 @@ const SignIn = ({ onLanguageChange, lang }) => {
               gutterBottom
               align="center"
             >
-              <Box p={2}>WELCOME TO</Box>
+              <Box p={2}>{t('welcome-to')}</Box>
             </Typography>
 
             <Typography align="center">
-              Humming Bird
+              {t('humming-bird')}
             </Typography>
           </Grid>
           <Grid item>
@@ -91,7 +92,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
               onClick={handleGoogleSignin}
               startIcon={<FontAwesomeIcon icon={faGoogle} />}
             >
-              Login with Google
+              {t('login-with-google')}
             </Button>
           </Grid>
 

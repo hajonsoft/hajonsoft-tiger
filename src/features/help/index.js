@@ -4,20 +4,21 @@ import EventOutlinedIcon from "@material-ui/icons/EventOutlined";
 import HeadsetMicOutlinedIcon from "@material-ui/icons/HeadsetMicOutlined";
 import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import React from "react";
-import AppHeader from "../shared/components/AppHeader/AppHeader";
+import AppHeader from "../../shared/macaw/AppHeader";
 import HelpCard from "./helpCard";
 import PlayCircleFilledOutlinedIcon from '@material-ui/icons/PlayCircleFilledOutlined';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
+import t from '../../shared/util/trans';
 
 const helpCards = [
   {
-    title: "LIVE CHAT",
+    title: t('live-chat'),
     icon: <HeadsetMicOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
       "Live Chat is available Monday-Friday 9AM-5PM PST and in many cases after hours & weekends. Contact us at +1 949-522-1879 whatsapp, viber, etc...",
   },
   {
-    title: "GROUP CHAT",
+    title: t('group-chat'),
     icon: <MessageOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
       "Group chat with us on whatsapp, slack, telegram or BiP. If you are not already a member in a group please send us a live chat request. We will introduce you to a number of groups. ",
