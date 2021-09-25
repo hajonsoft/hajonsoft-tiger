@@ -8,6 +8,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { packageImage } from "../../../shared/util/packageImage";
+import t from '../../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -51,7 +52,6 @@ const AdvertisementCard = ({ detail, index }) => {
   }
 
   return (
-    // <Grid item key={Math.random().toString()} xs={12} sm={6} md={4}>
     <Card className={classes.card}>
       <CardMedia
         className={classes.cardMedia}
@@ -85,7 +85,7 @@ const AdvertisementCard = ({ detail, index }) => {
           style={{color: "#4caf50"}}
           onClick={() => history.push(`/reserve/${detail.name}`)}
         >
-          Reserve
+          {t('reservation.reserve')}
         </Button>
         <Button
           title={`Learn more about ${detail.name} package`}
@@ -94,7 +94,7 @@ const AdvertisementCard = ({ detail, index }) => {
           style={{color: "#4caf50"}}
           color="primary"
         >
-          Learn More
+          {t('learn-more')}
         </Button>
       </CardActions>
     </Card>

@@ -4,13 +4,13 @@ import Advertisements from "../onlinePackage/components/Advertisements";
 import Footer from "./components/Footer";
 import ImportantDates from "./components/importantDates";
 
-const DoveHome = () => {
+const DoveHome = ({lang, onLanguageChange}) => {
   return (
     <div style={{ background: "rgb(63 113 136 / 9%)" }}>
       <DoveHeader />
       <ImportantDates />
       <Advertisements />
-      <Footer />
+      <Footer onLanguageChange={(l) => onLanguageChange(l)} lang={lang}/>
     </div>
   );
 };
