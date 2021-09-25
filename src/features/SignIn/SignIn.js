@@ -2,8 +2,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
-  Button, Grid, Paper, Typography,
-  useMediaQuery
+  Button, Grid, Paper, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = ({ onLanguageChange, lang }) => {
-  const mediaMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -91,7 +89,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
           </Grid>
         </Grid>
       </div>
-      <Footer  onLanguageChange={(l) => onLanguageChange(l)}lang={lang} />
+      <Footer onLanguageChange={(l) => onLanguageChange(l)} lang={lang} />
     </div>
   );
 };
