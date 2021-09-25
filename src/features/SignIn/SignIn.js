@@ -17,7 +17,7 @@ import { loginWithGoogle } from "./redux/authSlice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "100vh",
+    height: '60vh',
     paddingTop: '2rem',
     background: "rgb(63 113 136 / 9%)",
   },
@@ -50,10 +50,10 @@ const SignIn = ({ onLanguageChange, lang }) => {
           component={Paper}
           elevation={2}
           style={{
-            height: mediaMobile ? "100%" : "auto",
             width: "50%",
             margin: "auto",
             maxWidth: "500px",
+            height: '25rem',
           }}
         >
           <Grid item>
