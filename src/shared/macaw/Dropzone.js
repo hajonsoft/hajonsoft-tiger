@@ -10,11 +10,11 @@ import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
-import { nationalities } from "../../../data/nationality";
-import firebase from "../../../firebaseapp";
-import Worker from "../../../workers/parser.worker";
-import firebaseArabicName from "../../arabicName/firebaseArabicName";
-import CustomerImportCard from "./CustomerImportCard";
+import { nationalities } from "../../data/nationality";
+import firebase from "../../firebaseapp";
+import Worker from "../../workers/parser.worker";
+import firebaseArabicName from "../../features/arabicName/firebaseArabicName";
+import CustomerImportCard from "../../features/customer/components/CustomerImportCard";
 const storage = firebase.storage();
 
 const getFullArabicName = (arabicNameDictionary) => {

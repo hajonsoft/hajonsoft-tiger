@@ -29,11 +29,12 @@ import pluralize from "pluralize";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import AppHeader from "../shared/components/AppHeader/AppHeader";
+import AppHeader from "../../shared/macaw/AppHeader";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
 import { deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
+import t from '../../shared/util/trans';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -184,8 +185,8 @@ const Dashboard = () => {
                 textColor="primary"
                 onChange={handleOnTabChange}
               >
-                <Tab label="Upcoming" style={{ textTransform: 'none' }} />
-                <Tab label="Past" style={{ textTransform: 'none' }} />
+                <Tab label={t('upcoming')} style={{ textTransform: 'none' }} />
+                <Tab label={t('past')} style={{ textTransform: 'none' }} />
               </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
@@ -193,7 +194,7 @@ const Dashboard = () => {
                 title={<Title />}
                 columns={[
                   {
-                    title: "Name",
+                    title: t('name'),
                     field: "name",
                     render: (rowData) => (
                       <Button
@@ -209,7 +210,7 @@ const Dashboard = () => {
                     ),
                   },
                   {
-                    title: "Total",
+                    title: t('total'),
                     field: "total",
                   },
                 ]}
@@ -310,7 +311,7 @@ const Dashboard = () => {
             color="error"
             variant="outlined"
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={() => handleOnConfirmDelete()}
@@ -318,7 +319,7 @@ const Dashboard = () => {
             variant="contained"
             autoFocus
           >
-            Delete
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

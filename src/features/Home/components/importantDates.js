@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { eventsAfter, eventsBefore } from "../../../util/hijri";
+import { eventsAfter, eventsBefore } from "../../../shared/util/hijri";
 
 const ImportantDates = () => {
   return (

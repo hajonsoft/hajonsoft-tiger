@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
-import trans from "../../../util/trans";
+import trans from "../../../shared/util/trans";
 import InputControl from "./InputControl";
 
 const useStyles = makeStyles((theme) => ({

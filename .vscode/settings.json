@@ -15,5 +15,10 @@
     "highlight-matching-tag.highlightSelfClosing": true,
     "html.format.indentInnerHtml": true,
     "editor.minimap.enabled": false,
-    "workbench.sideBar.location": "right"
+    "workbench.sideBar.location": "right",
+    "i18n-ally.localesPaths": [
+        "src/lang",
+        "public/assets/lang"
+    ],
+    "i18n-ally.keystyle": "flat"
 }

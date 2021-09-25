@@ -1,4 +1,4 @@
-import { nationalities } from "../data/nationality";
+import { nationalities } from "../../data/nationality";
 import { nameParts } from "./nameParts";
 import moment from "moment";
 

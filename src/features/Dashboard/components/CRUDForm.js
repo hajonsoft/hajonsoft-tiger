@@ -13,7 +13,7 @@ import _ from "lodash";
 import React from "react";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
-import { eventsNearby } from "../../../util/hijri";
+import { eventsNearby } from "../../../shared/util/hijri";
 import InputControl from "../../Reservation/components/InputControl";
 import { createUpcomingCaravan, deleteUpcomingCaravan } from "../redux/caravanSlice";
 

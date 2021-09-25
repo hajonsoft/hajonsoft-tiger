@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import confirmedImage from "../../../images/confirmed.svg";
-import trans from "../../../util/trans";
+import trans from "../../../shared/util/trans";
 
 import React from 'react'
 
