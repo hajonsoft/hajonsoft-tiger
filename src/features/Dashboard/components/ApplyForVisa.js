@@ -35,7 +35,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
-import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
+import { getPassengersJSON, zipWithPhotos, getStorageUrl } from "../helpers/common";
 import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
 
 const Cryptr = require("cryptr");
@@ -138,8 +138,84 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const [emailSuccess, setEmailSuccess] = useState();
 
   async function sendEmail() {
-    setSendingMail(true);
     const travellersData = getPassengersJSON(selectedPassengers);
+
+    for (let index = 0; index < travellersData.length; index++) {
+
+      const traveller = travellersData[index]
+
+      // verify name 
+      if (!traveller.name.full.trim()) {
+        alert("Can't send visa by proxy. Some of your passengers does not seems to have a full name")
+        return
+      }
+
+      // verify nationality 
+      if (!traveller.nationality.name.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`)
+        return
+      }
+
+      // verify gender
+      if (!traveller.gender.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a gender. Please fill the gender field to continue`)
+        return
+      }
+
+      // verify passportNumber
+      if (!traveller.passportNumber.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`)
+        return
+      }
+
+      // verify place of issue
+      if (!traveller.placeOfIssue.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`)
+        return
+      }
+
+      // verify birth date
+      if (!traveller.dob.dmy.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`)
+        return
+      }
+
+      // verify birth place
+      if (!traveller.birthPlace.trim()) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`)
+        return
+      }
+
+      // verify photo 
+      try {
+        const photoUrl = await getStorageUrl(
+          `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
+        );
+        if (!photoUrl) {
+          alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`)
+          return
+        }
+      } catch (err) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`)
+        return
+      }
+
+      // verify passport
+      try {
+        const passportUrl = await getStorageUrl(
+          `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
+        );
+        if (!passportUrl) {
+          alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`)
+          return
+        }
+      } catch (err) {
+        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`)
+        return
+      }
+    }
+
+    setSendingMail(true);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const zipData = {
       system: {
@@ -182,10 +258,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         },
         (error) => {
           setEmailSuccess(false);
-          // console.log(error.text);
         }
       );
-        
+
   }
 
   React.useEffect(() => {
