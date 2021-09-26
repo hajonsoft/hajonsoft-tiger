@@ -6,7 +6,7 @@ import ImportantDates from "./components/importantDates";
 
 const DoveHome = () => {
   return (
-    <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}>
+    <div style={{ background: "rgb(63 113 136 / 9%)" }}>
       <DoveHeader />
       <ImportantDates />
       <Advertisements />

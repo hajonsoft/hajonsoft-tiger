@@ -6,39 +6,39 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import _ from "lodash";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import firebase from "../../../../firebaseapp";
 import firebaseConfig from "../../../../firebaseConfig";
-import useTravellerState from "../../../Dashboard/redux/useTravellerState";
+import { signoutWithGoogle } from "../../../SignIn/redux/authSlice";
 
 const AppHeader = () => {
-  const [user] = useAuthState(firebase.auth());
+  const authData = useSelector(state => state.auth?.data);
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const dispatch = useDispatch();
   const projectName = `${_.startCase(
     firebaseConfig.projectId.replace(/[0-9]/g, "").replace(/-/g, " ")
   )}`;
 
   let history = useHistory();
-  const { data: travellers } = useTravellerState();
+  const passengers = useSelector(state => state.passenger?.data);
 
   const handleLogout = () => {
-    firebase.auth().signOut();
+    dispatch(signoutWithGoogle())
     history.push("/logout");
   };
 
   const favoriteCount = () => {
     let totalFavorites = 0;
-    if (travellers) {
-      const keys = Object.keys(travellers);
+    if (passengers) {
+      const keys = Object.keys(passengers);
       keys.forEach(
         (k) =>
-          (totalFavorites += travellers[k].filter((t) => t.favorite).length)
+          (totalFavorites += passengers[k].filter((t) => t.favorite).length)
       );
     }
 
@@ -50,7 +50,7 @@ const AppHeader = () => {
       <Toolbar style={{ color: "#fff" }}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={2}>
-            <Typography variant="h6">HAJonSoft</Typography>
+            <Typography variant="subtitle1" style={{ color: 'indigo' }}>{`HAJonSoft | ${projectName}`}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton onClick={() => history.push("/favorite")}>
@@ -63,25 +63,25 @@ const AppHeader = () => {
           {!isMobile && (
             <Grid item xs={6}>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/caravans")}
               >
                 Caravans
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/market")}
               >
                 Online
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/trade")}
               >
                 Trade
               </Button>
               <Button
-                style={{ color: "#fff", textTransform: "none" }}
+                style={{ textTransform: "none" }}
                 onClick={() => history.push("/help")}
               >
                 Support
@@ -99,29 +99,20 @@ const AppHeader = () => {
             aria-label="Sign out"
           >
             <Grid item>
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
+              <Button
+                onClick={() => history.push("/profile")}
+                style={{
+                  textTransform: "none",
+                }}
               >
-                <Grid item>{projectName}</Grid>
-                <Grid item>
-                  <Button
-                    onClick={() => history.push("/profile")}
-                    style={{
-                      color: "#fff",
-                      textTransform: "none",
-                    }}
-                  >
-                    {user.email}
-                  </Button>
-                </Grid>
-              </Grid>
+                {`${authData.email}`}
+              </Button>
             </Grid>
-
             <Grid item>
-              <Button onClick={handleLogout} style={{ color: "#fff" }}>
+              <img src={authData.photoURL} alt="profile" style={{width: '32px', height: '32px', borderRadius: '16px'}} />
+            </Grid>
+            <Grid item>
+              <Button onClick={handleLogout}>
                 Sign out
               </Button>
             </Grid>

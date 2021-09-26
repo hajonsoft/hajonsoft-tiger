@@ -1,11 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
-import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../../firebaseapp'
 function PrivateRoute({ children, ...rest }) {
 
-  const [user, loading, error] = useAuthState(firebase.auth());
-
+  const authData = useSelector(state => state.auth?.data);
+  const loading = useSelector(state => state.auth?.loading);
+  const error = useSelector(state => state.auth?.error);
   if (loading) {
     return (
       null
@@ -18,23 +18,23 @@ function PrivateRoute({ children, ...rest }) {
       </div>
     );
   }
-    return (
-      <Route
-        {...rest}
-        render={({ location }) =>
-        user ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: location }
-              }}
-            />
-          )
-        }
-      />
-    );
-  }
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        authData?.name? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 
 export default PrivateRoute;

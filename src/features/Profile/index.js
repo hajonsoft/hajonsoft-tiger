@@ -9,6 +9,7 @@ import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import firebase from "../../firebaseapp";
 import firebaseConfig from "../../firebaseConfig";
@@ -50,7 +51,9 @@ const Profile = () => {
   const history = useHistory();
 
   const [record, setRecord] = useState({});
+  const authData = useSelector(state => state.auth?.data);
 
+  //TODO:RTK:profile replace this code with dispatch(getProfile()) and useSelector
   useEffect(() => {
     firebase
       .database()
@@ -65,6 +68,7 @@ const Profile = () => {
   const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
+    // TODO:RTK replace with dispatch(updateProfile(newprofile))
     const updateRef = firebase.database().ref(`protected/profile`);
     updateRef.set(values).catch((err) => {
       alert(err.message);
@@ -79,13 +83,9 @@ const Profile = () => {
         onSubmit={handleSubmitForm}
       >
         {({
-          setFieldValue,
           values,
           errors,
           touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
           isSubmitting,
         }) => (
           <Form>
@@ -106,27 +106,28 @@ const Profile = () => {
                     <InputControl
                       name="name"
                       label="Company Name"
-                      required
                       value={values.name}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
+                      required={false}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <InputControl
                       name="email"
                       label="Email Address"
-                      required
-                      value={values.email}
+                      required={true}
+                      value={authData?.email}
                       error={touched.email && Boolean(errors.email)}
                       helperText="This email address will be used to communicate with you when you send visa by proxy request"
+                      disabled={true}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <InputControl
                       name="tel"
+                      required={false}
                       label="Telephone Number"
-                      required
                       value={values.tel}
                       error={touched.tel && Boolean(errors.tel)}
                       helperText={touched.tel && errors.tel}
@@ -135,8 +136,8 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="address"
+                      required={false}
                       label="Company Address"
-                      required
                       value={values.address}
                       error={touched.address && Boolean(errors.address)}
                       helperText={touched.address && errors.address}
@@ -146,8 +147,8 @@ const Profile = () => {
                     <InputControl
                       name="facebookPage"
                       label="Facebook Page URL"
-                      required
-                      value={values.facebookPage}
+                      required={false}
+                      value={values.facebookPage || 'facebook.com'}
                       error={
                         touched.facebookPage && Boolean(errors.facebookPage)
                       }
@@ -158,7 +159,7 @@ const Profile = () => {
                     <InputControl
                       name="about"
                       label="About Us"
-                      required
+                      required={false}
                       value={values.about}
                       error={touched.about && Boolean(errors.about)}
                       multiline

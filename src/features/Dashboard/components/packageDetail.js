@@ -1,17 +1,18 @@
-import { Button, CircularProgress, Grid, Paper, Tabs, Tab, Box, Typography, ButtonGroup } from "@material-ui/core";
-//TODO: Redesign, talk to customers to get feedback
-import React, { useState } from "react";
-import { getPassengersJSON, zipWithPhotos } from "../helpers/common";
-import useTravellerState from "../redux/useTravellerState";
-import ApplyForVisa from "./ApplyForVisa";
-import BioStatistics from "./BioStatistics";
-import CircularProgressWithLabel from "./CircularProgressWithLabel";
-import NationalityStatistics from "./NationalityStatistics";
+import {
+  faPrint
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, CircularProgress, Grid, Paper, Box, Typography, Tabs, ButtonGroup, Tab } from "@material-ui/core";
+//TODO:PKG Redesign, talk to customers to get feedback
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import ApplyForVisa from "./ApplyForVisa";
+import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice"
+import BioStatistics from "./BioStatistics";
+import NationalityStatistics from "./NationalityStatistics";
 import {
   faHandsHelping,
   faPassport,
-  faPrint,
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,53 +64,23 @@ function TabPanel(props) {
 
 
 const PackageDetail = ({ data }) => {
-  const { data: travellers, loading, error, updateData } = useTravellerState();
-  const [shareProgress, setShareProgress] = useState({
-    loading: false,
-    value: 0,
-  });
+  const loading = useSelector(state => state.caravan?.loading);
+  const error = useSelector(state => state.caravan?.error);
+  const passengers = useSelector(state => state.caravan?.data);
   const classes = useStyles()
-  const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+  const dispatch = useDispatch()
+  const [activeTab, setActiveTab] = useState(0)
 
-
-  // const updateCaravan = () => {
-  //   updateData({
-  //     path: `customer/${data.name}/upcoming`,
-  //     data: { _fid: "upcoming" },
-  //   });
-  // }
-
-
-  const handleShareClick = async () => {
-    setShareProgress({ loading: true, value: 0 });
-    const travellersData = getPassengersJSON(travellers, data);
-    const jsonData = JSON.stringify(travellersData);
-    const zip = await zipWithPhotos(
-      jsonData,
-      travellers,
-      data,
-      setShareProgress
-    );
-
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      const newFile = new Blob([content], { type: "application/zip" });
-      var csvURL = window.URL.createObjectURL(newFile);
-      const tempLink = document.createElement("a");
-      tempLink.href = csvURL;
-      tempLink.setAttribute("download", `${data.name}.zip`);
-      tempLink.click();
-    });
-
-    setShareProgress({ loading: false, value: 100 });
+  const handleOnTabChange = (event, newValue) => {
+    setActiveTab(newValue);
   };
 
-  const handleApplyForVisa = () => {
-    setApplyForVisaOpen(true);
-  };
+  const caravanHistoryHandler = (isUpcoming) => {
+    if (!isUpcoming) {
+      return dispatch(setPastCaravan(data.name, data))
+    }
 
-  const handleOnTabChange = (e, value) => {
-    setActiveTab(value);
+    dispatch(setUpcomingCaravan(data.name, data))
   }
 
   return (
@@ -126,8 +97,8 @@ const PackageDetail = ({ data }) => {
           <Tab label="Actions" style={{ textTransform: 'none' }} {...a11yProps(2)} />
         </Tabs>
         <ButtonGroup color="primary" variant="outlined" color="primary" style={{ marginRight: "2rem" }} >
-          <Button disabled>Upcoming</Button>
-          <Button style={{ background: "rgb(227, 242, 253)" }} >Add to Past</Button>
+          <Button disabled onClick={() => caravanHistoryHandler(true)} >Upcoming</Button>
+          <Button onClick={() => caravanHistoryHandler(false)} style={{ background: "rgb(227, 242, 253)" }} >Add to Past</Button>
         </ButtonGroup>
 
       </Box>
@@ -136,7 +107,7 @@ const PackageDetail = ({ data }) => {
           {loading && <CircularProgress />}
           {error}
           {!loading && (
-            <BioStatistics data={Object.values(travellers[data.name])} />
+            <BioStatistics data={Object.values(passengers[data.name])} />
           )}
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
@@ -144,14 +115,14 @@ const PackageDetail = ({ data }) => {
           {error}
           {!loading && (
             <NationalityStatistics
-              data={Object.values(travellers[data.name])}
+              data={Object.values(passengers[data.name])}
             />
           )}
         </TabPanel>
         <TabPanel value={activeTab} index={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Grid container spacing={3} style={{ maxWidth: "500px" }}>
             <Grid item md={6}>
-              <Box onClick={handleApplyForVisa} className={classes.actionBox} >
+              <Box onClick={() => console.log("apply for visa")} className={classes.actionBox} >
                 <Typography className={classes.actionText} > Apply for visa </Typography>
                 <Box className={classes.actionIconContainer} >
                   <FontAwesomeIcon color="#03a9f4" size="2x" icon={faPassport} />
@@ -159,7 +130,7 @@ const PackageDetail = ({ data }) => {
               </Box>
             </Grid>
             <Grid item md={6}>
-              <Box onClick={handleShareClick} className={classes.actionBox} >
+              <Box onClick={() => console.log("hello__world!!")} className={classes.actionBox} >
                 <Typography className={classes.actionText} > Share </Typography>
                 <Box className={classes.actionIconContainer} >
                   <FontAwesomeIcon color="#03a9f4" size="2x" icon={faShareSquare} />
@@ -167,7 +138,7 @@ const PackageDetail = ({ data }) => {
               </Box>
             </Grid>
             <Grid item md={6}>
-              <Box onClick={handleShareClick} className={classes.actionBox} >
+              <Box onClick={() => console.log("hello__world!!")} className={classes.actionBox} >
                 <Typography className={classes.actionText} > Reports </Typography>
                 <Box className={classes.actionIconContainer} >
                   <FontAwesomeIcon color="#03a9f4" size="2x" icon={faPrint} />
@@ -175,7 +146,7 @@ const PackageDetail = ({ data }) => {
               </Box>
             </Grid>
             <Grid item md={6}>
-              <Box onClick={handleShareClick} className={classes.actionBox} >
+              <Box onClick={() => console.log("hello__world!!")} className={classes.actionBox} >
                 <Typography className={classes.actionText} > Assist </Typography>
                 <Box className={classes.actionIconContainer} >
                   <FontAwesomeIcon color="#03a9f4" size="2x" icon={faHandsHelping} />
@@ -186,6 +157,7 @@ const PackageDetail = ({ data }) => {
         </TabPanel>
       </Paper>
     </>
+
   );
 };
 

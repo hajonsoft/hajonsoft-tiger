@@ -55,7 +55,7 @@ const CoreImage = ({ record, setImage }) => {
 
   useEffect(() => {
     async function getImage() {
-      if (record && record.nationality && record.passportNumber) {
+      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 8) {
         let imgUrl = await firebase
           .storage()
           .ref(`${record.nationality}/${record.passportNumber}.jpg`)
@@ -66,7 +66,7 @@ const CoreImage = ({ record, setImage }) => {
       }
     }
     getImage();
-  }, [record]);
+  }, [record.nationality, record.passportNumber]);
 
   let _fileInput = React.createRef();
   return (

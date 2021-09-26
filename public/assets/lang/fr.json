@@ -36,5 +36,6 @@
 	"reservation.telephone": "Téléphone",
 	"reservation.completed": "Je vous remercie de votre réservation",
 	"reservation.upload-your-passport": "Téléchargez votre passeport",
+	"reservation.upload-your-vaccine": "Téléchargez votre vaccin",
 	"reservation.completed-subheader" : "Nous vous contacterons pour plus de détails"
 }

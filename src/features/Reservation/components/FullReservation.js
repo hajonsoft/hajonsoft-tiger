@@ -585,8 +585,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                         </Grid>
                         <Grid item xs={12}>
                           <Typography>
-                            {/* {trans("reservation.upload-your-passport")} */}
-                            Upload vaccing image
+                            label={trans("reservation.upload-your-vaccine")}
                           </Typography>
                           <Box
                             className={classes.passportBox}
@@ -610,7 +609,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                                   fontSize="large"
                                 />
                                 <Typography>
-                                  upload vaccing image
+                                {trans("reservation.upload-your-vaccine")}
                                 </Typography>
                               </>
                             )}

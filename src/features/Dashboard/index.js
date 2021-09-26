@@ -1,20 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
-  CircularProgress,
-  Grid,
-  Typography,
-  DialogContentText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Tabs,
-  Tab,
+  CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Tab, Tabs, Typography
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
-import NearMeIcon from "@material-ui/icons/NearMe";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -27,6 +17,7 @@ import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import GroupIcon from "@material-ui/icons/Group";
 import LastPage from "@material-ui/icons/LastPage";
+import NearMeIcon from "@material-ui/icons/NearMe";
 import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
@@ -36,12 +27,13 @@ import MaterialTable from "material-table";
 import moment from "moment";
 import pluralize from "pluralize";
 import React, { forwardRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import AppHeader from "../shared/components/AppHeader/AppHeader";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import useTravellerState from "./redux/useTravellerState";
+import { deleteUpcomingCaravan, getUpcomingCaravans  } from "./redux/caravanSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -71,25 +63,25 @@ const tableIcons = {
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-  const [filteredCaravans, setFilteredCaravans] = useState({});
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const {
-    data: caravans,
-    loading,
-    error,
-    fetchData: fetchCaravans,
-    deleteData: deleteCaravan,
-  } = useTravellerState();
+  const caravans = useSelector(state => state.caravan?.data);
+  const loading = useSelector(state => state.caravan.loading);
+  const error = useSelector(state => state.caravan.error);
+
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
 
   useEffect(() => {
-    if (!loading) {
-      setFilteredCaravans(caravans);
-    }
-  }, [loading]);
-  
+    dispatch(getUpcomingCaravans())
+    window.scrollTo(0, 0);
+  }, []);
+
+  const setPastCaravans = () => {
+    dispatch(setPastCaravans())
+  }
+
   const Title = () => {
     return (
       <Grid container spacing={2} alignItems="center">
@@ -115,8 +107,8 @@ const Dashboard = () => {
       let total = 0;
 
       for (const grp in caravans) {
-        const groupResult = caravans[grp].filter((traveller) =>
-          moment(traveller.passExpireDt).isBefore(expireDate)
+        const groupResult = caravans[grp].filter((pax) =>
+          moment(pax.passExpireDt).isBefore(expireDate)
         );
         if (groupResult.length) {
           searchResult[grp] = groupResult;
@@ -147,11 +139,11 @@ const Dashboard = () => {
   };
 
   const handleOnConfirmDelete = () => {
-    deleteCaravan({ path: `/customer/${state.record.name}` });
+    dispatch(deleteUpcomingCaravan(state.record.name));
     setState((st) => ({ ...st, mode: "list", record: {} }));
   };
 
-  const handleOnTabChange = (e,value)=> {
+  const handleOnTabChange = (e, value) => {
     setActiveTab(value);
   }
 
@@ -185,7 +177,6 @@ const Dashboard = () => {
               title={title}
               onClose={() => {
                 setState((st) => ({ ...st, mode: "list" }));
-                fetchCaravans();
               }}
             />
           )}
@@ -197,8 +188,8 @@ const Dashboard = () => {
                 textColor="primary"
                 onChange={handleOnTabChange}
               >
-                <Tab label="Upcoming" style={{textTransform: 'none'}}/>
-                <Tab label="Past" style={{textTransform: 'none'}}/>
+                <Tab label="Upcoming" style={{ textTransform: 'none' }} />
+                <Tab label="Past" style={{ textTransform: 'none' }} />
               </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
@@ -227,11 +218,11 @@ const Dashboard = () => {
                   },
                 ]}
                 data={
-                  filteredCaravans
-                    ? Object.keys(filteredCaravans).map((v) => ({
-                        name: v,
-                        total: filteredCaravans[v].length,
-                      }))
+                  caravans
+                    ? Object.keys(caravans).map((v) => ({
+                      name: v,
+                      total: caravans[v].length,
+                    }))
                     : []
                 }
                 detailPanel={(rowData) => <PackageDetail data={rowData} />}
@@ -293,7 +284,7 @@ const Dashboard = () => {
         open={applyForVisaOpen}
         onClose={() => setApplyForVisaOpen(false)}
         caravan={state?.record?.name}
-        passengers={filteredCaravans[state?.record?.name]}
+        passengers={caravans[state?.record?.name]}
       />
       <Dialog
         open={state.mode === "delete"}
@@ -340,12 +331,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-// options={{
-//   actionsCellStyle: {
-//     backgroundColor: "#ffccdd",
-//     color: "#FF00dd"
-//   },
-
-// headerStyle: { backgroundColor: "black", color: "white" }
-// }}

@@ -1,13 +1,6 @@
 import {
-  Breadcrumbs,
-  CircularProgress,
-  DialogContentText,
-  Dialog,
-  DialogTitle,
-  DialogContent, DialogActions,
-  Button,
-  Grid,
-  Typography,
+  Breadcrumbs, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid,
+  Typography
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
@@ -37,12 +30,14 @@ import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
 import moment from "moment";
 import pluralize from "pluralize";
+import _ from 'lodash';
 import React, { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import useTravellerState from "../Dashboard/redux/useTravellerState";
 import AppHeader from "../shared/components/AppHeader/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
+import { deletePassenger, updatePassenger } from "../Dashboard/redux/caravanSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -74,15 +69,12 @@ const tableIcons = {
 };
 const Customers = () => {
   let { packageName } = useParams();
+  const dispatch = useDispatch();
 
-  const {
-    data: passengers,
-    updateData: updatePassenger,
-    fetchData: fetchPassengers,
-    deleteData: deletePassenger,
-    loading,
-    error,
-  } = useTravellerState();
+  const caravans = useSelector(state => state.caravan?.data);
+  const loading = useSelector(state => state.caravan?.loading);
+  const error = useSelector(state => state.caravan?.error);
+  const passengers = _.cloneDeep(caravans?.[packageName]);
 
   const [state, setState] = useState({
     mode: "list",
@@ -144,10 +136,10 @@ const Customers = () => {
   };
 
   const bringNext = () => {
-    let nextPassenger = passengers[packageName][0];
+    let nextPassenger = passengers[0];
     if (state.record && state.record._fid) {
-      for (let i = 0; i < passengers[packageName].length - 1; i++) {
-        if (passengers[packageName][i]._fid === state.record._fid) {
+      for (let i = 0; i < passengers.length - 1; i++) {
+        if (passengers[i]._fid === state.record._fid) {
           nextPassenger = passengers[packageName][i + 1];
         }
       }
@@ -155,9 +147,8 @@ const Customers = () => {
     setState((st) => ({ ...st, mode: "update", record: nextPassenger }));
   };
 
-  const handleOnConfirmDelete = (deletePassengerInfo) => {
-    deletePassenger({ path: `/customer/${packageName}/${deletePassengerInfo._fid}`, data: deletePassengerInfo });
-    fetchPassengers();
+  const handleOnConfirmDelete = (passenger) => {
+    dispatch(deletePassenger({packageName, passenger}))
     setState((st) => ({ ...st, mode: "list", record: {} }))
   }
 
@@ -177,7 +168,6 @@ const Customers = () => {
               title={title}
               onClose={() => {
                 setState((st) => ({ ...st, mode: "list", record: {} }))
-                fetchPassengers();
               }
               }
               onNext={bringNext}
@@ -224,7 +214,8 @@ const Customers = () => {
                 },
                 { title: "Email", field: "email" },
               ]}
-              data={passengers[packageName] ? passengers[packageName] : []}
+
+              data={passengers}
               detailPanel={(rowData) => <CustomerDetail customer={rowData} />}
               actions={[
                 {
@@ -246,12 +237,9 @@ const Customers = () => {
                     : `favor ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection edits
+                      return;
                     }
-                    updatePassenger({
-                      path: `customer/${packageName}/${rowData._fid}`,
-                      data: { ...rowData, favorite: !rowData.favorite },
-                    });
+                    dispatch(updatePassenger(`${packageName}/${rowData._fid}`, { ...rowData, favorite: !rowData.favorite }))
                   },
                 }),
                 {
@@ -259,7 +247,7 @@ const Customers = () => {
                   tooltip: `Edit ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection edits
+                      return;
                     }
                     setState((st) => ({
                       ...st,
