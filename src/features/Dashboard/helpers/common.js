@@ -28,6 +28,7 @@ export function getPassengersJSON(passengers, data) {
         name: passenger.nationality,
         code: nationalities.find((x) => x.name === passenger.nationality)?.code,
         telCode: nationalities.find((x) => x.name === passenger.nationality)?.telCode,
+        isArabic: nationalities.find((x) => x.name === passenger.nationality)?.isArabic,
       },
       issuer: {
         name: nationalities.find((x) => x.code === issuerCode)?.name,
