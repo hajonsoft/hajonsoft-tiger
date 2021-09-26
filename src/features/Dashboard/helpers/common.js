@@ -21,7 +21,9 @@ export function getPassengersJSON(passengers, data) {
     if (_nameArabicParts[0] === "invalid") {
       _nameArabicParts = ["", "", "", ""];
     }
-    const issuerCode = passenger.codeLine?.substring(2, 5);
+
+    const codeline = passenger.codeLine || createCodeline(passenger);
+    const issuerCode = codeline?.substring(2, 5);
 
     return {
       nationality: {
@@ -85,7 +87,7 @@ export function getPassengersJSON(passengers, data) {
       address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
-      codeline: passenger.codeLine || createCodeline(passenger),
+      codeline,
     };
   });
 
