@@ -113,7 +113,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       const metadata = {
         contentType: "image/jpeg",
         passportNumber: values.passportNumber,
-        name: values.name,
       };
       const fileName = `${values.nationality}/${values.passportNumber}.jpg`;
       console.log('%c 🌰 fileName: ', 'font-size:20px;background-color: #FCA650;color:#fff;', fileName);
@@ -493,7 +492,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 Boolean(errors.passportNumber)
                               }
                               helperText={
-                                touched.passportNumber && errors.passportNumber
+                                values?.passportNumber?.length || (touched.passportNumber && errors.passportNumber)
                               }
                             />
                           </Grid>
