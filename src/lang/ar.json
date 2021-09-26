@@ -134,5 +134,7 @@
   "visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track": "لا تغطي خدمة التأشيرة عن طريق الوكيل المدفوعات إلى مزود طرف ثالث. \nأنت المسؤول عن التحقق من البيانات. \nمسار",
   "video-library": "مكتبة الفيديو",
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "شاهد مقاطع فيديو \"كيفية\" للتعرف على العديد من الميزات المختلفة. \nانقر هنا ل",
-  "watch-video": "شاهد الفيديو"
+  "watch-video": "شاهد الفيديو",
+  "view-reservation-number": "عرض رقم الحجز",
+  "continue-to-payment": "تابع إلى الدفع"
 }

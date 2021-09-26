@@ -194,8 +194,8 @@ const Reservation = ({ lang, onLanguageChange }) => {
               <img src={reservationCompleteImage} alt="success-icon" style={{ width: "100%", height: "100%" }} />
             </div>
             <div className={classes.paymentBtnContainer}>
-              <Button color="default" variant="contained" className={classes.viewReservationBtn} onClick={handleClose} >View Reservation Number</Button>
-              {advertisementData.paymentLink && <Button color="primary" variant="contained" className={classes.paymentBtn} href={advertisementData.paymentLink} >Continue to Payment</Button>}
+              <Button color="default" variant="contained" className={classes.viewReservationBtn} onClick={handleClose} >{t('view-reservation-number')}</Button>
+              {advertisementData.paymentLink && <Button color="primary" variant="contained" className={classes.paymentBtn} href={advertisementData.paymentLink} >{t('continue-to-payment')}</Button>}
             </div>
           </div>
         </Fade>
