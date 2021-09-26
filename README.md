@@ -1,4 +1,5 @@
-﻿### HAJonSoft Tiger
+[![GitHub issues](https://img.shields.io/github/issues/hajonsoft/hajonsoft-tiger)](https://github.com/hajonsoft/hajonsoft-tiger/issues)
+ ### HAJonSoft Tiger
 
 Home for Nest suite of applications. Nest is Dove 🕊  and Humming Bird combined. The code repo is called Tiger 🐅 (Animal). 
 Repo uses an animal name while customer facing modules will use a bird name. I am starting to come up with names for every thing otherwise everything is same as everything. 
