@@ -1,23 +1,20 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Box,
-  Button, Grid, Paper, Typography
-} from "@material-ui/core";
+import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import logo from "../../images/logo.jpg";
-import t from '../../shared/util/trans';
+import t from "../../shared/util/trans";
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
-
+import hummingBird from '../../images/humming-bird.svg'
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: '60vh',
-    paddingTop: '2rem',
+    height: "60vh",
+    paddingTop: "2rem",
     background: "rgb(63 113 136 / 9%)",
   },
 }));
@@ -26,10 +23,10 @@ const SignIn = ({ onLanguageChange, lang }) => {
   const dispatch = useDispatch();
 
   const classes = useStyles();
-  const authData = useSelector(state => state?.auth?.data);
+  const authData = useSelector((state) => state?.auth?.data);
 
   const handleGoogleSignin = () => {
-    dispatch(loginWithGoogle())
+    dispatch(loginWithGoogle());
   };
   if (authData?.name) {
     return <Redirect to="/caravans" />;
@@ -51,7 +48,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
             width: "50%",
             margin: "auto",
             maxWidth: "500px",
-            height: '25rem',
+            height: "25rem",
           }}
         >
           <Grid item>
@@ -65,12 +62,13 @@ const SignIn = ({ onLanguageChange, lang }) => {
               gutterBottom
               align="center"
             >
-              <Box p={2}>{t('welcome-to')}</Box>
+              <Box p={2}>{t("welcome-to")}</Box>
             </Typography>
 
-            <Typography align="center">
-              {t('humming-bird')}
-            </Typography>
+            <Typography align="center" variant="h6">{t("humming-bird")}</Typography>
+          </Grid>
+          <Grid item>
+            <img src={hummingBird} alt="Humming bird" width="64px"/>
           </Grid>
           <Grid item>
             <Button
@@ -84,7 +82,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
               onClick={handleGoogleSignin}
               startIcon={<FontAwesomeIcon icon={faGoogle} />}
             >
-              {t('login-with-google')}
+              {t("login-with-google")}
             </Button>
           </Grid>
         </Grid>

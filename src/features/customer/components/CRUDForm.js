@@ -300,6 +300,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               passIssueDt: moment().subtract(7, "days"),
               birthDate: moment().subtract(7, "days"),
               profession: 'unknown',
+              passportNumber: record.passportNumber,
             }
             : record
         }
