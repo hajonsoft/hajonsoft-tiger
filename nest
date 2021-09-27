@@ -9,9 +9,11 @@ firebase init hosting:github < nest-input
 mv $1.js src/firebaseConfigs
 cp .github/workflows/template .github/workflows/$1.yml
 node --experimental-repl-await nest-script $1
-echo "press any key"
-read
+echo "Press any key to continue"
+read -t 3 -n 1
 firebase deploy --only database
+echo "Press any key to continue"
+read -t 3 -n 1
 firebase deploy --only storage
 rm .github/workflows/firebase-hosting-pull-request.yml
 # npm run build
