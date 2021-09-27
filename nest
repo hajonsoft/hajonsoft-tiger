@@ -3,6 +3,8 @@ rm .firebaserc
 firebase use --add $1
 git checkout master
 firebase auth:export --format json users
+echo "Press any key to continue"
+read -t 3 -n 1
 cat users
 firebase apps:sdkconfig > $1.js
 firebase init hosting:github < nest-input
