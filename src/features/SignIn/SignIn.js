@@ -10,6 +10,7 @@ import t from '../../shared/util/trans';
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
+import hummingBird from '../../images/humming-bird.svg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
