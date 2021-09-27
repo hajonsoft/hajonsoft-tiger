@@ -14,6 +14,7 @@ import trans from "../../shared/util/trans";
 import BasicReservation from "./components/BasicReservation";
 import FullReservation from "./components/FullReservation";
 import reservationCompleteImage from '../../images/reservation-complete.svg';
+import t from '../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   root: {
