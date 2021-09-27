@@ -135,5 +135,7 @@
   "visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track": "visa by proxy service does not cover payments to a third party provider. You are the responsible verifier to the data. Track",
   "video-library": "VIDEO LIBRARY",
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "Watch \"how to\" videos to learn about many different features. click here to",
-  "watch-video": "watch video"
+  "watch-video": "watch video",
+  "view-reservation-number": "View Reservation Number",
+  "continue-to-payment": "Continue to Payment"
 }

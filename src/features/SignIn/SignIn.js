@@ -6,11 +6,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import logo from "../../images/logo.jpg";
-import t from "../../shared/util/trans";
+import t from '../../shared/util/trans';
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
-import hummingBird from '../../images/humming-bird.svg'
+import hummingBird from '../../images/humming-bird.svg';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     height: "60vh",

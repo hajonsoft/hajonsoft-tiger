@@ -135,5 +135,7 @@
   "visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track": "Le service visa par procuration ne couvre pas les paiements à un fournisseur tiers. \nVous êtes le vérificateur responsable des données. \nPister",
   "video-library": "BIBLIOTHÈQUE VIDÉO",
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "Regardez des vidéos « comment faire » pour en savoir plus sur de nombreuses fonctionnalités différentes. \ncliquez ici pour",
-  "watch-video": "regarder la vidéo"
+  "watch-video": "regarder la vidéo",
+  "view-reservation-number": "Afficher le numéro de réservation",
+  "continue-to-payment": "Continuer vers Paiement"
 }
