@@ -6,8 +6,8 @@
           ".write": true
       }
     },
-    ".read": "auth != null && (auth.uid == 'QU5dIwPaEAXlSTkTVfL1DJtfVm63' || auth.uid == 'RokS2Yb5hRT6JBlj1iER2FP9ybA3')",
-    ".write": "auth != null && (auth.uid == 'QU5dIwPaEAXlSTkTVfL1DJtfVm63' || auth.uid == 'RokS2Yb5hRT6JBlj1iER2FP9ybA3')",
+    ".read": "auth != null && (auth.uid == 'FQxfc0RLM9TzoCHZjcFqyHrxYDo2' || auth.uid == 'VntkepUsvacadutkIDjMR0jfFZj1')",
+    ".write": "auth != null && (auth.uid == 'FQxfc0RLM9TzoCHZjcFqyHrxYDo2' || auth.uid == 'VntkepUsvacadutkIDjMR0jfFZj1')",
     "$uid": {
       ".read": "auth != null && auth.uid == $uid",
       ".write": "auth != null && auth.uid == $uid"
