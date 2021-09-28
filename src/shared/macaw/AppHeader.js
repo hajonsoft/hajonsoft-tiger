@@ -13,8 +13,9 @@ import _ from "lodash";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import firebaseConfig from "../../../../firebaseConfig";
-import { signoutWithGoogle } from "../../../SignIn/redux/authSlice";
+import firebaseConfig from "../../firebaseConfig";
+import t from '../util/trans';
+import { signoutWithGoogle } from "../../features/SignIn/redux/authSlice";
 
 const AppHeader = () => {
   const authData = useSelector(state => state.auth?.data);
@@ -66,25 +67,25 @@ const AppHeader = () => {
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/caravans")}
               >
-                Caravans
+                {t('caravans')}
               </Button>
               <Button
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/market")}
               >
-                Online
+                {t('online')}
               </Button>
               <Button
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/trade")}
               >
-                Trade
+                {t('trade')}
               </Button>
               <Button
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/help")}
               >
-                Support
+                {t('support-1')}
               </Button>
             </Grid>
           )}
@@ -113,7 +114,7 @@ const AppHeader = () => {
             </Grid>
             <Grid item>
               <Button onClick={handleLogout}>
-                Sign out
+                {t('sign-out')}
               </Button>
             </Grid>
           </Grid>

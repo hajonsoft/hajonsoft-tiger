@@ -34,10 +34,11 @@ import _ from 'lodash';
 import React, { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import AppHeader from "../shared/components/AppHeader/AppHeader";
+import AppHeader from "../../shared/macaw/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
 import { deletePassenger, updatePassenger } from "../Dashboard/redux/caravanSlice";
+import t from '../../shared/util/trans';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -178,9 +179,9 @@ const Customers = () => {
               icons={tableIcons}
               title={<Title />}
               columns={[
-                { title: "Name", field: "name" },
+                { title: t('name'), field: "name" },
                 {
-                  title: "Phone",
+                  title: t('phone'),
                   field: "phone",
                   render: (rowData) =>
                     rowData.phone && (
@@ -194,9 +195,9 @@ const Customers = () => {
                       </Grid>
                     ),
                 },
-                { title: "Nationality", field: "nationality" },
+                { title: t('nationality'), field: "nationality" },
                 {
-                  title: "Birth Date",
+                  title: t('birth-date'),
                   field: "birthDate",
                   render: (rowData) =>
                     rowData.birthDate && (
@@ -212,7 +213,7 @@ const Customers = () => {
                       />
                     ),
                 },
-                { title: "Email", field: "email" },
+                { title: t('email'), field: "email" },
               ]}
 
               data={passengers}

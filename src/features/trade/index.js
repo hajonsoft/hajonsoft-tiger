@@ -1,5 +1,5 @@
 import React from "react";
-import AppHeader from "../shared/components/AppHeader/AppHeader";
+import AppHeader from "../../shared/macaw/AppHeader";
 import underConstruction from "../../images/under-construction.svg";
 import { Container, Typography } from "@material-ui/core";
 

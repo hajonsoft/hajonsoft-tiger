@@ -113,6 +113,8 @@ The signup documentation are here https://github.com/hajonsoft/hajonsoft-react/b
 
 ### Internationalization
 
+TODO: Revise for i18n-ally extension instead of babel and instruction below.
+
 Watch this video https://share.vidyard.com/watch/TDQtCsQQGPxvyNX1GkGpMN?
 
 To internationalize a component, import trans function located at src/util/trans using relative import

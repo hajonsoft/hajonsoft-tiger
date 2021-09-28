@@ -1,26 +1,26 @@
 import { Card, CardContent, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import firebase from "../../../firebaseapp";
+import firebase from "../../firebaseapp";
 
 const useStyles = makeStyles({
   mainContainer: {
     borderRadius: "8px",
     position: "relative",
-    width: "210px",
-    height: "210px",
+    width: "90%",
+    height: "310px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginTop: "1rem"
   },
   imgContainer: {
-    width: "200px",
-    height: "200px",
+    width: "100%",
+    height: "300px",
   },
   pickImage: {
     position: "absolute",
-    top: "80%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     color: "blue",
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CoreImage = ({ record, setImage }) => {
+const CorePassportImage = ({ record, setImage }) => {
   const [url, setUrl] = useState("");
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
@@ -48,17 +48,17 @@ const CoreImage = ({ record, setImage }) => {
   };
 
   useEffect(() => {
-    if (record.image) {
-      setUrl(URL.createObjectURL(record.image));
+    if (record.passportImage) {
+      setUrl(URL.createObjectURL(record.passportImage));
     }
-  }, [record.image]);
+  }, [record.passportImage]);
 
   useEffect(() => {
     async function getImage() {
-      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 8) {
+      if (record && record.nationality && record.passportNumber) {
         let imgUrl = await firebase
           .storage()
-          .ref(`${record.nationality}/${record.passportNumber}.jpg`)
+          .ref(`${record.nationality}/${record.passportNumber}_passport.jpg`)
           .getDownloadURL();
         if (imgUrl) {
           setUrl(imgUrl);
@@ -66,7 +66,7 @@ const CoreImage = ({ record, setImage }) => {
       }
     }
     getImage();
-  }, [record.nationality, record.passportNumber]);
+  }, [record]);
 
   let _fileInput = React.createRef();
   return (
@@ -79,7 +79,7 @@ const CoreImage = ({ record, setImage }) => {
         <CardContent>
           <img
             src={url}
-            alt={url}
+            alt={"passport"}
             className={classes.imgContainer}
             style={{ display: url ? "block" : "none" }}
           ></img>
@@ -90,7 +90,7 @@ const CoreImage = ({ record, setImage }) => {
             onClick={() => _fileInput.click()}
             disabled={!record.nationality || !record.passportNumber}
           >
-            Change Image
+            Change Passport Image
           </Link>
         </CardContent>
       </Card>
@@ -104,4 +104,4 @@ const CoreImage = ({ record, setImage }) => {
   );
 };
 
-export default CoreImage;
+export default CorePassportImage;

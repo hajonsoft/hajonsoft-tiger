@@ -1,7 +1,7 @@
 import { Card, CardContent, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import firebase from "../../../firebaseapp";
+import firebase from "../../firebaseapp";
 
 const useStyles = makeStyles({
   mainContainer: {

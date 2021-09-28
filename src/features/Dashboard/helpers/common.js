@@ -2,8 +2,8 @@ import jszip from "jszip";
 import moment from "moment";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
-import { createCodeline } from "../../../util/codeline";
-import { nameParts } from "../../../util/nameParts";
+import { createCodeline } from "../../../shared/util/codeline";
+import { nameParts } from "../../../shared/util/nameParts";
 
 const storage = firebase.storage();
 
@@ -28,6 +28,7 @@ export function getPassengersJSON(passengers, data) {
         name: passenger.nationality,
         code: nationalities.find((x) => x.name === passenger.nationality)?.code,
         telCode: nationalities.find((x) => x.name === passenger.nationality)?.telCode,
+        isArabic: nationalities.find((x) => x.name === passenger.nationality)?.isArabic,
       },
       issuer: {
         name: nationalities.find((x) => x.code === issuerCode)?.name,
@@ -125,7 +126,7 @@ export async function zipWithPhotos(data, packageData) {
   return zip;
 }
 
-const getStorageUrl = async (blobPath) => {
+export const getStorageUrl = async (blobPath) => {
   try {
     const blobRef = storage.ref(blobPath);
     const blobUrl = await blobRef.getDownloadURL();
