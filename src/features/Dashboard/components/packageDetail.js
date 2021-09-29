@@ -3,20 +3,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, CircularProgress, Grid, Paper } from "@material-ui/core";
-//TODO:PKG Redesign, talk to customers to get feedback
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import ApplyForVisa from "./ApplyForVisa";
 import BioStatistics from "./BioStatistics";
 import NationalityStatistics from "./NationalityStatistics";
 
 const PackageDetail = ({ data }) => {
-  const passengers = useSelector(state => state.customer.data);
-  const loading = useSelector(state => state.customer.loading);
-  const error = useSelector(state => state.customer.error);
-
-  const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
-
+  const passengers = useSelector(state => state?.caravan?.data);
+  const loading = useSelector(state => state?.caravan?.loading);
+  const error = useSelector(state => state?.caravan?.error);
 
   return (
     <Paper style={{ padding: "2rem" }}>
@@ -24,14 +19,14 @@ const PackageDetail = ({ data }) => {
         <Grid item>
           {loading && <CircularProgress />}
           {error}
-          {!loading && (
+          {!loading && data && passengers && (
             <BioStatistics data={Object.values(passengers[data.name])} />
           )}
         </Grid>
         <Grid item>
           {loading && <CircularProgress />}
           {error}
-          {!loading && (
+          {!loading && data && passengers && (
             <NationalityStatistics
               data={Object.values(passengers[data.name])}
             />
@@ -66,12 +61,6 @@ const PackageDetail = ({ data }) => {
           </Grid>
         </Grid>
       </Grid>
-      <ApplyForVisa
-        open={applyForVisaOpen}
-        onClose={() => setApplyForVisaOpen(false)}
-        caravan={data.name}
-        passengers={passengers[data.name]}
-      />
     </Paper>
   );
 };

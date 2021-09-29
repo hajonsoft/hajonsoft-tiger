@@ -206,7 +206,7 @@ const Customers = () => {
                         color="primary"
                         avatar={
                           <Avatar>
-                            {moment().diff(rowData.birthDate, "years")}
+                            {moment(rowData.birthDate).isValid() && moment().diff(rowData.birthDate, "years")}
                           </Avatar>
                         }
                         variant="outlined"
