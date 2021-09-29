@@ -34,8 +34,8 @@ const visaSystemSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(getVisaSystems.rejected, (state, action) => {
-            state.error = action.payload;
             state.loading = false;
+            state.error = action.error.message;
         });
         builder.addCase(createVisaSystem.pending, (state, action) => {
             state.loading = true;
@@ -49,7 +49,7 @@ const visaSystemSlice = createSlice({
         });
         builder.addCase(createVisaSystem.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         });
         builder.addCase(deleteVisaSystem.pending, (state, action) => {
             state.loading = true;
@@ -60,7 +60,7 @@ const visaSystemSlice = createSlice({
         });
         builder.addCase(deleteVisaSystem.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         });
     }
 });

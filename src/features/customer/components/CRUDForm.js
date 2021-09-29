@@ -193,9 +193,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       .string("Enter your Full Name")
       .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
       .required("Full name is required (as it appears on passport) "),
-    profession: yup
-      .string("Enter your profession")
-      .required("Profession is required"),
     gender: yup
       .string("Select your gender")
       .required("Gender is required")

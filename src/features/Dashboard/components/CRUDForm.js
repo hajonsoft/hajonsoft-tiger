@@ -9,11 +9,11 @@ import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { Form, Formik } from "formik";
-import _ from "lodash";
 import React from "react";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { eventsNearby } from "../../../shared/util/hijri";
+import t from '../../../shared/util/trans';
 import InputControl from "../../Reservation/components/InputControl";
 import { createUpcomingCaravan, deleteUpcomingCaravan } from "../redux/caravanSlice";
 
@@ -52,12 +52,12 @@ const useStyles = makeStyles((theme) => ({
 
 const CRUDForm = ({ mode, record, title, onClose }) => {
   const classes = useStyles();
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmitForm = (values, actions) => {
     switch (mode) {
       case "create":
-        dispatch(createUpcomingCaravan(`${values.name}` ))
+        dispatch(createUpcomingCaravan(`${values.name}`))
         break;
       case "delete":
         dispatch(deleteUpcomingCaravan(`customer/${values.name}`))
@@ -91,9 +91,9 @@ const dispatch = useDispatch();
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
-                title={_.startCase(mode + " " + title)}
+                title={title}
                 subheader={eventsNearby()}
-                action={<CancelOutlinedIcon onClick={onClose} color="error" style={{cursor: "pointer"}} />}
+                action={<CancelOutlinedIcon onClick={onClose} color="error" style={{ cursor: "pointer" }} />}
               />
               <CardContent>
                 <Grid
@@ -105,7 +105,7 @@ const dispatch = useDispatch();
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
-                      label="Caravan Name"
+                      label={t('caravan-name')}
                       required
                       value={values.name}
                       error={touched.name && Boolean(errors.name)}
@@ -125,7 +125,7 @@ const dispatch = useDispatch();
                   onClick={onClose}
                   startIcon={<CancelOutlinedIcon />}
                 >
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 {mode === "create" && (
                   <Button
@@ -135,7 +135,7 @@ const dispatch = useDispatch();
                     color="primary"
                     startIcon={<AddOutlinedIcon />}
                   >
-                    {`Create ${title}`}
+                    {t('create')}
                   </Button>
                 )}
                 {mode === "delete" && (
@@ -146,7 +146,7 @@ const dispatch = useDispatch();
                     className={classes.deleteButton}
                     startIcon={<DeleteOutlinedIcon />}
                   >
-                    {`Delete ${title}`}
+                    {`${t('delete')} ${title}`}
                   </Button>
                 )}
               </CardActions>
