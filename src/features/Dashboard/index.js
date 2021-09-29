@@ -25,16 +25,15 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import MaterialTable from "material-table";
 import moment from "moment";
-import pluralize from "pluralize";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import AppHeader from "../../shared/macaw/AppHeader";
+import t from '../../shared/util/trans';
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
 import { deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
-import t from '../../shared/util/trans';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -68,11 +67,11 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);
   const caravans = useSelector(state => state.caravan?.data);
   const loading = useSelector(state => state.caravan.loading);
-  const error = useSelector(state => state.caravan.error);
+  const error = useSelector(state => state.caravan?.error);
 
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
-  const title = "Caravan";
+  const title = t('caravan');
 
   useEffect(() => {
     dispatch(getUpcomingCaravans())
@@ -86,7 +85,7 @@ const Dashboard = () => {
           <GroupIcon />
         </Grid>
         <Grid item>
-          <Typography variant="h6">{pluralize(title)}</Typography>
+          <Typography variant="h6">{title}</Typography>
         </Grid>
       </Grid>
     );
@@ -163,7 +162,7 @@ const Dashboard = () => {
             >
               <Grid item>
                 <CircularProgress size={60} />
-                {`Loading ${pluralize(title)} ...`}
+                {`Loading ${title} ...`}
               </Grid>
             </Grid>
           )}
@@ -264,9 +263,7 @@ const Dashboard = () => {
                 }}
                 localization={{
                   body: {
-                    emptyDataSourceMessage: `No ${pluralize(
-                      title
-                    )} to display, click + button above to add a ${title}`,
+                    emptyDataSourceMessage: `No ${title} to display, click + button above to add a ${title}`,
                   },
                 }}
               />

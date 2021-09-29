@@ -15,6 +15,7 @@ import firebase from "../../firebaseapp";
 import Worker from "../../workers/parser.worker";
 import firebaseArabicName from "../../features/arabicName/firebaseArabicName";
 import CustomerImportCard from "../../features/customer/components/CustomerImportCard";
+import t from '../../shared/util/trans';
 const storage = firebase.storage();
 
 const getFullArabicName = (arabicNameDictionary) => {
@@ -245,7 +246,7 @@ function DropZone({ packageName, onClose }) {
                       }}
                       startIcon={<RefreshOutlined />}
                     >
-                      Import again
+                      {t('import-again')}
                     </Button>
                   </Grid>
                   <Grid item>
@@ -260,7 +261,7 @@ function DropZone({ packageName, onClose }) {
                       }}
                       startIcon={<RefreshOutlined />}
                     >
-                      Finish
+                      {t('finish')}
                     </Button>
                   </Grid>
                 </Grid>

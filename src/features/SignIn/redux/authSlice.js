@@ -34,16 +34,16 @@ export const authSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(loginWithGoogle.rejected, (state, action) => {
-            state.error = action.payload;
             state.loading = false;
+            state.error = action.error.message;
         });
         builder.addCase(signoutWithGoogle.fulfilled, (state, action) => {
             state.data = {}
             state.loading = false;
         });
         builder.addCase(signoutWithGoogle.rejected, (state, action) => {
-            state.error = action.payload;
             state.loading = false;
+            state.error = action.error.message;
         });
     }
 });

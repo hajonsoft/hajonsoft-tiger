@@ -104,9 +104,9 @@
   "continue-to-app": "Continue to App",
   "live-chat": "LIVE CHAT",
   "group-chat": "GROUP CHAT",
-  "reservation.reserve": "",
+  "reservation.reserve": "Reserve",
   "learn-more": "Learn More",
-  "home.home": "",
+  "home.home": "Home",
   "travel-dates": "TRAVEL DATES:",
   "tentative-return-date-is": "Tentative Return Date is",
   "traveling-dates-are-subject-to-change-due-to-airline-scheduling-hijri-calendar-and-any-updates-from-the-ministry-of-hajj": "Traveling dates are subject to change due to airline scheduling, Hijri Calendar, and any updates from the Ministry of Hajj",
@@ -137,5 +137,9 @@
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "Watch \"how to\" videos to learn about many different features. click here to",
   "watch-video": "watch video",
   "view-reservation-number": "View Reservation Number",
-  "continue-to-payment": "Continue to Payment"
+  "continue-to-payment": "Continue to Payment",
+  "caravan-name": "Caravan Name",
+  "are-you-sure": "are you sure?",
+  "import-again": "Import again",
+  "finish": "Finish"
 }
