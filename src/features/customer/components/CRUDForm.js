@@ -237,8 +237,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    dispatch(createPassenger({name: packageName, passenger: data}));
-    dispatch(deleteOnlinePassenger(record._fid));
+    dispatch(createPassenger({name: record.packageName, passenger: data}));
+    dispatch(deleteOnlinePassenger({fid: record._fid}));
     onClose()
   };
 

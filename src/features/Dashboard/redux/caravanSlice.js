@@ -48,7 +48,7 @@ export const deletePassenger = createAsyncThunk('caravan/delete-passenger', asyn
     const removeRef = firebase.database().ref(`/customer/${name}/${passenger._fid}`);
     removeRef.remove();
     try {
-        if (passenger && passenger.nationality && passenger.passportNumber) {
+        if (passenger && passenger.nationality && passenger.passportNumber && name !== 'online') {
             const photoRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`);
             photoRef.delete();
             const passportRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}_passport.jpg`);
@@ -59,9 +59,13 @@ export const deletePassenger = createAsyncThunk('caravan/delete-passenger', asyn
     }
 })
 
-export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-passenger', async ({ name, passenger }) => {
-    const removeRef = firebase.database().ref(`/online/${name}/${passenger._fid}`);
-    removeRef.remove();
+export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-passenger', async ({ fid }) => {
+    try {
+        const removeRef = firebase.database().ref(`/customer/online/${fid}`);
+        removeRef.remove();
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 const flatten = (snapshot) => {
@@ -142,6 +146,9 @@ const caravanSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(createPassenger.fulfilled, (state, action) => {
+            if (!state.data[action.meta.arg.name]) {
+                state.data[action.meta.arg.name] = []
+            }
             state.data[action.meta.arg.name].push({...action.meta.arg.passenger, _fid: action.payload})
             state.loading = false;
         });
@@ -154,7 +161,7 @@ const caravanSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(deleteOnlinePassenger.fulfilled, (state, action) => {
-            state.data["online"] = state.data["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid);
+            state.data["online"] = state.data?.["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.fid);
             state.loading = false;
         });
         builder.addCase(updatePassenger.fulfilled, (state, action) => {
