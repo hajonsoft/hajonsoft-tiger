@@ -151,7 +151,7 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
                 </Typography>
               </Grid>
               <Grid item md={3}>
-                {detail?.arrivalHotel?.match(/\d+/)[0] &&
+                {detail?.arrivalHotel?.match(/\d+/)?.[0] &&
                   new Array(Number(detail?.arrivalHotel?.match(/\d+/)[0]))
                     .fill("hajonsoft")
                     ?.map((val) => <StarIcon style={{ fill: "#f7c76f" }} />)}
@@ -167,7 +167,7 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
                 </Typography>
               </Grid>
               <Grid item md={3}>
-                {detail?.departureHotel?.match(/\d+/)[0] &&
+                {detail?.departureHotel?.match(/\d+/)?.[0] &&
                   new Array(Number(detail?.departureHotel?.match(/\d+/)[0]))
                     .fill("hajonsoft")
                     ?.map((val) => <StarIcon style={{ fill: "#f7c76f" }} />)}
