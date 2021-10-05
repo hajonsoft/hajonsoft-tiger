@@ -56,7 +56,6 @@ const SignIn = ({ onLanguageChange, lang }) => {
           <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
             <img src={logo} alt="HajOnSoft"></img>
           </Box>
-
           <Typography
             style={{ color: "#4caf50" }}
             variant="h6"
