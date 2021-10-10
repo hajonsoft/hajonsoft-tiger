@@ -5,6 +5,7 @@ import { Animated } from "react-animated-css";
 import firebase from "../../../firebaseapp";
 import DoveHeader from "../../Header/DoveHeader";
 import AdvertisementCard from "./AdvertisementCard";
+import t from '../../../shared/util/trans';
 
 const HajjAdvertisements = () => {
   const [onlinePackages, setOnlinePackages] = useState([]);
@@ -31,7 +32,7 @@ const HajjAdvertisements = () => {
       <DoveHeader />
       <Box m={2}>
         <Typography variant="h6" align="center">
-          Hajj Packages
+          {t('hajj-packages')}
         </Typography>
       </Box>
       <Grid container spacing={3} justify="space-around" alignItems="center">
