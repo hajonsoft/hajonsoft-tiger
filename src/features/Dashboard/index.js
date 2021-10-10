@@ -162,7 +162,7 @@ const Dashboard = () => {
             >
               <Grid item>
                 <CircularProgress size={60} />
-                {`Loading ${title} ...`}
+                {t('loading-caravans')}
               </Grid>
             </Grid>
           )}
