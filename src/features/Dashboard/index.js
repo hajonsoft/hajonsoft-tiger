@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
-  CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Tab, Tabs, Typography
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
@@ -33,8 +42,11 @@ import AppHeader from "../../shared/macaw/AppHeader";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import { deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
-import t from '../../shared/util/trans';
+import {
+  deleteUpcomingCaravan,
+  getUpcomingCaravans,
+} from "./redux/caravanSlice";
+import t from "../../shared/util/trans";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -66,22 +78,22 @@ const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const caravans = useSelector(state => state.caravan?.data);
-  const loading = useSelector(state => state.caravan.loading);
-  const error = useSelector(state => state.caravan.error);
+  const caravans = useSelector((state) => state.caravan?.data);
+  const loading = useSelector((state) => state.caravan.loading);
+  const error = useSelector((state) => state.caravan.error);
 
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
   const title = "Caravan";
 
   useEffect(() => {
-    dispatch(getUpcomingCaravans())
+    dispatch(getUpcomingCaravans());
     window.scrollTo(0, 0);
   }, []);
 
   const setPastCaravans = () => {
-    dispatch(setPastCaravans())
-  }
+    dispatch(setPastCaravans());
+  };
 
   const Title = () => {
     return (
@@ -146,14 +158,14 @@ const Dashboard = () => {
 
   const handleOnTabChange = (e, value) => {
     setActiveTab(value);
-  }
+  };
 
   return (
     <React.Fragment>
       <div
         style={{
           backgroundColor: "#e3f2fd",
-          minHeight: "100vh"
+          minHeight: "100vh",
         }}
       >
         <AppHeader />
@@ -189,8 +201,8 @@ const Dashboard = () => {
                 textColor="primary"
                 onChange={handleOnTabChange}
               >
-                <Tab label={t('upcoming')} style={{ textTransform: 'none' }} />
-                <Tab label={t('past')} style={{ textTransform: 'none' }} />
+                <Tab label={t("upcoming")} style={{ textTransform: "none" }} />
+                <Tab label={t("past")} style={{ textTransform: "none" }} />
               </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
@@ -198,7 +210,7 @@ const Dashboard = () => {
                 title={<Title />}
                 columns={[
                   {
-                    title: t('name'),
+                    title: t("name"),
                     field: "name",
                     render: (rowData) => (
                       <Button
@@ -214,19 +226,21 @@ const Dashboard = () => {
                     ),
                   },
                   {
-                    title: t('total'),
+                    title: t("total"),
                     field: "total",
                   },
                 ]}
                 data={
                   caravans
                     ? Object.keys(caravans).map((v) => ({
-                      name: v,
-                      total: caravans[v].length,
-                    }))
+                        name: v,
+                        total: caravans[v].length,
+                      }))
                     : []
                 }
-                detailPanel={(rowData) => <PackageDetail data={rowData} />}
+                detailPanel={(rowData) => (
+                  <PackageDetail data={rowData} caravanData={caravans} />
+                )}
                 actions={[
                   {
                     icon: tableIcons.Add,
@@ -315,7 +329,7 @@ const Dashboard = () => {
             color="error"
             variant="outlined"
           >
-            {t('cancel')}
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => handleOnConfirmDelete()}
@@ -323,7 +337,7 @@ const Dashboard = () => {
             variant="contained"
             autoFocus
           >
-            {t('delete')}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>

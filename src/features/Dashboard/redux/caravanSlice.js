@@ -13,16 +13,21 @@ export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (n
     return result;
 });
 
-export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async (name, data) => {
-    await firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`).push(data);
-    const removeRef = firebase.database().ref(`/customer${name.split('/').filter(part => !!part).join('/')}`);
+export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async ( {name, passengers}) => {
+         
+    for(let passenger of passengers) {
+        await firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
+    }
+    
+    const removeRef = firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
-    return { updated: data };
+    
+    return { updated: passengers };
 });
-
+   
 export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async (name, data) => {
     await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(data);
-    const removeRef = firebase.database().ref(`/past${name.split('/').filter(part => !!part).join('/')}`);
+    const removeRef = firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
     return { updated: data };
 });
@@ -118,6 +123,7 @@ const caravanSlice = createSlice({
         });
         builder.addCase(setPastCaravan.fulfilled, (state, action) => {
             // Delete caravan from caravanData
+            delete state.data[action.meta.arg.name]
             // Add the caravan to pastData in caravanSlice
             state.loading = false;
         });
