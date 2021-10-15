@@ -1,7 +1,7 @@
-import { Box, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import moment from 'moment';
 import React from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 
 const BioStatistics = ({ data }) => {
 

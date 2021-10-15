@@ -14,7 +14,6 @@ import {
 //TODO:PKG Redesign, talk to customers to get feedback
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ApplyForVisa from "./ApplyForVisa";
 import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
 import NationalityStatistics from "./NationalityStatistics";
@@ -138,7 +137,6 @@ const PackageDetail = ({ data, caravanData }) => {
         <ButtonGroup
           color="primary"
           variant="outlined"
-          color="primary"
           style={{ marginRight: "2rem" }}
         >
           <Button disabled onClick={() => caravanHistoryHandler(true)}>

@@ -10,7 +10,7 @@ import {
   Grid,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import AddBox from "@material-ui/icons/AddBox";
@@ -39,14 +39,14 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import AppHeader from "../../shared/macaw/AppHeader";
+import t from "../../shared/util/trans";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
 import {
   deleteUpcomingCaravan,
-  getUpcomingCaravans,
+  getUpcomingCaravans
 } from "./redux/caravanSlice";
-import t from "../../shared/util/trans";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -90,10 +90,6 @@ const Dashboard = () => {
     dispatch(getUpcomingCaravans());
     window.scrollTo(0, 0);
   }, []);
-
-  const setPastCaravans = () => {
-    dispatch(setPastCaravans());
-  };
 
   const Title = () => {
     return (

@@ -1,8 +1,8 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, Box, TableRow } from '@material-ui/core';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import { Box } from '@material-ui/core';
 import _ from 'lodash';
 import React from 'react';
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+
 
 const NationalityStatistics = ({ data }) => {
     const chatData = Object.keys(_.groupBy(data, "nationality")).map(nationality => {
