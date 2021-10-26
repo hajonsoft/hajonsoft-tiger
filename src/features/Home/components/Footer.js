@@ -171,7 +171,7 @@ const Footer = ({ lang, onLanguageChange }) => {
                 style={{ fontSize: "0.9rem" }}
                 component="div"
               >
-                Social Media
+                {t('social-media')}
               </Typography>
             </Grid>
             <Grid item>
