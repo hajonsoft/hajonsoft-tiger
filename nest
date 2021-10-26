@@ -1,7 +1,9 @@
+firebase logout
 firebase login
 rm .firebaserc
 firebase use --add $1
 git checkout master
+git pull
 firebase auth:export --format json users
 read -t 5
 cat users

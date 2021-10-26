@@ -7,6 +7,7 @@ import { Redirect } from "react-router";
 import hummingBird from '../../images/humming-bird.svg';
 import logo from "../../images/logo.jpg";
 import t from '../../shared/util/trans';
+import { analytics } from "../analytics/firebaseAnalytics";
 import DoveHeader from "../Header/DoveHeader";
 import Footer from "../Home/components/Footer";
 import { loginWithGoogle } from "./redux/authSlice";
@@ -20,6 +21,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
     dispatch(loginWithGoogle());
   };
   if (authData?.name) {
+    analytics.logEvent('nest_login', {user: authData?.name});
     return <Redirect to="/caravans" />;
   }
   return (
