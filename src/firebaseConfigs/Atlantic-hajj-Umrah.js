@@ -3,14 +3,14 @@
 // See https://firebase.google.com/docs/web/setup for more details.
 
 const firebaseConfig = {
-  "projectId": "darelsalam-usa",
-  "appId": "1:338136559008:web:3eefdb3512ec16dfe848c5",
-  "databaseURL": "https://darelsalam-usa-default-rtdb.firebaseio.com",
-  "storageBucket": "darelsalam-usa.appspot.com",
-  "locationId": "us-central",
-  "apiKey": "AIzaSyBKUyRBBGce-a7m85Z0QaDrMtHNmfAkXIw",
-  "authDomain": "darelsalam-usa.firebaseapp.com",
-  "messagingSenderId": "338136559008"
+  "projectId": "atlantic-hajj-umrah",
+  "appId": "1:8000575048:web:275d35eef7e562a113aa7d",
+  "databaseURL": "https://atlantic-hajj-umrah-default-rtdb.europe-west1.firebasedatabase.app",
+  "storageBucket": "atlantic-hajj-umrah.appspot.com",
+  "locationId": "europe-west",
+  "apiKey": "AIzaSyAC6sv19QLeId2KzpoNP_uP3BOxZspzS3Q",
+  "authDomain": "atlantic-hajj-umrah.firebaseapp.com",
+  "messagingSenderId": "8000575048"
 };
 export default firebaseConfig;
 
