@@ -25,6 +25,9 @@ For redux code walkthrough see video (public)
 https://drive.google.com/file/d/1gl3-zDJ306pjZTFNpzU6rxknu-n1I-oT/view?usp=sharing
 ### Environment Resolution
 
+[![forhajjnow](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml)
+
+
 To start Nest locally and connect to specific Munazim change src/firebaseConfig.js
 
 ex. `import firebaseConfig from './firebaseConfigs/breno-tours'; `
