@@ -129,7 +129,7 @@ const PackageDetail = ({ data, caravanData }) => {
             {...a11yProps(1)}
           />
           <Tab
-            label="Actions"
+            label="Print"
             style={{ textTransform: "none" }}
             {...a11yProps(2)}
           />
@@ -139,14 +139,14 @@ const PackageDetail = ({ data, caravanData }) => {
           variant="outlined"
           style={{ marginRight: "2rem" }}
         >
-          <Button disabled onClick={() => caravanHistoryHandler(true)}>
+          <Button disabled onClick={() => caravanHistoryHandler(true)} style={{textTransform: 'none'}}>
             Upcoming
           </Button>
           <Button
             onClick={() => caravanHistoryHandler(false)}
-            style={{ background: "rgb(227, 242, 253)" }}
+            style={{ background: "rgb(227, 242, 253)", textTransform: 'none' }}
           >
-            Add to Past
+            +Past
           </Button>
         </ButtonGroup>
       </Box>
@@ -183,7 +183,7 @@ const PackageDetail = ({ data, caravanData }) => {
                 className={classes.actionBox}
               >
                 <Typography className={classes.actionText}>
-                  ID Cards
+                  New ID Card
                 </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
@@ -199,7 +199,7 @@ const PackageDetail = ({ data, caravanData }) => {
                 onClick={() => console.log("hello__world!!")}
                 className={classes.actionBox}
               >
-                <Typography className={classes.actionText}> Share </Typography>
+                <Typography className={classes.actionText}>Customize</Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
                     color="#03a9f4"
@@ -215,8 +215,7 @@ const PackageDetail = ({ data, caravanData }) => {
                 className={classes.actionBox}
               >
                 <Typography className={classes.actionText}>
-                  {" "}
-                  Reports{" "}
+                  New Report
                 </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon color="#03a9f4" size="2x" icon={faPrint} />
@@ -228,7 +227,7 @@ const PackageDetail = ({ data, caravanData }) => {
                 onClick={() => console.log("hello__world!!")}
                 className={classes.actionBox}
               >
-                <Typography className={classes.actionText}> Bracelets </Typography>
+                <Typography className={classes.actionText}>New Bracelet</Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
                     color="#03a9f4"
