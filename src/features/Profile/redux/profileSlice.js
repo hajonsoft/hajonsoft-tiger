@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 const getProfile = createAsyncThunk('profile/get', async () => {
-// Get profile from /protected/profile
+    // Get profile from /protected/profile
 })
 
 const createProfile = createAsyncThunk('profile/create', async () => {
@@ -33,7 +33,8 @@ const profileSlice = createSlice({
 
         });
         builder.addCase(getProfile.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(updateProfile.pending, (state, action) => {
@@ -43,7 +44,8 @@ const profileSlice = createSlice({
 
         });
         builder.addCase(updateProfile.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(createProfile.pending, (state, action) => {
@@ -53,7 +55,8 @@ const profileSlice = createSlice({
 
         });
         builder.addCase(createProfile.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(deleteProfile.pending, (state, action) => {
@@ -63,7 +66,8 @@ const profileSlice = createSlice({
 
         });
         builder.addCase(deleteProfile.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
     }

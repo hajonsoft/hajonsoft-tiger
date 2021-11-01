@@ -32,6 +32,7 @@
     "@types/yup": "^0.29.6",
     "axios": "^0.19.2",
     "color-scheme": "^1.0.1",
+    "copy-to-clipboard": "^3.3.1",
     "cryptr": "^6.0.2",
     "date-fns": "^2.16.1",
     "dayjs": "^1.10.6",

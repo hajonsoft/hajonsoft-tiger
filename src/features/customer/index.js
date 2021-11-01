@@ -37,7 +37,7 @@ import { useHistory, useParams } from "react-router-dom";
 import AppHeader from "../../shared/macaw/AppHeader";
 import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
-import { deletePassenger, updatePassenger } from "../Dashboard/redux/caravanSlice";
+import { deletePassenger, getUpcomingCaravans, updatePassenger } from "../Dashboard/redux/caravanSlice";
 import t from '../../shared/util/trans';
 
 const tableIcons = {
@@ -168,6 +168,7 @@ const Customers = () => {
               record={state.record}
               title={title}
               onClose={() => {
+                dispatch(getUpcomingCaravans())
                 setState((st) => ({ ...st, mode: "list", record: {} }))
               }
               }
@@ -205,7 +206,7 @@ const Customers = () => {
                         color="primary"
                         avatar={
                           <Avatar>
-                            {moment().diff(rowData.birthDate, "years")}
+                            {moment(rowData.birthDate).isValid() && moment().diff(rowData.birthDate, "years")}
                           </Avatar>
                         }
                         variant="outlined"
@@ -308,7 +309,7 @@ const Customers = () => {
           record: {},
         }))}
       >
-        <DialogTitle >are you sure?</DialogTitle>
+        <DialogTitle >{t('are-you-sure')}</DialogTitle>
         <DialogContent>
           <DialogContentText >
             {`You want to delete ${state.record.name}. This is a permenant deletion and can not be undone.`}

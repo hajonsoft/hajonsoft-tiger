@@ -40,6 +40,7 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { useDispatch, useSelector } from "react-redux";
 import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
 import t from '../../../shared/util/trans';
+import { analytics } from '../../analytics/firebaseAnalytics';
 
 const storage = firebase.storage();
 
@@ -113,7 +114,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       const metadata = {
         contentType: "image/jpeg",
         passportNumber: values.passportNumber,
-        name: values.name,
       };
       const fileName = `${values.nationality}/${values.passportNumber}.jpg`;
       console.log('%c 🌰 fileName: ', 'font-size:20px;background-color: #FCA650;color:#fff;', fileName);
@@ -143,7 +143,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       default:
         console.log("unknown mode");
     }
-
+    analytics.logEvent("scan");
     callback();
   };
 
@@ -194,9 +194,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       .string("Enter your Full Name")
       .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
       .required("Full name is required (as it appears on passport) "),
-    profession: yup
-      .string("Enter your profession")
-      .required("Profession is required"),
     gender: yup
       .string("Select your gender")
       .required("Gender is required")
@@ -241,8 +238,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    dispatch(createPassenger({name: packageName, passenger: data}));
-    dispatch(deleteOnlinePassenger(record._fid));
+    dispatch(createPassenger({name: record.packageName, passenger: data}));
+    dispatch(deleteOnlinePassenger({fid: record._fid}));
     onClose()
   };
 
@@ -300,6 +297,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               passIssueDt: moment().subtract(7, "days"),
               birthDate: moment().subtract(7, "days"),
               profession: 'unknown',
+              passportNumber: record.passportNumber,
             }
             : record
         }
@@ -492,7 +490,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 Boolean(errors.passportNumber)
                               }
                               helperText={
-                                touched.passportNumber && errors.passportNumber
+                                values?.passportNumber?.length || (touched.passportNumber && errors.passportNumber)
                               }
                             />
                           </Grid>

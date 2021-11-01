@@ -26,3 +26,5 @@ githubAction = githubAction.replace(/projectidhere/g,process.argv[2])
 githubAction = githubAction.replace(/PROJECTIDHERE/g,process.argv[2].toUpperCase().replace(/-/g,'_'))
 
 fs.writeFileSync('./.github/workflows/' + process.argv[2] + '.yml',githubAction)
+
+console.log('Config, rules and workflow created')

@@ -154,14 +154,14 @@ const PackageDetail = ({ data, caravanData }) => {
         <TabPanel value={activeTab} index={0}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && (
+          {!loading && data && passengers && (
             <BioStatistics data={Object.values(passengers[data.name])} />
           )}
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && (
+          {!loading && data && passengers && (
             <NationalityStatistics
               data={Object.values(passengers[data.name])}
             />

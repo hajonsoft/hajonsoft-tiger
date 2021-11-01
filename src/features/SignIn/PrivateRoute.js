@@ -1,6 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import { Alert } from "@material-ui/lab";
+
+
+
 function PrivateRoute({ children, ...rest }) {
 
   const authData = useSelector(state => state.auth?.data);
@@ -14,7 +19,9 @@ function PrivateRoute({ children, ...rest }) {
   if (error) {
     return (
       <div>
-        <p>Error: {error}</p>
+        <Snackbar open={!!error} autoHideDuration={6000}>
+          <Alert severity="error">{error}</Alert>
+        </Snackbar>
       </div>
     );
   }
@@ -22,7 +29,7 @@ function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        authData?.name? (
+        authData?.name ? (
           children
         ) : (
           <Redirect

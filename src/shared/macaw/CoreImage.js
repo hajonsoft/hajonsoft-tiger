@@ -47,16 +47,16 @@ const CoreImage = ({ record, setImage }) => {
     }
   };
 
-  useEffect(() => {
-    if (record.image) {
-      setUrl(URL.createObjectURL(record.image));
-    }
-  }, [record.image]);
+  // useEffect(() => {
+  //   if (record.image) {
+  //     setUrl(URL.createObjectURL(record.image));
+  //   }
+  // }, [record.image]);
 
   useEffect(() => {
     async function getImage() {
-      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 8) {
-        let imgUrl = await firebase
+      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 1) {
+        const imgUrl = await firebase
           .storage()
           .ref(`${record.nationality}/${record.passportNumber}.jpg`)
           .getDownloadURL();
@@ -66,7 +66,7 @@ const CoreImage = ({ record, setImage }) => {
       }
     }
     getImage();
-  }, [record.nationality, record.passportNumber]);
+  }, [record, record.nationality, record.passportNumber]);
 
   let _fileInput = React.createRef();
   return (

@@ -33,7 +33,8 @@ const adSlice = createSlice({
 
         });
         builder.addCase(getAd.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(updateAd.pending, (state, action) => {
@@ -43,7 +44,8 @@ const adSlice = createSlice({
 
         });
         builder.addCase(updateAd.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(createAd.pending, (state, action) => {
@@ -53,7 +55,8 @@ const adSlice = createSlice({
 
         });
         builder.addCase(createAd.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
         builder.addCase(deleteAd.pending, (state, action) => {
@@ -63,7 +66,8 @@ const adSlice = createSlice({
 
         });
         builder.addCase(deleteAd.rejected, (state, action) => {
-
+            state.loading = false;
+            state.error = action.error.message;
         });
 
     }

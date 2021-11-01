@@ -10,7 +10,7 @@ export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (n
     const result = await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push({
         name: 'Sample passenger --delete'
     });
-    return result;
+    return result.key;
 });
 
 export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async ( {name, passengers}) => {
@@ -40,20 +40,20 @@ export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (n
 
 export const createPassenger = createAsyncThunk('caravan/create-passenger', async ({ name, passenger }) => {
     const result = await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
-    return flatten(result);
+    return result.key;
 });
 
-export const updatePassenger = createAsyncThunk('caravan/update-passenger', async ({name, passenger}) => {
+export const updatePassenger = createAsyncThunk('caravan/update-passenger', async ({ name, passenger }) => {
     const updateRef = await firebase.database().ref(`/customer/${name}/${passenger._fid}`);
     await updateRef.update(passenger);
     return passenger;
 })
 
-export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({name, passenger}) => {
+export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({ name, passenger }) => {
     const removeRef = firebase.database().ref(`/customer/${name}/${passenger._fid}`);
     removeRef.remove();
     try {
-        if (passenger && passenger.nationality && passenger.passportNumber) {
+        if (passenger && passenger.nationality && passenger.passportNumber && name !== 'online') {
             const photoRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`);
             photoRef.delete();
             const passportRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}_passport.jpg`);
@@ -64,9 +64,13 @@ export const deletePassenger = createAsyncThunk('caravan/delete-passenger', asyn
     }
 })
 
-export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-passenger', async ({name, passenger}) => {
-    const removeRef = firebase.database().ref(`/online/${name}/${passenger._fid}`);
-    removeRef.remove();
+export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-passenger', async ({ fid }) => {
+    try {
+        const removeRef = firebase.database().ref(`/customer/online/${fid}`);
+        removeRef.remove();
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 const flatten = (snapshot) => {
@@ -103,20 +107,22 @@ const caravanSlice = createSlice({
         });
         builder.addCase(getUpcomingCaravans.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         });
         builder.addCase(createUpcomingCaravan.pending, (state, action) => {
             state.loading = true;
         });
         builder.addCase(createUpcomingCaravan.fulfilled, (state, action) => {
-            state.data = {...state.data, [action.meta.arg]: {
-                name: 'first passenger'
-            }}
+            state.data = {
+                ...state.data, [action.meta.arg]: [{
+                    name: 'first passenger'
+                }]
+            }
             state.loading = false;
         });
         builder.addCase(createUpcomingCaravan.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         });
         builder.addCase(setPastCaravan.pending, (state, action) => {
             state.loading = true;
@@ -129,7 +135,7 @@ const caravanSlice = createSlice({
         });
         builder.addCase(setPastCaravan.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         });
         builder.addCase(deleteUpcomingCaravan.pending, (state, action) => {
             state.loading = true;
@@ -140,18 +146,32 @@ const caravanSlice = createSlice({
         });
         builder.addCase(deleteUpcomingCaravan.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
+        });
+        builder.addCase(createPassenger.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(createPassenger.fulfilled, (state, action) => {
+            if (!state.data[action.meta.arg.name]) {
+                state.data[action.meta.arg.name] = []
+            }
+            state.data[action.meta.arg.name].push({...action.meta.arg.passenger, _fid: action.payload})
+            state.loading = false;
+        });
+        builder.addCase(createPassenger.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
         });
         builder.addCase(deletePassenger.fulfilled, (state, action) => {
-            state.data[action.meta.arg.packageName] =  state.data[action.meta.arg.packageName]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid );
+            state.data[action.meta.arg.packageName] = state.data[action.meta.arg.packageName]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid);
             state.loading = false;
         });
         builder.addCase(deleteOnlinePassenger.fulfilled, (state, action) => {
-            state.data["online"] =  state.data["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid );
+            state.data["online"] = state.data?.["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.fid);
             state.loading = false;
         });
         builder.addCase(updatePassenger.fulfilled, (state, action) => {
-            const updatedPassenger = state.data[action.meta.arg.name].filter(passenger => passenger._fid !== action.meta.arg.passenger._fid) ;
+            const updatedPassenger = state.data[action.meta.arg.name].filter(passenger => passenger._fid !== action.meta.arg.passenger._fid);
             state.data[action.meta.arg.name] = [...updatedPassenger, action.meta.arg.passenger]
             state.loading = false;
         });

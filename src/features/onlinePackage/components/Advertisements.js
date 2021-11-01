@@ -50,7 +50,7 @@ const Advertisements = () => {
             )
         )}
 
-      {advertisements.length === 0 && (
+      {advertisements?.length === 0 && (
         <Box style={{ display: "flex", justifyContent: "center" }}>
           <img src={interested} alt="interested" width="60%" height="60%" />
         </Box>

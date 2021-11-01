@@ -3,15 +3,39 @@ import DoveHeader from "../Header/DoveHeader";
 import Advertisements from "../onlinePackage/components/Advertisements";
 import Footer from "./components/Footer";
 import ImportantDates from "./components/importantDates";
+import { Grid } from "@material-ui/core";
 
-const DoveHome = ({lang, onLanguageChange}) => {
+const DoveHome = ({ lang, onLanguageChange }) => {
   return (
-    <div style={{ background: "rgb(63 113 136 / 9%)" }}>
-      <DoveHeader />
-      <ImportantDates />
-      <Advertisements />
-      <Footer onLanguageChange={(l) => onLanguageChange(l)} lang={lang}/>
-    </div>
+    <Grid
+      container
+      direction="column"
+      spacing={2}
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item>
+        <DoveHeader />
+      </Grid>
+      <Grid
+        item
+        style={{
+          background: "rgb(63 113 136 / 9%)",
+        }}
+      >
+        <ImportantDates />
+      </Grid>
+      <Grid
+        item
+        style={{
+          background: "rgb(63 113 136 / 9%)",
+        }}
+      >
+        <Advertisements />
+      </Grid>
+      <Grid item>
+        <Footer onLanguageChange={(l) => onLanguageChange(l)} lang={lang} />
+      </Grid>
+    </Grid>
   );
 };
 
