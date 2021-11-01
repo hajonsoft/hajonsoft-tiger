@@ -179,12 +179,11 @@ const PackageDetail = ({ data, caravanData }) => {
           <Grid container spacing={3} style={{ maxWidth: "500px" }}>
             <Grid item md={6}>
               <Box
-                onClick={() => console.log("apply for visa")}
+                onClick={() => console.log("ID Cards")}
                 className={classes.actionBox}
               >
                 <Typography className={classes.actionText}>
-                  {" "}
-                  Apply for visa{" "}
+                  ID Cards
                 </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
@@ -229,7 +228,7 @@ const PackageDetail = ({ data, caravanData }) => {
                 onClick={() => console.log("hello__world!!")}
                 className={classes.actionBox}
               >
-                <Typography className={classes.actionText}> Assist </Typography>
+                <Typography className={classes.actionText}> Bracelets </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
                     color="#03a9f4"
