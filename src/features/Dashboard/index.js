@@ -8,11 +8,13 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  IconButton,
   Tab,
   Tabs,
   Typography
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
+import { AddCircleOutline, SendOutlined } from "@material-ui/icons";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -20,6 +22,7 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
@@ -237,6 +240,7 @@ const Dashboard = () => {
                   {
                     icon: tableIcons.Add,
                     tooltip: `Add ${title}`,
+                    name: 'add',
                     isFreeAction: true,
                     onClick: (event) =>
                       setState((st) => ({ ...st, mode: "create" })),
@@ -244,6 +248,7 @@ const Dashboard = () => {
                   {
                     icon: () => <tableIcons.ApplyVisa color="primary" />,
                     tooltip: `Apply for visa`,
+                    name: 'apply',
                     onClick: (event, rowData) => {
                       setApplyForVisaOpen(true);
                       setState((st) => ({ ...st, record: rowData }));
@@ -251,6 +256,7 @@ const Dashboard = () => {
                   },
                   {
                     icon: () => <tableIcons.Delete color="error" />,
+                    name: 'delete',
                     tooltip: `Delete ${title}`,
                     onClick: (event, rowData) =>
                       setState((st) => ({
@@ -260,10 +266,45 @@ const Dashboard = () => {
                       })),
                   },
                 ]}
+                components={{
+                  Action: props => (
+                  <div style={{width: '150px'}}>
+                  {props.action.name === 'apply' && 
+                    <Button
+                      onClick={(event) => props.action.onClick(event, props.data)}
+                      color="primary"
+                      variant="outlined"
+                      style={{textTransform: 'none'}}
+                      size="small"
+                      endIcon={<SendOutlined />}
+                    >
+                      Apply for visa
+                    </Button>
+                    }
+                    {props.action.name === 'delete' && 
+                    <IconButton
+                      onClick={(event) => props.action.onClick(event, props.data)}
+                      color="error"
+                      size="small"
+                    >
+                      <DeleteOutlined />
+                    </IconButton>
+                    }
+                    {props.action.name === 'add' && 
+                    <IconButton
+                      onClick={(event) => props.action.onClick(event, props.data)}
+                      color="primary"
+                      size="large"
+                    >
+                      <AddCircleOutline />
+                    </IconButton>
+                    }
+                    </div>
+                  ),
+                }}
                 options={{
                   actionsColumnIndex: -1,
                   grouping: false,
-                  exportButton: true,
                   pageSize: 20,
                   headerStyle: {
                     backgroundColor: "#f0f3f7",
