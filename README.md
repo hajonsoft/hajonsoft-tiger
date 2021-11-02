@@ -24,6 +24,7 @@ yarn start or npm start
 For redux code walkthrough see video (public)
 https://drive.google.com/file/d/1gl3-zDJ306pjZTFNpzU6rxknu-n1I-oT/view?usp=sharing
 ### Environment Resolution
+--
 
 [![forhajjnow](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml)
 
