@@ -1,5 +1,6 @@
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import EmbassyReports from "./EmbassyReports";
 import {
   Button,
   CircularProgress,
@@ -12,11 +13,12 @@ import {
   Tab,
 } from "@material-ui/core";
 //TODO:PKG Redesign, talk to customers to get feedback
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
 import NationalityStatistics from "./NationalityStatistics";
+import ReactToPrint from "react-to-print";
 import {
   faHandsHelping,
   faPassport,
@@ -77,10 +79,13 @@ function TabPanel(props) {
 const PackageDetail = ({ data, caravanData }) => {
   const loading = useSelector((state) => state.caravan?.loading);
   const error = useSelector((state) => state.caravan?.error);
-  const passengers = useSelector((state) => state.caravan?.data);
+  const caravans = JSON.parse(
+    JSON.stringify(useSelector((state) => state.caravan?.data))
+  );
   const classes = useStyles();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
+  const componentRef = useRef();
 
   const handleOnTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -133,18 +138,32 @@ const PackageDetail = ({ data, caravanData }) => {
             style={{ textTransform: "none" }}
             {...a11yProps(2)}
           />
+          <Tab
+            label="Reports"
+            style={{ textTransform: "none" }}
+            {...a11yProps(2)}
+          />
+          <Tab
+            label="Embassy Reports"
+            style={{ textTransform: "none" }}
+            {...a11yProps(2)}
+          />
         </Tabs>
         <ButtonGroup
           color="primary"
           variant="outlined"
           style={{ marginRight: "2rem" }}
         >
-          <Button disabled onClick={() => caravanHistoryHandler(true)} style={{textTransform: 'none'}}>
+          <Button
+            disabled
+            onClick={() => caravanHistoryHandler(true)}
+            style={{ textTransform: "none" }}
+          >
             Upcoming
           </Button>
           <Button
             onClick={() => caravanHistoryHandler(false)}
-            style={{ background: "rgb(227, 242, 253)", textTransform: 'none' }}
+            style={{ background: "rgb(227, 242, 253)", textTransform: "none" }}
           >
             +Past
           </Button>
@@ -154,17 +173,15 @@ const PackageDetail = ({ data, caravanData }) => {
         <TabPanel value={activeTab} index={0}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && data && passengers && (
-            <BioStatistics data={Object.values(passengers[data.name])} />
+          {!loading && data && caravans && (
+            <BioStatistics data={Object.values(caravans[data.name])} />
           )}
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && data && passengers && (
-            <NationalityStatistics
-              data={Object.values(passengers[data.name])}
-            />
+          {!loading && data && caravans && (
+            <NationalityStatistics data={Object.values(caravans[data.name])} />
           )}
         </TabPanel>
         <TabPanel
@@ -199,7 +216,9 @@ const PackageDetail = ({ data, caravanData }) => {
                 onClick={() => console.log("hello__world!!")}
                 className={classes.actionBox}
               >
-                <Typography className={classes.actionText}>Customize</Typography>
+                <Typography className={classes.actionText}>
+                  Customize
+                </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
                     color="#03a9f4"
@@ -227,7 +246,9 @@ const PackageDetail = ({ data, caravanData }) => {
                 onClick={() => console.log("hello__world!!")}
                 className={classes.actionBox}
               >
-                <Typography className={classes.actionText}>New Bracelet</Typography>
+                <Typography className={classes.actionText}>
+                  New Bracelet
+                </Typography>
                 <Box className={classes.actionIconContainer}>
                   <FontAwesomeIcon
                     color="#03a9f4"
@@ -238,6 +259,14 @@ const PackageDetail = ({ data, caravanData }) => {
               </Box>
             </Grid>
           </Grid>
+        </TabPanel>
+
+        <TabPanel value={activeTab} index={4}>
+          <ReactToPrint
+            trigger={() => <button>Print this out!</button>}
+            content={() => componentRef.current}
+          />
+          <EmbassyReports ref={componentRef} passengers={caravans[data.name]} />
         </TabPanel>
       </Paper>
     </>
