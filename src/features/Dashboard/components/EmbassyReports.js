@@ -1,151 +1,141 @@
-import React, { useState, forwardRef } from "react";
-import MaterialTable, { MTableToolbar } from "material-table";
 import {
-  AddBox,
-  Check,
-  DeleteOutline,
-  ChevronRight,
-  Edit,
-  SaveAlt,
-  FilterList,
-  LastPage,
-  FirstPage,
-  ChevronLeft,
-  Clear,
-  Search,
-  ArrowDownward,
-  Remove,
-  ViewColumn,
-  Details,
-  Favorite,
-  FavoriteBorder,
-  Print
-} from "@material-ui/icons";
+  Box,
+  Container,
+  IconButton,
+  Grid,
+  makeStyles,
+  Typography,
+  TextField,
+  Button,
+} from "@material-ui/core";
+import React, { useRef, useState } from "react";
+import Table from "./Table";
+import ReactToPrint from "react-to-print";
+import Edit from "@material-ui/icons/Edit";
 
-const tableIcons = {
-  PrintIcon: forwardRef((props, ref) => <Print {...props} ref={ref} />),
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-  MoreDetails: forwardRef((props, ref) => <Details {...props} ref={ref} />),
-  Favorite: forwardRef((props, ref) => <Favorite {...props} ref={ref} />),
-  NoFavorite: forwardRef((props, ref) => (
-    <FavoriteBorder {...props} ref={ref} />
-  )),
+// birthDate: "2012-02-06 00:00:00"
+// birthPlace: "UNITED STATES"
+// comments: "P,USAIBRAHIM,,ZUBAIDAH,JANNAH,,,,,,,,,,,,,,,\r\n5399269045USA1202063F2102078612848510,305764"
+// createDt: "2018-11-26 09:05:14.247000"
+// email: ""
+// gender: "Female"
+// idNumber: "539926904"
+// idNumberExpireDate: "1900-01-01 00:00:00"
+// idNumberIssueDate: "1900-01-01 00:00:00"
+// name: "ZUBAIDAH JANNAH IBRAHIM"
+// nameArabic: "ZUBAIDAH JANNAH IBRAHIM"
+// nationality: "United States"
+// onSoftId: 1
+// passExpireDt: "2021-02-07 00:00:00"
+// passIssueDate: "2016-02-08 00:00:00"
+// passPlaceOfIssue: "USDS"
+// passportNumber: "539926904"
+// phone: "732-479-2711"
+// profession: "Infant"
+// relationship: "Father"
+// _fid: "416187"
 
-};
+const useStyles = makeStyles({
+  root: {
+    width: "100%",
+  },
+});
 
-const EmbassyReports = React.forwardRef((props, ref) => {
-    const [data, setData] = useState(passengers);
-    const [columns, setColumns] = useState([
-      { title: "Name", field: "name" },
-      { title: "Passport Number", field: "passportNumber" },
-      { title: "Birth Date", field: "birthDate" },
-    ]);
-  
-    const editColumns = () => {
-      setColumns((prev) => {
-        return prev.map((p) => {
-          if (p.title === "Name") {
-            return { title: "Editted Name", field: "name" };
-          }
-          return p;
-        });
-      });
-    };
-  
-    console.log(passengers, "PASSENGERS!!");
-  
-    return (
-      <>
-        <button onClick={editColumns}>Add more columns</button>
-        <div style={{ maxWidth: "100%" }}>
-          <MaterialTable
-            icons={tableIcons}
-            columns={columns}
-            data={data}
-            title="Embassy Reports"
-            components={{
-              Toolbar: (props) => {
-                return (
-                  <div>
-                    <MTableToolbar {...props} />
-                  </div>
-                );
-              },
+const EmbassyReports = ({ passengers }) => {
+  const [data, setData] = useState(passengers);
+  const [title, setTitle] = useState("Customers");
+  const [showInput, setShowInput] = useState(false);
+  const classes = useStyles();
+  const [columns, setColumns] = useState([
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Gender",
+      accessor: "gender",
+    },
+    {
+      Header: "Passport Number",
+      accessor: "passportNumber",
+    },
+    {
+      Header: "Profession",
+      accessor: "profession",
+    },
+  ]);
+  const inputRef = useRef(null);
+
+  const editTitleHandler = () => {
+    // show Input
+    setShowInput(true);
+  };
+
+  return (
+    <Box>
+      <Grid
+        container
+        className={classes.root}
+        justify="space-between"
+        spacing={2}
+      >
+        <Grid item xs={6} md={6}>
+          {showInput ? (
+            <TextField
+              inputRef={inputRef}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          ) : (
+            <Typography style={{ display: "inline" }}> {title} </Typography>
+          )}
+          <IconButton
+            onClick={() => {
+              setShowInput(true);
+              console.log(inputRef.current);
+              //   inputRef.current.focus()
             }}
-            localization={{ header: { actions: "Filter" }, toolbar: {
-                exportPDFName: "Print PDF"
-            } }}
-            options={{ columnsButton: true, filtering: true }}
-            cellEditable={{
-              cellStyle: {},
-              onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-                return new Promise((resolve, reject) => {
-                  console.log("newValue: " + newValue);
-                  console.log("oldValue: " + oldValue);
-                  console.log("rowData: " + JSON.stringify(rowData));
-                  console.log("columnDef: " + JSON.stringify(columnDef));
-  
-                  // TODO: Make it edditable
-                  setTimeout(resolve, 4000);
-                });
-              },
-            }}
-            editable={{
-              onRowAdd: (newData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    setData([...data, newData]);
-  
-                    resolve();
-                  }, 1000);
-                }),
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const dataUpdate = [...data];
-                    const index = oldData.tableData.id;
-                    dataUpdate[index] = newData;
-                    setData([...dataUpdate]);
-  
-                    resolve();
-                  }, 1000);
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const dataDelete = [...data];
-                    const index = oldData.tableData.id;
-                    dataDelete.splice(index, 1);
-                    setData([...dataDelete]);
-  
-                    resolve();
-                  }, 1000);
-                }),
-            }}
+            // onBlur={() => setShowInput(false)}
+            color="primary"
+            aria-label="edit"
+          >
+            <Edit />
+          </IconButton>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          md={6}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <ReactToPrint
+            trigger={() => (
+              <Button
+                style={{
+                  background: "rgb(227, 242, 253)",
+                  textTransform: "none",
+                  color: "#03a9f4",
+                  paddingLeft: "2rem",
+                  paddingRight: "2rem"
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Print
+              </Button>
+            )}
+            // content={() => componentRef.current}
           />
-        </div>
-      </>
-    );
-})
+        </Grid>
+      </Grid>
+
+      <Table columns={columns} data={data} />
+    </Box>
+  );
+};
 
 export default EmbassyReports;

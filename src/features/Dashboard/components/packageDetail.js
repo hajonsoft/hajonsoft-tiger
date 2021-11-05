@@ -18,7 +18,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
 import NationalityStatistics from "./NationalityStatistics";
-import ReactToPrint from "react-to-print";
 import {
   faHandsHelping,
   faPassport,
@@ -262,11 +261,7 @@ const PackageDetail = ({ data, caravanData }) => {
         </TabPanel>
 
         <TabPanel value={activeTab} index={4}>
-          <ReactToPrint
-            trigger={() => <button>Print this out!</button>}
-            content={() => componentRef.current}
-          />
-          <EmbassyReports ref={componentRef} passengers={caravans[data.name]} />
+          <EmbassyReports passengers={caravans[data.name]} />
         </TabPanel>
       </Paper>
     </>
