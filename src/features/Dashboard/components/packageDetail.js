@@ -13,7 +13,7 @@ import {
   Tab,
 } from "@material-ui/core";
 //TODO:PKG Redesign, talk to customers to get feedback
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
@@ -84,7 +84,7 @@ const PackageDetail = ({ data, caravanData }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const componentRef = useRef();
+  // const componentRef = useRef();
 
   const handleOnTabChange = (event, newValue) => {
     setActiveTab(newValue);

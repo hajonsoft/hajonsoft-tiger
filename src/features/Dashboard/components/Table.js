@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { AddCircle } from "@material-ui/icons";
 import Edit from "@material-ui/icons/Edit";
 import React from "react";
-import { useTable, useFilters, useGlobalFilter } from "react-table";
+import { useTable } from "react-table";
 import styles from "./table.module.css";
 
 function Table({ columns, data }) {
@@ -17,6 +17,9 @@ function Table({ columns, data }) {
   } = tableInstance;
 
   // TODO: edit column
+  // TODO: Pop up modal when customer clicks add new 
+  // TODO: ADD filtering
+  // TODO: add pagination
 
   return (
     <table {...getTableProps()} className={styles.table}>

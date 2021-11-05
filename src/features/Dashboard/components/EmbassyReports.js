@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   IconButton,
   Grid,
   makeStyles,
@@ -42,11 +41,11 @@ const useStyles = makeStyles({
 });
 
 const EmbassyReports = ({ passengers }) => {
-  const [data, setData] = useState(passengers);
+  const [data] = useState(passengers);
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles();
-  const [columns, setColumns] = useState([
+  const [columns,] = useState([
     {
       Header: "Name",
       accessor: "name",
@@ -66,10 +65,6 @@ const EmbassyReports = ({ passengers }) => {
   ]);
   const inputRef = useRef(null);
 
-  const editTitleHandler = () => {
-    // show Input
-    setShowInput(true);
-  };
 
   return (
     <Box>
