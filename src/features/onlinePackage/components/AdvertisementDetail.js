@@ -1,28 +1,23 @@
 import {
-  Box,
-  Typography,
-  makeStyles,
-  List,
+  Box, Button, List,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  Button,
+  ListItemText, makeStyles, Typography
 } from "@material-ui/core";
-import { useHistory } from "react-router";
-import moment from "moment";
 import Grid from "@material-ui/core/Grid";
-import React, { useEffect, useState } from "react";
-import EventIcon from "@material-ui/icons/Event";
+import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
-import { useParams } from "react-router-dom";
 import ScheduleIcon from "@material-ui/icons/Schedule";
+import StarIcon from "@material-ui/icons/Star";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 import firebase from "../../../firebaseapp";
 import { packageImage } from "../../../shared/util/packageImage";
+import t from '../../../shared/util/trans';
 import DoveHeader from "../../Header/DoveHeader";
 import Footer from "../../Home/components/Footer";
-import StarIcon from "@material-ui/icons/Star";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import t from '../../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
@@ -89,25 +84,12 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
             <List component="ul">
               <ListItem>
                 <ListItemIcon>
-                  <EventIcon />
-                </ListItemIcon>
-                <ListItemText className={classes.sectionText}>
-                  Tentative Checkout Date is{" "}
-                  <span className={classes.sectionDateText}>
-                    {" "}
-                    {moment(detail.checkoutDate).format("dddd DD-MMM-YYYY")}(
-                    {moment(detail.checkoutDate).fromNow()}){" "}
-                  </span>
-                </ListItemText>
-              </ListItem>
-              <ListItem>
-                <ListItemIcon>
                   <EventAvailableIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.sectionText}>
-                  Tentative Departute Date is{" "}
+                  {t('tentative-departure-date-is')}
                   <span className={classes.sectionDateText}>
-                    {" "}
+                    {' '}
                     {moment(detail.departureDate).format("dddd DD-MMM-YYYY")}(
                     {moment(detail.departureDate).fromNow()}){" "}
                   </span>
@@ -128,7 +110,7 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
               </ListItem>
               <ListItem>
                 <ListItemText className={classes.sectionText}>
-                  <span className={classes.sectionWarningText}> NOTE: </span>{" "}
+                  <span className={classes.sectionWarningText}> {t('note')} </span>{" "}
                   {t('traveling-dates-are-subject-to-change-due-to-airline-scheduling-hijri-calendar-and-any-updates-from-the-ministry-of-hajj')}
                 </ListItemText>
               </ListItem>

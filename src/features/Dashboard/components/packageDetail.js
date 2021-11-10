@@ -211,7 +211,7 @@ const PackageDetail = ({ data, caravanData }) => {
             </Grid>
             <Grid item md={6}>
               <Box
-                onClick={() => console.log("hello__world!!")}
+                onClick={() => {}}
                 className={classes.actionBox}
               >
                 <Typography className={classes.actionText}>
