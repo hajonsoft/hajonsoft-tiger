@@ -4,6 +4,7 @@ import caravanReducer from '../features/Dashboard/redux/caravanSlice';
 import pastCaravanReducer from '../features/Dashboard/redux/pastCaravanSlice';
 import visaSystemReducer from '../features/Dashboard/redux/visaSystemSlice';
 import onlineCaravanReducer from '../features/onlineCaravan/redux/onlineCaravanSlice'
+import reportReducer from "../features/Dashboard/redux/reportSlice"
 import profileReducer from '../features/Profile/redux/profileSlice'
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
         past: pastCaravanReducer,
         visaSystem: visaSystemReducer,
         online: onlineCaravanReducer,
+        report: reportReducer,
         profile: profileReducer,
     },
 })

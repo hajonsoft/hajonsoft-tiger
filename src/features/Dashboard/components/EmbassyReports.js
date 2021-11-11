@@ -6,46 +6,47 @@ import {
   Typography,
   TextField,
   Button,
+  Modal,
 } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import Table from "./Table";
 import ReactToPrint from "react-to-print";
 import Edit from "@material-ui/icons/Edit";
+import PrintableTabe from "./PrintableTable";
+import { createReport } from "../../Dashboard/redux/reportSlice";
+import { useDispatch } from "react-redux";
 
-// birthDate: "2012-02-06 00:00:00"
-// birthPlace: "UNITED STATES"
-// comments: "P,USAIBRAHIM,,ZUBAIDAH,JANNAH,,,,,,,,,,,,,,,\r\n5399269045USA1202063F2102078612848510,305764"
-// createDt: "2018-11-26 09:05:14.247000"
-// email: ""
-// gender: "Female"
-// idNumber: "539926904"
-// idNumberExpireDate: "1900-01-01 00:00:00"
-// idNumberIssueDate: "1900-01-01 00:00:00"
-// name: "ZUBAIDAH JANNAH IBRAHIM"
-// nameArabic: "ZUBAIDAH JANNAH IBRAHIM"
-// nationality: "United States"
-// onSoftId: 1
-// passExpireDt: "2021-02-07 00:00:00"
-// passIssueDate: "2016-02-08 00:00:00"
-// passPlaceOfIssue: "USDS"
-// passportNumber: "539926904"
-// phone: "732-479-2711"
-// profession: "Infant"
-// relationship: "Father"
-// _fid: "416187"
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
-});
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #fff",
+    borderRadius: 5,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    left: 0,
+    right: 0,
+    top: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom: "1rem",
+  },
+}));
 
-const EmbassyReports = ({ passengers }) => {
-  const [data] = useState(passengers);
+const EmbassyReports = ({ passengers, caravanName }) => {
+  const [data, setData] = useState(passengers);
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles();
-  const [columns,] = useState([
+  const [columns, setColumns] = useState([
     {
       Header: "Name",
       accessor: "name",
@@ -63,11 +64,65 @@ const EmbassyReports = ({ passengers }) => {
       accessor: "profession",
     },
   ]);
+  const [openSaveModal, setOpenSaveModal] = useState("");
+  const [saveReportName, setSaveReportName] = useState("");
   const inputRef = useRef(null);
-
+  const printTableRef = useRef();
+  const dispatch = useDispatch();
 
   return (
     <Box>
+      <Modal
+        open={openSaveModal}
+        onClose={() => {
+          setSaveReportName("");
+          setOpenSaveModal(false);
+        }}
+      >
+        <Box className={classes.paper}>
+          <Typography className={classes.title}>New Report Name</Typography>
+          <Grid item xs={12}>
+            <TextField
+              value={saveReportName}
+              onChange={(e) => {
+                const { value } = e.target;
+                setSaveReportName(value);
+              }}
+              label="Report Name"
+              style={{ width: "100%", marginBottom: "1rem" }}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              style={{
+                background: "rgb(227, 242, 253)",
+                textTransform: "none",
+                color: "#03a9f4",
+                paddingLeft: "2rem",
+                paddingRight: "2rem",
+              }}
+              onClick={() => {
+                dispatch(
+                  createReport({
+                    reportName: saveReportName,
+                    reportData: { columns, data },
+                    caravanName,
+                  })
+                );
+                setSaveReportName("");
+                setOpenSaveModal(false);
+                // window.alert("Report has been saved successfully.")
+              }}
+            >
+              Save
+            </Button>
+          </Grid>
+        </Box>
+      </Modal>
       <Grid
         container
         className={classes.root}
@@ -115,7 +170,7 @@ const EmbassyReports = ({ passengers }) => {
                   textTransform: "none",
                   color: "#03a9f4",
                   paddingLeft: "2rem",
-                  paddingRight: "2rem"
+                  paddingRight: "2rem",
                 }}
                 variant="contained"
                 color="primary"
@@ -123,12 +178,70 @@ const EmbassyReports = ({ passengers }) => {
                 Print
               </Button>
             )}
-            // content={() => componentRef.current}
+            content={() => printTableRef.current}
           />
+          <Button
+            style={{
+              paddingLeft: "2rem",
+              paddingRight: "2rem",
+              marginLeft: "1rem",
+            }}
+            onClick={() => setOpenSaveModal(true)}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
 
-      <Table columns={columns} data={data} />
+      <div style={{ display: "none" }}>
+        <PrintableTabe ref={printTableRef} columns={columns} data={data} />
+      </div>
+
+      <Table
+        columns={columns}
+        data={data}
+        onFilterColumn={(isFiltering) => {
+          if (isFiltering) {
+            setColumns((prev) => [{ Header: "", accessor: "delete" }, ...prev]);
+            setData((prev) => prev.map((d) => ({ ...d, delete: "" })));
+          } else {
+            setColumns((prev) =>
+              prev.filter((val) => val.accessor !== "delete")
+            );
+            setData((prev) => {
+              delete prev.delete;
+              return prev;
+            });
+          }
+        }}
+        onDeleteColumn={(columnAccessor) => {
+          setColumns((prev) =>
+            prev.filter((column) => column.accessor !== columnAccessor)
+          );
+        }}
+        onNewColumn={(newColumn) => {
+          setColumns((prev) => [...prev, newColumn]);
+        }}
+        onDeleteRow={(rowId) => {
+          setData((prev) => prev.filter((d) => d._fid !== rowId));
+        }}
+        onEditColumn={(editColumnData) => {
+          setColumns((prev) => {
+            return prev.map((column) => {
+              if (column.accessor === editColumnData.oldHeader) {
+                return {
+                  ...column,
+                  Header: editColumnData.newHeader,
+                };
+              }
+
+              return column;
+            });
+          });
+        }}
+      />
     </Box>
   );
 };

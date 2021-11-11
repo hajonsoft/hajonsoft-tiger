@@ -12,8 +12,7 @@ import {
   ButtonGroup,
   Tab,
 } from "@material-ui/core";
-//TODO:PKG Redesign, talk to customers to get feedback
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
@@ -24,6 +23,9 @@ import {
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
+import ReportListItem from "./ReportListItem";
+import BarChartRoundedIcon from "@material-ui/icons/BarChartRounded";
+import { getAllCaravanReports } from "../../Dashboard/redux/reportSlice";
 
 const useStyles = makeStyles({
   actionBox: {
@@ -81,10 +83,19 @@ const PackageDetail = ({ data, caravanData }) => {
   const caravans = JSON.parse(
     JSON.stringify(useSelector((state) => state.caravan?.data))
   );
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  // const componentRef = useRef();
+  // const reportLoading = useSelector((state) => state.report?.loading);
+  // const reportError = useSelector((state) => state.report?.error);
+  const reports = useSelector((state) => state.report?.data);
+
+  console.log(reports[data.name], "REPORTS DATA !!");
+
+  useEffect(() => {
+    dispatch(getAllCaravanReports({ caravanName: data.name }));
+  }, [dispatch, data.name]);
 
   const handleOnTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -92,18 +103,16 @@ const PackageDetail = ({ data, caravanData }) => {
 
   const caravanHistoryHandler = async (isUpcoming) => {
     if (!isUpcoming) {
-      const pastResult = await dispatch(
+      await dispatch(
         setPastCaravan({ name: data.name, passengers: caravanData[data.name] })
       );
-      console.log(pastResult, "past result!!!");
     } else {
-      const pastResult = await dispatch(
+       await dispatch(
         setUpcomingCaravan({
           name: data.name,
           passengers: caravanData[data.name],
         })
       );
-      console.log(pastResult, "past result!!!");
     }
   };
 
@@ -260,8 +269,33 @@ const PackageDetail = ({ data, caravanData }) => {
           </Grid>
         </TabPanel>
 
+        <TabPanel value={activeTab} index={3}>
+          <Typography
+            style={{
+              fontSize: "20px",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              paddingBottom: ".25rem",
+              borderBottom: "1px solid #ccc",
+            }}
+          >
+            <BarChartRoundedIcon color="primary" fontSize="large" /> Reports
+          </Typography>
+          {reports[data.name] &&
+            Object.keys(reports[data.name]).map((reportName) => {
+              const reportObj = reports[data.name][reportName];
+              return (
+                <ReportListItem
+                  name={Object.keys(reportObj)[0]}
+                  caravanName={data.name}
+                  printingData={ reportObj[Object.keys(reportObj)[0]] }
+                />
+              );
+            })}
+        </TabPanel>
+
         <TabPanel value={activeTab} index={4}>
-          <EmbassyReports passengers={caravans[data.name]} />
+          <EmbassyReports passengers={caravans[data.name]} caravanName={data.name} />
         </TabPanel>
       </Paper>
     </>
