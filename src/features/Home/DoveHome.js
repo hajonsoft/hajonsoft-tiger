@@ -1,6 +1,6 @@
 import React from "react";
 import DoveHeader from "../Header/DoveHeader";
-import Advertisements from "../onlinePackage/components/Advertisements";
+import Advertisements from "../onlineCaravan/components/Advertisements";
 import Footer from "./components/Footer";
 import ImportantDates from "./components/importantDates";
 import { Grid } from "@material-ui/core";
@@ -10,8 +10,6 @@ const DoveHome = ({ lang, onLanguageChange }) => {
     <Grid
       container
       direction="column"
-      spacing={2}
-      style={{ minHeight: "100vh" }}
     >
       <Grid item>
         <DoveHeader />

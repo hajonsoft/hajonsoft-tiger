@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { flatten } from '../../../redux/helpers';
 import firebase from './../../../firebaseapp';
 
 export const getUpcomingCaravans = createAsyncThunk('caravan/upcoming', async () => {
     const result = await firebase.database().ref('/customer').once('value');
-    return flatten(result)
+    return flatten(result, "caravan");
 });
 
 export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (name) => {
@@ -72,22 +73,6 @@ export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-pas
         console.log(err)
     }
 })
-
-const flatten = (snapshot) => {
-    const output = {};
-    const data = snapshot.toJSON();
-    if (!data) return { 'No Caravans Found': [{ _fid: '0', name: 'No Travellers Found' }] }
-    const caravans = Object.keys(data);
-
-    caravans.forEach(caravan => {
-        const fireIds = Object.keys(data[caravan])
-        output[caravan] = []
-        fireIds.forEach(_fid => {
-            output[caravan].push({ ...data[caravan][_fid], _fid })
-        })
-    })
-    return output;
-}
 
 
 const caravanSlice = createSlice({

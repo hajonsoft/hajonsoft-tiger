@@ -1,24 +1,22 @@
-import { Box, Grid } from "@material-ui/core";
+import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Animated } from "react-animated-css";
-import firebase from "../../../firebaseapp";
-import AdvertisementCard from "./AdvertisementCard";
+import { useDispatch, useSelector } from "react-redux";
 import interested from "../../../images/interested.svg";
+import { getOnlineCaravans } from "../redux/onlineCaravanSlice";
+import AdvertisementCard from "./AdvertisementCard";
 
 const Advertisements = () => {
-  const [advertisements, setOnlinePackages] = useState([]);
-  
+  const dispatch = useDispatch();
+
+  const advertisements = useSelector(state => state.online?.data);
+  const loading = useSelector(state => state.online?.loading);
+
   useEffect(() => {
-    firebase
-      .database()
-      .ref("/protected/onlinePackage")
-      .once("value", (snapshot) => {
-        if (snapshot.toJSON()) {
-          setOnlinePackages(Object.values(snapshot.toJSON()));
-        }
-      });
-  }, []);
+    dispatch(getOnlineCaravans());
+  }, [dispatch])
+
 
   const isCurrent = (p) => {
     return (
@@ -26,15 +24,26 @@ const Advertisements = () => {
       moment(p.returnDate).isAfter(moment())
     );
   };
+
   return (
     <Grid
       container
       spacing={3}
       justify="space-around"
       alignItems="center"
-      style={{ padding: "2rem" }}
+      style={{ padding: "2rem", minHeight: '80vh' }}
     >
-      {advertisements &&
+      {loading && <Grid container spacing={4} justify="center" alignItems="center">
+
+        <Grid item>
+          <CircularProgress size={64}/>
+        </Grid>
+        <Grid item>
+          <Typography variant="h4" color="textPrimary">Loading</Typography>
+        </Grid>
+
+      </Grid>}
+      {!loading && advertisements && advertisements.length &&
         advertisements.map(
           (advertisement, index) =>
             isCurrent(advertisement) && (
