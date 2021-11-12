@@ -145,5 +145,7 @@
   "hajj-packages": "Forfaits Hajj",
   "loading-caravans": "chargement des caravanes",
   "social-media": "Des médias sociaux",
-  "tentative-departure-date-is": "La date de départ provisoire est"
+  "tentative-departure-date-is": "La date de départ provisoire est",
+  "loading": "Chargement",
+  "past-caravans": "Caravanes passées"
 }

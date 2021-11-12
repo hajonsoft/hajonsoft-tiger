@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Animated } from "react-animated-css";
 import { useDispatch, useSelector } from "react-redux";
 import interested from "../../../images/interested.svg";
+import t from '../../../shared/util/trans';
 import { getOnlineCaravans } from "../redux/onlineCaravanSlice";
 import AdvertisementCard from "./AdvertisementCard";
 
@@ -25,6 +26,7 @@ const Advertisements = () => {
     );
   };
 
+
   return (
     <Grid
       container
@@ -39,7 +41,7 @@ const Advertisements = () => {
           <CircularProgress size={64}/>
         </Grid>
         <Grid item>
-          <Typography variant="h4" color="textPrimary">Loading</Typography>
+          <Typography variant="h4" color="textPrimary">{t('loading')}</Typography>
         </Grid>
 
       </Grid>}

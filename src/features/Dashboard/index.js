@@ -46,6 +46,7 @@ import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
 import { deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
+import { getPastCaravans } from "./redux/pastCaravanSlice";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -75,15 +76,17 @@ const tableIcons = {
 
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
+  const [isPast, setIsPast] = useState(false);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
   const caravans = useSelector(state => state.caravan?.data);
+  const pastCaravans = useSelector(state => state.past?.data);
   const loading = useSelector(state => state.caravan.loading);
   const error = useSelector(state => state.caravan?.error);
 
   const [state, setState] = useState({ mode: "list", record: {} });
   const history = useHistory();
-  const title = t('caravan');
+  const title = !isPast ? t('caravan') : t('past-caravans');
 
   useEffect(() => {
     dispatch(getUpcomingCaravans());
@@ -155,6 +158,28 @@ const Dashboard = () => {
     setActiveTab(value);
   };
 
+  const handleUpcomingCaravanClick = () => {
+    setIsPast(false);
+  };
+
+  const handlePastCaravanClick = () => {
+    dispatch(getPastCaravans());
+    setIsPast(true);
+  };
+
+  const getData = () => {
+    if (isPast) {
+      return Object.keys(pastCaravans).map((v) => ({
+        name: v,
+        total: pastCaravans[v].length,
+      }));
+    }
+    return Object.keys(caravans).map((v) => ({
+      name: v,
+      total: caravans[v].length,
+    }));
+
+  }
   return (
     <React.Fragment>
       <div
@@ -196,8 +221,8 @@ const Dashboard = () => {
                 textColor="primary"
                 onChange={handleOnTabChange}
               >
-                <Tab label={t("upcoming")} style={{ textTransform: "none" }} />
-                <Tab label={t("past")} style={{ textTransform: "none" }} />
+                <Tab label={t("upcoming")} style={{ textTransform: "none" }} onClick={handleUpcomingCaravanClick} />
+                <Tab label={t("past")} style={{ textTransform: "none" }} onClick={handlePastCaravanClick} />
               </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
@@ -225,16 +250,9 @@ const Dashboard = () => {
                     field: "total",
                   },
                 ]}
-                data={
-                  caravans
-                    ? Object.keys(caravans).map((v) => ({
-                        name: v,
-                        total: caravans[v].length,
-                      }))
-                    : []
-                }
+                data={getData()}
                 detailPanel={(rowData) => (
-                  <PackageDetail data={rowData} caravanData={caravans} />
+                  <PackageDetail data={rowData} caravanData={isPast ? pastCaravans : caravans} />
                 )}
                 actions={[
                   {
@@ -245,15 +263,18 @@ const Dashboard = () => {
                     onClick: (event) =>
                       setState((st) => ({ ...st, mode: "create" })),
                   },
+                  !isPast && 
                   {
                     icon: () => <tableIcons.ApplyVisa color="primary" />,
                     tooltip: `Apply for visa`,
                     name: 'apply',
                     onClick: (event, rowData) => {
+                      if (isPast) return;
                       setApplyForVisaOpen(true);
                       setState((st) => ({ ...st, record: rowData }));
                     },
                   },
+                  !isPast && 
                   {
                     icon: () => <tableIcons.Delete color="error" />,
                     name: 'delete',
@@ -268,37 +289,37 @@ const Dashboard = () => {
                 ]}
                 components={{
                   Action: props => (
-                  <div style={{width: '150px'}}>
-                  {props.action.name === 'apply' && 
-                    <Button
-                      onClick={(event) => props.action.onClick(event, props.data)}
-                      color="primary"
-                      variant="outlined"
-                      style={{textTransform: 'none'}}
-                      size="small"
-                      endIcon={<SendOutlined />}
-                    >
-                      Apply for visa
-                    </Button>
-                    }
-                    {props.action.name === 'delete' && 
-                    <IconButton
-                      onClick={(event) => props.action.onClick(event, props.data)}
-                      color="error"
-                      size="small"
-                    >
-                      <DeleteOutlined />
-                    </IconButton>
-                    }
-                    {props.action.name === 'add' && 
-                    <IconButton
-                      onClick={(event) => props.action.onClick(event, props.data)}
-                      color="primary"
-                      size="large"
-                    >
-                      <AddCircleOutline />
-                    </IconButton>
-                    }
+                    <div style={{ width: '150px' }}>
+                      {props.action.name === 'apply' &&
+                        <Button
+                          onClick={(event) => props.action.onClick(event, props.data)}
+                          color="primary"
+                          variant="outlined"
+                          style={{ textTransform: 'none' }}
+                          size="small"
+                          endIcon={<SendOutlined />}
+                        >
+                          Apply for visa
+                        </Button>
+                      }
+                      {props.action.name === 'delete' &&
+                        <IconButton
+                          onClick={(event) => props.action.onClick(event, props.data)}
+                          color="error"
+                          size="small"
+                        >
+                          <DeleteOutlined />
+                        </IconButton>
+                      }
+                      {props.action.name === 'add' &&
+                        <IconButton
+                          onClick={(event) => props.action.onClick(event, props.data)}
+                          color="primary"
+                          size="large"
+                        >
+                          <AddCircleOutline />
+                        </IconButton>
+                      }
                     </div>
                   ),
                 }}
