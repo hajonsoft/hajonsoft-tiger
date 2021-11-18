@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Redirect } from "react-router-dom";
-import Customers from "./features/customer";
+import Passengers from "./features/passengers";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
@@ -110,7 +110,7 @@ function App() {
               <Help />
             </PrivateRoute>
             <PrivateRoute path="/:packageName/customers">
-              <Customers />
+              <Passengers />
             </PrivateRoute>
             <PrivateRoute path="/favorite">
               <Favorite />
