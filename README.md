@@ -1,4 +1,7 @@
+
 [![GitHub issues](https://img.shields.io/github/issues/hajonsoft/hajonsoft-tiger)](https://github.com/hajonsoft/hajonsoft-tiger/issues)
+[![forhajjnow](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml)[![harmoniatravel-2021](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/harmoniatravel-2021.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/harmoniatravel-2021.yml)[![darelsalam-usa](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/darelsalam-usa.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/darelsalam-usa.yml)[![travelking-melbourne](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/travelking-melbourne.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/travelking-melbourne.yml)[![cashlessplus-2021](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/cashlessplus-2021.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/cashlessplus-2021.yml)[![safar-omra-france](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/safar-omra-france.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/safar-omra-france.yml)
+
  ### HAJonSoft Tiger
  ---
 
@@ -25,9 +28,6 @@ For redux code walkthrough see video (public)
 https://drive.google.com/file/d/1gl3-zDJ306pjZTFNpzU6rxknu-n1I-oT/view?usp=sharing
 ### Environment Resolution
 ---
-
-[![forhajjnow](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml/badge.svg?branch=master)](https://github.com/hajonsoft/hajonsoft-tiger/actions/workflows/forhajj.yml)
-
 
 To start Nest locally and connect to specific Munazim change src/firebaseConfig.js
 
