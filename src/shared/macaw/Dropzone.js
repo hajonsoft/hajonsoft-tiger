@@ -14,7 +14,7 @@ import { nationalities } from "../../data/nationality";
 import firebase from "../../firebaseapp";
 import Worker from "../../workers/parser.worker";
 import firebaseArabicName from "../../features/arabicName/firebaseArabicName";
-import CustomerImportCard from "../../features/customer/components/CustomerImportCard";
+import CustomerImportCard from "../../features/passengers/components/CustomerImportCard";
 import t from '../../shared/util/trans';
 const storage = firebase.storage();
 

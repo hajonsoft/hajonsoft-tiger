@@ -50,11 +50,11 @@ export const updatePassenger = createAsyncThunk('caravan/update-passenger', asyn
     return passenger;
 })
 
-export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({ name, passenger }) => {
-    const removeRef = firebase.database().ref(`/customer/${name}/${passenger._fid}`);
+export const deletePassenger = createAsyncThunk('caravan/delete-passenger', async ({ packageName, passenger }) => {
+    const removeRef = firebase.database().ref(`/customer/${packageName}/${passenger._fid}`);
     removeRef.remove();
     try {
-        if (passenger && passenger.nationality && passenger.passportNumber && name !== 'online') {
+        if (passenger && passenger.nationality && passenger.passportNumber && packageName !== 'online') {
             const photoRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`);
             photoRef.delete();
             const passportRef = firebase.storage().ref(`${passenger.nationality}/${passenger.passportNumber}_passport.jpg`);
