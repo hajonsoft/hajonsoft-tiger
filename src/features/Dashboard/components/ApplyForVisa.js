@@ -138,6 +138,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const [emailSuccess, setEmailSuccess] = useState();
 
   async function sendEmail() {
+    setSendingMail(true);
     const travellersData = getPassengersJSON(selectedPassengers);
 
     for (let index = 0; index < travellersData.length; index++) {
@@ -215,7 +216,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       }
     }
 
-    setSendingMail(true);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const zipData = {
       system: {
@@ -239,9 +239,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     });
 
     const data = {
-      summary: `vpx:${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})`,
-      description: `${travellersData.map(traveller => traveller.name)}`,
+      summary: `${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})`,
+      description: `${JSON.stringify(travellersData.map(traveller => traveller.name), null, 2)}`,
       variable_7e6p61s: base64,
+      embassy: 'under construction',
     };
 
     emailjs
@@ -253,7 +254,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       )
       .then(
         (result) => {
-          console.log(result.text);
           setEmailSuccess(true);
         },
         (error) => {
