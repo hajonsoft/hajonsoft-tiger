@@ -68,7 +68,7 @@ const tableIcons = {
     <FavoriteBorderIcon {...props} ref={ref} />
   )),
 };
-const Customers = () => {
+const Passengers = () => {
   let { packageName } = useParams();
   const dispatch = useDispatch();
 
@@ -333,4 +333,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Passengers;
