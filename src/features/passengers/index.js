@@ -229,7 +229,7 @@ const Passengers = () => {
                               <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
                             }
                             {
-                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: 'grey', width: '100%', height: '100%' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: 'grey', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
                             }
                                                         {
                               dayjs(rowData.passExpireDt).diff(dayjs(), "month") >= 12 && <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}></div>
