@@ -39,6 +39,7 @@ import CRUDForm from "./components/CRUDForm";
 import CustomerDetail from "./components/CustomerDetail";
 import { deletePassenger, getUpcomingCaravans, updatePassenger } from "../Dashboard/redux/caravanSlice";
 import t from '../../shared/util/trans';
+import dayjs from "dayjs";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -149,7 +150,7 @@ const Passengers = () => {
   };
 
   const handleOnConfirmDelete = (passenger) => {
-    dispatch(deletePassenger({packageName, passenger}))
+    dispatch(deletePassenger({ packageName, passenger }))
     setState((st) => ({ ...st, mode: "list", record: {} }))
   }
 
@@ -203,7 +204,6 @@ const Passengers = () => {
                   render: (rowData) =>
                     rowData.birthDate && (
                       <Chip
-                        color="primary"
                         avatar={
                           <Avatar>
                             {moment(rowData.birthDate).isValid() && moment().diff(rowData.birthDate, "years")}
@@ -214,7 +214,33 @@ const Passengers = () => {
                       />
                     ),
                 },
-                { title: t('email'), field: "email" },
+                {
+                  title: t('expire-date'),
+                  field: "Expire date",
+                  render: (rowData) =>
+                    rowData.passExpireDt && (
+                      <Chip
+                        avatar={
+                          <Avatar>
+                            {
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 0 && <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%' }}></div>
+                            }
+                            {dayjs(rowData.passExpireDt).isValid() && dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 0 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 6 &&
+                              <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
+                            }
+                            {
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: 'grey', width: '100%', height: '100%' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
+                            }
+                                                        {
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") >= 12 && <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}></div>
+                            }
+                          </Avatar>
+                        }
+                        variant="outlined"
+                        label={dayjs(rowData.passExpireDt).format("DD-MMM-YYYY")}
+                      />
+                    ),
+                }
               ]}
 
               data={passengers}

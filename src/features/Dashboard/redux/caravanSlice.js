@@ -38,6 +38,13 @@ export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (n
     removeRef.remove();
 });
 
+export const deleteExpiredPassports = createAsyncThunk('caravan/delete-expired', async ({passengers, caravan}) => {
+    for (const passenger of passengers) {
+        const removeRef = firebase.database().ref(`/customer/${caravan.split('/').filter(part => !!part).join('/')}/${passenger._fid}`);
+        removeRef.remove();
+    }
+});
+
 
 export const createPassenger = createAsyncThunk('caravan/create-passenger', async ({ name, passenger }) => {
     const result = await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
@@ -130,6 +137,18 @@ const caravanSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(deleteUpcomingCaravan.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(deleteExpiredPassports.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteExpiredPassports.fulfilled, (state, action) => {
+            const deletedIds = action.meta.arg.passengers.map(p => p._fid);
+            state.data[action.meta.arg.caravan] = state.data[action.meta.arg.caravan].filter(p => !deletedIds.includes(p._fid));
+            state.loading = false;
+        });
+        builder.addCase(deleteExpiredPassports.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });
