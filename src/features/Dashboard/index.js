@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
+  Chip,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -14,6 +14,7 @@ import {
   Typography
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AddCircleOutline, SendOutlined } from "@material-ui/icons";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -35,6 +36,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
+import dayjs from "dayjs";
 import MaterialTable from "material-table";
 import moment from "moment";
 import React, { forwardRef, useEffect, useState } from "react";
@@ -45,8 +47,9 @@ import t from '../../shared/util/trans';
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import { deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
+import { deleteExpiredPassports, deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
 import { getPastCaravans } from "./redux/pastCaravanSlice";
+import { faPassport } from "@fortawesome/free-solid-svg-icons";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -77,6 +80,7 @@ const tableIcons = {
 const Dashboard = () => {
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [isPast, setIsPast] = useState(false);
+  const [holdData, setHoldData] = useState([]);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
   const caravans = useSelector(state => state.caravan?.data);
@@ -85,13 +89,14 @@ const Dashboard = () => {
   const error = useSelector(state => state.caravan?.error);
 
   const [state, setState] = useState({ mode: "list", record: {} });
+  const [showConfirmDeleteExpired, setShowConfirmDeleteExpired] = useState(false);
   const history = useHistory();
   const title = !isPast ? t('caravan') : t('past-caravans');
 
   useEffect(() => {
     dispatch(getUpcomingCaravans());
     window.scrollTo(0, 0);
-  }, []);
+  }, [dispatch]);
 
   const Title = () => {
     return (
@@ -154,6 +159,11 @@ const Dashboard = () => {
     setState((st) => ({ ...st, mode: "list", record: {} }));
   };
 
+  const handleOnConfirmDeleteExpired = () => {
+    dispatch(deleteExpiredPassports({passengers: holdData.expired, caravan: holdData.name}));
+    setShowConfirmDeleteExpired(false);
+  };
+
   const handleOnTabChange = (e, value) => {
     setActiveTab(value);
   };
@@ -172,14 +182,22 @@ const Dashboard = () => {
       return Object.keys(pastCaravans).map((v) => ({
         name: v,
         total: pastCaravans[v].length,
+        expired: pastCaravans[v].filter(c => dayjs(c.passExpireDt).isAfter(dayjs().add(6,'month'))),
       }));
     }
     return Object.keys(caravans).map((v) => ({
       name: v,
       total: caravans[v].length,
+      expired: caravans[v].filter(c => dayjs(c.passExpireDt).isAfter(dayjs().add(-6,'month'))),
     }));
 
   }
+
+  const handleDeleteExpired = (caravan) => {
+    setHoldData(caravan);
+    setShowConfirmDeleteExpired(true);
+  };
+
   return (
     <React.Fragment>
       <div
@@ -249,6 +267,24 @@ const Dashboard = () => {
                     title: t("total"),
                     field: "total",
                   },
+                  {
+                    title: t("expired-passports"),
+                    field: "expired",
+                    render: (rowData) => (
+                      <div>
+                        {!loading && rowData?.expired?.length > 0 ? <Chip label={rowData.expired.length}
+                          variant="outlined"
+                          color="error"
+                          onDelete={() => handleDeleteExpired(rowData)}
+                          icon={
+                            <FontAwesomeIcon
+                              color="#d32f2f"
+                              icon={faPassport}
+                            />}
+                        /> : null}
+                      </div>
+                    ),
+                  },
                 ]}
                 data={getData()}
                 detailPanel={(rowData) => (
@@ -263,7 +299,7 @@ const Dashboard = () => {
                     onClick: (event) =>
                       setState((st) => ({ ...st, mode: "create" })),
                   },
-                  !isPast && 
+                  !isPast &&
                   {
                     icon: () => <tableIcons.ApplyVisa color="primary" />,
                     tooltip: `Apply for visa`,
@@ -274,7 +310,7 @@ const Dashboard = () => {
                       setState((st) => ({ ...st, record: rowData }));
                     },
                   },
-                  !isPast && 
+                  !isPast &&
                   {
                     icon: () => <tableIcons.Delete color="error" />,
                     name: 'delete',
@@ -385,6 +421,38 @@ const Dashboard = () => {
           </Button>
           <Button
             onClick={() => handleOnConfirmDelete()}
+            style={{ backgroundColor: "#ef5350", color: "#fff" }}
+            variant="contained"
+            autoFocus
+          >
+            {t("delete")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={showConfirmDeleteExpired}
+        onClose={() =>
+          setShowConfirmDeleteExpired(false)
+        }
+      >
+        <DialogTitle>are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {`${holdData?.expired?.length} passport expire before ${dayjs().add(6,'month').format('dddd DD-MMMM-YYYY')}. [less than six month from today ${dayjs().format('dddd DD-MMMM-YYYY')}]`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() =>
+              setShowConfirmDeleteExpired(false)
+            }
+            color="error"
+            variant="outlined"
+          >
+            {t("cancel")}
+          </Button>
+          <Button
+            onClick={() => handleOnConfirmDeleteExpired()}
             style={{ backgroundColor: "#ef5350", color: "#fff" }}
             variant="contained"
             autoFocus
