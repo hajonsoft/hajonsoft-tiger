@@ -182,13 +182,13 @@ const Dashboard = () => {
       return Object.keys(pastCaravans).map((v) => ({
         name: v,
         total: pastCaravans[v].length,
-        expired: pastCaravans[v].filter(c => dayjs(c.passExpireDt).isAfter(dayjs().add(6,'month'))),
+        expired: pastCaravans[v].filter(c => dayjs(c.passExpireDt).isBefore(dayjs().add(6,'month'))),
       }));
     }
     return Object.keys(caravans).map((v) => ({
       name: v,
       total: caravans[v].length,
-      expired: caravans[v].filter(c => dayjs(c.passExpireDt).isAfter(dayjs().add(-6,'month'))),
+      expired: caravans[v].filter(c => dayjs(c.passExpireDt).isBefore(dayjs().add(-6,'month'))),
     }));
 
   }

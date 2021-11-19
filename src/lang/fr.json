@@ -148,5 +148,6 @@
   "tentative-departure-date-is": "La date de départ provisoire est",
   "loading": "Chargement",
   "past-caravans": "Caravanes passées",
-  "expired-passports": "Expiré"
+  "expired-passports": "Expiré",
+  "expire-date": "Date d'expiration"
 }
