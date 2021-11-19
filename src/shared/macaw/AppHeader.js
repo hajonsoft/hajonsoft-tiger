@@ -11,11 +11,12 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import _ from "lodash";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { signoutWithGoogle } from "../../features/SignIn/redux/authSlice";
 import firebaseConfig from "../../firebaseConfig";
 import t from '../util/trans';
-import { signoutWithGoogle } from "../../features/SignIn/redux/authSlice";
 
 const AppHeader = () => {
   const authData = useSelector(state => state.auth?.data);
@@ -48,6 +49,9 @@ const AppHeader = () => {
 
   return (
     <AppBar position="static">
+      <Helmet>
+        <title>{`🐦| ${projectName}`}</title>
+      </Helmet>
       <Toolbar style={{ color: "#fff" }}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={2}>
@@ -110,7 +114,7 @@ const AppHeader = () => {
               </Button>
             </Grid>
             <Grid item>
-              <img src={authData.photoURL} alt="profile" style={{width: '32px', height: '32px', borderRadius: '16px'}} />
+              <img src={authData.photoURL} alt="profile" style={{ width: '32px', height: '32px', borderRadius: '16px' }} />
             </Grid>
             <Grid item>
               <Button onClick={handleLogout}>

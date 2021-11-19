@@ -24,7 +24,7 @@ const DoveHeader = () => {
     return (
         <AppBar position="static" style={{ backgroundColor: 'white', boxShadow: "none" }}>
             <Helmet>
-                <title>{profile.name}</title>
+                <title>{`🕊️| ${profile.name}`}</title>
             </Helmet>
             <Toolbar>
                 <Grid container justify="space-between" alignItems="center">

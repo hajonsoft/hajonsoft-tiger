@@ -223,15 +223,15 @@ const Passengers = () => {
                         avatar={
                           <Avatar>
                             {
-                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 0 && <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%' }}></div>
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 0 && <div style={{ backgroundColor: '#e53935', width: '100%', height: '100%' }}></div>
                             }
                             {dayjs(rowData.passExpireDt).isValid() && dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 0 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 6 &&
                               <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
                             }
                             {
-                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: 'grey', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
+                              dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: '#ffcdd2', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
                             }
-                                                        {
+                            {
                               dayjs(rowData.passExpireDt).diff(dayjs(), "month") >= 12 && <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}></div>
                             }
                           </Avatar>
