@@ -233,16 +233,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     };
     const zip = await zipWithPhotos(zipData, null);
 
-    const base64 = await zip.generateAsync({
+    const bundleFile = await zip.generateAsync({
       type: "base64",
       mimeType: "application/zip"
     });
 
     const data = {
-      summary: `${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})`,
-      description: `${JSON.stringify(travellersData.map(traveller => traveller.name), null, 2)}`,
-      variable_7e6p61s: base64,
-      embassy: 'under construction',
+      summary: `${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})\n   node . file=bundle.zip`,
+      description: `${JSON.stringify(travellersData.map(traveller => `${traveller.name?.full}-${traveller.nationality?.name}`), null, 2)}`,
+      variable_7e6p61s: bundleFile,
+      embassy: 'embassy: undefined',
     };
 
     emailjs

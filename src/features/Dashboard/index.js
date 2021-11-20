@@ -335,7 +335,7 @@ const Dashboard = () => {
                           size="small"
                           endIcon={<SendOutlined />}
                         >
-                          Apply for visa
+                          {t('apply-for-visa')}
                         </Button>
                       }
                       {props.action.name === 'delete' &&
