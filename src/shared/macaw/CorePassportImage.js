@@ -1,4 +1,4 @@
-import { Card, CardContent, Link } from "@material-ui/core";
+import { Card, CardContent, CircularProgress, Grid, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import firebase from "../../firebaseapp";
@@ -36,6 +36,7 @@ const useStyles = makeStyles({
 
 const CorePassportImage = ({ record, setImage }) => {
   const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(true);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const classes = useStyles();
 
@@ -56,12 +57,21 @@ const CorePassportImage = ({ record, setImage }) => {
   useEffect(() => {
     async function getImage() {
       if (record && record.nationality && record.passportNumber) {
-        let imgUrl = await firebase
-          .storage()
-          .ref(`${record.nationality}/${record.passportNumber}_passport.jpg`)
-          .getDownloadURL();
-        if (imgUrl) {
-          setUrl(imgUrl);
+        try {
+          let imgUrl = await firebase
+            .storage()
+            .ref(`${record.nationality}/${record.passportNumber}_passport.jpg`)
+            .getDownloadURL();
+          if (imgUrl) {
+            setUrl(imgUrl);
+            const loadImg = new Image();
+            loadImg.src = imgUrl;
+            loadImg.onload = () => setLoading(false);
+          } else {
+            setLoading(false);
+          }
+        } catch {
+          setLoading(false);
         }
       }
     }
@@ -77,21 +87,30 @@ const CorePassportImage = ({ record, setImage }) => {
         onMouseLeave={() => setIsMouseOver(false)}
       >
         <CardContent>
-          <img
-            src={url}
-            alt={"passport"}
-            className={classes.imgContainer}
-            style={{ display: url ? "block" : "none" }}
-          ></img>
-          <Link
-            href="#"
-            className={classes.pickImage}
-            style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
-            onClick={() => _fileInput.click()}
-            disabled={!record.nationality || !record.passportNumber}
-          >
-            Change Passport Image
-          </Link>
+          {!loading && <div>
+            <img
+              src={url}
+              alt={"passport"}
+              className={classes.imgContainer}
+              style={{ display: url ? "block" : "none" }}
+            ></img>
+            <Link
+              href="#"
+              className={classes.pickImage}
+              style={{ display: isMouseOver && record.nationality && record.passportNumber ? "block" : "none" }}
+              onClick={() => _fileInput.click()}
+              disabled={!record.nationality || !record.passportNumber}
+            >
+              Change Passport Image
+            </Link>
+          </div>}
+          {loading &&
+            <Grid container justify="center" alignItems="center">
+              <Grid item>
+                <CircularProgress size={80} color="secondary" />
+              </Grid>
+            </Grid>
+          }
         </CardContent>
       </Card>
       <input
