@@ -1,14 +1,11 @@
 import {
   Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader, Checkbox,
+  Button, Checkbox,
   CircularProgress, Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   FormControl, FormControlLabel, Grid,
   IconButton,
   InputLabel,
@@ -26,7 +23,10 @@ import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
+import { AlternateEmail, CloudDownloadOutlined } from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add";
+import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
+import ShareOutlined from "@material-ui/icons/ShareOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import emailjs from "emailjs-com";
@@ -34,9 +34,10 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
-import t from '../../../shared/util/trans';
+import hawkImg from '../../../images/hawk.svg';
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
-import { getPassengersJSON, zipWithPhotos, getStorageUrl } from "../helpers/common";
+import t from '../../../shared/util/trans';
+import { getPassengersJSON, getStorageUrl, zipWithPhotos } from "../helpers/common";
 import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
 
 const Cryptr = require("cryptr");
@@ -605,7 +606,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                 <Grid
                   container
                   justify="space-between"
-                  alignItems="center"
                   spacing={2}
                 >
                   <Grid item md={12}>
@@ -650,93 +650,75 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item md={4}>
-                    <Card
-                      raised
-                      style={{ backgroundColor: "hsl(240,50%,90%)" }}
-                      className={classes.sendCard}
-                    >
-                      <CardHeader
-                        title={t('step-1-bundle')}
-                        subheader={downloadFileName ? downloadFileName : "Required"}
-                      />
-                      <CardContent>
-                        <Typography variant="body2">
+                  <Grid item md={12}>
+                    <Grid container justify="space-around" spacing={1}>
+                      <Grid item md={3}>
+                        <Typography variant="h5">{t('step-1-bundle')}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? downloadFileName : "Required"}</Typography>
+                        <Typography variant="caption" color="textSecondary">
                           {t('bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller')}
                         </Typography>
-                      </CardContent>
-                      <CardActions>
-                        {!downloading && (
-                          <Button onClick={handleDownloadZipFileClick}>
-                            {t('download-now')}
-                          </Button>
-                        )}
-                        {downloading && (
-                          <CircularProgress
-                            color="secondary"
-                            size={30}
-                            thickness={3}
-                            variant="indeterminate"
-                          />
-                        )}
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item md={4}>
-                    <Card
-                      raised
-                      style={{ backgroundColor: "hsl(240,50%,95%)" }}
-                      className={classes.sendCard}
-                    >
-                      <CardHeader
-                        title={t('step-2-hawk')}
-                        subheader={downloadFileName ? `node . file=${downloadFileName}` : "Optional"}
-                      />
-                      <CardContent>
-                        <Typography variant="body2">
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                          {!downloading && (
+                            <Button
+                              onClick={handleDownloadZipFileClick}
+                              startIcon={<CloudDownloadOutlined />}
+                              style={{ textTransform: 'none' }}>
+                              {t('download-now')}
+                            </Button>
+                          )}
+                          {downloading && (
+                            <CircularProgress
+                              color="secondary"
+                              size={30}
+                              thickness={3}
+                              variant="indeterminate"
+                            />
+                          )}
+                        </div>
+                      </Grid>
+                      <Grid item>
+                        <Divider orientation="vertical" />
+                      </Grid>
+                      <Grid item md={3}>
+                        <Typography variant="h5">{t('step-2-hawk')}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? `node . file=${downloadFileName}` : "Optional"}</Typography>
+                        <Typography variant="caption" color="textSecondary">
                           {t('hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting')}
                         </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button
-                          disabled={!downloadFileName}
-                          onClick={handleSendDownloadedFile}
-                        >
-                          {t('hawk-bundle')}
-                        </Button>
-                        <Button onClick={handleOpenHawk}>
-                          {t('open')}
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item md={4}>
-                    <Card
-                      raised
-                      style={{ backgroundColor: "hsl(240,50%,99%)" }}
-                      className={classes.sendCard}
-                    >
-                      <CardHeader
-                        title={t('or-visa-by-proxy')}
-                        subheader={`http://hajonsoft.on.spiceworks.com/portal`}
-                      />
-                      <CardContent>
-                        <Typography variant="body2">
-                          {t('we-use-spicework-to-manage-visa-by-proxy-tickets-email-to')}{" "}
-                          <a
-                            href={`mailto:help@hajonsoft.on.spiceworks.com?subject=visa-by-proxy [${downloadFileName}] ${selectedPassengers?.length} PAX&body=Embassy is ...`}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                          <Button
+                            disabled={!downloadFileName}
+                            onClick={handleSendDownloadedFile}
+                            style={{ textTransform: 'none' }}
+                            startIcon={<CloudUploadOutlined />}
                           >
-                            help@hajonsoft.on.spiceworks.com
-                          </a>{" "}
-                          {t('or-click-the-button-below-to-automatically-send-a-ticket-note-that-this-might-take-some-seconds-to-send')}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button onClick={sendEmail} target="_blank">
-                          {t('create-visa-by-proxy-ticket')}
-                        </Button>
-                      </CardActions>
-                    </Card>
+                            {t('hawk-bundle')}
+                          </Button>
+                          <Button onClick={handleOpenHawk}>
+                            <img src={hawkImg} alt="hawk" width="32" height="32" />
+                          </Button>
+                        </div>
+                      </Grid>
+                      <Grid item>
+                        <Divider orientation="vertical" />
+                      </Grid>
+                      <Grid item md={4}>
+                        <Typography variant="h5">{t('or-visa-by-proxy')}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{t('premium-support-service')}</Typography>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                          <Button onClick={sendEmail}
+                            style={{ textTransform: 'none' }}
+                            startIcon={<ShareOutlined />}
+                            target="_blank">
+                            {t('create-visa-by-proxy-ticket')}
+                          </Button>
+                          <IconButton onClick={() => window.open("help@hajonsoft.on.spiceworks.com")}>
+                            <AlternateEmail />
+                          </IconButton>
+                        </div>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </AccordionDetails>
