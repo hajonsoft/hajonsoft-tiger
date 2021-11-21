@@ -19,7 +19,11 @@ jobs:
         shell: bash
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HARMONIATRAVEL_2021}}
-      - run: npm ci && npm run build
+      - uses: nick-invision/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 10
+          command: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
