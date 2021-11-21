@@ -8,18 +8,22 @@ name: darelsalam-usa
       - master
 jobs:
   build_and_deploy:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - name: checkout and configure for darelsalam-usa
       - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
         shell: bash
         env:
           EXPORT_FIREBASE_CONFIG: "import firebaseConfig from './firebaseConfigs/darelsalam-usa'; export default firebaseConfig;"
       - run: 'echo $FIREBASE_CONFIG'
-        shell: bash
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DARELSALAM_USA}}
-      - run: npm ci && npm run build
+      - uses: nick-invision/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 10
+          command: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

@@ -26,7 +26,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AlternateEmail, CloudDownloadOutlined } from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add";
 import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
-import ShareOutlined from "@material-ui/icons/ShareOutlined";
+import Person from "@material-ui/icons/Person";
+import CheckCircle from "@material-ui/icons/CheckCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import emailjs from "emailjs-com";
@@ -704,12 +705,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Divider orientation="vertical" />
                       </Grid>
                       <Grid item md={4}>
-                        <Typography variant="h5">{t('or-visa-by-proxy')}</Typography>
+                        <Typography variant="h5">{t('or-visa-by-proxy')} <CheckCircle color="action" /> </Typography>
                         <Typography variant="subtitle2" color="textSecondary" gutterBottom>{t('premium-support-service')}</Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          {t('we-use-spicework-to-manage-visa-by-proxy-tickets-email-to')}
+                        </Typography>
+                        
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                           <Button onClick={sendEmail}
                             style={{ textTransform: 'none' }}
-                            startIcon={<ShareOutlined />}
+                            startIcon={<Person />}
                             target="_blank">
                             {t('create-visa-by-proxy-ticket')}
                           </Button>

@@ -1,2 +1,2 @@
-import firebaseConfig from './firebaseConfigs/hajj-umrah-2022';
+import firebaseConfig from './firebaseConfigs/breno-tours';
 export default firebaseConfig;
