@@ -82,13 +82,13 @@
   "done": "Terminé",
   "step-3-bundle-and-process": "Étape 3 : Regrouper et traiter",
   "create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket": "Créez un forfait pour le traitement Hawk ou créez un ticket \"visa par procuration\"",
-  "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk": "Un fichier groupé est requis pour Hawk ou \"visa par procuration\". \nPour installer Hawk",
+  "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk": "Un fichier passager est nécessaire pour utiliser Hawk pour windows© ou Eagle©. \nPour installer Hawk©",
   "schedule-a-meeting": "Planifier une réunion",
   "or-watch-install-video": "ou regarder la vidéo d'installation",
   "useful-links": "Liens utiles",
   "step-1-bundle": "Tâche 1 [Télécharger]",
   "bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller": "Le fichier groupé peut inclure des mots de passe et/ou des informations d'identification personnelle. \nLe temps moyen de création d'un bundle dépend de votre vitesse ~= 2 secondes par passager",
-  "download-now": "Télécharger maintenant",
+  "download-now": "Télécharger les passagers",
   "step-2-hawk": "Tâche 2 [Télécharger]",
   "hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting": "Partagez des images et des passagers avec les fournisseurs de visas pour demander un visa. \nCette tâche utilise HAJonSoft Hawk© pour Windows et les modules HAJonSoft Eagle©. \nPour une utilisation avancée, veuillez planifier une réunion.",
   "open": "Ouvert",
@@ -96,7 +96,7 @@
   "or-visa-by-proxy": "Support Premium [Technicien]",
   "we-use-spicework-to-manage-visa-by-proxy-tickets-email-to": "Partagez des passagers avec nos techniciens en un seul clic. \nNos techniciens sont hautement qualifiés pour se connecter à votre fournisseur de services et demander un visa en votre nom. \nCe service peut être facturable. \nVeuillez consulter hajonsoft.com pour les prix.",
   "or-click-the-button-below-to-automatically-send-a-ticket-note-that-this-might-take-some-seconds-to-send": "ou cliquez sur le bouton ci-dessous pour envoyer automatiquement un ticket. \nNotez que l'envoi peut prendre quelques secondes.",
-  "create-visa-by-proxy-ticket": "Embaucher un technicien et demander un visa",
+  "create-visa-by-proxy-ticket": "Embaucher un technicien pour faire une demande de visa",
   "close": "Fermer",
   "this-might-take-some-time-please-do-not-refresh-page": "Cela peut prendre un certain temps, veuillez ne pas actualiser la page",
   "couldnt-create-ticket-please-try-again": "Impossible de créer le ticket. \nVeuillez réessayer",
@@ -150,5 +150,5 @@
   "past-caravans": "Caravanes passées",
   "expired-passports": "Expiré",
   "expire-date": "Date d'expiration",
-  "premium-support-service": "Service d'assistance haut de gamme"
+  "premium-support-service": "Visa de service d'assistance premium par procuration"
 }

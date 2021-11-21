@@ -82,13 +82,13 @@
   "done": "Done",
   "step-3-bundle-and-process": "Step 3: Bundle and process",
   "create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket": "Create a bundle for Hawk processing or create \"visa by proxy\" Ticket",
-  "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk": "Bundle file is required for Hawk or \"visa by proxy\". To install Hawk",
+  "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk": "Passenger file is required to use Hawk for windows© or Eagle©. To install Hawk© ",
   "schedule-a-meeting": "Schedule a meeting",
   "or-watch-install-video": "or watch Install video",
   "useful-links": "Useful links",
   "step-1-bundle": "Task 1 [Download]",
   "bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller": "Bundle file may include passwords and/or personal identifying information. Average bundle creation time depends on your speed ~= 2 seconds per passenger",
-  "download-now": "Download now",
+  "download-now": "Download passengers",
   "step-2-hawk": "Task 2 [Upload]",
   "hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting": "Share images and passengers with visa providers to apply for visa. This task uses HAJonSoft Hawk© for windows and HAJonSoft Eagle© modules. For advanced use please schedule a meeting.",
   "open": "Open",
@@ -96,7 +96,7 @@
   "or-visa-by-proxy": "Premium Support [Technician]",
   "we-use-spicework-to-manage-visa-by-proxy-tickets-email-to": "Share passengers with our technicians in just one click. Our technicians are highly trained to connect to your service provider and apply for visa on your behalf. This service may be billable. Please check hajonsoft.com for pricing.",
   "or-click-the-button-below-to-automatically-send-a-ticket-note-that-this-might-take-some-seconds-to-send": "or click the button below to automatically send a ticket. Note that this might take some seconds to send.",
-  "create-visa-by-proxy-ticket": "Hire technician and apply for visa",
+  "create-visa-by-proxy-ticket": "Hire a technician to apply for visa",
   "close": "Close",
   "this-might-take-some-time-please-do-not-refresh-page": "This might take some time, please do not refresh page",
   "couldnt-create-ticket-please-try-again": "Couldn't create ticket. Please try again",
@@ -150,5 +150,5 @@
   "past-caravans": "Past caravans",
   "expired-passports": "Expired",
   "expire-date": "Expire date",
-  "premium-support-service": "Premium support service"
+  "premium-support-service": "Premium support service visa by proxy"
 }

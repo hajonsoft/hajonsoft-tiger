@@ -710,7 +710,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Typography variant="caption" color="textSecondary">
                           {t('we-use-spicework-to-manage-visa-by-proxy-tickets-email-to')}
                         </Typography>
-                        
+
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                           <Button onClick={sendEmail}
                             style={{ textTransform: 'none' }}
@@ -718,9 +718,13 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             target="_blank">
                             {t('create-visa-by-proxy-ticket')}
                           </Button>
-                          <IconButton onClick={() => window.open("help@hajonsoft.on.spiceworks.com")}>
-                            <AlternateEmail />
-                          </IconButton>
+                          <a
+                            href={`https://mail.google.com/mail/?view=cm&fs=1&su=visa-by-proxy&body=${selectedPassengers?.length}Pax&to=help@hajonsoft.on.spiceworks.com`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <AlternateEmail size="small" />
+                          </a>
                         </div>
                       </Grid>
                     </Grid>
