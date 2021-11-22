@@ -25,7 +25,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import ReportListItem from "./ReportListItem";
 import BarChartRoundedIcon from "@material-ui/icons/BarChartRounded";
-import { getAllCaravanReports } from "../../Dashboard/redux/reportSlice";
+import { getAllReports } from "../../Dashboard/redux/reportSlice";
 
 const useStyles = makeStyles({
   actionBox: {
@@ -94,7 +94,7 @@ const PackageDetail = ({ data, caravanData }) => {
   console.log(reports[data.name], "REPORTS DATA !!");
 
   useEffect(() => {
-    dispatch(getAllCaravanReports({ caravanName: data.name }));
+    dispatch(getAllReports({ caravanName: data.name }));
   }, [dispatch, data.name]);
 
   const handleOnTabChange = (event, newValue) => {
@@ -152,7 +152,7 @@ const PackageDetail = ({ data, caravanData }) => {
             {...a11yProps(2)}
           />
           <Tab
-            label="Embassy Reports"
+            label="Design"
             style={{ textTransform: "none" }}
             {...a11yProps(2)}
           />

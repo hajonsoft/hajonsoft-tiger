@@ -110,12 +110,10 @@ const EmbassyReports = ({ passengers, caravanName }) => {
                   createReport({
                     reportName: saveReportName,
                     reportData: { columns, data },
-                    caravanName,
                   })
                 );
                 setSaveReportName("");
                 setOpenSaveModal(false);
-                // window.alert("Report has been saved successfully.")
               }}
             >
               Save
