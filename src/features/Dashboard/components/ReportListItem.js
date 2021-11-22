@@ -3,13 +3,14 @@ import { Grid, IconButton, Typography } from "@material-ui/core";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import PrintRoundedIcon from "@material-ui/icons/PrintRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import PrintableTable from "./PrintableTable";
+// import PrintableTable from "./PrintableTable";
 import ReactToPrint from "react-to-print";
 import { deleteReport } from "../../Dashboard/redux/reportSlice";
 import { useDispatch } from "react-redux";
+import PrintableTable from "./PrintableTable";
 
 
-const ReportListItem = ({ name, caravanName, printingData }) => {
+const ReportListItem = ({ name, printingData }) => {
   const { columns, data } = printingData;
   const printTableRef = useRef();
   const dispatch = useDispatch();
@@ -34,8 +35,7 @@ const ReportListItem = ({ name, caravanName, printingData }) => {
         <Grid item md={9}>
           <Typography style={{ fontWeight: "bold" }}> {name} </Typography>
           <Typography style={{ fontStyle: "italic", fontWeight: 100 }}>
-            {" "}
-            generated from {caravanName}{" "}
+            {JSON.stringify(Object.values(columns).map(col => col.Header))}
           </Typography>
         </Grid>
         <Grid item md={2}>
@@ -49,7 +49,7 @@ const ReportListItem = ({ name, caravanName, printingData }) => {
           />
 
           <IconButton onClick={() => {
-            dispatch(deleteReport({ reportName: name, caravanName }))
+            dispatch(deleteReport({ reportName: name }))
           }} >
             <DeleteRoundedIcon color="secondary" fontSize="default" />
           </IconButton>

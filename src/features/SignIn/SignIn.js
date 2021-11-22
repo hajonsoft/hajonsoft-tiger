@@ -28,8 +28,8 @@ const SignIn = ({ onLanguageChange, lang }) => {
     <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: '100vh'}}>
 
     <Grid
-      continer
-      justify="space-between"
+      container
+      direction="column"
       style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}
     >
       <Grid item>

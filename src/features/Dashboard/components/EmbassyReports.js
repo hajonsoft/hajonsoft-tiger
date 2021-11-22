@@ -15,6 +15,7 @@ import Edit from "@material-ui/icons/Edit";
 import PrintableTabe from "./PrintableTable";
 import { createReport } from "../../Dashboard/redux/reportSlice";
 import { useDispatch } from "react-redux";
+import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EmbassyReports = ({ passengers, caravanName }) => {
+const EmbassyReports = ({ passengers }) => {
   const [data, setData] = useState(passengers);
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
@@ -109,7 +110,7 @@ const EmbassyReports = ({ passengers, caravanName }) => {
                 dispatch(
                   createReport({
                     reportName: saveReportName,
-                    reportData: { columns, data },
+                    reportData: { columns },
                   })
                 );
                 setSaveReportName("");
@@ -162,34 +163,17 @@ const EmbassyReports = ({ passengers, caravanName }) => {
         >
           <ReactToPrint
             trigger={() => (
-              <Button
-                style={{
-                  background: "rgb(227, 242, 253)",
-                  textTransform: "none",
-                  color: "#03a9f4",
-                  paddingLeft: "2rem",
-                  paddingRight: "2rem",
-                }}
-                variant="contained"
-                color="primary"
-              >
-                Print
-              </Button>
+              <IconButton>
+                <PrintOutlined />
+              </IconButton>
             )}
             content={() => printTableRef.current}
           />
-          <Button
-            style={{
-              paddingLeft: "2rem",
-              paddingRight: "2rem",
-              marginLeft: "1rem",
-            }}
+          <IconButton
             onClick={() => setOpenSaveModal(true)}
-            variant="contained"
-            color="primary"
           >
-            Save
-          </Button>
+            <SaveOutlined />
+          </IconButton>
         </Grid>
       </Grid>
 

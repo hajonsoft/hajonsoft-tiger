@@ -19,12 +19,17 @@ export const createReport = createAsyncThunk(
 
 const convertObjToArray = (obj) => {
   const array = [];
-
-  Object.keys(obj).forEach((key) => {
-    array.push({ [key]: obj[key] });
-  });
-
-  return array.map((val, index) => val[index.toString()]);
+  try {
+    for (const [key, value] of Object.entries(obj)) {
+      array.push({
+        name: key,
+        columns: Object.values(value)[0].columns
+      })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+  return array;
 };
 
 export const getAllReports = createAsyncThunk(
@@ -35,25 +40,7 @@ export const getAllReports = createAsyncThunk(
       .ref(`/report`)
       .once("value");
 
-    const caravanReports = snapshot.toJSON();
-
-    const results = Object.keys(caravanReports).map((reportName) => {
-      const reportObj = caravanReports[reportName];
-      return { [reportName]: reportObj[Object.keys(reportObj)[0]] };
-    });
-
-    return results.map((result) => {
-      const d = result[Object.keys(result)[0]];
-
-      const { columns, data } = d;
-
-      return {
-        [Object.keys(result)[0]]: {
-          columns: convertObjToArray(columns),
-          data: convertObjToArray(data),
-        },
-      };
-    });
+    return snapshot.toJSON();
   }
 );
 
@@ -76,25 +63,14 @@ const reportSlice = createSlice({
   initialState: {
     loading: false,
     error: "",
-    data: {},
+    data: [],
   },
   extraReducers: (builder) => {
-    builder.addCase(createReport.pending, (state, action) => {
+    builder.addCase(createReport.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(createReport.fulfilled, (state, action) => {
-      // if (!state.data[action.meta.arg.caravanName]) {
-      //   state.data[action.meta.arg.caravanName] = [];
-      // }
-
-      // const newReport = {
-      //   [action.meta.arg.reportName]: {
-      //     ...action.meta.arg.reportData,
-      //   },
-      // };
-
-      // state.data[action.meta.arg.caravanName].unshift(newReport);
-
+      state.data.push({ ...action.meta.arg.reportData, name: action.meta.arg.reportName });
       state.loading = false;
     });
     builder.addCase(createReport.rejected, (state, action) => {
@@ -105,10 +81,7 @@ const reportSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getAllReports.fulfilled, (state, action) => {
-      // state.data = {
-      //   ...state.data,
-      //   [action.meta.arg.caravanName]: action.payload,
-      // };
+      state.data = convertObjToArray(action.payload);
       state.loading = false;
     });
     builder.addCase(getAllReports.rejected, (state, action) => {
@@ -116,13 +89,10 @@ const reportSlice = createSlice({
       state.error = action.error.message;
     });
     builder.addCase(deleteReport.fulfilled, (state, action) => {
-
-      // const newData = state.data[action.meta.arg.caravanName].filter((report) => {
-      //   return Object.keys(report)[0] !== action.meta.arg.reportName;
-      // });
-
-      // state.data[action.meta.arg.caravanName] = newData
-
+      const newData = state.data.filter((report) =>
+        report.name !== action.meta.arg.reportName
+      );
+      state.data = newData
       state.loading = false;
     });
   },
