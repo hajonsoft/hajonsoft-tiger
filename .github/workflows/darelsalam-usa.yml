@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: checkout and configure for darelsalam-usa
       - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
         shell: bash
         env:
           EXPORT_FIREBASE_CONFIG: "import firebaseConfig from './firebaseConfigs/darelsalam-usa'; export default firebaseConfig;"
       - run: 'echo $FIREBASE_CONFIG'
+        shell: bash
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DARELSALAM_USA}}
       - uses: nick-invision/retry@v2
