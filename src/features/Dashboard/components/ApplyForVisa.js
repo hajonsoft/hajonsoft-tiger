@@ -655,7 +655,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     <Grid container justify="space-around" spacing={1}>
                       <Grid item md={3}>
                         <Typography variant="h5">{t('step-1-bundle')}</Typography>
-                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? downloadFileName : "Required"}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? downloadFileName : t('required')}</Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t('bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller')}
                         </Typography>
@@ -683,7 +683,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       </Grid>
                       <Grid item md={3}>
                         <Typography variant="h5">{t('step-2-hawk')}</Typography>
-                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? `node . file=${downloadFileName}` : "Optional"}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? `node . file=${downloadFileName}` : t('optional')}</Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t('hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting')}
                         </Typography>

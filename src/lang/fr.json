@@ -150,5 +150,7 @@
   "past-caravans": "Caravanes passées",
   "expired-passports": "Expiré",
   "expire-date": "Date d'expiration",
-  "premium-support-service": "Visa de service d'assistance premium par procuration"
+  "premium-support-service": "Visa de service d'assistance premium par procuration",
+  "required": "Obligatoire",
+  "optional": "Optionnel"
 }

@@ -150,5 +150,7 @@
   "past-caravans": "Past caravans",
   "expired-passports": "Expired",
   "expire-date": "Expire date",
-  "premium-support-service": "Premium support service visa by proxy"
+  "premium-support-service": "Premium support service visa by proxy",
+  "required": "Required",
+  "optional": "Optional"
 }
