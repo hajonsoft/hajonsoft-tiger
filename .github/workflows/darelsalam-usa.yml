@@ -8,7 +8,7 @@ name: darelsalam-usa
       - master
 jobs:
   build_and_deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: checkout and configure for darelsalam-usa

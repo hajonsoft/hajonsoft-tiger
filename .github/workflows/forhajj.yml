@@ -8,7 +8,7 @@ name: forhajjnow
       - master
 jobs:
   build_and_preview:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: 'echo  "$EXPORT_FIREBASE_CONFIG" > src/firebaseConfig.js'
