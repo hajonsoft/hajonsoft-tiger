@@ -14583,6 +14583,11 @@
     "prismjs" "^1.8.4"
     "refractor" "^2.4.1"
 
+"react-table@^7.7.0":
+  "integrity" "sha512-jBlj70iBwOTvvImsU9t01LjFjy4sXEtclBovl3mTiqjz23Reu0DKnRza4zlLtOPACx6j2/7MrQIthIK1Wi+LIA=="
+  "resolved" "https://registry.npmjs.org/react-table/-/react-table-7.7.0.tgz"
+  "version" "7.7.0"
+
 "react-text-mask@^5.4.3":
   "integrity" "sha1-mR77QpnjDC5sLEbRP2FxaUY+DS0="
   "resolved" "https://registry.npmjs.org/react-text-mask/-/react-text-mask-5.4.3.tgz"
@@ -14597,6 +14602,13 @@
   dependencies:
     "@babel/runtime" "^7.1.2"
     "prop-types" "^15.6.0"
+
+"react-to-print@^2.14.0":
+  "integrity" "sha512-R5EbtQY6tqch+Vwoo7hlZ5cZ5Ew81SYessW1Nyb9Uq5njWolwYWyJUh5X7AtGNhVWD6y4ZfyTN+1iW1tR5a84w=="
+  "resolved" "https://registry.npmjs.org/react-to-print/-/react-to-print-2.14.0.tgz"
+  "version" "2.14.0"
+  dependencies:
+    "prop-types" "^15.7.2"
 
 "react-transition-group@^4.0.0", "react-transition-group@^4.4.0":
   "integrity" "sha512-Djqr7OQ2aPUiYurhPalTrVy9ddmFCCzwhqQmtN+J3+3DzLO209Fdr70QrN8Z3DsglWql6iY1lDWAfpFiBtuKGw=="
@@ -14618,7 +14630,7 @@
     "prop-types" "^15.6.2"
     "react-lifecycles-compat" "^3.0.4"
 
-"react@*", "react@^0.14 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", "react@^15.0.0 || ^16.0.0 || ^17.0.0", "react@^15.3.0 || ^16.0.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.0.0-0", "react@^16.13.1", "react@^16.3.0", "react@^16.3.0 || ^17.0.0", "react@^16.3.0 || 17", "react@^16.6.0", "react@^16.6.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.3", "react@^16.8.3 || ^17", "react@^16.8.4", "react@^16.8.4 || ^17.0.0", "react@^16.8.5", "react@>= 0.14.0", "react@>= 0.14.7", "react@>= 16.8", "react@>= 16.8.0", "react@>=0.14.0", "react@>=0.14.0 <17.0.0", "react@>=15", "react@>=15.0.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.x", "react@0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@15.x || 16.x || 16.4.0-alpha.0911da3", "react@16.11.0":
+"react@*", "react@^0.14 || ^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", "react@^15.0.0 || ^16.0.0 || ^17.0.0", "react@^15.3.0 || ^16.0.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.0.0-0", "react@^16.13.1", "react@^16.3.0", "react@^16.3.0 || ^17.0.0", "react@^16.3.0 || 17", "react@^16.6.0", "react@^16.6.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.3", "react@^16.8.3 || ^17", "react@^16.8.3 || ^17.0.0-0", "react@^16.8.4", "react@^16.8.4 || ^17.0.0", "react@^16.8.5", "react@>= 0.14.0", "react@>= 0.14.7", "react@>= 16.8", "react@>= 16.8.0", "react@>=0.14.0", "react@>=0.14.0 <17.0.0", "react@>=15", "react@>=15.0.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.x", "react@0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@15.x || 16.x || 16.4.0-alpha.0911da3", "react@16.11.0":
   "integrity" "sha512-M5Y8yITaLmU0ynd0r1Yvfq98Rmll6q8AxaEe88c8e7LxO8fZ2cNgmFt0aGAS9wzf1Ao32NKXtCl+/tVVtkxq6g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.11.0.tgz"
   "version" "16.11.0"
