@@ -1,45 +1,50 @@
 import {
-  Box, Button, List,
+  Box,
+  Button,
+  List,
   ListItem,
   ListItemIcon,
-  ListItemText, makeStyles, Typography
-} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import StarIcon from "@material-ui/icons/Star";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
-import firebase from "../../../firebaseapp";
-import { packageImage } from "../../../shared/util/packageImage";
+  ListItemText,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import DescriptionIcon from '@material-ui/icons/Description';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import StarIcon from '@material-ui/icons/Star';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useParams } from 'react-router-dom';
+import firebase from '../../../firebaseapp';
+import { packageImage } from '../../../shared/util/packageImage';
 import t from '../../../shared/util/trans';
-import DoveHeader from "../../Header/DoveHeader";
-import Footer from "../../Home/components/Footer";
+import DoveHeader from '../../Header/DoveHeader';
+import Footer from '../../Home/components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
-    width: "100%",
-    backgroundColor: "rgb(76, 175, 80)",
-    color: "white",
-    fontSize: "14px",
+    width: '100%',
+    backgroundColor: 'rgb(76, 175, 80)',
+    color: 'white',
+    fontSize: '14px',
     lineHeight: 2,
-    fontWeight: "bold",
-    padding: ".5rem",
+    fontWeight: 'bold',
+    padding: '.5rem',
   },
   sectionText: {
-    fontSize: "14px",
+    fontSize: '14px',
     fontWeight: 400,
   },
   sectionDateText: {
-    color: "rgb(76, 175, 80)",
-    fontWeight: "bold",
+    color: 'rgb(76, 175, 80)',
+    fontWeight: 'bold',
   },
   sectionWarningText: {
-    color: "#c00000",
-    fontWeight: "bold",
+    color: '#c00000',
+    fontWeight: 'bold',
   },
 }));
 
@@ -52,8 +57,8 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
   useEffect(() => {
     firebase
       .database()
-      .ref("protected/onlinePackage")
-      .once("value", (snapshot) => {
+      .ref('protected/onlinePackage')
+      .once('value', (snapshot) => {
         setDetail(
           Object.values(snapshot.toJSON()).find((x) => x.name === packageName)
         );
@@ -63,23 +68,38 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
   }, []);
 
   return (
-    <div style={{ background: "rgb(63 113 136 / 9%)", minHeight: "100vh" }}>
+    <div style={{ background: 'rgb(63 113 136 / 9%)', minHeight: '100vh' }}>
       <DoveHeader />
       <Grid
         container
         spacing={3}
         alignItems="flex-start"
         style={{
-          margin: "0px 2.5rem",
-          paddingTop: "1rem",
-          maxWidth: "1400px",
+          margin: '0px 2.5rem',
+          paddingTop: '1rem',
+          maxWidth: '1400px',
         }}
       >
         <Grid item md={8}>
           <Box>
             <Typography className={classes.sectionHeader}>
-              {" "}
-              {t('travel-dates')}{" "}
+              DESCRIPTION:
+            </Typography>
+            <List component="ul">
+              <ListItem alignItems="flex-start">
+                <ListItemIcon>
+                  <DescriptionIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.sectionText}>
+                  {detail.description}
+                </ListItemText>
+              </ListItem>
+            </List>
+          </Box>
+          <Box>
+            <Typography className={classes.sectionHeader}>
+              {' '}
+              {t('travel-dates')}{' '}
             </Typography>
             <List component="ul">
               <ListItem>
@@ -90,8 +110,8 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
                   {t('tentative-departure-date-is')}
                   <span className={classes.sectionDateText}>
                     {' '}
-                    {moment(detail.departureDate).format("dddd DD-MMM-YYYY")}(
-                    {moment(detail.departureDate).fromNow()}){" "}
+                    {moment(detail.departureDate).format('dddd DD-MMM-YYYY')}(
+                    {moment(detail.departureDate).fromNow()}){' '}
                   </span>
                 </ListItemText>
               </ListItem>
@@ -100,28 +120,22 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
                   <ScheduleIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.sectionText}>
-                  {t('tentative-return-date-is')}{" "}
+                  {t('tentative-return-date-is')}{' '}
                   <span className={classes.sectionDateText}>
-                    {" "}
-                    {moment(detail.returnDate).format("dddd DD-MMM-YYYY")}(
-                    {moment(detail.returnDate).fromNow()}){" "}
+                    {' '}
+                    {moment(detail.returnDate).format('dddd DD-MMM-YYYY')}(
+                    {moment(detail.returnDate).fromNow()}){' '}
                   </span>
-                </ListItemText>
-              </ListItem>
-              <ListItem>
-                <ListItemText className={classes.sectionText}>
-                  <span className={classes.sectionWarningText}> {t('note')} </span>{" "}
-                  {t('traveling-dates-are-subject-to-change-due-to-airline-scheduling-hijri-calendar-and-any-updates-from-the-ministry-of-hajj')}
                 </ListItemText>
               </ListItem>
             </List>
           </Box>
           <Box>
             <Typography className={classes.sectionHeader}>
-              {" "}
-              {t('package-accommodation')}{" "}
+              {' '}
+              {t('package-accommodation')}{' '}
             </Typography>
-            <Grid container spacing={3} style={{ padding: "1rem 0px" }}>
+            <Grid container spacing={3} style={{ padding: '1rem 0px' }}>
               <Grid item md={3}>
                 <Typography className={classes.sectionDateText}>
                   {detail.arrivalAirport?.toUpperCase()}
@@ -135,8 +149,8 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
               <Grid item md={3}>
                 {detail?.arrivalHotel?.match(/\d+/)?.[0] &&
                   new Array(Number(detail?.arrivalHotel?.match(/\d+/)[0]))
-                    .fill("hajonsoft")
-                    ?.map((val) => <StarIcon style={{ fill: "#f7c76f" }} />)}
+                    .fill('hajonsoft')
+                    ?.map((val) => <StarIcon style={{ fill: '#f7c76f' }} />)}
               </Grid>
               <Grid item md={3}>
                 <Typography className={classes.sectionDateText}>
@@ -151,17 +165,17 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
               <Grid item md={3}>
                 {detail?.departureHotel?.match(/\d+/)?.[0] &&
                   new Array(Number(detail?.departureHotel?.match(/\d+/)[0]))
-                    .fill("hajonsoft")
-                    ?.map((val) => <StarIcon style={{ fill: "#f7c76f" }} />)}
+                    .fill('hajonsoft')
+                    ?.map((val) => <StarIcon style={{ fill: '#f7c76f' }} />)}
               </Grid>
             </Grid>
           </Box>
           <Box>
             <Typography className={classes.sectionHeader}>
-              {" "}
-              {t('flight-details')}{" "}
+              {' '}
+              {t('flight-details')}{' '}
             </Typography>
-            <Grid container spacing={3} style={{ padding: "1rem 0px" }}>
+            <Grid container spacing={3} style={{ padding: '1rem 0px' }}>
               <Grid item md={3}>
                 <Typography className={classes.sectionDateText}>
                   DEPARTURE FLIGHT:
@@ -193,29 +207,38 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
 
           <Box
             style={{
-              padding: "1rem 0px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
+              padding: '1rem 0px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
             <Button
               variant="outlined"
               color="primary"
-              style={{ color: "#4caf50", textTransform: "none", marginRight: ".5rem", borderColor: "#4caf50"   }}
-              
-              onClick={() => history.push("/reserve/" + detail.name)}
+              style={{
+                color: '#4caf50',
+                textTransform: 'none',
+                marginRight: '.5rem',
+                borderColor: '#4caf50',
+              }}
+              onClick={() =>
+                history.push('/reserve/' + detail.name + '?full=true')
+              }
             >
               {t('book-now')}
             </Button>
 
             <Button
               title={`Enquire ${detail.name} package`}
-              onClick={() => history.push("/reserve/Enquire-" + detail.name)}
+              onClick={() => history.push('/reserve/Enquire-' + detail.name)}
               size="lg"
-              style={{ background: "#4caf50", color: "white", marginLeft: ".5rem" }}
-              
+              style={{
+                background: '#4caf50',
+                color: 'white',
+                marginLeft: '.5rem',
+              }}
               variant="contained"
             >
               {t('enquire')}
@@ -228,13 +251,13 @@ const AdvertisementDetail = ({ onLanguageChange, lang }) => {
             src={packageImage(detail.gender, 0)}
             alt={detail.gender}
             style={{
-              width: "100%",
-              height: "auto",
+              width: '100%',
+              height: 'auto',
             }}
           />
         </Grid>
       </Grid>
-      <Footer  onLanguageChange={(l) => onLanguageChange(l)} lang={lang}/>
+      <Footer onLanguageChange={(l) => onLanguageChange(l)} lang={lang} />
     </div>
   );
 };
