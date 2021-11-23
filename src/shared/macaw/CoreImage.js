@@ -68,6 +68,7 @@ const CoreImage = ({ record, setImage }) => {
           setLoading(false);
         }
       }
+      setLoading(false);
     }
     getImage();
   }, [record, record.nationality, record.passportNumber]);

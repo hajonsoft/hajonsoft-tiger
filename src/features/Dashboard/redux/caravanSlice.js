@@ -9,23 +9,23 @@ export const getUpcomingCaravans = createAsyncThunk('caravan/upcoming', async ()
 
 export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (name) => {
     const result = await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push({
-        name: 'Sample passenger --delete'
+        name: 'DEMO PASSENGER'
     });
     return result.key;
 });
 
-export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async ( {name, passengers}) => {
-         
-    for(let passenger of passengers) {
+export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async ({ name, passengers }) => {
+
+    for (let passenger of passengers) {
         await firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
     }
-    
+
     const removeRef = firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
-    
+
     return { updated: passengers };
 });
-   
+
 export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async (name, data) => {
     await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(data);
     const removeRef = firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`);
@@ -38,7 +38,7 @@ export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (n
     removeRef.remove();
 });
 
-export const deleteExpiredPassports = createAsyncThunk('caravan/delete-expired', async ({passengers, caravan}) => {
+export const deleteExpiredPassports = createAsyncThunk('caravan/delete-expired', async ({ passengers, caravan }) => {
     for (const passenger of passengers) {
         const removeRef = firebase.database().ref(`/customer/${caravan.split('/').filter(part => !!part).join('/')}/${passenger._fid}`);
         removeRef.remove();
@@ -107,7 +107,7 @@ const caravanSlice = createSlice({
         builder.addCase(createUpcomingCaravan.fulfilled, (state, action) => {
             state.data = {
                 ...state.data, [action.meta.arg]: [{
-                    name: 'first passenger'
+                    name: 'DEMO PASSENGER'
                 }]
             }
             state.loading = false;
@@ -159,7 +159,7 @@ const caravanSlice = createSlice({
             if (!state.data[action.meta.arg.name]) {
                 state.data[action.meta.arg.name] = []
             }
-            state.data[action.meta.arg.name].push({...action.meta.arg.passenger, _fid: action.payload})
+            state.data[action.meta.arg.name].push({ ...action.meta.arg.passenger, _fid: action.payload })
             state.loading = false;
         });
         builder.addCase(createPassenger.rejected, (state, action) => {

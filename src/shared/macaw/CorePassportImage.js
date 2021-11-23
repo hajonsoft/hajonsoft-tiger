@@ -74,6 +74,7 @@ const CorePassportImage = ({ record, setImage }) => {
           setLoading(false);
         }
       }
+      setLoading(false);
     }
     getImage();
   }, [record]);

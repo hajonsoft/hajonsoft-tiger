@@ -69,6 +69,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
           setLoading(false);
         }
       }
+      setLoading(false);
     }
     getImage();
   }, [record]);
