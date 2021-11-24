@@ -152,5 +152,7 @@
   "expire-date": "تاريخ انتهاء الصلاحية",
   "premium-support-service": "تأشيرة خدمة الدعم المتميز بالوكالة",
   "required": "مطلوب",
-  "optional": "اختياري"
+  "optional": "اختياري",
+  "passport-information": "معلومات جواز السفر",
+  "more-information": "معلومات اكثر"
 }

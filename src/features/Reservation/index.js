@@ -144,7 +144,7 @@ const Reservation = ({ lang, onLanguageChange }) => {
                   <Grid item>
                     <ExploreIcon fontSize="small" />
                   </Grid>
-                  <Grid item>{trans('reservation.quick-reservation')}</Grid>
+                  <Grid item>{trans('reservation.full-reservation')}</Grid>
                 </Grid>
               }
               {...a11yProps(0)}
@@ -161,7 +161,7 @@ const Reservation = ({ lang, onLanguageChange }) => {
                   <Grid item>
                     <FlightTakeoffIcon fontSize="small" />
                   </Grid>
-                  <Grid item>{trans('reservation.full-reservation')}</Grid>
+                  <Grid item>{trans('reservation.quick-reservation')}</Grid>
                 </Grid>
               }
               {...a11yProps(1)}
@@ -187,12 +187,12 @@ const Reservation = ({ lang, onLanguageChange }) => {
         </Grid>
         <Grid item xs={9}>
           {value === 0 ? (
+            <FullReservation openSuccessModal={handleOpen} isModalOpen={open} />
+          ) : (
             <BasicReservation
               openSuccessModal={handleOpen}
               isModalOpen={open}
             />
-          ) : (
-            <FullReservation openSuccessModal={handleOpen} isModalOpen={open} />
           )}
         </Grid>
       </Grid>

@@ -658,35 +658,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               required={false}
                             />
                           </Grid>
-                          <Grid item xs={12} md="6">
-                            <InputControl
-                              name="mahramName"
-                              label={t('mahram')}
-                              value={values.mahramName}
-                              error={
-                                touched.mahramName && Boolean(errors.mahramName)
-                              }
-                              helperText={
-                                touched.mahramName && errors.mahramName
-                              }
-                              required={false}
-                            />
-                          </Grid>
-                          <Grid item xs={12} md="6">
-                            <InputControl
-                              name="relationship"
-                              label={t('relationship')}
-                              value={values.relationship}
-                              error={
-                                touched.relationship &&
-                                Boolean(errors.relationship)
-                              }
-                              helperText={
-                                touched.relationship && errors.relationship
-                              }
-                              required={false}
-                            />
-                          </Grid>
                           <Grid item xs={12}>
                             <InputControl
                               multiline

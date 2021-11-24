@@ -152,5 +152,7 @@
   "expire-date": "Date d'expiration",
   "premium-support-service": "Visa de service d'assistance premium par procuration",
   "required": "Obligatoire",
-  "optional": "Optionnel"
+  "optional": "Optionnel",
+  "passport-information": "Informations sur le passeport",
+  "more-information": "Plus d'information"
 }

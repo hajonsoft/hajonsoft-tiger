@@ -7,7 +7,7 @@
   "home.sign-in": "Sign In",
   "home.travel-management-software": "Travel Management software ...",
   "home.welcome-to": "Welcome to ...",
-  "reservation.arabic-name": "Arabic Name",
+  "reservation.arabic-name": "Arabic Name (optional: if present in passport)",
   "reservation.basic-information": "Basic Information",
   "reservation.birth-date": "Birth Date",
   "reservation.birth-place": "Birth Place",
@@ -152,5 +152,7 @@
   "expire-date": "Expire date",
   "premium-support-service": "Premium support service visa by proxy",
   "required": "Required",
-  "optional": "Optional"
+  "optional": "Optional",
+  "passport-information": "Passport Information",
+  "more-information": "More Information"
 }
