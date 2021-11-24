@@ -163,8 +163,8 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
   }
 
   const handleSubmitForm = async (values, actions) => {
-    if (!photoURL || !passportURL || !vaccineURL) {
-      alert("upload all required photos");
+    if (!photoURL || !passportURL) {
+      alert("upload your portrait photo and the passport image");
       return;
     }
 

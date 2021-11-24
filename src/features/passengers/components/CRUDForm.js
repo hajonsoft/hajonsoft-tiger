@@ -172,7 +172,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
       .date()
       .required("Required")
       .min(moment().add("6", "month"), "at least in 6 month")
-      .max(moment().add(20, "year"), "Too far!"),
+      .max(moment().add(30, "year"), "Too far!"),
     passIssueDt: yup
       .date()
       .required("Required")
@@ -181,19 +181,20 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     birthDate: yup
       .date()
       .required("Required")
-      .max(new Date(), "Too young!"),
+      .max(new Date(), "Too young!")
+      .min(moment().subtract(150, "year"), "Too old!"),
     birthPlace: yup
       .string()
       .required("Required")
-      .max(25, "Too long!"),
+      .max(50, "Too long!"),
     passPlaceOfIssue: yup
       .string()
       .required("Required")
-      .max(25, "Too long!"),
+      .max(50, "Too long!"),
     name: yup
       .string("Enter your Full Name")
       .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
-      .required("Full name is required (as it appears on passport) "),
+      .required("Full name is required (as appears on passport) "),
     gender: yup
       .string("Select your gender")
       .required("Gender is required")
