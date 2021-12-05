@@ -90,7 +90,7 @@ const AdvertisementCard = ({ detail, index }) => {
         <Button
           title={`Learn more about ${detail.name} package`}
           onClick={() => history.push(`/package/detail/${detail.name}`)}
-          size="lg"
+          size="large"
           style={{color: "#4caf50"}}
           color="primary"
         >

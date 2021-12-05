@@ -232,7 +232,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
         className={classes.titleContainer}
       >
         <Grid item>
-          <FlightTakeoffIcon fontSize="medium" />
+          <FlightTakeoffIcon fontSize="large" />
         </Grid>
         <Grid item>
           <Typography variant="h5">
@@ -245,7 +245,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
       </Grid>
       {!reservationNumber && (
         <Formik
-          initialValues={{ name: "" }}
+          initialValues={{ name: "", gender: "", nationality: "" }}
           onSubmit={handleSubmitForm}
           validationSchema={validationSchema}
         >
@@ -321,7 +321,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                         error={touched.gender && Boolean(errors.gender)}
                         helperText={touched.gender && errors.gender}
                         options={[
-                          { value: "none", label: "Gender" },
+                          { value: "", label: "Gender" },
                           { value: "Male", label: "Male" },
                           { value: "Female", label: "Female" },
                         ]}
@@ -340,7 +340,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           touched.nationality && errors.nationality
                         }
                         options={[
-                          { value: "none", label: "Nationality" },
+                          { value: "", label: "Nationality" },
                           ...nationalities.map((nationality) => ({
                             value: nationality.name,
                             label: nationality.name,

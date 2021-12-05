@@ -61,7 +61,6 @@ const InputControl = (props) => {
             className={classes.container}
             name={name}
             type={type}
-            defaultValue={options ? "none" : ""}
             required={required}
             id={name}
             placeholder={placeholder}
