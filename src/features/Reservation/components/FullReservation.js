@@ -228,7 +228,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
         container
         spacing={1}
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         className={classes.titleContainer}
       >
         <Grid item>
@@ -311,7 +311,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item container justify="space-around">
+                  <Grid item container justifyContent="space-around">
                     <Grid item md={5} xs={12}>
                       <InputControl
                         name="gender"
@@ -357,7 +357,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                     </Box>
                   </Grid>
 
-                  <Grid container justify="space-around" spacing={2}>
+                  <Grid container justifyContent="space-around" spacing={2}>
                     <Grid item xs={5} md={5}>
                       <InputControl
                         name="passportNumber"
@@ -479,7 +479,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid container justify="space-around" spacing={1}>
+                  <Grid container justifyContent="space-around" spacing={1}>
                     <Grid item xs={12} md={3}>
                       <InputControl
                         name="idNumber"
@@ -567,7 +567,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid container justify="space-around" spacing={2}>
+                  <Grid container justifyContent="space-around" spacing={2}>
 
                     <Grid item xs={12} md={5}>
                       <InputControl
@@ -616,7 +616,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                   <Grid
                     item
                     container
-                    justify="flex-end"
+                    justifyContent="flex-end"
                   >
                     <Grid item>
                       <Button
@@ -654,7 +654,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
             container
             direction="column"
             spacing={4}
-            justify="center"
+            justifyContent="center"
             alignItems="center"
           >
             <Grid item>

@@ -101,7 +101,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
             </Link>
           </div>}
           {loading &&
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               <Grid item>
                 <CircularProgress size={80} color="secondary" />
               </Grid>

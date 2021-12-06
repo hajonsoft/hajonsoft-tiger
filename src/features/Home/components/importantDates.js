@@ -4,7 +4,7 @@ import { eventsAfter, eventsBefore } from "../../../shared/util/hijri";
 
 const ImportantDates = () => {
   return (
-    <Grid container justify="space-between" style={{ padding: "1rem" }}>
+    <Grid container justifyContent="space-between" style={{ padding: "1rem" }}>
       <Grid item md={12}>
 
 

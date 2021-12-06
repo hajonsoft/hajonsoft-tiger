@@ -330,7 +330,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
               />
               <CardContent>
                 <Grid container spacing={2}>
-                  <Grid item container justify="center">
+                  <Grid item container justifyContent="center">
                     <Grid item xs={4}>
                       <ToggleButtonGroup
                         value={photoMode}
@@ -381,13 +381,13 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       xs={8}
                       container
                       direction="column"
-                      justify="space-around"
+                      justifyContent="space-around"
                     >
                       <Grid
                         item
                         xs={12}
                         direction="column"
-                        justify="space-around"
+                        justifyContent="space-around"
                       >
                         <Grid container spacing={3} alignItems="center">
                           <Grid item xs={9}>

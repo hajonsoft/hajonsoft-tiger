@@ -134,7 +134,7 @@ function Basic({ packageName, onClose }) {
                     <CustomerImportCard importData={x}></CustomerImportCard>
                   </Grid>
                 ))}
-                <Grid item container xs={12} justify="flex-end">
+                <Grid item container xs={12} justifyContent="flex-end">
                   <Button
                     type="button"
                     variant="contained"

@@ -139,7 +139,7 @@ const Reservation = ({ lang, onLanguageChange }) => {
                   container
                   alignItems="center"
                   spacing={1}
-                  justify="center"
+                  justifyContent="center"
                 >
                   <Grid item>
                     <ExploreIcon fontSize="small" />
@@ -156,7 +156,7 @@ const Reservation = ({ lang, onLanguageChange }) => {
                   container
                   alignItems="center"
                   spacing={1}
-                  justify="center"
+                  justifyContent="center"
                 >
                   <Grid item>
                     <FlightTakeoffIcon fontSize="small" />

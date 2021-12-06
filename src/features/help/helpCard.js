@@ -8,7 +8,7 @@ const HelpCard = ({ iconElement, title, content, linkElement }) => {
       md={4}
       container
       direction="column"
-      justify="center"
+      justifyContent="center"
       alignItems="center"
     >
       <Grid item md={12}>

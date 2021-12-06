@@ -211,7 +211,7 @@ const Dashboard = () => {
           {loading && (
             <Grid
               container
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               style={{ height: "100vh" }}
             >
@@ -274,7 +274,6 @@ const Dashboard = () => {
                       <div>
                         {!loading && rowData?.expired?.length > 0 ? <Chip label={rowData.expired.length}
                           variant="outlined"
-                          color="error"
                           onDelete={() => handleDeleteExpired(rowData)}
                           icon={
                             <FontAwesomeIcon
@@ -312,7 +311,7 @@ const Dashboard = () => {
                   },
                   !isPast &&
                   {
-                    icon: () => <tableIcons.Delete color="error" />,
+                    icon: () => <tableIcons.Delete  />,
                     name: 'delete',
                     tooltip: `Delete ${title}`,
                     onClick: (event, rowData) =>
@@ -341,7 +340,6 @@ const Dashboard = () => {
                       {props.action.name === 'delete' &&
                         <IconButton
                           onClick={(event) => props.action.onClick(event, props.data)}
-                          color="error"
                           size="small"
                         >
                           <DeleteOutlined />
@@ -414,7 +412,6 @@ const Dashboard = () => {
                 record: {},
               }))
             }
-            color="error"
             variant="outlined"
           >
             {t("cancel")}
@@ -446,7 +443,6 @@ const Dashboard = () => {
             onClick={() =>
               setShowConfirmDeleteExpired(false)
             }
-            color="error"
             variant="outlined"
           >
             {t("cancel")}

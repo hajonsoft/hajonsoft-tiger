@@ -39,7 +39,7 @@ const Home = ({ onLanguageChange, lang }) => {
           container
           direction="column"
           alignItems="center"
-          justify="space-around"
+          justifyContent="space-around"
           style={{ height: "100%" }}
         >
           <Grid item>
@@ -51,7 +51,7 @@ const Home = ({ onLanguageChange, lang }) => {
               {trans("home.welcome-to")}
             </Typography>
           </Grid>
-          <Grid item container justify="center" alignItems="center">
+          <Grid item container justifyContent="center" alignItems="center">
             <Typography variant="h1" align="center" color="textPrimary">
               {trans("home.haj")}
             </Typography>
@@ -66,8 +66,8 @@ const Home = ({ onLanguageChange, lang }) => {
               </Box>
             </Typography>
           </Grid>
-          <Grid item container justify="center" alignItems="center">
-            <Grid item container justify="center">
+          <Grid item container justifyContent="center" alignItems="center">
+            <Grid item container justifyContent="center">
               <Grid
                 item
                 xs={6}

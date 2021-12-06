@@ -135,7 +135,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   ] = React.useState("");
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
-  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(0);
+  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState("");
   const [sendingMail, setSendingMail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState();
 
@@ -417,13 +417,13 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                 >{`${selectedPassengers?.length}/${passengers?.length} [${caravan}]`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Grid container justify="space-between">
+                <Grid container justifyContent="space-between">
                   <Grid items md={6}>
                     <Button onClick={() => setSelectedPassengers(passengers)}>
                       {t('select-all')}
                     </Button>
                   </Grid>
-                  <Grid items md={6} container justify="flex-end">
+                  <Grid items md={6} container justifyContent="flex-end">
                     <Button onClick={() => setSelectedPassengers([])}>
                       {t('deselect-all')}
                     </Button>
@@ -479,13 +479,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                               handleServiceProviderProfileChange(e.target.value)
                             }
                           >
+                            <MenuItem value={""} key="defaultvalue_serviceproviderprofile">
+                              <Typography color="textSecondary">Please select service provider profile</Typography>
+                            </MenuItem>
                             {visaSystems &&
                               visaSystems?.length > 0 &&
                               visaSystems.map((x, i) => (
                                 <MenuItem value={i} key={x.username}>
                                   <Grid
                                     container
-                                    justify="space-between"
+                                    justifyContent="space-between"
                                     alignItems="center"
                                   >
                                     <Grid item>
@@ -527,7 +530,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   {serviceProviderAddMode && (
                     <Grid
                       container
-                      justify="space-between"
+                      justifyContent="space-between"
                       alignItems="center"
                       spacing={2}
                     >
@@ -606,7 +609,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
               <AccordionDetails>
                 <Grid
                   container
-                  justify="space-between"
+                  justifyContent="space-between"
                   spacing={2}
                 >
                   <Grid item md={12}>
@@ -652,7 +655,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     </Box>
                   </Grid>
                   <Grid item md={12}>
-                    <Grid container justify="space-around" spacing={1}>
+                    <Grid container justifyContent="space-around" spacing={1}>
                       <Grid item md={3}>
                         <Typography variant="h5">{t('step-1-bundle')}</Typography>
                         <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? downloadFileName : t('required')}</Typography>
@@ -719,13 +722,13 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             {t('create-visa-by-proxy-ticket')}
                           </Button>
                           <div>
-                          <a
-                            href={`https://mail.google.com/mail/?view=cm&fs=1&su=visa-by-proxy&body=${selectedPassengers?.length}Pax&to=help@hajonsoft.on.spiceworks.com`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <AlternateEmail style={{width: '16px', height: '16px', color: '#009688', marginLeft: '0.5rem'}} />
-                          </a>
+                            <a
+                              href={`https://mail.google.com/mail/?view=cm&fs=1&su=visa-by-proxy&body=${selectedPassengers?.length}Pax&to=help@hajonsoft.on.spiceworks.com`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <AlternateEmail style={{ width: '16px', height: '16px', color: '#009688', marginLeft: '0.5rem' }} />
+                            </a>
                           </div>
                         </div>
                       </Grid>

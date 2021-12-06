@@ -98,7 +98,7 @@ const Profile = () => {
               <CardContent>
                 <Grid
                   container
-                  justify="space-between"
+                  justifyContent="space-between"
                   spacing={2}
                   style={{ padding: "1rem 2rem" }}
                 >

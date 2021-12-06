@@ -15,7 +15,7 @@ const OnePackage = ({ detail,  backgroundColor }) => {
             </Box>
 
             <Box mt={2} style={{backgroundColor: '#fff'}}>
-                <Grid container spacing={2} justify="space-between" alignItems="center">
+                <Grid container spacing={2} justifyContent="space-between" alignItems="center">
                     <Grid item xs={5}>
                         <Typography variant="h4" align="center" gutterBottom>Depart <FlightTakeoffRoundedIcon /></Typography>
                         <Typography variant="h6" align="center" >{moment(detail.departureDate).format('MMM D, YYYY')}</Typography>

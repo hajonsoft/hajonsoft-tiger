@@ -125,7 +125,7 @@ const EmbassyReports = ({ passengers }) => {
       <Grid
         container
         className={classes.root}
-        justify="space-between"
+        justifyContent="space-between"
         spacing={2}
       >
         <Grid item xs={6} md={6}>

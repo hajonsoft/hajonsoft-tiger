@@ -30,7 +30,7 @@ const Footer = ({ lang, onLanguageChange }) => {
       <Grid
         container
         direction="row"
-        justify="space-around"
+        justifyContent="space-around"
         alignItems="flex-start"
         style={{
           padding: "1rem",

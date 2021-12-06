@@ -86,7 +86,7 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
           container
           alignItems="center"
           spacing={1}
-          justify="center"
+          justifyContent="center"
           className={classes.titleContainer}
         >
           <Grid item>
@@ -218,7 +218,7 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
                       </Grid>
                       <Grid
                         container
-                        justify="flex-end"
+                        justifyContent="flex-end"
                         className={classes.pt1rem}
                       >
                         <Button
@@ -254,7 +254,7 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
             container
             direction="column"
             spacing={4}
-            justify="center"
+            justifyContent="center"
             alignItems="center"
           >
             <Grid item>

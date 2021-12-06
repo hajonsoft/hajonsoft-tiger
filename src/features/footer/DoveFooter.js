@@ -9,7 +9,7 @@ const DoveFooter = () => {
     <Paper outlined style={{ width: "100%", boxShadow: "none", backgroundColor: "#fff", marginBottom: "6rem", marginTop: "2rem" }}>
       <Grid
         container
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
         spacing={2}
         style={{ padding: "1rem" }}
@@ -27,7 +27,7 @@ const DoveFooter = () => {
             Register expression of interest
           </Button>
         </Grid>
-        <Grid item md={2} container justify="flex-end" alignItems="center">
+        <Grid item md={2} container justifyContent="flex-end" alignItems="center">
           <Grid item>
             <Button onClick={() => history.push("/login")}>            <img
               onClick={() => history.push("/login")}
