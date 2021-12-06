@@ -160,6 +160,7 @@ const OnlinePackage = () => {
                   {
                     title: "Description",
                     field: "description",
+                    render: (rowData) => rowData?.description?.length > 80 ? rowData.description.substring(0,80) + "...": rowData.description,
                     width: "35%",
                     headerStyle: {
                       textAlign: "center",
