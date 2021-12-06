@@ -53,7 +53,7 @@ const AppHeader = () => {
         <title>{`🐦| ${projectName}`}</title>
       </Helmet>
       <Toolbar style={{ color: "#fff" }}>
-        <Grid container justify="space-between" alignItems="center">
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
             <Typography variant="subtitle1" style={{ color: 'indigo' }}>{`HAJonSoft | ${projectName}`}</Typography>
           </Grid>
@@ -100,7 +100,7 @@ const AppHeader = () => {
             container
             spacing={2}
             alignItems="center"
-            justify="flex-end"
+            justifyContent="flex-end"
             aria-label="Sign out"
           >
             <Grid item>

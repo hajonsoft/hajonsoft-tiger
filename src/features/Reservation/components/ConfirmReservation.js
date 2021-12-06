@@ -20,7 +20,7 @@ const ConfirmReservation = ({reservationNumber})=> {
             container
             direction="column"
             spacing={4}
-            justify="center"
+            justifyContent="center"
             alignItems="center"
           >
             <Grid item style={{ backgroundColor: "#e8f5e9" }}>

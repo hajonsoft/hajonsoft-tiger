@@ -2,7 +2,7 @@ import {
   Breadcrumbs,
   CircularProgress,
   Grid,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -24,15 +24,16 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
+import { cloneDeep } from "lodash";
 import MaterialTable from "material-table";
 import moment from "moment";
 import pluralize from "pluralize";
-import React, { forwardRef, useState } from "react";
-import { useList } from "react-firebase-hooks/database";
+import React, { forwardRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import firebase from "../../firebaseapp";
 import AppHeader from "../../shared/macaw/AppHeader";
 import CoreForm from "./components/CoreForm";
+import { getOnlineCaravans } from "./redux/onlineCaravanSlice";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -58,14 +59,15 @@ const tableIcons = {
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
 };
 const OnlinePackage = () => {
-  // const mobileMedia = useMediaQuery((theme) =>
-  //   theme.breakpoints.down("sm")
-  // );
+  const advertisements = useSelector(state => state.online?.data);
+  const loading = useSelector(state => state.online?.loading);
+  const error = useSelector(state => state.online?.error);
 
-  const [snapshots, loading, error] = useList(
-    firebase.database().ref("protected/onlinePackage")
-  );
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getOnlineCaravans());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [state, setState] = useState({
     mode: "list",
     record: { gender: "umrah" },
@@ -139,7 +141,7 @@ const OnlinePackage = () => {
 
           {state.mode === "list" && (
             <>
-              <Grid container spacing={2} style={{padding: '1rem'}}>
+              <Grid container spacing={2} style={{ padding: '1rem' }}>
                 <Grid item>
                   <Typography color="textPrimary">Upcoming</Typography>
                 </Grid>
@@ -191,13 +193,7 @@ const OnlinePackage = () => {
                       )} [${moment().diff(rowData.returnDate, "days")}]`,
                   },
                 ]}
-                data={snapshots && snapshots.map((s) => s.val())}
-                // detailPanel={(rowData) => (
-                //   <CustomerDetail
-                //     customer={rowData}
-                //     customerKey={snapshots.map((s) => s.key)[rowData.tableData.id]}
-                //   />
-                // )}
+                data={cloneDeep(advertisements)}
                 actions={[
                   {
                     icon: tableIcons.Add,
@@ -214,9 +210,7 @@ const OnlinePackage = () => {
                         ...st,
                         mode: "update",
                         record: rowData,
-                        customerKey: snapshots.map((s) => s.key)[
-                          rowData.tableData.id
-                        ],
+                        customerKey: rowData?._fid,
                       })),
                   },
                   {
@@ -227,9 +221,7 @@ const OnlinePackage = () => {
                         ...st,
                         mode: "delete",
                         record: rowData,
-                        customerKey: snapshots.map((s) => s.key)[
-                          rowData.tableData.id
-                        ],
+                        customerKey: rowData?._fid
                       })),
                   },
                 ]}

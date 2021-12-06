@@ -231,7 +231,7 @@ function DropZone({ packageName, onClose }) {
                   item
                   container
                   xs={12}
-                  justify="flex-end"
+                  justifyContent="flex-end"
                   spacing={2}
                   alignItems="center"
                 >
@@ -294,7 +294,7 @@ function DropZone({ packageName, onClose }) {
                 </div>
                 <Grid
                   container
-                  justify="center"
+                  justifyContent="center"
                   alignItems="center"
                   spacing={2}
                 >
@@ -302,7 +302,7 @@ function DropZone({ packageName, onClose }) {
                   <Grid item>
                     <FileCopyOutlinedIcon />
                   </Grid>
-                  <Grid item container justify="space-between" style={{marginTop: '10rem'}}>
+                  <Grid item container justifyContent="space-between" style={{marginTop: '10rem'}}>
                     <Grid item>
                       <Button onClick={handle3MClick} startIcon={<FolderOpenOutlinedIcon />} size="small">3M</Button>
                     </Grid>

@@ -10,7 +10,7 @@ function CustomerDetail(props) {
     return (
         <div>
             <Alert severity="info" >{`Customer details here, ex. facebook, twitter, whatsapp, accommodation, etc... `}</Alert>
-            <Grid container alignContent="center" justify="space-around" style={{ width: "30%", padding: "1rem"}}>
+            <Grid container alignContent="center" justifyContent="space-around" style={{ width: "30%", padding: "1rem"}}>
                 <WhatsAppIcon style={{cursor: "pointer"}} /> <TwitterIcon style={{cursor: "pointer"}} /> <HotelIcon style={{cursor: "pointer"}} /> <FlightTakeoffIcon style={{cursor: "pointer"}} /> <GavelIcon style={{cursor: "pointer"}} />
             </Grid>
         </div>

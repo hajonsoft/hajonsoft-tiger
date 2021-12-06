@@ -17,4 +17,6 @@ export const store = configureStore({
         report: reportReducer,
         profile: profileReducer,
     },
+    devTools: process.env.NODE_ENV !== 'production',
+    // enhancers: composeEnhancers,
 })

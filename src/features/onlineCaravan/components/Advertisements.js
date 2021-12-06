@@ -31,11 +31,11 @@ const Advertisements = () => {
     <Grid
       container
       spacing={3}
-      justify="space-around"
+      justifyContent="space-around"
       alignItems="center"
       style={{ padding: "2rem", minHeight: '80vh' }}
     >
-      {loading && <Grid container spacing={4} justify="center" alignItems="center">
+      {loading && <Grid container spacing={4} justifyContent="center" alignItems="center">
 
         <Grid item>
           <CircularProgress size={64}/>

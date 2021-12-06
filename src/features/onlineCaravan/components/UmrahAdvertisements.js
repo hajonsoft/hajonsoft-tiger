@@ -36,7 +36,7 @@ const UmrahAdvertisements = () => {
           Umrah Packages
         </Typography>
       </Box>
-      <Grid container spacing={3} justify="space-around" alignItems="center">
+      <Grid container spacing={3} justifyContent="space-around" alignItems="center">
         {onlinePackages &&
           onlinePackages.map(
             (p, i) =>

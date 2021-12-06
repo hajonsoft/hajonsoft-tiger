@@ -66,7 +66,7 @@ const Help = () => {
           justifyContent: "center",
         }}
       >
-        <Grid container justify="center" spacing={4} alignItems="center">
+        <Grid container justifyContent="center" spacing={4} alignItems="center">
           {helpCards.map((help) => (
             <HelpCard
               title={help.title}

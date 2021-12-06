@@ -120,7 +120,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                 <Grid
                   container
                   spacing={2}
-                  justify="space-between"
+                  justifyContent="space-between"
                   alignItems="center"
                   alignContent="center"
                 >
@@ -168,7 +168,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       <CardContent>
                         <Grid
                           container
-                          justify="space-between"
+                          justifyContent="space-between"
                           alignItems="center"
                           spacing={2}
                         >
@@ -305,7 +305,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                     xs={12}
                     container
                     spacing={2}
-                    justify="space-between"
+                    justifyContent="space-between"
                     alignItems="flex-start"
                   >
                     <Grid item xs={4}>
@@ -392,7 +392,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                       xs={8}
                       container
                       spacing={2}
-                      justify="space-between"
+                      justifyContent="space-between"
                       alignItems="center"
                     >
                       <Grid item md={12}>

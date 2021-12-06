@@ -122,8 +122,8 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                           record={record}
                         />
                       </Grid>
-                      <Grid item xs={8} container direction="column" justify="space-around">
-                        <Grid item container justify="space-between" spacing={4}>
+                      <Grid item xs={8} container direction="column" justifyContent="space-around">
+                        <Grid item container justifyContent="space-between" spacing={4}>
                           <CustomerName
                             mode={mode}
                             value={values.name || ""}
@@ -136,7 +136,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                             xsWidth={6}
                           />
                         </Grid>
-                        <Grid item container justify="space-between" spacing={4}>
+                        <Grid item container justifyContent="space-between" spacing={4}>
                           <CustomerNationality
                             mode={mode}
                             value={values.nationality || ""}
@@ -147,7 +147,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose }) => {
                             xsWidth={6}
                           />
                         </Grid>
-                        <Grid item container justify="space-between" alignItems="center" spacing={4}>
+                        <Grid item container justifyContent="space-between" alignItems="center" spacing={4}>
                           <CustomerPassportNumber
                             mode={mode}
                             value={values.passportNumber || ""}

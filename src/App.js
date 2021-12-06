@@ -2,8 +2,7 @@ import { ThemeProvider } from "@material-ui/core";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Redirect } from "react-router-dom";
-import Passengers from "./features/passengers";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
@@ -13,6 +12,7 @@ import AdvertisementDetail from "./features/onlineCaravan/components/Advertiseme
 import HajjAdvertisements from "./features/onlineCaravan/components/HajjAdvertisements";
 import ToursAdvertisements from "./features/onlineCaravan/components/ToursAdvertisements";
 import UmrahAdvertisements from "./features/onlineCaravan/components/UmrahAdvertisements";
+import Passengers from "./features/passengers";
 import Profile from "./features/Profile/index";
 import Reservation from "./features/Reservation";
 import PrivateRoute from "./features/SignIn/PrivateRoute";
@@ -76,12 +76,12 @@ function App() {
             <PublicRoute path="/logout">
               <SignOut />
             </PublicRoute>
-            <PublicRoute path="/reserve/:packageName">
+            <Route path="/reserve/:packageName" >
               <Reservation
                 onLanguageChange={(l) => handleLanguageChange(l)}
                 lang={language}
               />
-            </PublicRoute>
+            </Route>
             <PublicRoute exact path="/hajj-packages">
               <HajjAdvertisements />
             </PublicRoute>
@@ -115,9 +115,6 @@ function App() {
             <PrivateRoute path="/favorite">
               <Favorite />
             </PrivateRoute>
-            <PublicRoute path="*">
-              <Redirect to="/" />
-            </PublicRoute>
           </Provider>
         </Router>
       </IntlProvider>

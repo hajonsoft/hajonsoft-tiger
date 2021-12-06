@@ -40,7 +40,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
         container
         direction="column"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         spacing={2}
         alignContent="center"
         component={Paper}
