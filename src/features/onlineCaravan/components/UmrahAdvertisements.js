@@ -1,7 +1,6 @@
 import { Box, Grid, Typography } from "@material-ui/core";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Animated } from "react-animated-css";
 import firebase from "../../../firebaseapp";
 import DoveHeader from "../../Header/DoveHeader";
 import AdvertisementCard from "./AdvertisementCard";
@@ -42,9 +41,7 @@ const UmrahAdvertisements = () => {
             (p, i) =>
               isCurrent(p) && (
                 <Grid item xs={12} lg={4} sm={12} md={6}>
-                  <Animated animationIn="bounceInLeft" isVisible={true}>
                     <AdvertisementCard detail={p} key={p.name} index={i} />
-                  </Animated>
                 </Grid>
               )
           )}
