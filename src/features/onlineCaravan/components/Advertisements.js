@@ -1,7 +1,6 @@
 import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
 import moment from "moment";
 import React, { useEffect } from "react";
-import { Animated } from "react-animated-css";
 import { useDispatch, useSelector } from "react-redux";
 import interested from "../../../images/interested.svg";
 import t from '../../../shared/util/trans';
@@ -50,13 +49,11 @@ const Advertisements = () => {
           (advertisement, index) =>
             isCurrent(advertisement) && (
               <Grid item xs={12} lg={4} sm={12} md={6} key={advertisement.name}>
-                <Animated animationIn="bounceInLeft" isVisible={true}>
                   <AdvertisementCard
                     detail={advertisement}
                     key={advertisement.name}
                     index={index}
                   />
-                </Animated>
               </Grid>
             )
         )}
