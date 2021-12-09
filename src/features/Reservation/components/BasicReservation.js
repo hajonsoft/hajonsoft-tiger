@@ -4,12 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import ExploreIcon from "@material-ui/icons/Explore";
 import clsx from "classnames";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../shared/util/trans";
 import InputControl from "./InputControl";
+import emailjs from 'emailjs-com';
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
@@ -71,12 +72,44 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
   const classes = useStyles();
   const { packageName } = useParams();
   const [reservationNumber, setReservationNumber] = useState("");
+  const [record, setRecord] = useState({});
+
+    //TODO:RTK:profile replace this code with dispatch(getProfile()) and useSelector
+    useEffect(() => {
+      firebase
+        .database()
+        .ref(`protected/profile`)
+        .once('value', (snapshot) => {
+          if (snapshot.toJSON()) {
+            setRecord(snapshot.toJSON());
+          }
+        });
+    }, []);
 
   const handleSubmitForm = async (values, actions) => {
     const reservationRef = firebase.database().ref(`customer/online`);
     const pushResult = reservationRef.push({ ...values, packageName });
     setReservationNumber(pushResult.key);
-    openSuccessModal()
+
+    emailjs
+    .send(
+      'service_wgqrq6n',
+      'template_8n6k25r',
+      {
+        accountURL: window.location.origin,
+        reply_to: 'HajonSoft',
+        firstName: record.name,
+        send_to: record.email,
+        reservationUserName: packageName,
+      },
+      'user_wOpEYd0mwEHD1Tr25A9NP'
+    )
+    .then((res) => {
+      openSuccessModal();
+    })
+    .catch((err) => {
+      openSuccessModal();
+    });
   };
 
   return (
