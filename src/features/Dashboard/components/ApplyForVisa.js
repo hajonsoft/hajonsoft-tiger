@@ -304,9 +304,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: cryptr.encrypt(exportVisaSystem.username),
-        password: cryptr.encrypt(exportVisaSystem.password),
-        name: exportVisaSystem.usap,
+        username: cryptr.encrypt(exportVisaSystem?.username),
+        password: cryptr.encrypt(exportVisaSystem?.password),
+        name: exportVisaSystem?.usap,
       },
       info: {
         pax: travellersData.length,
