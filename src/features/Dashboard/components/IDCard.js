@@ -87,6 +87,14 @@ const idCardProps = {
       x: 130,
       y: 54,
     },
+    medinahHotel: {
+      x: 10,
+      y: 105,
+    },
+    mekahHotel: {
+      x: 128,
+      y: 105,
+    },
   },
   Custom: {
     image: {
@@ -101,12 +109,34 @@ const idCardProps = {
       x: 70,
       y: 92,
     },
+    medinahHotel: {
+      x: 70,
+      y: 105,
+    },
+    mekahHotel: {
+      x: 70,
+      y: 117,
+    },
   },
 };
 
 const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
+  const [detail, setDetail] = React.useState({});
   const classes = useStyles();
+
+  React.useEffect(() => {
+    firebase
+      .database()
+      .ref('protected/onlinePackage')
+      .once('value', (snapshot) => {
+        setDetail(
+          Object.values(snapshot.toJSON()).find((x) =>
+            x.name.includes(caravanName)
+          )
+        );
+      });
+  }, []);
 
   const createPDF = async (
     idType,
@@ -125,16 +155,21 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    const imageURL = await firebase
-      .storage()
-      .ref(`${nationality}/${passportNumber}.jpg`)
-      .getDownloadURL()
+    // const imageURL = await firebase
+    //   .storage()
+    //   .ref(`${nationality}/${passportNumber}.jpg`)
+    //   .getDownloadURL();
 
-    const jpgImageBytes = await fetch(imageURL).then((res) =>
-      res.arrayBuffer()
-    ).catch(err => {
-      console.log(err, "error")
-    })
+    const imageURL = 'https://avatars.githubusercontent.com/u/24833900?v=4';
+
+    console.log(imageURL);
+
+    const jpgImageBytes = await fetch(imageURL)
+      .then((res) => res.arrayBuffer())
+      .catch((err) => {
+        console.log(err, 'error');
+      });
+
     const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
 
     // write image
@@ -155,7 +190,27 @@ const IDCard = ({ passengers, caravanName }) => {
         color: rgb(0.95, 0.1, 0.1),
       });
     }
-
+    /// write medinah hotel
+    if (idCardProps[idType].medinahHotel !== undefined) {
+      firstPage.drawText(detail.arrivalHotel.slice(0, 30), {
+        x: idCardProps[idType].medinahHotel.x,
+        y: height - idCardProps[idType].medinahHotel.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
+    /// write mekah hotel
+    if (idCardProps[idType].mekahHotel !== undefined) {
+      firstPage.drawText(detail.departureHotel.slice(0, 30), {
+        x: idCardProps[idType].mekahHotel.x,
+        y: height - idCardProps[idType].mekahHotel.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
+    // write full name
     if (idCardProps[idType].name !== undefined) {
       firstPage.drawText(name, {
         x: idCardProps[idType].name.x,
@@ -232,7 +287,7 @@ const IDCard = ({ passengers, caravanName }) => {
                   passenger.name,
                   passenger.passportNumber,
                   passenger.birthDate,
-                  caravanName,
+                  detail.name,
                   passenger.nationality
                 );
               });

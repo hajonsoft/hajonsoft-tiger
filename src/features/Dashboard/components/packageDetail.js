@@ -59,6 +59,10 @@ const PackageDetail = ({ data, caravanData }) => {
   // const reportError = useSelector((state) => state.report?.error);
   const reports = useSelector((state) => state.report?.data);
 
+  console.log(caravans, "caravans")
+
+  console.log("hello world...")
+
   useEffect(() => {
     dispatch(getAllReports());
   }, [dispatch]);
