@@ -155,14 +155,10 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    // const imageURL = await firebase
-    //   .storage()
-    //   .ref(`${nationality}/${passportNumber}.jpg`)
-    //   .getDownloadURL();
-
-    const imageURL = 'https://avatars.githubusercontent.com/u/24833900?v=4';
-
-    console.log(imageURL);
+    const imageURL = await firebase
+      .storage()
+      .ref(`${nationality}/${passportNumber}.jpg`)
+      .getDownloadURL();
 
     const jpgImageBytes = await fetch(imageURL)
       .then((res) => res.arrayBuffer())
