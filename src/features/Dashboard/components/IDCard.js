@@ -136,7 +136,7 @@ const IDCard = ({ passengers, caravanName }) => {
           )
         );
       });
-  }, []);
+  }, [caravanName]);
 
   const createPDF = async (
     idType,
