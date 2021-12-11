@@ -190,7 +190,7 @@ const PackageDetail = ({ data, caravanData }) => {
         </TabPanel>
 
         <TabPanel value={activeTab} index={4}>
-          <IDCard />
+          <IDCard caravanName={data.name} passengers={caravanData[data.name]} />
         </TabPanel>
       </Paper>
     </>

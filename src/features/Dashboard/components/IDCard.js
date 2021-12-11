@@ -1,110 +1,347 @@
 import React from 'react';
-import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Grid from '@material-ui/core/Grid';
+import InputLabel from '@material-ui/core/InputLabel';
+import { Formik, Form } from 'formik';
+import HotelPreview from './Hotel.png';
+import CustomPreview from './Custom.png';
+import OranPreview from './Oran.png';
+import { makeStyles } from '@material-ui/core';
+import { Field } from 'formik';
+import firebase from '../../../firebaseapp';
 
-const IDCard = () => {
-  const [pdfDoc, setPdfDoc] = React.useState(null);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: 15,
+  },
+  container: {
+    borderColor: theme.palette.primary.main,
+  },
+  inputLabel: {
+    marginTop: '-45px',
+    color: () => '',
+    '&.focused': {
+      color: theme.palette.primary.main,
+    },
+  },
+  submitBtn: {
+    background: '#178CF9',
+    marginRight: '3rem',
+    textTransform: 'capitalize',
+    color: 'white',
+    marginBottom: '5rem',
+  },
+}));
 
-  React.useEffect(() => {
-    (async () => {
-      const response = await fetch('/pdfs/Oran.pdf');
-      const existingPdfBytes = await response.arrayBuffer();
+const idCardProps = {
+  Oran: {
+    image: {
+      x: 9,
+      y: 67,
+    },
+    firstName: {
+      x: 124,
+      y: 32,
+    },
+    lastName: {
+      x: 124,
+      y: 46,
+    },
+    passportNumber: {
+      x: 124,
+      y: 60,
+    },
+    birthDate: {
+      x: 124,
+      y: 74,
+    },
+    tripName: {
+      x: 124,
+      y: 89,
+    },
+  },
+  Hotel: {
+    image: {
+      x: 9,
+      y: 95,
+    },
+    firstName: {
+      x: 130,
+      y: 32,
+    },
+    lastName: {
+      x: 130,
+      y: 20,
+    },
+    passportNumber: {
+      x: 130,
+      y: 44,
+    },
+    tripName: {
+      x: 130,
+      y: 54,
+    },
+  },
+  Custom: {
+    image: {
+      x: 9,
+      y: 88,
+    },
+    name: {
+      x: 70,
+      y: 82,
+    },
+    passportNumber: {
+      x: 70,
+      y: 92,
+    },
+  },
+};
 
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+const IDCard = ({ passengers, caravanName }) => {
+  const [previewURL, setPreviewURL] = React.useState(null);
+  const classes = useStyles();
 
-      setPdfDoc(pdfDoc);
-    })();
-  }, []);
-
-  const createPDF = async () => {
+  const createPDF = async (
+    idType,
+    name,
+    passportNumber,
+    birthDate,
+    tripName,
+    nationality
+  ) => {
     // Embed the Helvetica font
+    const response = await fetch(`/pdfs/${idType}.pdf`);
+    const existingPdfBytes = await response.arrayBuffer();
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const { width, height } = firstPage.getSize();
+    const { height } = firstPage.getSize();
 
-    console.log(width, height, 'width and height');
+    const imageURL = await firebase
+      .storage()
+      .ref(`${nationality}/${passportNumber}.jpg`)
+      .getDownloadURL()
 
-    const jpgUrl =
-      '/mstile-150x150.jpg';
-    const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer());
+    const jpgImageBytes = await fetch(imageURL).then((res) =>
+      res.arrayBuffer()
+    ).catch(err => {
+      console.log(err, "error")
+    })
     const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
 
     // write image
     firstPage.drawImage(jpgImage, {
-      x: 9,
-      y: 67,
-      width: 50,
-      height: 50,
+      x: idCardProps[idType].image.x,
+      y: idCardProps[idType].image.y,
+      width: idType === 'Custom' ? 57 : 50,
+      height: idType === 'Custom' ? 57 : 50,
     });
 
     /// write firstName
-    firstPage.drawText('Babatunde', {
-      x: 124,
-      y: height - 32,
-      size: 8,
-      font: helveticaFont,
-      color: rgb(0.95, 0.1, 0.1),
-      //   rotate: degrees(-45),
-    });
+    if (idCardProps[idType].firstName !== undefined) {
+      firstPage.drawText(name.split(' ')[0], {
+        x: idCardProps[idType].firstName.x,
+        y: height - idCardProps[idType].firstName.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
+
+    if (idCardProps[idType].name !== undefined) {
+      firstPage.drawText(name, {
+        x: idCardProps[idType].name.x,
+        y: height - idCardProps[idType].name.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
 
     /// write lastName
-    firstPage.drawText('Ololade', {
-      x: 124,
-      y: height - 46,
-      size: 8,
-      font: helveticaFont,
-      color: rgb(0.95, 0.1, 0.1),
-      //   rotate: degrees(-45),
-    });
+    if (idCardProps[idType].lastName !== undefined) {
+      firstPage.drawText(name.split(' ')[1], {
+        x: idCardProps[idType].lastName.x,
+        y: height - idCardProps[idType].lastName.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
 
     /// write passport number
-    firstPage.drawText('21091000095', {
-      x: 124,
-      y: height - 60,
-      size: 8,
-      font: helveticaFont,
-      color: rgb(0.95, 0.1, 0.1),
-      //   rotate: degrees(-45),
-    });
+    if (idCardProps[idType].passportNumber !== undefined)
+      firstPage.drawText(passportNumber, {
+        x: idCardProps[idType].passportNumber.x,
+        y: height - idCardProps[idType].passportNumber.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
 
     /// write birthDate
-    firstPage.drawText('22/07/1997', {
-      x: 124,
-      y: height - 74,
-      size: 8,
-      font: helveticaFont,
-      color: rgb(0.95, 0.1, 0.1),
-      //   rotate: degrees(-45),
-    });
+    if (idCardProps[idType].birthDate !== undefined) {
+      firstPage.drawText(new Date(birthDate).toLocaleDateString('en-US'), {
+        x: idCardProps[idType].birthDate.x,
+        y: height - idCardProps[idType].birthDate.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
 
     /// write trip name
-    firstPage.drawText('Humrah Tour', {
-      x: 124,
-      y: height - 89,
-      size: 8,
-      font: helveticaFont,
-      color: rgb(0.95, 0.1, 0.1),
-      //   rotate: degrees(-45),
-    });
+    if (idCardProps[idType].tripName !== undefined) {
+      firstPage.drawText(tripName, {
+        x: idCardProps[idType].tripName.x,
+        y: height - idCardProps[idType].tripName.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+      });
+    }
 
     const pdfBytes = await pdfDoc.save();
 
-    download(pdfBytes, 'pdf-lib_modification_example.pdf', 'application/pdf');
+    download(pdfBytes, `${name}.pdf`, 'application/pdf');
   };
 
   return (
-    <div>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
-      <p>Hello World!!</p>
+    <Grid container>
+      <Grid item md={6}>
+        <Grid container spacing={3}>
+          <h1>options</h1>
+          <Formik
+            enableReinitialize
+            initialValues={{
+              idType: '',
+              reportName: '',
+            }}
+            onSubmit={(values) => {
+              passengers.forEach((passenger) => {
+                createPDF(
+                  values.idType,
+                  passenger.name,
+                  passenger.passportNumber,
+                  passenger.birthDate,
+                  caravanName,
+                  passenger.nationality
+                );
+              });
+            }}
+          >
+            {({
+              setFieldValue,
+              isValid,
+              values,
+              errors,
+              isSubmitting,
+              touched,
+            }) => (
+              <Form style={{ width: '90%' }}>
+                <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+                  <FormControl className={classes.root} fullWidth>
+                    <InputLabel
+                      shrink={false}
+                      className={classes.inputLabel}
+                      style={{
+                        color:
+                          touched.idType && Boolean(errors.idType)
+                            ? 'red'
+                            : null,
+                      }}
+                      htmlFor={'idType'}
+                      placeholder={'idType'}
+                      required={true}
+                    >
+                      ID Type
+                    </InputLabel>
+                    <Grid container alignItems="center">
+                      <Grid item xs={12}>
+                        <Field
+                          as={Select}
+                          className={classes.container}
+                          name="idType"
+                          required={true}
+                          id="idType"
+                          placeholder="ID Type"
+                          variant="outlined"
+                          fullWidth
+                          error={!!errors.idType}
+                          value={values.idType}
+                          onChange={(e) => {
+                            setFieldValue('idType', e.target.value);
+                            e.target.value === 'Custom'
+                              ? setPreviewURL(CustomPreview)
+                              : e.target.value === 'Hotel'
+                              ? setPreviewURL(HotelPreview)
+                              : setPreviewURL(OranPreview);
+                          }}
+                        >
+                          <MenuItem value="Custom"> Custom </MenuItem>
+                          <MenuItem value="Hotel"> Hotel </MenuItem>
+                          <MenuItem value="Oran"> Oran </MenuItem>
+                        </Field>
+                      </Grid>
+                    </Grid>
+                    <FormHelperText error={!!errors.idType}>
+                      {touched.idType && errors.idType}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                {/* <Grid item xs={12}>
+                  <InputControl
+                    name="reportName"
+                    label="Report Name"
+                    required
+                    value={''}
+                    error={touched.reportName && Boolean(errors.reportName)}
+                    helperText={touched.reportName && errors.reportName}
+                    options={[
+                      { value: 'Custom', label: 'Custom' },
+                      { value: 'Hotel', label: 'Hotel' },
+                      { value: 'Oran', label: 'Oran' },
+                    ]}
+                  />
+                </Grid> */}
+                <Grid item justifyContent="flex-start">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    disabled={!isValid || isSubmitting}
+                    className={classes.submitBtn}
+                    size="large"
+                    type="submit"
+                  >
+                    Print Cards
+                  </Button>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Grid>
+      </Grid>
 
-      <button onClick={createPDF}> create a pdf </button>
-    </div>
+      <Grid item md={6}>
+        <h1>IMAGE PREVIEW</h1>
+        {previewURL && (
+          <img
+            src={previewURL}
+            style={{ width: '100%' }}
+            alt="id card type preview"
+          />
+        )}
+      </Grid>
+    </Grid>
   );
 };
 
