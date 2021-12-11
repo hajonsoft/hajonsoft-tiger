@@ -2,7 +2,6 @@ const jszip = require("jszip");
 var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
-const imageConverter = require("imagemagick");
 var moment = require("moment");
 const { nationalities } = require("../data/nationality");
 

@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
 import { unregister as unregisterServiceWorker } from './serviceWorker'
 
 unregisterServiceWorker();
 
-const theme = createMuiTheme({});
+const theme = createTheme({});
 
 ReactDOM.render(
   <React.StrictMode>

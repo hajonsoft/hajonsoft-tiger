@@ -304,8 +304,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: cryptr.encrypt(exportVisaSystem?.username),
-        password: cryptr.encrypt(exportVisaSystem?.password),
+        username: exportVisaSystem?.username && cryptr.encrypt(exportVisaSystem?.username),
+        password: exportVisaSystem?.password && cryptr.encrypt(exportVisaSystem?.password),
         name: exportVisaSystem?.usap,
       },
       info: {
@@ -345,7 +345,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   const getSelectedServiceProviderProfile = () => {
     if (visaSystems && visaSystems?.length > 0) {
-      const defaultSystem = visaSystems[selectedVisaSystem] || visaSystems[0];
+      const defaultSystem = visaSystems[selectedVisaSystem];
       return `${getServiceProviderProfileName(
         defaultSystem?.usap
       )} - Username: ${defaultSystem?.username}`;
@@ -665,6 +665,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                           {!downloading && (
                             <Button
+                              disabled={selectedVisaSystem === ""}
                               onClick={handleDownloadZipFileClick}
                               startIcon={<CloudDownloadOutlined />}
                               style={{ textTransform: 'none' }}>
