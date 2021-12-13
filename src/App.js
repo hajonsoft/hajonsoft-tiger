@@ -40,9 +40,19 @@ const browserLanguage = () => {
   return 'en'
 }
 
+function getSuppoprtedLanguage() {
+  const language = localStorage.getItem("langOverride") || browserLanguage();
+  const supportedLanguge = "en";
+  if (language === "ar" || language === "en" || language === "fr"){
+    return language
+  } else {
+    return supportedLanguge;
+  }
+
+}
+
 function App() {
-  const [language, setLanguage] = useState(
-    localStorage.getItem("langOverride") || browserLanguage()
+  const [language, setLanguage] = useState(getSuppoprtedLanguage()
   );
   const [languageDirection, setLanguageDirection] = useState(
     localStorage.getItem("langOverride") === "ar" ? "rtl" : "ltr"
@@ -56,8 +66,15 @@ function App() {
     if (lang !== "ar" && languageDirection === "rtl") {
       setLanguageDirection("ltr");
     }
-    setLanguage(lang);
-    localStorage.setItem("langOverride", lang);
+    const supportedLanguge = "en";
+    if (lang === "ar" || lang === "en" || lang === "fr"){
+      setLanguage(lang);
+      localStorage.setItem("langOverride", lang);
+    } else {
+      setLanguage(supportedLanguge);
+      localStorage.setItem("langOverride", supportedLanguge);
+    }
+
   };
 
   document.dir = languageDirection;

@@ -8,12 +8,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import { Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import firebase from "../../firebaseapp";
 import firebaseConfig from "../../firebaseConfig";
-// import InputControl from "./InputControl";
+import { getProfile, updateProfile } from './redux/profileSlice';
 import InputControl from "../Reservation/components/InputControl";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,31 +47,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
   const history = useHistory();
 
-  const [record, setRecord] = useState({});
-  const authData = useSelector(state => state.auth?.data);
+  const record = useSelector(state => state?.profile?.data);
 
-  //TODO:RTK:profile replace this code with dispatch(getProfile()) and useSelector
   useEffect(() => {
-    firebase
-      .database()
-      .ref(`protected/profile`)
-      .once("value", (snapshot) => {
-        if (snapshot.toJSON()) {
-          setRecord(snapshot.toJSON());
-        }
-      });
-  }, []);
+    dispatch(getProfile())
+  }, [dispatch]);
 
   const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
-    // TODO:RTK replace with dispatch(updateProfile(newprofile))
-    const updateRef = firebase.database().ref(`protected/profile`);
-    updateRef.set(values).catch((err) => {
-      alert(err.message);
-    });
+    dispatch(updateProfile({profileData: values}));
     onClose();
   };
   return (
@@ -117,10 +104,10 @@ const Profile = () => {
                       name="email"
                       label="Email Address"
                       required={true}
-                      value={authData?.email}
+                      value={values?.email}
                       error={touched.email && Boolean(errors.email)}
-                      helperText="This email address will be used to communicate with you when you send visa by proxy request"
-                      disabled={true}
+                      helperText="Please enter email to enable email notifications (Reservations, visa by proxy, etc...)"
+                      disabled={false}
                     />
                   </Grid>
                   <Grid item xs={12}>

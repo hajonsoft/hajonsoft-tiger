@@ -5,8 +5,8 @@ export const flatten = (snapshot, name = "data") => {
     const topKeys = Object.keys(data);
 
     topKeys.forEach(topKey => {
-        const mergeFirebaseIds = Object.keys(data[topKey])
         output[topKey] = []
+        const mergeFirebaseIds = Object.keys(data[topKey])
         mergeFirebaseIds.forEach(_fid => {
             output[topKey].push({ ...data[topKey][_fid], _fid })
         })
