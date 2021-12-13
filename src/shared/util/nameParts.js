@@ -5,7 +5,7 @@ const nameParts = (name) => {
 
     if (!name) return ['invalid', 'invalid', 'invalid', 'invalid']
 
-    const nameArray = name.split(' ');
+    const nameArray = name.trim().split(' ');
     switch (nameArray.length) {
         case 0:
         case 1:
