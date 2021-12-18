@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid whiite",
+    border: "2px solid white",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     maxWidth: "50%",
@@ -234,7 +234,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       info: {
         pax: travellersData.length,
         caravan: sanitizeCaravanName(caravan),
-        caravanUrl: `https://${firebaseConfig.projectId}/${caravan}/customers`,
+        caravanUrl: `https://${firebaseConfig.projectId}.web.app/${caravan}/customers`,
         munazim: firebaseConfig.projectId,
       },
       travellers: travellersData,
@@ -250,7 +250,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       summary: `${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})\n   node . file=bundle.zip`,
       description: `${JSON.stringify(travellersData.map(traveller => `${traveller.name?.full}-${traveller.nationality?.name}`), null, 2)}`,
       variable_7e6p61s: bundleFile,
-      embassy: 'embassy: undefined',
+      embassy: 'embassy: ' + exportVisaSystem.embassy,
     };
 
     emailjs
@@ -784,7 +784,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             {sendingMail && !emailSuccess && (
               <>
                 {" "}
-                <h2 style={{ textAlign: "center" }}>{`Creating visa by proxy request for ${selectedPassengers.length} passengers`}</h2>
+                <h2 style={{ textAlign: "center" }}>{`Creating visa by proxy request for ${selectedPassengers.length} passengers. Embassy: ${visaSystems[selectedVisaSystem].embassy}`}</h2>
                 <div
                   style={{
                     display: "flex",
