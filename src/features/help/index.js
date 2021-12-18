@@ -12,6 +12,21 @@ import t from '../../shared/util/trans';
 
 const helpCards = [
   {
+    title: "BOOK A MEETING",
+    linkElement: (
+      <a href="https://meetings.hubspot.com/haj-onsoft">{t('schedule-a-meeting-0')} </a>
+    ),
+    icon: <EventOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
+    content:
+      t('book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to'),
+  },
+  {
+    title: t('video-library'),
+    linkElement: <a href="https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR"> {t('watch-video')}</a>,
+    icon: <PlayCircleFilledOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
+    content: t('watch-how-to-videos-to-learn-about-many-different-features-click-here-to'),
+  },
+  {
     title: t('live-chat'),
     icon: <HeadsetMicOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
@@ -30,28 +45,13 @@ const helpCards = [
       t('send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible'),
   },
   {
-    title: "BOOK A MEETING",
-    linkElement: (
-      <a href="https://meetings.hubspot.com/haj-onsoft">{t('schedule-a-meeting-0')} </a>
-    ),
-    icon: <EventOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
-    content:
-      t('book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to'),
-  },
-  {
     title: t('community-support'),
     linkElement: (
-      <span> <a href="https://hajonsoft.on.spiceworks.com/portal">{t('tickets')}</a><span> or </span><a href="https://on.spiceworks.com">{t('join-the-community')}</a></span>
+      <span> <a href="https://hajonsoft.on.spiceworks.com/portal">{t('your-tickets')}</a><span>-{t('or')}-</span><a href="https://on.spiceworks.com">{t('join-the-community')}</a></span>
     ),
     icon: <FavoriteBorderOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
     content:
       t('visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track'),
-  },
-  {
-    title: t('video-library'),
-    linkElement: <a href="https://hajonsoft.talentlms.com/shared/start/key:LZSIDNHR"> {t('watch-video')}</a>,
-    icon: <PlayCircleFilledOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
-    content: t('watch-how-to-videos-to-learn-about-many-different-features-click-here-to'),
   },
 ];
 const Help = () => {
@@ -62,7 +62,7 @@ const Help = () => {
       <div
         style={{
           display: "flex",
-          padding: "10rem",
+          padding: "2rem 5rem 10rem",
           justifyContent: "center",
         }}
       >

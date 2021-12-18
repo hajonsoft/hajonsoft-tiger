@@ -130,7 +130,7 @@
   "book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to": "احجز اجتماعًا مباشرًا للتدريب أو الدعم ، سنستخدم خدمة Google Meet لمشاركة الشاشة .... نظرًا لأن الفني الذي سيقابلك قد يكون في منطقة زمنية مختلفة ، فمن المهم استخدام هذا الرابط لـ",
   "community-support": "دعم المجتمع",
   "tickets": "تذاكر",
-  "join-the-community": "الانضمام إلى المجتمع",
+  "join-the-community": "إدارة",
   "visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track": "لا تغطي خدمة التأشيرة عن طريق الوكيل المدفوعات إلى مزود طرف ثالث. \nأنت المسؤول عن التحقق من البيانات. \nمسار",
   "video-library": "مكتبة الفيديو",
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "شاهد مقاطع فيديو \"كيفية\" للتعرف على العديد من الميزات المختلفة. \nانقر هنا ل",
@@ -163,5 +163,7 @@
   "public-company-address": "عنوان الشركة العام",
   "public-facebook-link": "رابط الفيسبوك العام",
   "public-company-description": "وصف الشركة العامة",
-  "save": "إحفظ"
+  "save": "إحفظ",
+  "your-tickets": "التذاكر الخاصة بك",
+  "or": "أو"
 }

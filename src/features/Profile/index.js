@@ -80,7 +80,7 @@ const Profile = () => {
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
-                title={`${firebaseConfig.projectId} ${t('profile')}`}
+                title={`${firebaseConfig.projectId}` + t('profile')}
                 action={<CancelOutlinedIcon color="error" onClick={onClose} />}
               />
               <CardContent>

@@ -19,13 +19,19 @@ const HelpCard = ({ iconElement, title, content, linkElement }) => {
           {title}
         </Typography>
       </Grid>
-      <Grid item style={{ marginTop: "2rem" }}>
-        <Typography variant="body1">
-          {content}
-          {linkElement}
-        </Typography>
+      <Grid item>
+        <p>
+          <Typography variant="body1">
+            <span>
+              {content}
+            </span>
+            <span style={{marginLeft: '0.5rem'}}>
+              {linkElement}
+            </span>
+          </Typography>
+        </p>
       </Grid>
-    </Grid>
+    </Grid >
   );
 };
 

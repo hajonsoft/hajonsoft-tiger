@@ -131,7 +131,7 @@
   "book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to": "Réservez une réunion en direct pour une formation ou une assistance, nous utiliserons google meet pour partager l'écran... Étant donné que le technicien qui vous rencontrera peut se trouver dans un fuseau horaire différent, il est important d'utiliser ce lien pour",
   "community-support": "SOUTIEN COMMUNAUTAIRE",
   "tickets": "Des billets",
-  "join-the-community": "rejoindre la communauté",
+  "join-the-community": "Administrer",
   "visa-by-proxy-service-does-not-cover-payments-to-a-third-party-provider-you-are-the-responsible-verifier-to-the-data-track": "Le service visa par procuration ne couvre pas les paiements à un fournisseur tiers. \nVous êtes le vérificateur responsable des données. \nPister",
   "video-library": "BIBLIOTHÈQUE VIDÉO",
   "watch-how-to-videos-to-learn-about-many-different-features-click-here-to": "Regardez des vidéos « comment faire » pour en savoir plus sur de nombreuses fonctionnalités différentes. \ncliquez ici pour",
@@ -163,5 +163,7 @@
   "public-company-address": "Adresse de l'entreprise publique",
   "public-facebook-link": "Lien public facebook",
   "public-company-description": "Description de l'entreprise publique",
-  "save": "Sauvegarder"
+  "save": "Sauvegarder",
+  "your-tickets": "vos billets",
+  "or": "ou"
 }
