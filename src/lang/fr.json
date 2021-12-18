@@ -154,5 +154,14 @@
   "required": "Obligatoire",
   "optional": "Optionnel",
   "passport-information": "Informations sur le passeport",
-  "more-information": "Plus d'information"
+  "more-information": "Plus d'information",
+  "profile": "Profil",
+  "public-name": "Nom public",
+  "notifications-email": "Courriel de notification",
+  "notifications-reservations-visa-by-proxy-etc": "Notifications (Réservations, visa par procuration, etc...)",
+  "public-telephone-number": "Numéro de téléphone public",
+  "public-company-address": "Adresse de l'entreprise publique",
+  "public-facebook-link": "Lien public facebook",
+  "public-company-description": "Description de l'entreprise publique",
+  "save": "Sauvegarder"
 }

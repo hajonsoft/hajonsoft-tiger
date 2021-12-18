@@ -131,9 +131,6 @@ const validationSchema = yup.object({
   birthPlace: yup
     .string('Enter your birth place')
     .required('Birth place is required'),
-  phone: yup
-    .string('Enter your phone number')
-    .required('phone number is required'),
 });
 
 const FullReservation = ({ openSuccessModal, isModalOpen }) => {
@@ -163,7 +160,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
     inputRef.current.onchange = (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();
-      reader.onloadend = function() {
+      reader.onloadend = function () {
         cb(reader.result);
       };
       reader.readAsDataURL(file);
@@ -285,6 +282,38 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                   style={{ backgroundColor: 'white' }}
                   spacing={2}
                 >
+                  <Grid item md={12}>
+                    <Typography variant="subtitle2">
+                      {t('reservation.upload-your-passport')}
+                    </Typography>
+                    <Box
+                      className={classes.passportBox}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        uploadImageHandler((val) => setPassportURL(val));
+                      }}
+                    >
+                      {passportURL ? (
+                        <img
+                          src={passportURL}
+                          width="100%"
+                          height="100%"
+                          alt="passport"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <>
+                          <AddCircleOutlineIcon
+                            color="primary"
+                            fontSize="large"
+                          />
+                          <Typography>
+                            {t('reservation.upload-your-passport')}
+                          </Typography>
+                        </>
+                      )}
+                    </Box>
+                  </Grid>
                   <Grid item md={12}>
                     <Box ml={2}>
                       <Typography variant="subtitle2">
@@ -459,38 +488,6 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                         helperText={touched.birthPlace && errors.birthPlace}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid item md={12}>
-                    <Typography variant="subtitle2">
-                      {t('reservation.upload-your-passport')}
-                    </Typography>
-                    <Box
-                      className={classes.passportBox}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        uploadImageHandler((val) => setPassportURL(val));
-                      }}
-                    >
-                      {passportURL ? (
-                        <img
-                          src={passportURL}
-                          width="100%"
-                          height="100%"
-                          alt="passport"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      ) : (
-                        <>
-                          <AddCircleOutlineIcon
-                            color="primary"
-                            fontSize="large"
-                          />
-                          <Typography>
-                            {t('reservation.upload-your-passport')}
-                          </Typography>
-                        </>
-                      )}
-                    </Box>
                   </Grid>
                   <Grid item md={12} className={classes.p1rem0}>
                     <Box ml={2} mb={2}>

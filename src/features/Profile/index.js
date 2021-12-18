@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import firebaseConfig from "../../firebaseConfig";
 import { getProfile, updateProfile } from './redux/profileSlice';
 import InputControl from "../Reservation/components/InputControl";
+import t from '../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -66,7 +67,7 @@ const Profile = () => {
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={record}
+        initialValues={record || {name: firebaseConfig.projectId}}
         onSubmit={handleSubmitForm}
       >
         {({
@@ -79,7 +80,7 @@ const Profile = () => {
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
-                title={`${firebaseConfig.projectId} Profile`}
+                title={`${firebaseConfig.projectId} ${t('profile')}`}
                 action={<CancelOutlinedIcon color="error" onClick={onClose} />}
               />
               <CardContent>
@@ -92,8 +93,8 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
-                      label="Company Name"
-                      value={values.name}
+                      label={t('public-name')}
+                      value={values?.name}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
                       required={false}
@@ -102,11 +103,11 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="email"
-                      label="Email Address"
+                      label={t('notifications-email')}
                       required={true}
                       value={values?.email}
                       error={touched.email && Boolean(errors.email)}
-                      helperText="Please enter email to enable email notifications (Reservations, visa by proxy, etc...)"
+                      helperText={t('notifications-reservations-visa-by-proxy-etc')}
                       disabled={false}
                     />
                   </Grid>
@@ -114,8 +115,8 @@ const Profile = () => {
                     <InputControl
                       name="tel"
                       required={false}
-                      label="Telephone Number"
-                      value={values.tel}
+                      label={t('public-telephone-number')}
+                      value={values?.tel}
                       error={touched.tel && Boolean(errors.tel)}
                       helperText={touched.tel && errors.tel}
                     />
@@ -124,8 +125,8 @@ const Profile = () => {
                     <InputControl
                       name="address"
                       required={false}
-                      label="Company Address"
-                      value={values.address}
+                      label={t('public-company-address')}
+                      value={values?.address}
                       error={touched.address && Boolean(errors.address)}
                       helperText={touched.address && errors.address}
                     />
@@ -133,9 +134,9 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="facebookPage"
-                      label="Facebook Page URL"
+                      label={t('public-facebook-link')}
                       required={false}
-                      value={values.facebookPage || 'facebook.com'}
+                      value={values?.facebookPage || 'facebook.com'}
                       error={
                         touched.facebookPage && Boolean(errors.facebookPage)
                       }
@@ -145,9 +146,9 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="about"
-                      label="About Us"
+                      label={t('public-company-description')}
                       required={false}
-                      value={values.about}
+                      value={values?.about}
                       error={touched.about && Boolean(errors.about)}
                       multiline
                       helperText={touched.about && errors.about}
@@ -165,7 +166,7 @@ const Profile = () => {
                   onClick={onClose}
                   startIcon={<CancelOutlinedIcon />}
                 >
-                  Cancel
+                  {t('cancel')}
                 </Button>
 
                 <Button
@@ -175,7 +176,7 @@ const Profile = () => {
                   color="primary"
                   startIcon={<SaveOutlinedIcon />}
                 >
-                  Save
+                  {t('save')}
                 </Button>
               </CardActions>
             </Card>

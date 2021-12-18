@@ -154,5 +154,14 @@
   "required": "Required",
   "optional": "Optional",
   "passport-information": "Passport Information",
-  "more-information": "More Information"
+  "more-information": "More Information",
+  "profile": "Profile",
+  "public-name": "Public name",
+  "notifications-email": "Notifications email",
+  "notifications-reservations-visa-by-proxy-etc": "Notifications (Reservations, visa by proxy, etc...)",
+  "public-telephone-number": "Public telephone number",
+  "public-company-address": "Public company address",
+  "public-facebook-link": "Public facebook link",
+  "public-company-description": "Public company description",
+  "save": "Save"
 }

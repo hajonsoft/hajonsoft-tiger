@@ -49,7 +49,7 @@
   "past": "الرحلات القديمه",
   "name": "الإسم",
   "total": "المجموع",
-  "cancel": "يلغي",
+  "cancel": "إلغآء",
   "support": "الدعم",
   "welcome-to": "مرحبا بك في",
   "delete": "حذف",
@@ -154,5 +154,14 @@
   "required": "مطلوب",
   "optional": "اختياري",
   "passport-information": "معلومات جواز السفر",
-  "more-information": "معلومات اكثر"
+  "more-information": "معلومات اكثر",
+  "profile": "الملف الشخصي",
+  "public-name": "الاسم العام",
+  "notifications-email": "إخطارات البريد الإلكتروني",
+  "notifications-reservations-visa-by-proxy-etc": "الإخطارات (الحجوزات ، التأشيرة بالوكالة ، إلخ ...)",
+  "public-telephone-number": "رقم الهاتف العمومي",
+  "public-company-address": "عنوان الشركة العام",
+  "public-facebook-link": "رابط الفيسبوك العام",
+  "public-company-description": "وصف الشركة العامة",
+  "save": "إحفظ"
 }
