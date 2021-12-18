@@ -133,6 +133,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     serviceProviderPassword,
     setServiceProviderProfilePassword,
   ] = React.useState("");
+  const [
+    serviceProviderEmbassy,
+    setServiceProviderProfileEmbassy,
+  ] = React.useState("");
+
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState("");
@@ -223,6 +228,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       system: {
         username: cryptr.encrypt(exportVisaSystem.username),
         password: cryptr.encrypt(exportVisaSystem.password),
+        embassy: exportVisaSystem.embassy,
         name: exportVisaSystem.usap,
       },
       info: {
@@ -290,6 +296,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       usap: selectedServiceProvider,
       username: serviceProviderUsername,
       password: serviceProviderPassword,
+      embassy: serviceProviderEmbassy,
     }))
     setServiceProviderAddMode(false);
   };
@@ -537,7 +544,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       <Grid item md={12}>
                         {t('enter-service-provider-profile-details-then-press-done')}
                       </Grid>
-                      <Grid item md={8}>
+                      <Grid item md={7}>
                         <Select
                           fullWidth
                           value={selectedServiceProvider}
@@ -570,6 +577,17 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           label="Password"
                           onChange={(e) =>
                             setServiceProviderProfilePassword(e.target.value)
+                          }
+                          margin="normal"
+                        />
+                      </Grid>
+                      <Grid item md={1}>
+                        <TextField
+                          fullWidth
+                          value={serviceProviderEmbassy}
+                          label="Embassy"
+                          onChange={(e) =>
+                            setServiceProviderProfileEmbassy(e.target.value)
                           }
                           margin="normal"
                         />
