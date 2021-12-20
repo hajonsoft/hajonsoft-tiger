@@ -92,6 +92,14 @@ const hijraMonths = [
     })
     return `${output[1].feast.names.join(',')} in ${output[1].daysAfter} days `;
   }
+
+  const eventsNow = (inputDate = new Date())=> {
+    let reply = ` ${imoment(inputDate).iDayOfYear()} 👉 ${imoment(inputDate).format("iYYYY/iMMM/iD [is] YYYY/MMM/D")}`;
+    const hajjAkbarDate =  imoment(`${imoment().iYear()}/12/8`, "iYYYY/iM/iD");
+    reply += "👉 Hajj akbar in Tawba:3 👉 " + hajjAkbarDate.fromNow();
+
+    return reply;
+  }
   const eventsNearby = (inputDate) => {
   
     const currentHijraYear = imoment().iYear();
@@ -128,4 +136,4 @@ const hijraMonths = [
   const todayHijraDate = ()=> {
     return `${imoment().iDate()}-${hijraMonths[imoment().iMonth()]}-${imoment().iYear()}`
   }
-  export {eventsNearby, todayHijraDate, eventsBefore, eventsAfter}
+  export {eventsNearby, todayHijraDate, eventsBefore, eventsAfter, eventsNow}
