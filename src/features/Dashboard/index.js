@@ -11,7 +11,7 @@ import {
   IconButton,
   Tab,
   Tabs,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,6 +22,7 @@ import Check from "@material-ui/icons/Check";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
+import CallMergeIcon from "@material-ui/icons/CallMerge";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 import DetailsIcon from "@material-ui/icons/Details";
@@ -43,11 +44,16 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import AppHeader from "../../shared/macaw/AppHeader";
-import t from '../../shared/util/trans';
+import t from "../../shared/util/trans";
 import ApplyForVisa from "./components/ApplyForVisa";
 import CRUDForm from "./components/CRUDForm";
 import PackageDetail from "./components/packageDetail";
-import { deleteExpiredPassports, deleteUpcomingCaravan, getUpcomingCaravans } from "./redux/caravanSlice";
+import {
+  deleteExpiredPassports,
+  deleteUpcomingCaravan,
+  getUpcomingCaravans,
+  createPassenger,
+} from "./redux/caravanSlice";
 import { getPastCaravans } from "./redux/pastCaravanSlice";
 import { faPassport } from "@fortawesome/free-solid-svg-icons";
 
@@ -75,24 +81,28 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   MoreDetails: forwardRef((props, ref) => <DetailsIcon {...props} ref={ref} />),
   ApplyVisa: forwardRef((props, ref) => <NearMeIcon {...props} ref={ref} />),
+  CallMerge: forwardRef((props, ref) => <CallMergeIcon {...props} ref={ref} />),
 };
 
 const Dashboard = () => {
-  const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
+  // Local State
   const [isPast, setIsPast] = useState(false);
   const [holdData, setHoldData] = useState([]);
-  const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState(0);
-  const caravans = useSelector(state => state.caravan?.data);
-  const pastCaravans = useSelector(state => state.past?.data);
-  const loading = useSelector(state => state.caravan.loading);
-  const error = useSelector(state => state.caravan?.error);
-
   const [state, setState] = useState({ mode: "list", record: {} });
-  const [showConfirmDeleteExpired, setShowConfirmDeleteExpired] = useState(false);
+  const [showConfirmDeleteExpired, setShowConfirmDeleteExpired] = useState(
+    false
+  );
+  const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  // Redux
+  const dispatch = useDispatch();
+  const caravans = useSelector((state) => state.caravan?.data);
+  const pastCaravans = useSelector((state) => state.past?.data);
+  const loading = useSelector((state) => state.caravan?.loading);
+  const error = useSelector((state) => state.caravan?.error);
   const history = useHistory();
-  const title = !isPast ? t('caravan') : t('past-caravans');
-
+  const title = !isPast ? t("caravan") : t("past-caravans");
+  // use Effect
   useEffect(() => {
     dispatch(getUpcomingCaravans());
     window.scrollTo(0, 0);
@@ -160,7 +170,12 @@ const Dashboard = () => {
   };
 
   const handleOnConfirmDeleteExpired = () => {
-    dispatch(deleteExpiredPassports({passengers: holdData.expired, caravan: holdData.name}));
+    dispatch(
+      deleteExpiredPassports({
+        passengers: holdData.expired,
+        caravan: holdData.name,
+      })
+    );
     setShowConfirmDeleteExpired(false);
   };
 
@@ -179,23 +194,51 @@ const Dashboard = () => {
 
   const getData = () => {
     if (isPast) {
-      return Object.keys(pastCaravans).map((v) => ({
-        name: v,
-        total: pastCaravans[v].length,
-        expired: pastCaravans[v].filter(c => dayjs(c.passExpireDt).isBefore(dayjs().add(6,'month'))),
-      }));
+      return Object.keys(pastCaravans)
+        .sort()
+        .map((v) => ({
+          name: v,
+          total: pastCaravans[v].length,
+          expired: pastCaravans[v].filter((c) =>
+            dayjs(c.passExpireDt).isBefore(dayjs().add(6, "month"))
+          ),
+        }));
     }
-    return Object.keys(caravans).map((v) => ({
-      name: v,
-      total: caravans[v].length,
-      expired: caravans[v].filter(c => dayjs(c.passExpireDt).isBefore(dayjs().add(-6,'month'))),
-    }));
-
-  }
+    return Object.keys(caravans)
+      .sort()
+      .map((v) => ({
+        name: v,
+        total: caravans[v].length,
+        expired: caravans[v].filter((c) =>
+          dayjs(c.passExpireDt).isBefore(dayjs().add(-6, "month"))
+        ),
+      }));
+  };
 
   const handleDeleteExpired = (caravan) => {
     setHoldData(caravan);
     setShowConfirmDeleteExpired(true);
+  };
+
+  const handleMergeClick = (rowData) => {
+    if (state.mode === "merge") {
+      for (const passenger of caravans[state.record.name]) {
+        dispatch(createPassenger({name: rowData.name, passenger}))
+      }
+      dispatch(deleteUpcomingCaravan(state.record.name));
+      // delete caravan rowData.name
+      setState((st) => ({
+        ...st,
+        mode: "list",
+        record: {},
+      }));
+    } else {
+      setState((st) => ({
+        ...st,
+        mode: "merge",
+        record: rowData,
+      }));
+    }
   };
 
   return (
@@ -217,21 +260,24 @@ const Dashboard = () => {
             >
               <Grid item>
                 <CircularProgress size={60} />
-                {t('loading-caravans')}
+                {t("loading-caravans")}
               </Grid>
             </Grid>
           )}
-          {!loading && state.mode !== "list" && state.mode !== "delete" && (
-            <CRUDForm
-              mode={state.mode}
-              record={state.record}
-              title={title}
-              onClose={() => {
-                setState((st) => ({ ...st, mode: "list" }));
-              }}
-            />
-          )}
-          {!loading && state.mode === "list" && (
+          {!loading &&
+            state.mode !== "list" &&
+            state.mode !== "delete" &&
+            state.mode !== "merge" && (
+              <CRUDForm
+                mode={state.mode}
+                record={state.record}
+                title={title}
+                onClose={() => {
+                  setState((st) => ({ ...st, mode: "list" }));
+                }}
+              />
+            )}
+          {!loading && (state.mode === "list" || state.mode === "merge") && (
             <>
               <Tabs
                 value={activeTab}
@@ -239,8 +285,16 @@ const Dashboard = () => {
                 textColor="primary"
                 onChange={handleOnTabChange}
               >
-                <Tab label={t("upcoming")} style={{ textTransform: "none" }} onClick={handleUpcomingCaravanClick} />
-                <Tab label={t("past")} style={{ textTransform: "none" }} onClick={handlePastCaravanClick} />
+                <Tab
+                  label={t("upcoming")}
+                  style={{ textTransform: "none" }}
+                  onClick={handleUpcomingCaravanClick}
+                />
+                <Tab
+                  label={t("past")}
+                  style={{ textTransform: "none" }}
+                  onClick={handlePastCaravanClick}
+                />
               </Tabs>
               <MaterialTable
                 onSearchChange={handleOnSearchChange}
@@ -251,16 +305,38 @@ const Dashboard = () => {
                     title: t("name"),
                     field: "name",
                     render: (rowData) => (
-                      <Button
-                        href=""
-                        color="primary"
-                        onClick={() =>
-                          history.push(`${rowData.name}/customers`)
-                        }
-                        style={{ textTransform: "none" }}
-                      >
-                        {rowData.name}{" "}
-                      </Button>
+                      <div>
+                        {state.mode === "merge" &&
+                        rowData.name === state.record.name ? (
+                          <Grid container spacing={2} alignItem="center">
+                            <Grid item>
+                              <CallMergeIcon color="secondary" size="small"/>
+                            </Grid>
+                            <Grid item>
+                              <tableIcons.Delete color="secondary" size="small"/>
+                            </Grid>
+                            <Grid item>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                              >
+                                {rowData.name}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        ) : (
+                          <Button
+                            href=""
+                            color="primary"
+                            onClick={() =>
+                              history.push(`${rowData.name}/customers`)
+                            }
+                            style={{ textTransform: "none" }}
+                          >
+                            {rowData.name}
+                          </Button>
+                        )}
+                      </div>
                     ),
                   },
                   {
@@ -272,100 +348,131 @@ const Dashboard = () => {
                     field: "expired",
                     render: (rowData) => (
                       <div>
-                        {!loading && rowData?.expired?.length > 0 ? <Chip label={rowData.expired.length}
-                          variant="outlined"
-                          onDelete={() => handleDeleteExpired(rowData)}
-                          icon={
-                            <FontAwesomeIcon
-                              color="#d32f2f"
-                              icon={faPassport}
-                            />}
-                        /> : null}
+                        {!loading && rowData?.expired?.length > 0 ? (
+                          <Chip
+                            label={rowData.expired.length}
+                            variant="outlined"
+                            onDelete={() => handleDeleteExpired(rowData)}
+                            icon={
+                              <FontAwesomeIcon
+                                color="#d32f2f"
+                                icon={faPassport}
+                              />
+                            }
+                          />
+                        ) : null}
                       </div>
                     ),
                   },
                 ]}
                 data={getData()}
                 detailPanel={(rowData) => (
-                  <PackageDetail data={rowData} caravanData={isPast ? pastCaravans : caravans} />
+                  <PackageDetail
+                    data={rowData}
+                    caravanData={isPast ? pastCaravans : caravans}
+                  />
                 )}
                 actions={[
                   {
                     icon: tableIcons.Add,
                     tooltip: `Add ${title}`,
-                    name: 'add',
+                    name: "add",
                     isFreeAction: true,
                     onClick: (event) =>
                       setState((st) => ({ ...st, mode: "create" })),
                   },
                   !isPast &&
-                  {
-                    icon: () => <tableIcons.ApplyVisa color="primary" />,
-                    tooltip: `Apply for visa`,
-                    name: 'apply',
-                    onClick: (event, rowData) => {
-                      if (isPast) return;
-                      setApplyForVisaOpen(true);
-                      setState((st) => ({ ...st, record: rowData }));
+                    state.mode === "list" && {
+                      icon: () => <tableIcons.ApplyVisa color="primary" />,
+                      tooltip: `Apply for visa`,
+                      name: "apply",
+                      onClick: (event, rowData) => {
+                        if (isPast) return;
+                        setApplyForVisaOpen(true);
+                        setState((st) => ({ ...st, record: rowData }));
+                      },
                     },
-                  },
                   !isPast &&
-                  {
-                    icon: () => <tableIcons.Delete  />,
-                    name: 'delete',
-                    tooltip: `Delete ${title}`,
-                    onClick: (event, rowData) =>
-                      setState((st) => ({
-                        ...st,
-                        mode: "delete",
-                        record: rowData,
-                      })),
+                    state.mode === "list" && {
+                      icon: () => <tableIcons.Delete />,
+                      name: "delete",
+                      tooltip: `Delete ${title}`,
+                      onClick: (event, rowData) =>
+                        setState((st) => ({
+                          ...st,
+                          mode: "delete",
+                          record: rowData,
+                        })),
+                    },
+                  !isPast && {
+                    icon: () => <tableIcons.CallMerge />,
+                    name: "merge",
+                    tooltip: `Merge ${title}`,
+                    onClick: (event, rowData) => handleMergeClick(rowData),
                   },
                 ]}
                 components={{
-                  Action: props => (
-                    <div style={{ width: '150px' }}>
-                      {props.action.name === 'apply' &&
+                  Action: (props) => (
+                    <div style={{ whiteSpace: "nowrap" }}>
+                      {props.action.name === "apply" && (
                         <Button
-                          onClick={(event) => props.action.onClick(event, props.data)}
+                          onClick={(event) =>
+                            props.action.onClick(event, props.data)
+                          }
                           color="primary"
-                          variant="outlined"
-                          style={{ textTransform: 'none' }}
+                          variant="contained"
+                          style={{ textTransform: "none" }}
                           size="small"
                           endIcon={<SendOutlined />}
                         >
-                          {t('apply-for-visa')}
+                          {t("apply-for-visa")}
                         </Button>
-                      }
-                      {props.action.name === 'delete' &&
+                      )}
+                      {props.action.name === "delete" && (
                         <IconButton
-                          onClick={(event) => props.action.onClick(event, props.data)}
+                          onClick={(event) =>
+                            props.action.onClick(event, props.data)
+                          }
                           size="small"
                         >
                           <DeleteOutlined />
                         </IconButton>
-                      }
-                      {props.action.name === 'add' &&
+                      )}
+                      {props.action.name === "add" && (
                         <IconButton
-                          onClick={(event) => props.action.onClick(event, props.data)}
+                          onClick={(event) =>
+                            props.action.onClick(event, props.data)
+                          }
                           color="primary"
                           size="large"
                         >
                           <AddCircleOutline />
                         </IconButton>
-                      }
+                      )}
+                      {props.action.name === "merge" && (
+                        <IconButton
+                          onClick={(event) =>
+                            props.action.onClick(event, props.data)
+                          }
+                          color="secondary"
+                          size="small"
+                        >
+                          <CallMergeIcon />
+                        </IconButton>
+                      )}
                     </div>
                   ),
                 }}
                 options={{
                   actionsColumnIndex: -1,
                   grouping: false,
-                  pageSize: 20,
+                  pageSize: 5,
                   headerStyle: {
                     backgroundColor: "#f0f3f7",
                     color: "#385273",
                     fontSize: "1.1rem",
                     paddingLeft: "0px",
+                    textTransform: "none",
                   },
                 }}
                 localization={{
@@ -428,21 +535,23 @@ const Dashboard = () => {
       </Dialog>
       <Dialog
         open={showConfirmDeleteExpired}
-        onClose={() =>
-          setShowConfirmDeleteExpired(false)
-        }
+        onClose={() => setShowConfirmDeleteExpired(false)}
       >
         <DialogTitle>are you sure?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`${holdData?.expired?.length} passport expire before ${dayjs().add(6,'month').format('dddd DD-MMMM-YYYY')}. [less than six month from today ${dayjs().format('dddd DD-MMMM-YYYY')}]`}
+            {`${holdData?.expired?.length} passport expire before ${dayjs()
+              .add(6, "month")
+              .format(
+                "dddd DD-MMMM-YYYY"
+              )}. [less than six month from today ${dayjs().format(
+              "dddd DD-MMMM-YYYY"
+            )}]`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() =>
-              setShowConfirmDeleteExpired(false)
-            }
+            onClick={() => setShowConfirmDeleteExpired(false)}
             variant="outlined"
           >
             {t("cancel")}
