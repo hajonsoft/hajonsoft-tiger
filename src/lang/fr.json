@@ -165,5 +165,17 @@
   "public-company-description": "Description de l'entreprise publique",
   "save": "Sauvegarder",
   "your-tickets": "vos billets",
-  "or": "ou"
+  "or": "ou",
+  "hijri-new-year": "Hijri Nouvel An",
+  "ashura": "Achoura",
+  "crossing-the-red-sea": "Traversée de la mer Rouge",
+  "israa": "Israël",
+  "haram-month-tawba-36": "Muhrram, mois du Haj : Tawba 36",
+  "ragab-haram-month-tawba-36": "Ragab, mois du Hajj : Tawba 36",
+  "dhul-qadah-haj-month-tawba-36": "Dhul Qadah, mois du Haj : Tawba 36",
+  "dhul-hijjah-hajj-month-tawba-36": "Dhul Hijjah, mois du Hajj : Tawba 36",
+  "ramadan": "",
+  "shawwal": "Shawwal",
+  "hajj-akbar-tawba-3": "Hajj Akbar : Tawba 3",
+  "mid-shaaban": "Mi-Shaaban"
 }
