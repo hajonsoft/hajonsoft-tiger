@@ -110,7 +110,7 @@ const eventsAfter = (inputDate = new Date()) => {
 }
 
 const eventsNow = (inputDate = new Date()) => {
-  let reply = ` ${imoment(inputDate).iDayOfYear()} 👉 ${imoment(inputDate).format("iYYYY/iMMM/iD [is] YYYY/MMM/D")}`;
+  let reply = ` ${imoment(inputDate).iDayOfYear()} 👉 ${imoment(inputDate).format("iYYYY/iMMMM-iM/iD [is] dddd YYYY/MMM/D")}`;
   const hajjAkbarDate = imoment(`${imoment().iYear()}/12/8`, "iYYYY/iM/iD");
   reply += "👉 Hajj akbar in Tawba:3 👉 " + hajjAkbarDate.fromNow();
 
