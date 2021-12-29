@@ -91,7 +91,7 @@ const OnlinePackage = () => {
     );
   }
 
-  const handleGoback = () => {
+  const handleBack = () => {
     history.goBack();
   };
 
@@ -102,7 +102,7 @@ const OnlinePackage = () => {
           <Link
             color="inherit"
             href="#"
-            onClick={handleGoback}
+            onClick={handleBack}
             style={{ display: "flex", alignItems: "center" }}
           >
             <HomeIcon />

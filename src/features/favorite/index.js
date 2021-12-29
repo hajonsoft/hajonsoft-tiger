@@ -90,7 +90,7 @@ const Favorite = () => {
     );
   }
 
-  const handleGoback = () => {
+  const handleBack = () => {
     history.goBack();
   };
 
@@ -101,7 +101,7 @@ const Favorite = () => {
           <Link
             color="inherit"
             href="#"
-            onClick={handleGoback}
+            onClick={handleBack}
             style={{ display: "flex", alignItems: "center" }}
           >
             <HomeIcon />

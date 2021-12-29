@@ -95,11 +95,11 @@ const Reservation = ({ lang, onLanguageChange }) => {
           .database()
           .ref(`protected/onlinePackage`)
           .once('value');
-        const allAdvertisments = allAdvertisementsSnapshot.val();
-        const allAdvertismentsKeys = Object.keys(allAdvertisments);
-        for (const advertisementKey of allAdvertismentsKeys) {
-          if (allAdvertisments[advertisementKey].name === params.packageName) {
-            setAdvertisementData(allAdvertisments[advertisementKey]);
+        const allAdvertisements = allAdvertisementsSnapshot.val();
+        const allAdvertisementsKeys = Object.keys(allAdvertisements);
+        for (const advertisementKey of allAdvertisementsKeys) {
+          if (allAdvertisements[advertisementKey].name === params.packageName) {
+            setAdvertisementData(allAdvertisements[advertisementKey]);
             return;
           }
         }

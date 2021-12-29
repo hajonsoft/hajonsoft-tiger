@@ -17,7 +17,7 @@ export const flatten = (snapshot, name = "data") => {
 export const flattenOnlineCaravans = (snapshot) => {
     const output = [];
     const data = snapshot.toJSON();
-    if (!data) return {};
+    if (!data) return output;
     const mergeKeys = Object.keys(data);
 
     mergeKeys.forEach(mergeKey => {

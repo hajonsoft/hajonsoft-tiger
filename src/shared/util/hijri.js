@@ -146,7 +146,7 @@ const eventsNearby = (inputDate) => {
       output[1].feast = f;
     }
   })
-  return `${output?.[0]?.feast?.names?.join(',')} ${Math.abs(output?.[0]?.daysBefore)} days ago, ${output?.[1]?.feast?.names?.join(',')} in ${output?.[1]?.daysAfter} days `;
+  return ''; // `${output?.[0]?.feast?.names?.join(',')} ${Math.abs(output?.[0]?.daysBefore)} days ago, ${output?.[1]?.feast?.names?.join(',')} in ${output?.[1]?.daysAfter} days `;
 }
 
 const todayHijraDate = () => {

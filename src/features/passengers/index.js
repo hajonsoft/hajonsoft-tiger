@@ -102,7 +102,7 @@ const Passengers = () => {
     );
   }
 
-  const handleGoback = () => {
+  const handleBack = () => {
     history.goBack();
   };
 
@@ -125,7 +125,7 @@ const Passengers = () => {
           <Link
             color="inherit"
             href="#"
-            onClick={handleGoback}
+            onClick={handleBack}
             style={{ display: "flex", alignItems: "center" }}
           >
             <HomeIcon />

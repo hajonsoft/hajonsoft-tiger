@@ -40,7 +40,7 @@ const browserLanguage = () => {
   return 'en'
 }
 
-function getSuppoprtedLanguage() {
+function getSupportedLanguage() {
   const language = localStorage.getItem("langOverride") || browserLanguage();
   const supportedLanguge = "en";
   if (language === "ar" || language === "en" || language === "fr"){
@@ -52,7 +52,7 @@ function getSuppoprtedLanguage() {
 }
 
 function App() {
-  const [language, setLanguage] = useState(getSuppoprtedLanguage()
+  const [language, setLanguage] = useState(getSupportedLanguage()
   );
   const [languageDirection, setLanguageDirection] = useState(
     localStorage.getItem("langOverride") === "ar" ? "rtl" : "ltr"
@@ -66,13 +66,13 @@ function App() {
     if (lang !== "ar" && languageDirection === "rtl") {
       setLanguageDirection("ltr");
     }
-    const supportedLanguge = "en";
+    const supportedLanguage = "en";
     if (lang === "ar" || lang === "en" || lang === "fr"){
       setLanguage(lang);
       localStorage.setItem("langOverride", lang);
     } else {
-      setLanguage(supportedLanguge);
-      localStorage.setItem("langOverride", supportedLanguge);
+      setLanguage(supportedLanguage);
+      localStorage.setItem("langOverride", supportedLanguage);
     }
 
   };

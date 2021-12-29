@@ -120,7 +120,7 @@ function Basic({ packageName, onClose }) {
         <div style={{ width: "100%", minHeight: "100px" }}>
           {Object.keys(imports).length ? (
             isImported ? (
-              <Grid container xs={12} spacing={1}>
+              <Grid container spacing={1}>
                 {importsLength - failed.length ? (
                   <Grid item xs={12}>
                     <Alert severity="success" color="info">{`${importsLength -
