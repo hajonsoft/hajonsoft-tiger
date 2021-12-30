@@ -34,6 +34,7 @@ import { useHistory } from "react-router-dom";
 import AppHeader from "../../shared/macaw/AppHeader";
 import CoreForm from "./components/CoreForm";
 import { getOnlineCaravans } from "./redux/onlineCaravanSlice";
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -235,6 +236,7 @@ const OnlinePackage = () => {
                     color: "#385273",
                     fontSize: "1.1rem",
                     paddingLeft: "0px",
+                    textTransform: 'none',
                   },
                 }}
                 localization={{

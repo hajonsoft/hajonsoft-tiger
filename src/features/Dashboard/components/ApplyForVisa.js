@@ -425,12 +425,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container justifyContent="space-between">
-                  <Grid items md={6}>
+                  <Grid item md={6}>
                     <Button onClick={() => setSelectedPassengers(passengers)}>
                       {t('select-all')}
                     </Button>
                   </Grid>
-                  <Grid items md={6} container justifyContent="flex-end">
+                  <Grid item md={6} container justifyContent="flex-end">
                     <Button onClick={() => setSelectedPassengers([])}>
                       {t('deselect-all')}
                     </Button>

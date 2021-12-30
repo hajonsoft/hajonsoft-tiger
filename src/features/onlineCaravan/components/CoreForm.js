@@ -14,10 +14,11 @@ import { Form, Formik } from "formik";
 import _ from "lodash";
 import moment from "moment";
 import React, { useState } from "react";
-import firebase from "../../../firebaseapp";
+import { useDispatch } from "react-redux";
 import { eventsNearby, todayHijraDate } from "../../../shared/util/hijri";
-import Gender from "./CustomerGender";
 import InputControl from "../../Reservation/components/InputControl";
+import { createOnlineCaravan, deleteOnlineCaravan, updateOnlineCaravan } from "../redux/onlineCaravanSlice";
+import Gender from "./CustomerGender";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -54,24 +55,20 @@ const DEFAULT_DESCRIPTION = `Spiritual experience led by an amazing group of sch
 
 const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const handleSubmitForm = async (values, actions, callback = onClose) => {
     delete values["image"];
     switch (mode) {
       case "create":
-        const customerRef = firebase.database().ref(`protected/onlinePackage`);
-        customerRef.push(values);
+        dispatch(createOnlineCaravan({ caravanData: values }));
         break;
       case "update":
-        const updateRef = firebase.database().ref(`protected/onlinePackage`);
-        delete values.tableData;
-        updateRef.child(customerKey).update(values);
+        dispatch(updateOnlineCaravan({ _fid: customerKey, caravanData: values }))
         break;
-
       case "delete":
-        const removeRef = firebase.database().ref(`protected/onlinePackage`);
-        removeRef.child(customerKey).remove();
+        dispatch(deleteOnlineCaravan({ _fid: customerKey }))
         break;
-
       default:
         console.log("unknown mode");
     }
@@ -399,7 +396,7 @@ const CoreForm = ({ mode, record, customerKey, title, onClose }) => {
                         <Card>
                           <CardHeader title="Accommodation"></CardHeader>
                           <CardContent>
-                            <Grid container xs={12} spacing={3}>
+                            <Grid container spacing={3}>
                               <Grid item xs={12}>
                                 <InputControl
                                   required={false}

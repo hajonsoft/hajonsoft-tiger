@@ -7,17 +7,17 @@ const ImportantDates = () => {
     <Box p={2} width="100%">
       <Grid container justifyContent="center" alignItems="center" spacing={2}>
         <Grid item md={3}>
-          <Typography variant="subtitle1" align="left" color="textSecondary">
+          <Typography variant="caption" align="left" color="textSecondary">
             {eventsBefore()}
           </Typography>
         </Grid>
         <Grid item md={6}>
-          <Typography variant="subtitle2">
+          <Typography variant="caption">
             {eventsNow()}
           </Typography>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="subtitle1" align="right" color="textSecondary">
+          <Typography variant="caption" align="right" color="textSecondary">
             {eventsAfter()}
           </Typography>
         </Grid>

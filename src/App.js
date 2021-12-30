@@ -42,11 +42,11 @@ const browserLanguage = () => {
 
 function getSupportedLanguage() {
   const language = localStorage.getItem("langOverride") || browserLanguage();
-  const supportedLanguge = "en";
+  const supportedLanguage = "en";
   if (language === "ar" || language === "en" || language === "fr"){
     return language
   } else {
-    return supportedLanguge;
+    return supportedLanguage;
   }
 
 }

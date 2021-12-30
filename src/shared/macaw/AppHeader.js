@@ -14,7 +14,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { signoutWithGoogle } from "../../features/SignIn/redux/authSlice";
+import { signOutWithGoogle } from "../../features/SignIn/redux/authSlice";
 import firebaseConfig from "../../firebaseConfig";
 import t from '../util/trans';
 
@@ -30,7 +30,7 @@ const AppHeader = () => {
   const passengers = useSelector(state => state.passenger?.data);
 
   const handleLogout = () => {
-    dispatch(signoutWithGoogle())
+    dispatch(signOutWithGoogle())
     history.push("/logout");
   };
 

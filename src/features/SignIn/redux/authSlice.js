@@ -7,7 +7,7 @@ export const loginWithGoogle = createAsyncThunk('auth/google', async () => {
     const user = await firebase.auth().signInWithPopup(provider);
     return user;
 })
-export const signoutWithGoogle = createAsyncThunk('auth/signout', async () => {
+export const signOutWithGoogle = createAsyncThunk('auth/signout', async () => {
     let provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope("email");
     await firebase.auth().signOut();
@@ -37,11 +37,11 @@ export const authSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
-        builder.addCase(signoutWithGoogle.fulfilled, (state, action) => {
+        builder.addCase(signOutWithGoogle.fulfilled, (state, action) => {
             state.data = {}
             state.loading = false;
         });
-        builder.addCase(signoutWithGoogle.rejected, (state, action) => {
+        builder.addCase(signOutWithGoogle.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

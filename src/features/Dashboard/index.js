@@ -444,7 +444,7 @@ const Dashboard = () => {
                             props.action.onClick(event, props.data)
                           }
                           color="primary"
-                          size="large"
+                          size="medium"
                         >
                           <AddCircleOutline />
                         </IconButton>
