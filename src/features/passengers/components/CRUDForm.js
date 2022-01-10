@@ -166,7 +166,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     passportNumber: yup
       .string()
       .required("Required")
-      .min(8, "Too short!")
+      .min(7, "Too short!")
       .max(9, "Too long!"),
     passExpireDt: yup
       .date()
