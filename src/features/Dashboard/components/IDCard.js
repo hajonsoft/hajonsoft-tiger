@@ -511,7 +511,6 @@ const IDCard = ({ passengers, caravanName }) => {
                           minLength="10"
                           placeholder="Telephone Number"
                           variant="outlined"
-                          fullWidth
                           error={!!errors.telNumber}
                           value={values.telNumber}
                         />
