@@ -9,16 +9,24 @@ import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Formik, Form } from 'formik';
-import HotelPreview from './Hotel.png';
-import CustomPreview from './Custom.png';
-import OranPreview from './Oran.png';
-import { makeStyles } from '@material-ui/core';
+import HotelHolyPreview from '../../../assets/hotel_holy.png';
+import HotelWavePreview from '../../../assets/hotel_wave.png';
+import HotelPreview from '../../../assets/hotel.png';
+import OtagoPreview from '../../../assets/otago.png';
+import OtagoBasicPreview from '../../../assets/otago_basic.png';
+import OtagoBlurPreview from '../../../assets/otago_blur.png';
+import OtagoLeafPreview from '../../../assets/otago_leaf.png';
+import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
+import { makeStyles, TextField } from '@material-ui/core';
 import { Field } from 'formik';
 import firebase from '../../../firebaseapp';
+import axios from 'axios';
+import moment from 'moment-hijri';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 15,
+    marginBottom: 15,
   },
   container: {
     borderColor: theme.palette.primary.main,
@@ -39,91 +47,94 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const idCardProps = {
-  Oran: {
-    image: {
-      x: 9,
-      y: 67,
-    },
-    firstName: {
-      x: 124,
-      y: 32,
-    },
-    lastName: {
-      x: 124,
-      y: 46,
-    },
-    passportNumber: {
-      x: 124,
-      y: 60,
-    },
-    birthDate: {
-      x: 124,
-      y: 74,
-    },
-    tripName: {
-      x: 124,
-      y: 89,
-    },
-  },
-  Hotel: {
-    image: {
-      x: 9,
-      y: 95,
-    },
-    firstName: {
-      x: 130,
-      y: 32,
-    },
-    lastName: {
-      x: 130,
-      y: 20,
-    },
-    passportNumber: {
-      x: 130,
-      y: 44,
-    },
-    tripName: {
-      x: 130,
-      y: 54,
-    },
-    medinahHotel: {
-      x: 10,
-      y: 105,
-    },
-    mekahHotel: {
-      x: 128,
-      y: 105,
-    },
-  },
-  Custom: {
-    image: {
-      x: 9,
-      y: 88,
-    },
-    name: {
-      x: 70,
-      y: 82,
-    },
-    passportNumber: {
-      x: 70,
-      y: 92,
-    },
-    medinahHotel: {
-      x: 70,
-      y: 105,
-    },
-    mekahHotel: {
-      x: 70,
-      y: 117,
-    },
-  },
+const getIDPositionProps = (idType) => {
+  if (idType.includes('otago')) {
+    return {
+      umrah: {
+        x: 15,
+        y: 15,
+      },
+      year: {
+        x: 15,
+        y: 30,
+      },
+      image: {
+        x: 15,
+        y: 40,
+      },
+      fullName: {
+        x: 10,
+        y: 125,
+      },
+      passportNumber: {
+        x: 195,
+        y: 125,
+      },
+      passportLabel: {
+        x: 165,
+        y: 125,
+      },
+      tripName: {
+        x: 120,
+        y: 83,
+      },
+      countryFlag: {
+        x: 200,
+        y: 155,
+      },
+      caravanLogo: {
+        x: 180,
+        y: 70,
+      },
+      telephone: {
+        x: 120,
+        y: 107,
+      },
+    };
+  } else if (idType.includes('hotel')) {
+    return {
+      image: {
+        x: 9,
+        y: 85,
+      },
+      firstName: {
+        x: 130,
+        y: 32,
+      },
+      lastName: {
+        x: 130,
+        y: 20,
+      },
+      passportNumber: {
+        x: 130,
+        y: 44,
+      },
+      tripName: {
+        x: 130,
+        y: 54,
+      },
+      medinahHotel: {
+        x: 10,
+        y: 105,
+      },
+      mekahHotel: {
+        x: 128,
+        y: 105,
+      },
+      telephone: {
+        x: 110,
+        y: 140,
+      },
+    };
+  }
 };
 
 const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
   const [detail, setDetail] = React.useState({});
   const classes = useStyles();
+
+  console.log(passengers, 'These are the passengers!!!');
 
   React.useEffect(() => {
     firebase
@@ -144,7 +155,8 @@ const IDCard = ({ passengers, caravanName }) => {
     passportNumber,
     birthDate,
     tripName,
-    nationality
+    nationality,
+    telephone
   ) => {
     // Embed the Helvetica font
     const response = await fetch(`/pdfs/${idType}.pdf`);
@@ -160,103 +172,203 @@ const IDCard = ({ passengers, caravanName }) => {
       .ref(`${nationality}/${passportNumber}.jpg`)
       .getDownloadURL();
 
+    const { data } = await axios.get('https://flagcdn.com/en/codes.json');
+
+    let countryCode = '';
+
+    for (const key in data) {
+      if (data[key].toLowerCase() === nationality.toLowerCase()) {
+        countryCode = key;
+        break;
+      }
+    }
+
     const jpgImageBytes = await fetch(imageURL)
       .then((res) => res.arrayBuffer())
       .catch((err) => {
         console.log(err, 'error');
       });
 
+    const flagImageBytes = await fetch(
+      `https://flagcdn.com/32x24/${countryCode}.png`
+    )
+      .then((res) => res.arrayBuffer())
+      .catch((err) => {
+        console.log(err, 'error');
+      });
+
     const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+    const flagImage = await pdfDoc.embedPng(flagImageBytes);
 
     // write image
-    firstPage.drawImage(jpgImage, {
-      x: idCardProps[idType].image.x,
-      y: idCardProps[idType].image.y,
-      width: idType === 'Custom' ? 57 : 50,
-      height: idType === 'Custom' ? 57 : 50,
-    });
+    if (getIDPositionProps(idType).image !== undefined) {
+      firstPage.drawImage(jpgImage, {
+        x: getIDPositionProps(idType).image.x,
+        y: getIDPositionProps(idType).image.y,
+        width: 50,
+        height: 65,
+      });
+    }
 
-    /// write firstName
-    if (idCardProps[idType].firstName !== undefined) {
-      firstPage.drawText(name.split(' ')[0], {
-        x: idCardProps[idType].firstName.x,
-        y: height - idCardProps[idType].firstName.y,
+    // write image
+    if (getIDPositionProps(idType).caravanLogo !== undefined) {
+      firstPage.drawImage(jpgImage, {
+        x: getIDPositionProps(idType).caravanLogo.x,
+        y: height - getIDPositionProps(idType).caravanLogo.y,
+        width: 50,
+        height: 55,
+      });
+    }
+
+    // write flag image
+    if (getIDPositionProps(idType).countryFlag !== undefined) {
+      firstPage.drawImage(flagImage, {
+        x: getIDPositionProps(idType).countryFlag.x,
+        y: height - getIDPositionProps(idType).countryFlag.y,
+        width: 28,
+        height: 28,
+      });
+    }
+
+    // write UMRAH
+    if (getIDPositionProps(idType).umrah !== undefined) {
+      firstPage.drawText('UMRAH', {
+        x: getIDPositionProps(idType).umrah.x,
+        y: height - getIDPositionProps(idType).umrah.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write UMRAH year
+    if (getIDPositionProps(idType).year !== undefined) {
+      firstPage.drawText(
+        `${new Date().getFullYear()} / ${moment("2022", 'YYYY').endOf('iMonth').format('iYYYY')}`,
+        {
+          x: getIDPositionProps(idType).year.x,
+          y: height - getIDPositionProps(idType).year.y,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        }
+      );
+    }
+
+    // write telephone
+    if (getIDPositionProps(idType).telephone !== undefined) {
+      firstPage.drawText(telephone, {
+        x: getIDPositionProps(idType).telephone.x,
+        y: height - getIDPositionProps(idType).telephone.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write full name
+    if (getIDPositionProps(idType).fullName !== undefined) {
+      firstPage.drawText(name, {
+        x: getIDPositionProps(idType).fullName.x,
+        y: height - getIDPositionProps(idType).fullName.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write passport Label
+    if (getIDPositionProps(idType).passportLabel !== undefined) {
+      firstPage.drawText('PASS #', {
+        x: getIDPositionProps(idType).passportLabel.x,
+        y: height - getIDPositionProps(idType).passportLabel.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    /// write firstName
+    if (getIDPositionProps(idType).firstName !== undefined) {
+      firstPage.drawText(name.split(' ')[0], {
+        x: getIDPositionProps(idType).firstName.x,
+        y: height - getIDPositionProps(idType).firstName.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
       });
     }
     /// write medinah hotel
-    if (idCardProps[idType].medinahHotel !== undefined) {
+    if (getIDPositionProps(idType).medinahHotel !== undefined) {
       firstPage.drawText(detail.arrivalHotel.slice(0, 30), {
-        x: idCardProps[idType].medinahHotel.x,
-        y: height - idCardProps[idType].medinahHotel.y,
+        x: getIDPositionProps(idType).medinahHotel.x,
+        y: height - getIDPositionProps(idType).medinahHotel.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
     /// write mekah hotel
-    if (idCardProps[idType].mekahHotel !== undefined) {
+    if (getIDPositionProps(idType).mekahHotel !== undefined) {
       firstPage.drawText(detail.departureHotel.slice(0, 30), {
-        x: idCardProps[idType].mekahHotel.x,
-        y: height - idCardProps[idType].mekahHotel.y,
+        x: getIDPositionProps(idType).mekahHotel.x,
+        y: height - getIDPositionProps(idType).mekahHotel.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
     // write full name
-    if (idCardProps[idType].name !== undefined) {
+    if (getIDPositionProps(idType).name !== undefined) {
       firstPage.drawText(name, {
-        x: idCardProps[idType].name.x,
-        y: height - idCardProps[idType].name.y,
+        x: getIDPositionProps(idType).name.x,
+        y: height - getIDPositionProps(idType).name.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
 
     /// write lastName
-    if (idCardProps[idType].lastName !== undefined) {
+    if (getIDPositionProps(idType).lastName !== undefined) {
       firstPage.drawText(name.split(' ')[1], {
-        x: idCardProps[idType].lastName.x,
-        y: height - idCardProps[idType].lastName.y,
+        x: getIDPositionProps(idType).lastName.x,
+        y: height - getIDPositionProps(idType).lastName.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
 
     /// write passport number
-    if (idCardProps[idType].passportNumber !== undefined)
+    if (getIDPositionProps(idType).passportNumber !== undefined)
       firstPage.drawText(passportNumber, {
-        x: idCardProps[idType].passportNumber.x,
-        y: height - idCardProps[idType].passportNumber.y,
+        x: getIDPositionProps(idType).passportNumber.x,
+        y: height - getIDPositionProps(idType).passportNumber.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
 
     /// write birthDate
-    if (idCardProps[idType].birthDate !== undefined) {
+    if (getIDPositionProps(idType).birthDate !== undefined) {
       firstPage.drawText(new Date(birthDate).toLocaleDateString('en-US'), {
-        x: idCardProps[idType].birthDate.x,
-        y: height - idCardProps[idType].birthDate.y,
+        x: getIDPositionProps(idType).birthDate.x,
+        y: height - getIDPositionProps(idType).birthDate.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
 
     /// write trip name
-    if (idCardProps[idType].tripName !== undefined) {
+    if (getIDPositionProps(idType).tripName !== undefined) {
       firstPage.drawText(tripName, {
-        x: idCardProps[idType].tripName.x,
-        y: height - idCardProps[idType].tripName.y,
+        x: getIDPositionProps(idType).tripName.x,
+        y: height - getIDPositionProps(idType).tripName.y,
         size: 8,
         font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
+        color: rgb(0, 0, 0),
       });
     }
 
@@ -284,7 +396,8 @@ const IDCard = ({ passengers, caravanName }) => {
                   passenger.passportNumber,
                   passenger.birthDate,
                   detail.name,
-                  passenger.nationality
+                  passenger.nationality,
+                  values.telNumber
                 );
               });
             }}
@@ -315,6 +428,7 @@ const IDCard = ({ passengers, caravanName }) => {
                     >
                       ID Type
                     </InputLabel>
+
                     <Grid container alignItems="center">
                       <Grid item xs={12}>
                         <Field
@@ -330,21 +444,84 @@ const IDCard = ({ passengers, caravanName }) => {
                           value={values.idType}
                           onChange={(e) => {
                             setFieldValue('idType', e.target.value);
-                            e.target.value === 'Custom'
-                              ? setPreviewURL(CustomPreview)
-                              : e.target.value === 'Hotel'
-                              ? setPreviewURL(HotelPreview)
-                              : setPreviewURL(OranPreview);
+
+                            if (e.target.value === 'hotel_holy') {
+                              setPreviewURL(HotelHolyPreview);
+                            } else if (e.target.value === 'hotel') {
+                              setPreviewURL(HotelPreview);
+                            } else if (e.target.value === 'hotel_wave') {
+                              setPreviewURL(HotelWavePreview);
+                            } else if (e.target.value === 'otago') {
+                              setPreviewURL(OtagoPreview);
+                            } else if (e.target.value === 'otago_basic') {
+                              setPreviewURL(OtagoBasicPreview);
+                            } else if (e.target.value === 'otago_blur') {
+                              setPreviewURL(OtagoBlurPreview);
+                            } else if (e.target.value === 'otago_leaf') {
+                              setPreviewURL(OtagoLeafPreview);
+                            } else if (e.target.value === 'otag_madinah') {
+                              setPreviewURL(OtagoMadinahPreview);
+                            }
                           }}
                         >
-                          <MenuItem value="Custom"> Custom </MenuItem>
-                          <MenuItem value="Hotel"> Hotel </MenuItem>
-                          <MenuItem value="Oran"> Oran </MenuItem>
+                          <MenuItem value="hotel"> Hotel </MenuItem>
+                          <MenuItem value="hotel_holy"> Hotel Holy </MenuItem>
+                          <MenuItem value="hotel_wave"> Hotel Wave </MenuItem>
+                          <MenuItem value="otago"> Otago </MenuItem>
+                          <MenuItem value="otago_basic"> Otago Basic </MenuItem>
+                          <MenuItem value="otago_blur"> Otago Blur </MenuItem>
+                          <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
+                          <MenuItem value="otago_madinah">
+                            {' '}
+                            Otago Madinah{' '}
+                          </MenuItem>
                         </Field>
                       </Grid>
                     </Grid>
+
                     <FormHelperText error={!!errors.idType}>
                       {touched.idType && errors.idType}
+                    </FormHelperText>
+                  </FormControl>
+                  <FormControl className={classes.root} fullWidth>
+                    <InputLabel
+                      shrink={false}
+                      className={classes.inputLabel}
+                      style={{
+                        color:
+                          touched.telNumber && Boolean(errors.telNumber)
+                            ? 'red'
+                            : null,
+                      }}
+                      htmlFor={'telNumber'}
+                      placeholder={'telNumber'}
+                      required={true}
+                    >
+                      Telephone Number
+                    </InputLabel>
+
+                    <Grid container alignItems="center">
+                      <Grid item xs={12}>
+                        <Field
+                          as={TextField}
+                          fullWidth
+                          className={classes.container}
+                          name="telNumber"
+                          required={true}
+                          id="telNumber"
+                          type="tel"
+                          minLength="10"
+                          placeholder="Telephone Number"
+                          variant="outlined"
+                          fullWidth
+                          error={!!errors.telNumber}
+                          value={values.telNumber}
+                        />
+                      </Grid>
+                    </Grid>
+
+                    <FormHelperText error={!!errors.telNumber}>
+                      {touched.telNumber && errors.telNumber}
                     </FormHelperText>
                   </FormControl>
                 </Grid>
