@@ -109,10 +109,10 @@ export async function zipWithPhotos(data, packageData) {
     const traveller = passengers[index];
     const photoUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
-    );
+    ) || 'https://via.placeholder.com/200';
     const passportUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
-    );
+    ) || 'https://via.placeholder.com/400x300';
     let vaccineUrl = await getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
     );
