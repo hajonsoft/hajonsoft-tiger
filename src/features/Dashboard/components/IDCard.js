@@ -298,7 +298,7 @@ const IDCard = ({ passengers, caravanName }) => {
     }
     /// write medinah hotel
     if (getIDPositionProps(idType).medinahHotel !== undefined) {
-      firstPage.drawText(detail.arrivalHotel.slice(0, 30), {
+      firstPage.drawText(detail.arrivalHotel.split(".")[0], {
         x: getIDPositionProps(idType).medinahHotel.x,
         y: height - getIDPositionProps(idType).medinahHotel.y,
         size: 8,
@@ -308,7 +308,7 @@ const IDCard = ({ passengers, caravanName }) => {
     }
     /// write mekah hotel
     if (getIDPositionProps(idType).mekahHotel !== undefined) {
-      firstPage.drawText(detail.departureHotel.slice(0, 30), {
+      firstPage.drawText(detail.departureHotel.split(".")[0], {
         x: getIDPositionProps(idType).mekahHotel.x,
         y: height - getIDPositionProps(idType).mekahHotel.y,
         size: 8,
