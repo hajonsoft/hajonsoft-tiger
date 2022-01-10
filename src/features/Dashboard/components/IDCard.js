@@ -134,8 +134,6 @@ const IDCard = ({ passengers, caravanName }) => {
   const [detail, setDetail] = React.useState({});
   const classes = useStyles();
 
-  console.log(passengers, 'These are the passengers!!!');
-
   React.useEffect(() => {
     firebase
       .database()
@@ -525,21 +523,6 @@ const IDCard = ({ passengers, caravanName }) => {
                     </FormHelperText>
                   </FormControl>
                 </Grid>
-                {/* <Grid item xs={12}>
-                  <InputControl
-                    name="reportName"
-                    label="Report Name"
-                    required
-                    value={''}
-                    error={touched.reportName && Boolean(errors.reportName)}
-                    helperText={touched.reportName && errors.reportName}
-                    options={[
-                      { value: 'Custom', label: 'Custom' },
-                      { value: 'Hotel', label: 'Hotel' },
-                      { value: 'Oran', label: 'Oran' },
-                    ]}
-                  />
-                </Grid> */}
                 <Grid item justifyContent="flex-start">
                   <Button
                     variant="contained"
