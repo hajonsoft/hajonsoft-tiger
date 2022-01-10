@@ -15,15 +15,17 @@ export function getPassengersJSON(passengers, data) {
   } else {
     packageTravellers = passengers;
   }
-  const exportData = packageTravellers.map((passenger) => {
+  const sortedTravellers = packageTravellers.filter(traveller => traveller.gender === "Male").sort((a,b) => moment(a).isAfter(b) ? -1 : 1);
+  sortedTravellers.push(...packageTravellers.filter(traveller => traveller.gender !== "Male").sort((a,b) => moment(a).isAfter(b) ? -1 : 1));
+  const exportData = sortedTravellers.map((passenger) => {
     const _nameParts = nameParts(passenger.name);
     let _nameArabicParts = nameParts(passenger.nameArabic);
     if (_nameArabicParts[0] === "invalid") {
       _nameArabicParts = ["", "", "", ""];
     }
 
-    const codeline = passenger.codeLine || createCodeline(passenger);
-    const issuerCode = codeline?.substring(2, 5);
+    const codeLine = passenger.codeLine || createCodeline(passenger);
+    const issuerCode = codeLine?.substring(2, 5);
 
     return {
       nationality: {
@@ -87,7 +89,7 @@ export function getPassengersJSON(passengers, data) {
       address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
-      codeline,
+      codeline: codeLine,
     };
   });
 
