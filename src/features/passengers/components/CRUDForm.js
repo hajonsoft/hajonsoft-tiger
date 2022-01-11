@@ -386,8 +386,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       <Grid
                         item
                         xs={12}
-                        direction="column"
-                        justifyContent="space-around"
                       >
                         <Grid container spacing={3} alignItems="center">
                           <Grid item xs={9}>
