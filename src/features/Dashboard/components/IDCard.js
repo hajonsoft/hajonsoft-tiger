@@ -155,26 +155,26 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    const imageURL = await firebase
-      .storage()
-      .ref(`${nationality}/${passportNumber}.jpg`)
-      .getDownloadURL();
+    // const imageURL = await firebase
+    //   .storage()
+    //   .ref(`${nationality}/${passportNumber}.jpg`)
+    //   .getDownloadURL();
 
-    const jpgImageBytes = await fetch(imageURL)
-      .then((res) => res.arrayBuffer())
-      .catch((err) => {
-        console.log(err, 'error');
-      });
+    // const jpgImageBytes = await fetch(imageURL)
+    //   .then((res) => res.arrayBuffer())
+    //   .catch((err) => {
+    //     console.log(err, 'error');
+    //   });
 
-    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+    // const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
 
     // write image
-    firstPage.drawImage(jpgImage, {
-      x: idCardProps[idType].image.x,
-      y: idCardProps[idType].image.y,
-      width: idType === 'Custom' ? 57 : 50,
-      height: idType === 'Custom' ? 57 : 50,
-    });
+    // firstPage.drawImage(jpgImage, {
+    //   x: idCardProps[idType].image.x,
+    //   y: idCardProps[idType].image.y,
+    //   width: idType === 'Custom' ? 57 : 50,
+    //   height: idType === 'Custom' ? 57 : 50,
+    // });
 
     /// write firstName
     if (idCardProps[idType].firstName !== undefined) {
