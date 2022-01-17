@@ -88,7 +88,7 @@ export function getPassengersJSON(passengers, data) {
       profession: passenger.profession || 'unknown',
       address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
-      mofaNumber: passenger.moaNumber,
+      mofaNumber: passenger.mofaNumber,
       eNumber: passenger.eNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
       codeline: codeLine,
