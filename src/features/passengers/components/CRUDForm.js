@@ -694,7 +694,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               helperText={touched.eNumber && errors.eNumber}
                             />
                           </Grid>
-
                         </Grid>
                       </Grid>
                     </Grid>
