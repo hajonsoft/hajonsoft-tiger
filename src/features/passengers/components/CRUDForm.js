@@ -670,6 +670,18 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               helperText={touched.comments && errors.comments}
                             />
                           </Grid>
+                          <Grid item xs={2} >
+                          <InputControl
+                              required={false}
+                              name="mofaNumber"
+                              label={t('mofaNumber')}
+                              value={values.mofaNumber}
+                              error={
+                                touched.mofaNumber && Boolean(errors.mofaNumber)
+                              }
+                              helperText={touched.mofaNumber && errors.mofaNumber}
+                            />
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
