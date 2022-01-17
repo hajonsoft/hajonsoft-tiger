@@ -110,6 +110,8 @@ function Table({
       "phone",
       "profession",
       "relationship",
+      "mofaNumber",
+      "mofaNumberBarcode",
     ];
 
     // return totalColumns.filter(column => !columns.includes(column) )
