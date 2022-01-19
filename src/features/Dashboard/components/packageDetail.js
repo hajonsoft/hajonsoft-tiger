@@ -176,13 +176,13 @@ const PackageDetail = ({ data, caravanData }) => {
             <BarChartRoundedIcon color="primary" fontSize="large" /> Reports
           </Typography>
           {reports &&
-            reports.map((report) => {
+            reports?.map((report) => {
               return (
-                <ReportListItem
+                report?.columns && <ReportListItem
                   name={report.name}
                   printingData={{
-                    columns: Object.values(report.columns),
-                    data: caravans[data.name],
+                    columns: Object.values(report?.columns),
+                    data: caravans?.[data?.name],
                   }}
                 />
               );
