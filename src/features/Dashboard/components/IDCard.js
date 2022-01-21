@@ -296,25 +296,31 @@ const IDCard = ({ passengers, caravanName }) => {
         color: rgb(0, 0, 0),
       });
     }
-    /// write medinah hotel
-    if (getIDPositionProps(idType).medinahHotel !== undefined) {
-      firstPage.drawText(detail.arrivalHotel.split(".")[0], {
-        x: getIDPositionProps(idType).medinahHotel.x,
-        y: height - getIDPositionProps(idType).medinahHotel.y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-    }
-    /// write mekah hotel
-    if (getIDPositionProps(idType).mekahHotel !== undefined) {
-      firstPage.drawText(detail.departureHotel.split(".")[0], {
-        x: getIDPositionProps(idType).mekahHotel.x,
-        y: height - getIDPositionProps(idType).mekahHotel.y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
+
+    try {
+
+      /// write medinah hotel
+      if (getIDPositionProps(idType)?.medinahHotel !== undefined) {
+        firstPage.drawText(detail?.arrivalHotel?.split(".")?.[0], {
+          x: getIDPositionProps(idType)?.medinahHotel?.x,
+          y: height - getIDPositionProps(idType).medinahHotel.y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+      }
+      /// write mekah hotel
+      if (getIDPositionProps(idType)?.mekahHotel !== undefined) {
+        firstPage.drawText(detail?.departureHotel?.split(".")?.[0], {
+          x: getIDPositionProps(idType)?.mekahHotel?.x,
+          y: height - getIDPositionProps(idType)?.mekahHotel?.y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+      }
+    } catch {
+      console.warn('hotel name error')
     }
     // write full name
     if (getIDPositionProps(idType).name !== undefined) {
@@ -362,8 +368,8 @@ const IDCard = ({ passengers, caravanName }) => {
     /// write trip name
     if (getIDPositionProps(idType).tripName !== undefined) {
       firstPage.drawText(tripName, {
-        x: getIDPositionProps(idType).tripName.x,
-        y: height - getIDPositionProps(idType).tripName.y,
+        x: getIDPositionProps(idType)?.tripName?.x,
+        y: height - getIDPositionProps(idType)?.tripName?.y,
         size: 8,
         font: helveticaFont,
         color: rgb(0, 0, 0),
@@ -389,13 +395,13 @@ const IDCard = ({ passengers, caravanName }) => {
             onSubmit={(values) => {
               passengers.forEach((passenger) => {
                 createPDF(
-                  values.idType,
-                  passenger.name,
-                  passenger.passportNumber,
-                  passenger.birthDate,
-                  detail.name,
-                  passenger.nationality,
-                  values.telNumber
+                  values?.idType,
+                  passenger?.name,
+                  passenger?.passportNumber,
+                  passenger?.birthDate,
+                  caravanName,
+                  passenger?.nationality,
+                  values?.telNumber
                 );
               });
             }}

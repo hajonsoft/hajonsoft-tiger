@@ -61,8 +61,6 @@ const PackageDetail = ({ data, caravanData }) => {
 
   console.log(caravans, "caravans")
 
-  console.log("hello world...")
-
   useEffect(() => {
     dispatch(getAllReports());
   }, [dispatch]);
