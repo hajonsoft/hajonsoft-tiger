@@ -22,6 +22,7 @@ import { Field } from 'formik';
 import firebase from '../../../firebaseapp';
 import axios from 'axios';
 import moment from 'moment-hijri';
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -266,7 +267,9 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).fullName !== undefined) {
-      firstPage.drawText(name, {
+      const nameParts = name.split(' ');
+      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).fullName.x,
         y: height - getIDPositionProps(idType).fullName.y,
         size: 8,
@@ -324,7 +327,9 @@ const IDCard = ({ passengers, caravanName }) => {
     }
     // write full name
     if (getIDPositionProps(idType).name !== undefined) {
-      firstPage.drawText(name, {
+      const nameParts = name.split(' ');
+      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).name.x,
         y: height - getIDPositionProps(idType).name.y,
         size: 8,
@@ -335,7 +340,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write lastName
     if (getIDPositionProps(idType).lastName !== undefined) {
-      firstPage.drawText(name.split(' ')[1], {
+      firstPage.drawText(_.head(name.split(' ')), {
         x: getIDPositionProps(idType).lastName.x,
         y: height - getIDPositionProps(idType).lastName.y,
         size: 8,
@@ -533,7 +538,6 @@ const IDCard = ({ passengers, caravanName }) => {
                     variant="contained"
                     color="primary"
                     fullWidth
-                    disabled={!isValid || isSubmitting}
                     className={classes.submitBtn}
                     size="large"
                     type="submit"
