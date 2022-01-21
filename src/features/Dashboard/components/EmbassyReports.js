@@ -16,6 +16,7 @@ import PrintableTabe from "./PrintableTable";
 import { createReport } from "../../Dashboard/redux/reportSlice";
 import { useDispatch } from "react-redux";
 import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,11 +44,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmbassyReports = ({ passengers }) => {
-  const [data, setData] = useState(passengers);
+  const [data, setData] = useState(formatPassengers());
+
+  function formatPassengers() {
+    const formattedPassengers = [];
+    for (let i = 0; i < passengers.length; i++) {
+      formattedPassengers.push({
+        seq: i + 1,
+        ...passengers[i],
+        birthDate: moment(passengers[i].birthDate).format("D-MMM-YYYY"),
+        idNumberIssueDate: moment(passengers[i].idNumberIssueDate).format(
+          "D-MMM-YYYY"
+        ),
+        idNumberExpireDate: moment(passengers[i].idNumberExpireDate).format(
+          "D-MMM-YYYY"
+        ),
+        passExpireDt: moment(passengers[i].passExpireDt).format("D-MMM-YYYY"),
+        passIssueDt: moment(passengers[i].passIssueDt).format("D-MMM-YYYY"),
+      });
+    }
+    return formattedPassengers;
+  }
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles();
   const [columns, setColumns] = useState([
+    {
+      Header: "Seq",
+      accessor: "seq",
+    },
     {
       Header: "Name",
       accessor: "name",
@@ -61,8 +86,8 @@ const EmbassyReports = ({ passengers }) => {
       accessor: "passportNumber",
     },
     {
-      Header: "Profession",
-      accessor: "profession",
+      Header: "Birth Date",
+      accessor: "birthDate",
     },
   ]);
   const [openSaveModal, setOpenSaveModal] = useState("");
@@ -169,9 +194,7 @@ const EmbassyReports = ({ passengers }) => {
             )}
             content={() => printTableRef.current}
           />
-          <IconButton
-            onClick={() => setOpenSaveModal(true)}
-          >
+          <IconButton onClick={() => setOpenSaveModal(true)}>
             <SaveOutlined />
           </IconButton>
         </Grid>

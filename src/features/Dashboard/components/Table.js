@@ -100,18 +100,18 @@ function Table({
       "idNumber",
       "idNumberExpireDate",
       "idNumberIssueDate",
+      "mofaNumber",
+      "mofaNumberBarcode",
       "name",
       "nameArabic",
       "nationality",
       "passExpireDt",
-      "passIssueDate",
+      "passIssueDt",
       "passPlaceOfIssue",
       "passportNumber",
       "phone",
       "profession",
       "relationship",
-      "mofaNumber",
-      "mofaNumberBarcode",
     ];
 
     // return totalColumns.filter(column => !columns.includes(column) )
