@@ -165,10 +165,10 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    // const imageURL = await firebase
-    //   .storage()
-    //   .ref(`${nationality}/${passportNumber}.jpg`)
-    //   .getDownloadURL();
+    const imageURL = await firebase
+      .storage()
+      .ref(`${nationality}/${passportNumber}.jpg`)
+      .getDownloadURL();
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 
@@ -181,11 +181,11 @@ const IDCard = ({ passengers, caravanName }) => {
       }
     }
 
-    // const jpgImageBytes = await fetch(imageURL)
-    //   .then((res) => res.arrayBuffer())
-    //   .catch((err) => {
-    //     console.log(err, 'error');
-    //   });
+    const jpgImageBytes = await fetch(imageURL)
+      .then((res) => res.arrayBuffer())
+      .catch((err) => {
+        console.log(err, 'error');
+      });
 
     const flagImageBytes = await fetch(
       `https://flagcdn.com/32x24/${countryCode}.png`
@@ -195,28 +195,28 @@ const IDCard = ({ passengers, caravanName }) => {
         console.log(err, 'error');
       });
 
-    // const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     const flagImage = await pdfDoc.embedPng(flagImageBytes);
 
     // write image
-    // if (getIDPositionProps(idType).image !== undefined) {
-    //   firstPage.drawImage(jpgImage, {
-    //     x: getIDPositionProps(idType).image.x,
-    //     y: getIDPositionProps(idType).image.y,
-    //     width: 50,
-    //     height: 65,
-    //   });
-    // }
+    if (getIDPositionProps(idType).image !== undefined) {
+      firstPage.drawImage(jpgImage, {
+        x: getIDPositionProps(idType).image.x,
+        y: getIDPositionProps(idType).image.y,
+        width: 50,
+        height: 65,
+      });
+    }
 
     // write image
-    // if (getIDPositionProps(idType).caravanLogo !== undefined) {
-    //   firstPage.drawImage(jpgImage, {
-    //     x: getIDPositionProps(idType).caravanLogo.x,
-    //     y: height - getIDPositionProps(idType).caravanLogo.y,
-    //     width: 50,
-    //     height: 55,
-    //   });
-    // }
+    if (getIDPositionProps(idType).caravanLogo !== undefined) {
+      firstPage.drawImage(jpgImage, {
+        x: getIDPositionProps(idType).caravanLogo.x,
+        y: height - getIDPositionProps(idType).caravanLogo.y,
+        width: 50,
+        height: 55,
+      });
+    }
 
     // write flag image
     if (getIDPositionProps(idType).countryFlag !== undefined) {
