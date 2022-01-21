@@ -44,3 +44,38 @@ Then issue this command (make sure cors.json is present)
 gsutil cors set cors.json gs://exampleproject.appspot.com
 wait for the message
 Setting CORS on gs://breno-tours.appspot.com/...
+
+ls  -1 src/firebaseConfigs | sed -e 's/\.js$//'
+
+
+gsutil cors set cors.json gs://almarwah-travel.appspot.com
+gsutil cors set cors.json gs://atlantic-hajj-umrah-irel-56588.appspot.com
+gsutil cors set cors.json gs://azaan-travel-aps.appspot.com
+gsutil cors set cors.json gs://barakah-hajj.appspot.com
+gsutil cors set cors.json gs://breno-tours.appspot.com
+gsutil cors set cors.json gs://cashlessplus-2021.appspot.com
+gsutil cors set cors.json gs://classyvisatour.appspot.com
+gsutil cors set cors.json gs://cohohadj-travel2021.appspot.com
+gsutil cors set cors.json gs://darelsalam-can.appspot.com
+gsutil cors set cors.json gs://darelsalam-usa.appspot.com
+gsutil cors set cors.json gs://forhajjnow.appspot.com
+gsutil cors set cors.json gs://full-sail-45734.appspot.com
+gsutil cors set cors.json gs://hajj-mission-of-cote-de-ivoir.appspot.com
+gsutil cors set cors.json gs://hajj-umrah-2022.appspot.com
+gsutil cors set cors.json gs://harmoniatravel-2021.appspot.com
+gsutil cors set cors.json gs://hasan-travel.appspot.com
+gsutil cors set cors.json gs://makkahtoursonline.appspot.com
+gsutil cors set cors.json gs://mishkaat-norge.appspot.com
+gsutil cors set cors.json gs://mission-haj-2022.appspot.com
+gsutil cors set cors.json gs://moulaviumrah.appspot.com
+gsutil cors set cors.json gs://ocean-travel-14092.appspot.com
+gsutil cors set cors.json gs://phtravelumrah.appspot.com
+gsutil cors set cors.json gs://safar-omra-france.appspot.com
+gsutil cors set cors.json gs://st-umrah-2021.appspot.com
+gsutil cors set cors.json gs://tawfiq-hajj.appspot.com
+gsutil cors set cors.json gs://travelking-melbourne.appspot.com
+gsutil cors set cors.json gs://trustwide-travel.appspot.com
+gsutil cors set cors.json gs://umrah-1443.appspot.com
+gsutil cors set cors.json gs://visa-mkm2022.appspot.com
+gsutil cors set cors.json gs://yazan-tours.appspot.com
+gsutil cors set cors.json gs://yt-u21.appspot.com
