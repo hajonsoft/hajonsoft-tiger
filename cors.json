@@ -1,7 +1,7 @@
 [
     {
         "origin": [
-            "https://breno-tours.appspot.com"
+            "*"
         ],
         "method": [
             "GET"
