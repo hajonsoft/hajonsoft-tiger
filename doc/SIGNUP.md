@@ -31,3 +31,16 @@ If firebase-CLI is not installed =>
 
 Test customers using the command
 firebase database:get --shallow --pretty --limit-to-first=3 /customer
+
+### Firebase storage CORS
+
+Guide 
+https://stackoverflow.com/questions/37760695/firebase-storage-and-access-control-allow-origin/37765371#:~:text=The%20easiest%20way%20to%20configure,use%20it%20to%20configure%20CORS.&text=and%20you%20should%20be%20set.
+
+download gsutil https://cloud.google.com/storage/docs/gsutil_install
+
+Then issue this command (make sure cors.json is present)
+
+gsutil cors set cors.json gs://exampleproject.appspot.com
+wait for the message
+Setting CORS on gs://breno-tours.appspot.com/...

@@ -1,0 +1,11 @@
+[
+    {
+        "origin": [
+            "https://breno-tours.appspot.com"
+        ],
+        "method": [
+            "GET"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]
