@@ -165,10 +165,10 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    const imageURL = await firebase
-      .storage()
-      .ref(`${nationality}/${passportNumber}.jpg`)
-      .getDownloadURL();
+    // const imageURL = await firebase
+    //   .storage()
+    //   .ref(`${nationality}/${passportNumber}.jpg`)
+    //   .getDownloadURL();
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 

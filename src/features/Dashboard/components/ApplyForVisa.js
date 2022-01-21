@@ -41,9 +41,9 @@ import t from '../../../shared/util/trans';
 import { getPassengersJSON, getStorageUrl, zipWithPhotos } from "../helpers/common";
 import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
 
-const Cryptr = require("cryptr");
+const webcrypto = require("cryptr");
 
-const cryptr = new Cryptr(firebaseConfig.projectId);
+const crypt = new webcrypto(firebaseConfig.projectId);
 
 const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
 
@@ -100,15 +100,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const serviceProviders = [
-  { value: "bau", name: "UMRAH | Bab al umrah (Recommended)" },
-  { value: "wtu", name: "UMRAH | Way to umrah (legacy)" },
-  { value: "gma", name: "UMRAH | Gabul ya hajj (difficult)" },
-  { value: "twf", name: "UMRAH | Tawaf (slow)" },
-  { value: "enj", name: "ALL TYPES | Enjaz" },
-  { value: "ehr", name: "HAJ | Ehaj (Reservation)" },
-  { value: "ehj", name: "HAJ | Ehaj (Submit)" },
-  { value: "vst", name: "VISIT | Visit Saudi " },
-  { value: "mot", name: "LOCAL | Egypt Tourism" },
+  { value: "bau", name: "Bab al umrah (Inactive)" },
+  { value: "wtu", name: "https://www.waytoumrah.com" },
+  { value: "gma", name: "https://eumra.com" },
+  { value: "twf", name: "https://tawaf.com.sa" },
+  { value: "hsf", name: "https://visa.mofa.gov.sa/Account/HajSmartForm" },
+  { value: "enj", name: "https://enjazit.com.sa/Account/Login/Person" },
+  { value: "ehr", name: "Ehaj (Reservation)" },
+  { value: "ehj", name: "Ehaj (Submit)" },
+  { value: "vst", name: "https://visa.visitsaudi.com" },
+  { value: "mot", name: "Egypt Tourism" },
 ];
 
 const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
@@ -226,8 +227,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const zipData = {
       system: {
-        username: cryptr.encrypt(exportVisaSystem.username),
-        password: cryptr.encrypt(exportVisaSystem.password),
+        username: crypt.encrypt(exportVisaSystem.username),
+        password: crypt.encrypt(exportVisaSystem.password),
         embassy: exportVisaSystem.embassy,
         name: exportVisaSystem.usap,
       },
@@ -311,8 +312,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: exportVisaSystem?.username && cryptr.encrypt(exportVisaSystem?.username),
-        password: exportVisaSystem?.password && cryptr.encrypt(exportVisaSystem?.password),
+        username: exportVisaSystem?.username && crypt.encrypt(exportVisaSystem?.username),
+        password: exportVisaSystem?.password && crypt.encrypt(exportVisaSystem?.password),
         name: exportVisaSystem?.usap,
       },
       info: {

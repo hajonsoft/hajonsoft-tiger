@@ -166,7 +166,7 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     passportNumber: yup
       .string()
       .required("Required")
-      .min(8, "Too short!")
+      .min(7, "Too short!")
       .max(9, "Too long!"),
     passExpireDt: yup
       .date()
@@ -386,8 +386,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       <Grid
                         item
                         xs={12}
-                        direction="column"
-                        justifyContent="space-around"
                       >
                         <Grid container spacing={3} alignItems="center">
                           <Grid item xs={9}>
@@ -670,6 +668,30 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 touched.comments && Boolean(errors.comments)
                               }
                               helperText={touched.comments && errors.comments}
+                            />
+                          </Grid>
+                          <Grid item xs={2} >
+                          <InputControl
+                              required={false}
+                              name="mofaNumber"
+                              label={t('mofaNumber')}
+                              value={values.mofaNumber}
+                              error={
+                                touched.mofaNumber && Boolean(errors.mofaNumber)
+                              }
+                              helperText={touched.mofaNumber && errors.mofaNumber}
+                            />
+                          </Grid>
+                          <Grid item xs={2} >
+                          <InputControl
+                              required={false}
+                              name="eNumber"
+                              label={t('eNumber')}
+                              value={values.eNumber}
+                              error={
+                                touched.eNumber && Boolean(errors.eNumber)
+                              }
+                              helperText={touched.eNumber && errors.eNumber}
                             />
                           </Grid>
                         </Grid>
