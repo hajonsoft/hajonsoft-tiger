@@ -7,22 +7,22 @@ import {
   Tab,
   Tabs,
   Typography,
-} from '@material-ui/core';
-import BarChartRoundedIcon from '@material-ui/icons/BarChartRounded';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllReports } from '../../Dashboard/redux/reportSlice';
-import { setPastCaravan, setUpcomingCaravan } from '../redux/caravanSlice';
-import BioStatistics from './BioStatistics';
-import EmbassyReports from './EmbassyReports';
-import NationalityStatistics from './NationalityStatistics';
-import ReportListItem from './ReportListItem';
-import IDCard from './IDCard';
+} from "@material-ui/core";
+import BarChartRoundedIcon from "@material-ui/icons/BarChartRounded";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllReports } from "../../Dashboard/redux/reportSlice";
+import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
+import BioStatistics from "./BioStatistics";
+import EmbassyReports from "./EmbassyReports";
+import NationalityStatistics from "./NationalityStatistics";
+import ReportListItem from "./ReportListItem";
+import IDCard from "./IDCard";
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -46,20 +46,12 @@ function TabPanel(props) {
   );
 }
 
-const PackageDetail = ({ data, caravanData }) => {
+const PackageDetail = ({ data, caravanData, isPast }) => {
   const loading = useSelector((state) => state.caravan?.loading);
   const error = useSelector((state) => state.caravan?.error);
-  const caravans = JSON.parse(
-    JSON.stringify(useSelector((state) => state.caravan?.data))
-  );
-
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  // const reportLoading = useSelector((state) => state.report?.loading);
-  // const reportError = useSelector((state) => state.report?.error);
   const reports = useSelector((state) => state.report?.data);
-
-  console.log(caravans, "caravans")
 
   useEffect(() => {
     dispatch(getAllReports());
@@ -69,8 +61,8 @@ const PackageDetail = ({ data, caravanData }) => {
     setActiveTab(newValue);
   };
 
-  const caravanHistoryHandler = async (isUpcoming) => {
-    if (!isUpcoming) {
+  const caravanHistoryHandler = async () => {
+    if (!isPast) {
       await dispatch(
         setPastCaravan({ name: data.name, passengers: caravanData[data.name] })
       );
@@ -88,9 +80,9 @@ const PackageDetail = ({ data, caravanData }) => {
     <>
       <Box
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <Tabs
@@ -101,74 +93,83 @@ const PackageDetail = ({ data, caravanData }) => {
         >
           <Tab
             label="Gender Stats"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: "none" }}
             {...a11yProps(0)}
           />
           <Tab
             label="Nationality Stats"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: "none" }}
             {...a11yProps(1)}
           />
           <Tab
             label="Reports"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: "none" }}
             {...a11yProps(2)}
           />
           <Tab
             label="Report designer ..."
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: "none" }}
             {...a11yProps(3)}
           />
           <Tab
             label="ID Card designer ..."
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: "none" }}
             {...a11yProps(4)}
           />
         </Tabs>
         <ButtonGroup
           color="primary"
           variant="outlined"
-          style={{ marginRight: '2rem' }}
+          style={{ marginRight: "2rem" }}
         >
           <Button
-            disabled
-            onClick={() => caravanHistoryHandler(true)}
-            style={{ textTransform: 'none' }}
+            disabled={!isPast}
+            onClick={() => caravanHistoryHandler()}
+            style={{ textTransform: "none" }}
           >
             Upcoming
           </Button>
           <Button
-            onClick={() => caravanHistoryHandler(false)}
-            style={{ background: 'rgb(227, 242, 253)', textTransform: 'none' }}
+            disabled={isPast}
+            onClick={() => caravanHistoryHandler()}
+            style={{ background: "rgb(227, 242, 253)", textTransform: "none" }}
           >
             +Past
           </Button>
         </ButtonGroup>
       </Box>
-      <Paper style={{ padding: '2rem' }}>
+      <Paper style={{ padding: "2rem" }}>
         <TabPanel value={activeTab} index={0}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && data && caravans && (
-            <BioStatistics data={Object.values(caravans[data.name])} />
-          )}
+          {!loading &&
+            caravanData &&
+            data?.name &&
+            Object.keys(caravanData).includes(data.name) && (
+              <BioStatistics data={Object.values(caravanData[data.name])} />
+            )}
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
           {loading && <CircularProgress />}
           {error}
-          {!loading && data && caravans && (
-            <NationalityStatistics data={Object.values(caravans[data.name])} />
-          )}
+          {!loading &&
+            data &&
+            caravanData &&
+            Object.keys(caravanData).includes(data.name) && (
+              <NationalityStatistics
+                data={Object.values(caravanData[data.name])}
+              />
+            )}
         </TabPanel>
 
         <TabPanel value={activeTab} index={2}>
           <Typography
             style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              marginBottom: '1rem',
-              paddingBottom: '.25rem',
-              borderBottom: '1px solid #ccc',
+              fontSize: "20px",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              paddingBottom: ".25rem",
+              borderBottom: "1px solid #ccc",
             }}
           >
             <BarChartRoundedIcon color="primary" fontSize="large" /> Reports
@@ -176,23 +177,32 @@ const PackageDetail = ({ data, caravanData }) => {
           {reports &&
             reports?.map((report) => {
               return (
-                report?.columns && <ReportListItem
-                  name={report.name}
-                  printingData={{
-                    columns: Object.values(report?.columns),
-                    data: caravans?.[data?.name],
-                  }}
-                />
+                report?.columns && (
+                  <ReportListItem
+                    name={report.name}
+                    printingData={{
+                      columns: Object.values(report?.columns),
+                      data: caravanData?.[data?.name],
+                    }}
+                  />
+                )
               );
             })}
         </TabPanel>
 
         <TabPanel value={activeTab} index={3}>
-          <EmbassyReports passengers={caravans[data.name]} />
+          {Object.keys(caravanData).includes(data.name) && (
+            <EmbassyReports passengers={caravanData[data.name]} />
+          )}
         </TabPanel>
 
         <TabPanel value={activeTab} index={4}>
-          <IDCard caravanName={data.name} passengers={caravanData[data.name]} />
+          {Object.keys(caravanData).includes(data.name) && (
+            <IDCard
+              caravanName={data.name}
+              passengers={caravanData[data.name]}
+            />
+          )}
         </TabPanel>
       </Paper>
     </>

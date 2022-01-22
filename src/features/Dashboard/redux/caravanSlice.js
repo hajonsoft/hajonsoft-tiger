@@ -15,22 +15,21 @@ export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (n
 });
 
 export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async ({ name, passengers }) => {
-
     for (let passenger of passengers) {
         await firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
     }
-
     const removeRef = firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
-
     return { updated: passengers };
 });
 
-export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async (name, data) => {
-    await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(data);
+export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async ({ name, passengers }) => {
+    for (let passenger of passengers) {
+        await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
+    }
     const removeRef = firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
-    return { updated: data };
+    return { updated: passengers };
 });
 
 export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (name) => {
@@ -126,6 +125,18 @@ const caravanSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(setPastCaravan.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(setUpcomingCaravan.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(setUpcomingCaravan.fulfilled, (state, action) => {
+// TODO: Think about the state when the caravan is fulfilled
+            // state.data[action.meta.arg.name] = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(setUpcomingCaravan.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

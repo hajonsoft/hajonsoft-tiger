@@ -370,6 +370,7 @@ const Dashboard = () => {
                   <PackageDetail
                     data={rowData}
                     caravanData={isPast ? pastCaravans : caravans}
+                    isPast={isPast}
                   />
                 )}
                 actions={[
