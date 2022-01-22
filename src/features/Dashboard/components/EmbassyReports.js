@@ -12,11 +12,12 @@ import React, { useRef, useState } from "react";
 import Table from "./Table";
 import ReactToPrint from "react-to-print";
 import Edit from "@material-ui/icons/Edit";
-import PrintableTabe from "./PrintableTable";
+import PrintableTable from "./PrintableTable";
 import { createReport } from "../../Dashboard/redux/reportSlice";
 import { useDispatch } from "react-redux";
 import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
 import moment from "moment";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,25 +45,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmbassyReports = ({ passengers }) => {
-  const [data, setData] = useState(formatPassengers());
+  const [data, setData] = useState(formatPassengers(passengers));
 
-  function formatPassengers() {
+  function formatPassengers(data) {
     const formattedPassengers = [];
-    for (let i = 0; i < passengers.length; i++) {
+    for (let i = 0; i < data.length; i++) {
+      const nameParts = data[i].name.split(" ");
       formattedPassengers.push({
         seq: i + 1,
-        ...passengers[i],
-        birthDate: moment(passengers[i].birthDate).format("D-MMM-YYYY"),
-        idNumberIssueDate: moment(passengers[i].idNumberIssueDate).format(
+        ...data[i],
+        birthDate: moment(data[i].birthDate).format("D-MMM-YYYY"),
+        idNumberIssueDate: moment(data[i].idNumberIssueDate).format(
           "D-MMM-YYYY"
         ),
-        idNumberExpireDate: moment(passengers[i].idNumberExpireDate).format(
+        idNumberExpireDate: moment(data[i].idNumberExpireDate).format(
           "D-MMM-YYYY"
         ),
-        passExpireDt: moment(passengers[i].passExpireDt).format("D-MMM-YYYY"),
-        passIssueDt: moment(passengers[i].passIssueDt).format("D-MMM-YYYY"),
+        passExpireDt: moment(data[i].passExpireDt).format("D-MMM-YYYY"),
+        passIssueDt: moment(data[i].passIssueDt).format("D-MMM-YYYY"),
+        amadeusNM: `NM1${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
+          data[i]
+        )}`,
+        saber_: `-${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
+          data[i]
+        )}`,
+        amadeusSRDOC: `3DOCS/DB/${moment(data[i]).format(
+          "DDMMMYYYY"
+        )}/${_.head(nameParts)}/${_.last(nameParts)}/H`,
+        saberSRDOC: `3DOCS/DB/${moment(data[i]).format(
+          "DDMMMYYYY"
+        )}/${_.head(nameParts)}/${_.last(nameParts)}/H`,
       });
     }
+
+    function gTitle(passenger, g = "amadeus") {
+      if (!passenger.birthDate) return "XX";
+      if (!passenger.gender) return "XX";
+      const age = moment().diff(passenger.birthDate, "years");
+      if (age <= 2) return "INF";
+      if (age <= 12) return "CHD";
+      if (passenger.gender === "Male") return "MR";
+      if (passenger.gender === "Female") return "MRS";
+      return "XXX";
+    }
+
     return formattedPassengers;
   }
   const [title, setTitle] = useState("Customers");
@@ -201,12 +227,12 @@ const EmbassyReports = ({ passengers }) => {
       </Grid>
 
       <div style={{ display: "none" }}>
-        <PrintableTabe ref={printTableRef} columns={columns} data={data} />
+        <PrintableTable ref={printTableRef} columns={columns} data={formatPassengers(data)} />
       </div>
 
       <Table
         columns={columns}
-        data={data}
+        data={formatPassengers(data)}
         onFilterColumn={(isFiltering) => {
           if (isFiltering) {
             setColumns((prev) => [{ Header: "", accessor: "delete" }, ...prev]);
