@@ -309,6 +309,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
     setDownloadFileName("");
+    setTimeout(makePassengersFile, 1000)
+  };
+
+  async function makePassengersFile () {
     const travellersData = getPassengersJSON(selectedPassengers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
@@ -344,7 +348,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       // ).toFixed(1);
       setDownloading(false);
     });
-  };
+  }
 
   const getServiceProviderProfileName = (u) => {
     return serviceProviders.find(
@@ -685,7 +689,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                           {!downloading && (
                             <Button
-                              disabled={selectedVisaSystem === ""}
+                              disabled={selectedVisaSystem === "" || downloading}
                               onClick={handleDownloadZipFileClick}
                               startIcon={<CloudDownloadOutlined />}
                               style={{ textTransform: 'none' }}>
