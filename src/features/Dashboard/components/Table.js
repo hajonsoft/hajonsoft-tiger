@@ -112,6 +112,10 @@ function Table({
       "phone",
       "profession",
       "relationship",
+      "amadeusNM",
+      "saber_",
+      "amadeusSRDOC",
+      "saberSRDOC",
     ];
 
     // return totalColumns.filter(column => !columns.includes(column) )

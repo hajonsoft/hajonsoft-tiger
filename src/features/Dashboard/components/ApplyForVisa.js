@@ -100,16 +100,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const serviceProviders = [
-  { value: "bau", name: "Bab al umrah (Inactive)" },
-  { value: "wtu", name: "https://www.waytoumrah.com" },
-  { value: "gma", name: "https://eumra.com" },
-  { value: "twf", name: "https://tawaf.com.sa" },
-  { value: "hsf", name: "https://visa.mofa.gov.sa/Account/HajSmartForm" },
-  { value: "enj", name: "https://enjazit.com.sa/Account/Login/Person" },
+  { value: "bau", name: "Bab-al-umrah (Inactive)" },
+  { value: "wtu", name: "Way-to-umrah [https://www.waytoumrah.com]" },
+  { value: "gma", name: "Gabul-ya-hajj [https://eumra.com]" },
+  { value: "twf", name: "Tawaf [https://tawaf.com.sa]" },
+  { value: "hsf", name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]" },
+  { value: "enj", name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]" },
   { value: "ehr", name: "Ehaj (Reservation)" },
   { value: "ehj", name: "Ehaj (Submit)" },
-  { value: "vst", name: "https://visa.visitsaudi.com" },
-  { value: "mot", name: "Egypt Tourism" },
+  { value: "vst", name: "Visit-visa [https://visa.visitsaudi.com]" },
+  { value: "mot", name: "Egypt-Tourism" },
 ];
 
 const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
@@ -141,7 +141,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
-  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState("");
+  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(localStorage.getItem('selected-service-provider-profile'));
   const [sendingMail, setSendingMail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState();
 
@@ -282,6 +282,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
       setSelectedVisaSystem(systemIndex);
+      localStorage.setItem('selected-service-provider-profile', systemIndex);
     }
   };
 
