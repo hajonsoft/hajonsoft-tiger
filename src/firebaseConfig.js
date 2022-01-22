@@ -1,2 +1,2 @@
-import firebaseConfig from './firebaseConfigs/moulaviumrah';
+import firebaseConfig from './firebaseConfigs/breno-tours';
 export default firebaseConfig;
