@@ -141,7 +141,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
-  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(localStorage.getItem('selected-service-provider-profile'));
+  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(localStorage.getItem('selected-service-provider-profile') || '');
   const [sendingMail, setSendingMail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState();
 
@@ -312,7 +312,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     setTimeout(makePassengersFile, 1000)
   };
 
-  async function makePassengersFile () {
+  async function makePassengersFile() {
     const travellersData = getPassengersJSON(selectedPassengers);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
@@ -532,10 +532,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         </FormControl>
                       </Grid>
                       <Grid item md={1}>
-                        <IconButton aria-label="add">
-                          <AddIcon
-                            onClick={() => setServiceProviderAddMode(true)}
-                          />
+                        <IconButton aria-label="add" onClick={() => setServiceProviderAddMode(true)}>
+                          <AddIcon />
                         </IconButton>
                       </Grid>
                     </Grid>

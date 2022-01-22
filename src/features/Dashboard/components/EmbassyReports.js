@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
 import moment from "moment";
 import _ from "lodash";
+import { nationalities } from "../../../data/nationality";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +52,9 @@ const EmbassyReports = ({ passengers }) => {
     const formattedPassengers = [];
     for (let i = 0; i < data.length; i++) {
       const nameParts = data[i].name.split(" ");
+      const nationality = nationalities?.find(nationalityRecord => nationalityRecord.name === passengers?.[i]?.nationality)?.code;
+      const issueCountry = passengers?.[i]?.codeLine?.substring(2,5) || nationality;
+      console.log('%cMyProject%cline:57%cpassengers[i]', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px', passengers[i])
       formattedPassengers.push({
         seq: i + 1,
         ...data[i],
@@ -69,12 +73,10 @@ const EmbassyReports = ({ passengers }) => {
         saber_: `-${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
           data[i]
         )}`,
-        amadeusSRDOC: `3DOCS/DB/${moment(data[i]).format(
-          "DDMMMYYYY"
-        )}/${_.head(nameParts)}/${_.last(nameParts)}/H`,
-        saberSRDOC: `3DOCS/DB/${moment(data[i]).format(
-          "DDMMMYYYY"
-        )}/${_.head(nameParts)}/${_.last(nameParts)}/H`,
+        amadeusSRDOC: `SRDOCSXXHK1-P-${issueCountry}-${passengers?.[i]?.passportNumber}-${nationality}-${moment(passengers?.[i]?.birthDate).format(
+          "DDMMMYY")}-${passengers?.[i]?.gender?.substring(0, 1)}-${moment(passengers?.[i]?.passExpireDt).format(
+            "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
+        saberSRDOC: `Not Implemented`,
       });
     }
 
@@ -123,7 +125,7 @@ const EmbassyReports = ({ passengers }) => {
   const dispatch = useDispatch();
 
   return (
-    <Box>
+    <>
       <Modal
         open={openSaveModal}
         onClose={() => {
@@ -273,7 +275,7 @@ const EmbassyReports = ({ passengers }) => {
           });
         }}
       />
-    </Box>
+    </>
   );
 };
 
