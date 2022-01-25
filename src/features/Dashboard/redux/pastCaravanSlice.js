@@ -7,6 +7,15 @@ export const getPastCaravans = createAsyncThunk('past/get', async () => {
     return flatten(result, "past caravan");
 });
 
+export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async ({ name, passengers }) => {
+    for (let passenger of passengers) {
+        await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
+    }
+    const removeRef = firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`);
+    removeRef.remove();
+    return { updated: passengers };
+});
+
 
 const pastCaravanSlice = createSlice({
     name: 'past',
@@ -24,6 +33,17 @@ const pastCaravanSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(getPastCaravans.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(setUpcomingCaravan.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(setUpcomingCaravan.fulfilled, (state, action) => {
+            delete state.data[action.meta.arg.name];
+            state.loading = false;
+        });
+        builder.addCase(setUpcomingCaravan.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

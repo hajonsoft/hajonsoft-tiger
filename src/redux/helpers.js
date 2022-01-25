@@ -1,6 +1,9 @@
 export const flatten = (snapshot, name = "data") => {
     const output = {};
     const data = snapshot.toJSON();
+    // input => {key1: {fid1: {name: ''}, fid2: {name: ''}}, key2: {fid3: {name: ''}, fid4: {name: ''}} }
+    // output => {key1: [{fid1: '', name: ''}, {fid2: '', name: ''}], key2: [{fid3: '', name: ''}, {fid4: '', name: ''}]}
+    // TODO: Review the logic below there must be an easier way to convert 
     if (!data) return { [`No ${name} found`] : [{ _fid: '0', name: 'No data Found' }] }
     const topKeys = Object.keys(data);
 

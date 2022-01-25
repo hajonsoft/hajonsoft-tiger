@@ -1,17 +1,26 @@
-import Alert from '@material-ui/lab/Alert'
-import React from 'react'
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import HotelIcon from '@material-ui/icons/Hotel';
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import GavelIcon from '@material-ui/icons/Gavel';
-import { Grid } from '@material-ui/core';
-function CustomerDetail(props) {
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { movePassenger } from '../../Dashboard/redux/caravanSlice';
+function CustomerDetail({ customer, caravan }) {
+    const caravans = useSelector((state) => state.caravan?.data);
+    const dispatch = useDispatch();
+    const passenger = {...customer};
+    delete passenger.tableData;
+
     return (
         <div>
-            <Alert severity="info" >{`Customer details here, ex. facebook, twitter, whatsapp, accommodation, etc... `}</Alert>
-            <Grid container alignContent="center" justifyContent="space-around" style={{ width: "30%", padding: "1rem"}}>
-                <WhatsAppIcon style={{cursor: "pointer"}} /> <TwitterIcon style={{cursor: "pointer"}} /> <HotelIcon style={{cursor: "pointer"}} /> <FlightTakeoffIcon style={{cursor: "pointer"}} /> <GavelIcon style={{cursor: "pointer"}} />
+            <Alert severity="info" >{`Passenger Id: ${customer._fid}`}</Alert>
+            <Grid container justifyContent="space-around" spacing={2} style={{ padding: '2rem' }}>
+                <Grid item md={10}>
+                    <FormControl fullWidth>
+                        <InputLabel id="move-caravan">Select new caravan to move passenger to</InputLabel>
+                        <Select id="move-caravan" value={''} style={{ width: '100%' }}>
+                            {Object.keys(caravans).filter(keyRow => keyRow !== caravan).map(caravanRow => <MenuItem onClick={() => dispatch(movePassenger({ newCaravan: caravanRow, oldCaravan: caravan, passenger }))}>{caravanRow}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                </Grid>
             </Grid>
         </div>
     )

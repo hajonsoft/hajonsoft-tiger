@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { flatten } from '../../../redux/helpers';
 import firebase from './../../../firebaseapp';
 
+// action creators
 export const getUpcomingCaravans = createAsyncThunk('caravan/upcoming', async () => {
-    const result = await firebase.database().ref('/customer').once('value');
-    return flatten(result, "caravan");
+    const resultSnapshot = await firebase.database().ref('/customer').once('value');
+    return flatten(resultSnapshot, "caravan");
 });
 
 export const createUpcomingCaravan = createAsyncThunk('caravan/create', async (name) => {
@@ -23,15 +24,6 @@ export const setPastCaravan = createAsyncThunk('caravan/set-past-caravan', async
     return { updated: passengers };
 });
 
-export const setUpcomingCaravan = createAsyncThunk('caravan/set-upcoming-caravan', async ({ name, passengers }) => {
-    for (let passenger of passengers) {
-        await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
-    }
-    const removeRef = firebase.database().ref(`/past/${name.split('/').filter(part => !!part).join('/')}`);
-    removeRef.remove();
-    return { updated: passengers };
-});
-
 export const deleteUpcomingCaravan = createAsyncThunk('caravan/delete', async (name) => {
     const removeRef = firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`);
     removeRef.remove();
@@ -43,7 +35,6 @@ export const deleteExpiredPassports = createAsyncThunk('caravan/delete-expired',
         removeRef.remove();
     }
 });
-
 
 export const createPassenger = createAsyncThunk('caravan/create-passenger', async ({ name, passenger }) => {
     const result = await firebase.database().ref(`/customer/${name.split('/').filter(part => !!part).join('/')}`).push(passenger);
@@ -79,6 +70,13 @@ export const deleteOnlinePassenger = createAsyncThunk('caravan/delete-online-pas
         console.log(err)
     }
 })
+
+export const movePassenger = createAsyncThunk('caravan/move-passenger', async ({ newCaravan, oldCaravan, passenger }) => {
+    const result = await firebase.database().ref(`/customer/${newCaravan.split('/').filter(part => !!part).join('/')}`).push(passenger);
+    const removeRef = firebase.database().ref(`/customer/${oldCaravan}/${passenger._fid}`);
+    removeRef.remove();
+    return result.key;
+});
 
 
 const caravanSlice = createSlice({
@@ -128,18 +126,6 @@ const caravanSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
-        builder.addCase(setUpcomingCaravan.pending, (state, action) => {
-            state.loading = true;
-        });
-        builder.addCase(setUpcomingCaravan.fulfilled, (state, action) => {
-// TODO: Think about the state when the caravan is fulfilled
-            // state.data[action.meta.arg.name] = action.payload;
-            state.loading = false;
-        });
-        builder.addCase(setUpcomingCaravan.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message;
-        });
         builder.addCase(deleteUpcomingCaravan.pending, (state, action) => {
             state.loading = true;
         });
@@ -180,6 +166,19 @@ const caravanSlice = createSlice({
         builder.addCase(deletePassenger.fulfilled, (state, action) => {
             state.data[action.meta.arg.packageName] = state.data[action.meta.arg.packageName]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid);
             state.loading = false;
+        });
+        builder.addCase(movePassenger.fulfilled, (state, action) => {
+            if (!state.data[action.meta.arg.newCaravan]) {
+                state.data[action.meta.arg.newCaravan] = []
+            }
+            state.data[action.meta.arg.newCaravan].push({ ...action.meta.arg.passenger, _fid: action.payload })
+            state.data[action.meta.arg.oldCaravan] = state.data[action.meta.arg.oldCaravan]?.filter(passenger => passenger._fid !== action.meta.arg?.passenger?._fid);
+
+            state.loading = false;
+        });
+        builder.addCase(movePassenger.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
         });
         builder.addCase(deleteOnlinePassenger.fulfilled, (state, action) => {
             state.data["online"] = state.data?.["online"]?.filter(passenger => passenger._fid !== action.meta.arg?.fid);
