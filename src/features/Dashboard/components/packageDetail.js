@@ -12,12 +12,13 @@ import BarChartRoundedIcon from "@material-ui/icons/BarChartRounded";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllReports } from "../../Dashboard/redux/reportSlice";
-import { setPastCaravan, setUpcomingCaravan } from "../redux/caravanSlice";
+import { setPastCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
 import EmbassyReports from "./EmbassyReports";
 import NationalityStatistics from "./NationalityStatistics";
 import ReportListItem from "./ReportListItem";
 import IDCard from "./IDCard";
+import { setUpcomingCaravan } from "../redux/pastCaravanSlice";
 
 function a11yProps(index) {
   return {

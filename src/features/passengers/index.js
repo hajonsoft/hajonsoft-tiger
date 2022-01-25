@@ -244,7 +244,7 @@ const Passengers = () => {
               ]}
 
               data={passengers}
-              detailPanel={(rowData) => <CustomerDetail customer={rowData} />}
+              detailPanel={(rowData) => <CustomerDetail customer={rowData} caravan={packageName}/>}
               actions={[
                 {
                   icon: tableIcons.Add,
