@@ -1,24 +1,15 @@
 import {
-  Box,
-  IconButton,
-  Grid,
-  makeStyles,
-  Typography,
-  TextField,
-  Button,
-  Modal,
+  Box, Button, Grid, IconButton, makeStyles, Modal, TextField, Typography
 } from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import Table from "./Table";
-import ReactToPrint from "react-to-print";
-import Edit from "@material-ui/icons/Edit";
-import PrintableTable from "./PrintableTable";
-import { createReport } from "../../Dashboard/redux/reportSlice";
-import { useDispatch } from "react-redux";
 import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
-import moment from "moment";
-import _ from "lodash";
-import { nationalities } from "../../../data/nationality";
+import Edit from "@material-ui/icons/Edit";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import ReactToPrint from "react-to-print";
+import { formatPassengers } from "../../../shared/util/formatPassengers";
+import { createReport } from "../../Dashboard/redux/reportSlice";
+import PrintableTable from "./PrintableTable";
+import Table from "./Table";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,52 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EmbassyReports = ({ passengers }) => {
   const [data, setData] = useState(formatPassengers(passengers));
-
-  function formatPassengers(data) {
-    const formattedPassengers = [];
-    for (let i = 0; i < data.length; i++) {
-      const nameParts = data[i].name.split(" ");
-      const nationality = nationalities?.find(nationalityRecord => nationalityRecord.name === passengers?.[i]?.nationality)?.code;
-      const issueCountry = passengers?.[i]?.codeLine?.substring(2,5) || nationality;
-      console.log('%cMyProject%cline:57%cpassengers[i]', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px', passengers[i])
-      formattedPassengers.push({
-        seq: i + 1,
-        ...data[i],
-        birthDate: moment(data[i].birthDate).format("D-MMM-YYYY"),
-        idNumberIssueDate: moment(data[i].idNumberIssueDate).format(
-          "D-MMM-YYYY"
-        ),
-        idNumberExpireDate: moment(data[i].idNumberExpireDate).format(
-          "D-MMM-YYYY"
-        ),
-        passExpireDt: moment(data[i].passExpireDt).format("D-MMM-YYYY"),
-        passIssueDt: moment(data[i].passIssueDt).format("D-MMM-YYYY"),
-        amadeusNM: `NM1${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
-          data[i]
-        )}`,
-        saber_: `-${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
-          data[i]
-        )}`,
-        amadeusSRDOC: `SRDOCSXXHK1-P-${issueCountry}-${passengers?.[i]?.passportNumber}-${nationality}-${moment(passengers?.[i]?.birthDate).format(
-          "DDMMMYY")}-${passengers?.[i]?.gender?.substring(0, 1)}-${moment(passengers?.[i]?.passExpireDt).format(
-            "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
-        saberSRDOC: `Not Implemented`,
-      });
-    }
-
-    function gTitle(passenger, g = "amadeus") {
-      if (!passenger.birthDate) return "XX";
-      if (!passenger.gender) return "XX";
-      const age = moment().diff(passenger.birthDate, "years");
-      if (age <= 2) return "INF";
-      if (age <= 12) return "CHD";
-      if (passenger.gender === "Male") return "MR";
-      if (passenger.gender === "Female") return "MRS";
-      return "XXX";
-    }
-
-    return formattedPassengers;
-  }
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles();
