@@ -1,48 +1,88 @@
 import {
-  Breadcrumbs, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid,
-  Typography
-} from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Chip from "@material-ui/core/Chip";
-import Link from "@material-ui/core/Link";
-import Snackbar from "@material-ui/core/Snackbar";
-import AddBox from "@material-ui/icons/AddBox";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import DetailsIcon from "@material-ui/icons/Details";
-import Edit from "@material-ui/icons/Edit";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import HomeIcon from "@material-ui/icons/Home";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import Alert from "@material-ui/lab/Alert";
-import MaterialTable from "material-table";
-import moment from "moment";
-import pluralize from "pluralize";
+  Breadcrumbs,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Typography,
+  Modal,
+  Box,
+  makeStyles,
+} from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
+import Snackbar from '@material-ui/core/Snackbar';
+import AddBox from '@material-ui/icons/AddBox';
+import Checkbox from '@material-ui/core/Checkbox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import DetailsIcon from '@material-ui/icons/Details';
+import Edit from '@material-ui/icons/Edit';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import HomeIcon from '@material-ui/icons/Home';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import Alert from '@material-ui/lab/Alert';
+import MaterialTable, { MTableToolbar } from 'material-table';
+import moment from 'moment';
+import pluralize from 'pluralize';
 import _ from 'lodash';
-import React, { forwardRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import AppHeader from "../../shared/macaw/AppHeader";
-import CRUDForm from "./components/CRUDForm";
-import CustomerDetail from "./components/CustomerDetail";
-import { deletePassenger, getUpcomingCaravans, updatePassenger } from "../Dashboard/redux/caravanSlice";
+import React, { forwardRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import AppHeader from '../../shared/macaw/AppHeader';
+import CRUDForm from './components/CRUDForm';
+import CaravanSelectInput from './components/CaravanSelectInput';
+import {
+  deletePassenger,
+  getUpcomingCaravans,
+  movePassengers,
+  updatePassenger,
+} from '../Dashboard/redux/caravanSlice';
 import t from '../../shared/util/trans';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #fff",
+    borderRadius: 5,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    left: 0,
+    right: 0,
+    top: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom: "1rem",
+  },
+}));
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Checkbox: forwardRef((props, ref) => <Checkbox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
@@ -72,29 +112,33 @@ const tableIcons = {
 const Passengers = () => {
   let { packageName } = useParams();
   const dispatch = useDispatch();
+  const classes = useStyles()
 
-  const caravans = useSelector(state => state.caravan?.data);
-  const loading = useSelector(state => state.caravan?.loading);
-  const error = useSelector(state => state.caravan?.error);
+  const caravans = useSelector((state) => state.caravan?.data);
+  const loading = useSelector((state) => state.caravan?.loading);
+  const error = useSelector((state) => state.caravan?.error);
   const passengers = _.cloneDeep(caravans?.[packageName]);
+  const [ newCaravan, setNewCaravan] = useState("")
 
   const [state, setState] = useState({
-    mode: "list",
+    mode: 'list',
     record: {},
     customerKey: 0,
   });
+  const [passengersToMove, setPassengersToMove] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
-  const title = "Passenger";
+  const title = 'Passenger';
   const history = useHistory();
 
   if (loading) {
     return (
       <div
         style={{
-          display: "flex",
-          height: "100vh",
-          justifyContent: "center",
-          alignItems: "center",
+          display: 'flex',
+          height: '100vh',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <CircularProgress size={40} />
@@ -109,24 +153,24 @@ const Passengers = () => {
   const handleWhatsappClick = (phone) => {
     if (!phone) return;
     let whatsappPhone = phone;
-    if (phone.startsWith("00")) {
+    if (phone.startsWith('00')) {
       whatsappPhone = phone.subString(2);
     }
     const url = `https://api.whatsapp.com/send?phone=+${encodeURIComponent(
-      whatsappPhone.replace(/[^0-9]/g, "")
+      whatsappPhone.replace(/[^0-9]/g, '')
     )}`;
-    window.open(url, "_blank");
+    window.open(url, '_blank');
   };
 
   const Title = () => {
     return (
-      <div style={{ width: "500px" }}>
+      <div style={{ width: '500px' }}>
         <Breadcrumbs>
           <Link
             color="inherit"
             href="#"
             onClick={handleBack}
-            style={{ display: "flex", alignItems: "center" }}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <HomeIcon />
             <Typography>Home</Typography>
@@ -146,45 +190,86 @@ const Passengers = () => {
         }
       }
     }
-    setState((st) => ({ ...st, mode: "update", record: nextPassenger }));
+    setState((st) => ({ ...st, mode: 'update', record: nextPassenger }));
   };
 
   const handleOnConfirmDelete = (passenger) => {
-    dispatch(deletePassenger({ packageName, passenger }))
-    setState((st) => ({ ...st, mode: "list", record: {} }))
-  }
+    dispatch(deletePassenger({ packageName, passenger }));
+    setState((st) => ({ ...st, mode: 'list', record: {} }));
+  };
 
   return (
     <React.Fragment>
+      <Modal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+      >
+        <Box className={classes.paper}>
+          <Typography className={classes.title}> Select Caravan to move passengers to  </Typography>
+          <Grid item xs={12}>
+            <CaravanSelectInput onSelect={(newCaravanName) => {
+              setNewCaravan(newCaravanName)
+            }} customers={passengersToMove} caravan={packageName} />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
+            <Button
+              style={{
+                background: 'rgb(227, 242, 253)',
+                textTransform: 'none',
+                color: '#03a9f4',
+                paddingLeft: '2rem',
+                paddingRight: '2rem',
+              }}
+              onClick={() => {
+                dispatch(movePassengers({
+                  newCaravan,
+                  oldCaravan: packageName,
+                  passengers: passengersToMove
+                }))
+                setPassengersToMove([])
+                setOpenModal(false);
+              }}
+            >
+              Save
+            </Button>
+          </Grid>
+        </Box>
+      </Modal>
+
       <div
         style={{
-          backgroundColor: "snow",
+          backgroundColor: 'snow',
         }}
       >
         <AppHeader />
         <div>
-          {state.mode !== "list" && state.mode !== "delete" && (
+          {state.mode !== 'list' && state.mode !== 'delete' && (
             <CRUDForm
               mode={state.mode}
               record={state.record}
               title={title}
               onClose={() => {
-                dispatch(getUpcomingCaravans())
-                setState((st) => ({ ...st, mode: "list", record: {} }))
-              }
-              }
+                dispatch(getUpcomingCaravans());
+                setState((st) => ({ ...st, mode: 'list', record: {} }));
+              }}
               onNext={bringNext}
             />
           )}
-          {state.mode === "list" && (
+          {state.mode === 'list' && (
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
               columns={[
-                { title: t('name'), field: "name" },
+                { title: t('name'), field: 'name' },
                 {
                   title: t('phone'),
-                  field: "phone",
+                  field: 'phone',
                   render: (rowData) =>
                     rowData.phone && (
                       <Grid container>
@@ -197,74 +282,171 @@ const Passengers = () => {
                       </Grid>
                     ),
                 },
-                { title: t('nationality'), field: "nationality" },
+                { title: t('nationality'), field: 'nationality' },
                 {
                   title: t('birth-date'),
-                  field: "birthDate",
+                  field: 'birthDate',
                   render: (rowData) => {
-                    if (rowData.birthDate && !rowData.birthDate._isAMomentObject) {
+                    if (
+                      rowData.birthDate &&
+                      !rowData.birthDate._isAMomentObject
+                    ) {
                       return (
                         <Chip
                           avatar={
                             <Avatar>
-                              {moment(rowData.birthDate).isValid() && moment().diff(rowData.birthDate, "years")}
+                              {moment(rowData.birthDate).isValid() &&
+                                moment().diff(rowData.birthDate, 'years')}
                             </Avatar>
                           }
                           variant="outlined"
-                          label={moment(rowData.birthDate).format("DD-MMM-yyyy")}
+                          label={moment(rowData.birthDate).format(
+                            'DD-MMM-yyyy'
+                          )}
                         />
-                      )
+                      );
                     }
-                    return <div>Invalid Date</div>
-
+                    return <div>Invalid Date</div>;
                   },
                 },
                 {
                   title: t('expire-date'),
-                  field: "Expire date",
+                  field: 'Expire date',
                   render: (rowData) => {
-
-                    if (rowData.passExpireDt && !rowData.passExpireDt._isAMomentObject) {
+                    if (
+                      rowData.passExpireDt &&
+                      !rowData.passExpireDt._isAMomentObject
+                    ) {
                       return (
                         <Chip
                           avatar={
                             <Avatar>
-                              {
-                                dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 0 && <div style={{ backgroundColor: '#e53935', width: '100%', height: '100%' }}></div>
-                              }
-                              {dayjs(rowData.passExpireDt).isValid() && dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 0 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") <= 6 &&
-                                <div style={{ backgroundColor: '#d32f2f', width: '100%', height: '100%', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
-                              }
-                              {
-                                dayjs(rowData.passExpireDt).diff(dayjs(), "month") > 6 && dayjs(rowData.passExpireDt).diff(dayjs(), "month") < 12 && <div style={{ backgroundColor: '#ffcdd2', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{dayjs(rowData.passExpireDt).diff(dayjs(), "month")}</div>
-                              }
-                              {
-                                dayjs(rowData.passExpireDt).diff(dayjs(), "month") >= 12 && <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}></div>
-                              }
+                              {dayjs(rowData.passExpireDt).diff(
+                                dayjs(),
+                                'month'
+                              ) <= 0 && (
+                                <div
+                                  style={{
+                                    backgroundColor: '#e53935',
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                ></div>
+                              )}
+                              {dayjs(rowData.passExpireDt).isValid() &&
+                                dayjs(rowData.passExpireDt).diff(
+                                  dayjs(),
+                                  'month'
+                                ) > 0 &&
+                                dayjs(rowData.passExpireDt).diff(
+                                  dayjs(),
+                                  'month'
+                                ) <= 6 && (
+                                  <div
+                                    style={{
+                                      backgroundColor: '#d32f2f',
+                                      width: '100%',
+                                      height: '100%',
+                                      color: 'white',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    {dayjs(rowData.passExpireDt).diff(
+                                      dayjs(),
+                                      'month'
+                                    )}
+                                  </div>
+                                )}
+                              {dayjs(rowData.passExpireDt).diff(
+                                dayjs(),
+                                'month'
+                              ) > 6 &&
+                                dayjs(rowData.passExpireDt).diff(
+                                  dayjs(),
+                                  'month'
+                                ) < 12 && (
+                                  <div
+                                    style={{
+                                      backgroundColor: '#ffcdd2',
+                                      width: '100%',
+                                      height: '100%',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    {dayjs(rowData.passExpireDt).diff(
+                                      dayjs(),
+                                      'month'
+                                    )}
+                                  </div>
+                                )}
+                              {dayjs(rowData.passExpireDt).diff(
+                                dayjs(),
+                                'month'
+                              ) >= 12 && (
+                                <div
+                                  style={{
+                                    backgroundColor: 'white',
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                ></div>
+                              )}
                             </Avatar>
                           }
                           variant="outlined"
-                          label={dayjs(rowData.passExpireDt).format("DD-MMM-YYYY")}
+                          label={dayjs(rowData.passExpireDt).format(
+                            'DD-MMM-YYYY'
+                          )}
                         />
-                      )
+                      );
                     }
 
-                    return <div>Invalid date</div>
-
-
+                    return <div>Invalid date</div>;
                   },
-                }
+                },
               ]}
-
+              components={{
+                Toolbar: (props) => (
+                  <div>
+                    <MTableToolbar {...props} />
+                    {passengersToMove.length > 0 && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          padding: '.5rem 1rem',
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          disableElevation
+                          onClick={() => {
+                            setOpenModal(true)
+                          }}
+                        >
+                          Move Passengers
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ),
+              }}
               data={passengers}
-              detailPanel={(rowData) => <CustomerDetail customer={rowData} caravan={packageName} />}
+              // detailPanel={(rowData) => (
+              //   <CustomerDetail customer={rowData} caravan={packageName} />
+              // )}
               actions={[
                 {
                   icon: tableIcons.Add,
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
                   onClick: (event) =>
-                    setState((st) => ({ ...st, mode: "create" })),
+                    setState((st) => ({ ...st, mode: 'create' })),
                 },
                 (rowData) => ({
                   icon: () =>
@@ -280,9 +462,27 @@ const Passengers = () => {
                     if (Array.isArray(rowData)) {
                       return;
                     }
-                    dispatch(updatePassenger(`${packageName}/${rowData._fid}`, { ...rowData, favorite: !rowData.favorite }))
+                    dispatch(
+                      updatePassenger(`${packageName}/${rowData._fid}`, {
+                        ...rowData,
+                        favorite: !rowData.favorite,
+                      })
+                    );
                   },
                 }),
+                {
+                  icon: () => <tableIcons.Checkbox color="action" />,
+                  tooltip: 'Move passenger',
+                  onClick: (event, rowData) => {
+                    if (event.target.checked) {
+                      setPassengersToMove((prev) => [...prev, rowData]);
+                    } else {
+                      setPassengersToMove((prev) => {
+                        return prev.filter((p) => p._fid !== rowData._fid);
+                      });
+                    }
+                  },
+                },
                 {
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
@@ -292,7 +492,7 @@ const Passengers = () => {
                     }
                     setState((st) => ({
                       ...st,
-                      mode: "update",
+                      mode: 'update',
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
                     }));
@@ -307,7 +507,7 @@ const Passengers = () => {
                     }
                     setState((st) => ({
                       ...st,
-                      mode: "delete",
+                      mode: 'delete',
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
                     }));
@@ -325,7 +525,12 @@ const Passengers = () => {
                 exportButton: true,
                 columnsButton: true,
                 searchAutoFocus: true,
-                headerStyle: { backgroundColor: "#f0f3f7", color: "#385273", fontSize: "1.1rem", paddingLeft: "0px" }
+                headerStyle: {
+                  backgroundColor: '#f0f3f7',
+                  color: '#385273',
+                  fontSize: '1.1rem',
+                  paddingLeft: '0px',
+                },
               }}
               localization={{
                 body: {
@@ -342,32 +547,44 @@ const Passengers = () => {
 
       <Dialog
         open={state.mode === 'delete'}
-        onClose={() => setState((st) => ({
-          ...st,
-          mode: "list",
-          record: {},
-        }))}
+        onClose={() =>
+          setState((st) => ({
+            ...st,
+            mode: 'list',
+            record: {},
+          }))
+        }
       >
-        <DialogTitle >{t('are-you-sure')}</DialogTitle>
+        <DialogTitle>{t('are-you-sure')}</DialogTitle>
         <DialogContent>
-          <DialogContentText >
+          <DialogContentText>
             {`You want to delete ${state.record.name}. This is a permenant deletion and can not be undone.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setState((st) => ({
-            ...st,
-            mode: "list",
-            record: {},
-          }))} color="error" variant="outlined">
+          <Button
+            onClick={() =>
+              setState((st) => ({
+                ...st,
+                mode: 'list',
+                record: {},
+              }))
+            }
+            color="error"
+            variant="outlined"
+          >
             Cancel
           </Button>
-          <Button onClick={() => handleOnConfirmDelete(state.record)} style={{ backgroundColor: "#ef5350", color: "#fff" }} variant="contained" autoFocus>
+          <Button
+            onClick={() => handleOnConfirmDelete(state.record)}
+            style={{ backgroundColor: '#ef5350', color: '#fff' }}
+            variant="contained"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-
     </React.Fragment>
   );
 };
