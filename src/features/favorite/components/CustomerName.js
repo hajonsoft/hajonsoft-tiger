@@ -5,8 +5,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { ErrorMessage, Field } from "formik";
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CustomerName = ({
   mode,
@@ -83,7 +83,7 @@ const CustomerName = ({
                   aria-label="search name on twitter"
                   onClick={handleGoogleClick}
                 >
-                  {/* <FontAwesomeIcon icon={faGoogle} style={{color: '#4285F4'}}/> */}
+                  <FontAwesomeIcon icon={faGoogle} style={{color: '#4285F4'}}/>
                   <FontAwesomeIcon icon={faGoogle} />
                 </IconButton>
               </Box>

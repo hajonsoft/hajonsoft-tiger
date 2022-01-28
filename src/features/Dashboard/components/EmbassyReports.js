@@ -13,28 +13,29 @@ import Table from "./Table";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #fff",
+    border: '2px solid #fff',
     borderRadius: 5,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     left: 0,
     right: 0,
     top: 50,
-    marginLeft: "auto",
-    marginRight: "auto",
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
-    paddingBottom: "1rem",
+    fontWeight: 'bold',
+    paddingBottom: '1rem',
   },
 }));
+
 
 const EmbassyReports = ({ passengers }) => {
   const [data, setData] = useState(formatPassengers(passengers));
@@ -43,28 +44,28 @@ const EmbassyReports = ({ passengers }) => {
   const classes = useStyles();
   const [columns, setColumns] = useState([
     {
-      Header: "Seq",
-      accessor: "seq",
+      Header: 'Seq',
+      accessor: 'seq',
     },
     {
-      Header: "Name",
-      accessor: "name",
+      Header: 'Name',
+      accessor: 'name',
     },
     {
-      Header: "Gender",
-      accessor: "gender",
+      Header: 'Gender',
+      accessor: 'gender',
     },
     {
-      Header: "Passport Number",
-      accessor: "passportNumber",
+      Header: 'Passport Number',
+      accessor: 'passportNumber',
     },
     {
-      Header: "Birth Date",
-      accessor: "birthDate",
+      Header: 'Birth Date',
+      accessor: 'birthDate',
     },
   ]);
-  const [openSaveModal, setOpenSaveModal] = useState("");
-  const [saveReportName, setSaveReportName] = useState("");
+  const [openSaveModal, setOpenSaveModal] = useState('');
+  const [saveReportName, setSaveReportName] = useState('');
   const inputRef = useRef(null);
   const printTableRef = useRef();
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const EmbassyReports = ({ passengers }) => {
       <Modal
         open={openSaveModal}
         onClose={() => {
-          setSaveReportName("");
+          setSaveReportName('');
           setOpenSaveModal(false);
         }}
       >
@@ -88,21 +89,21 @@ const EmbassyReports = ({ passengers }) => {
                 setSaveReportName(value);
               }}
               label="Report Name"
-              style={{ width: "100%", marginBottom: "1rem" }}
+              style={{ width: '100%', marginBottom: '1rem' }}
             />
           </Grid>
           <Grid
             item
             xs={12}
-            style={{ display: "flex", justifyContent: "flex-end" }}
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
           >
             <Button
               style={{
-                background: "rgb(227, 242, 253)",
-                textTransform: "none",
-                color: "#03a9f4",
-                paddingLeft: "2rem",
-                paddingRight: "2rem",
+                background: 'rgb(227, 242, 253)',
+                textTransform: 'none',
+                color: '#03a9f4',
+                paddingLeft: '2rem',
+                paddingRight: '2rem',
               }}
               onClick={() => {
                 dispatch(
@@ -111,7 +112,7 @@ const EmbassyReports = ({ passengers }) => {
                     reportData: { columns },
                   })
                 );
-                setSaveReportName("");
+                setSaveReportName('');
                 setOpenSaveModal(false);
               }}
             >
@@ -134,7 +135,7 @@ const EmbassyReports = ({ passengers }) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           ) : (
-            <Typography style={{ display: "inline" }}> {title} </Typography>
+            <Typography style={{ display: 'inline' }}> {title} </Typography>
           )}
           <IconButton
             onClick={() => {
@@ -154,9 +155,9 @@ const EmbassyReports = ({ passengers }) => {
           xs={6}
           md={6}
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
           }}
         >
           <ReactToPrint
@@ -173,8 +174,12 @@ const EmbassyReports = ({ passengers }) => {
         </Grid>
       </Grid>
 
-      <div style={{ display: "none" }}>
-        <PrintableTable ref={printTableRef} columns={columns} data={formatPassengers(data)} />
+      <div style={{ display: 'none' }}>
+        <PrintableTable
+          ref={printTableRef}
+          columns={columns}
+          data={formatPassengers(data)}
+        />
       </div>
 
       <Table
@@ -182,11 +187,11 @@ const EmbassyReports = ({ passengers }) => {
         data={formatPassengers(data)}
         onFilterColumn={(isFiltering) => {
           if (isFiltering) {
-            setColumns((prev) => [{ Header: "", accessor: "delete" }, ...prev]);
-            setData((prev) => prev.map((d) => ({ ...d, delete: "" })));
+            setColumns((prev) => [{ Header: '', accessor: 'delete' }, ...prev]);
+            setData((prev) => prev.map((d) => ({ ...d, delete: '' })));
           } else {
             setColumns((prev) =>
-              prev.filter((val) => val.accessor !== "delete")
+              prev.filter((val) => val.accessor !== 'delete')
             );
             setData((prev) => {
               delete prev.delete;

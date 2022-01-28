@@ -1,2 +1,2 @@
-import firebaseConfig from './firebaseConfigs/safar-omra-france';
+import firebaseConfig from './firebaseConfigs/breno-tours';
 export default firebaseConfig;

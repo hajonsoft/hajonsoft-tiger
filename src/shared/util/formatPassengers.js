@@ -1,5 +1,7 @@
+import React from 'react';
 import { nationalities } from "../../data/nationality";
 import moment from "moment";
+import Barcode from 'react-barcode'
 import _ from "lodash";
 
 export function formatPassengers(passengers) {
@@ -30,6 +32,8 @@ export function formatPassengers(passengers) {
                 "DDMMMYY")}-${passengers?.[i]?.gender?.substring(0, 1)}-${moment(passengers?.[i]?.passExpireDt).format(
                     "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
             saberSRDOC: `Not Implemented`,
+            mofaNumberBarcode: <Barcode value={passengers[i].mofaNumber} displayValue={false} />,
+
         });
     }
 
