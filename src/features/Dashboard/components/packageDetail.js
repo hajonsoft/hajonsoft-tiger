@@ -19,6 +19,7 @@ import NationalityStatistics from "./NationalityStatistics";
 import ReportListItem from "./ReportListItem";
 import IDCard from "./IDCard";
 import { setUpcomingCaravan } from "../redux/pastCaravanSlice";
+import { formatPassengers } from "../../../shared/util/formatPassengers";
 
 function a11yProps(index) {
   return {
@@ -183,7 +184,7 @@ const PackageDetail = ({ data, caravanData, isPast }) => {
                     name={report.name}
                     printingData={{
                       columns: Object.values(report?.columns),
-                      data: caravanData?.[data?.name],
+                      data: formatPassengers(caravanData?.[data?.name]),
                     }}
                   />
                 )
