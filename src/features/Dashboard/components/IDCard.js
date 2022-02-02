@@ -1,6 +1,5 @@
 import React from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import download from 'downloadjs';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
@@ -23,6 +22,9 @@ import firebase from '../../../firebaseapp';
 import axios from 'axios';
 import moment from 'moment-hijri';
 import _ from 'lodash';
+import JSZip from 'jszip';
+import saveAs from 'save-as';
+import JSZipUtils from 'jszip-utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -130,10 +132,31 @@ const getIDPositionProps = (idType) => {
   }
 };
 
+async function getAsByteArray(file) {
+  return new Uint8Array(await readFile(file));
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    // Create file reader
+    let reader = new FileReader();
+
+    // Register event listeners
+    reader.addEventListener('loadend', (e) => resolve(e.target.result));
+    reader.addEventListener('error', reject);
+
+    // Read file
+    reader.readAsArrayBuffer(file);
+  });
+}
+
 const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
   const [detail, setDetail] = React.useState({});
+  const [companyLogo, setCompanyLogo] = React.useState();
   const classes = useStyles();
+
+  console.log(detail)
 
   React.useEffect(() => {
     firebase
@@ -148,6 +171,29 @@ const IDCard = ({ passengers, caravanName }) => {
       });
   }, [caravanName]);
 
+  const downloadFiles = (pdfBytes, cb) => {
+    const zip = new JSZip();
+    let count = 0;
+
+    pdfBytes.forEach(function (url, idx) {
+      const filename = `${caravanName}-${idx}`
+      // loading a file and add it in a zip file
+      JSZipUtils.getBinaryContent(url, function (err, data) {
+        if (err) {
+          throw err; // or handle the error
+        }
+        zip.file(filename + '.pdf', data, { binary: true });
+        count++;
+        if (count === pdfBytes.length) {
+          zip.generateAsync({ type: 'blob' }).then(function (content) {
+            saveAs(content, caravanName + ".zip");
+            cb(true);
+          });
+        }
+      });
+    });
+  };
+
   const createPDF = async (
     idType,
     name,
@@ -155,7 +201,9 @@ const IDCard = ({ passengers, caravanName }) => {
     birthDate,
     tripName,
     nationality,
-    telephone
+    telephone,
+    medinahHotelName,
+    mekahHotelName
   ) => {
     // Embed the Helvetica font
     const response = await fetch(`/pdfs/${idType}.pdf`);
@@ -166,10 +214,14 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
 
-    const imageURL = await firebase
-      .storage()
-      .ref(`${nationality}/${passportNumber}.jpg`)
-      .getDownloadURL();
+    let imageURL = '';
+
+    try {
+      imageURL = await firebase
+        .storage()
+        .ref(`${nationality}/${passportNumber}.jpg`)
+        .getDownloadURL();
+    } catch (err) {}
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 
@@ -182,25 +234,37 @@ const IDCard = ({ passengers, caravanName }) => {
       }
     }
 
-    const jpgImageBytes = await fetch(imageURL)
-      .then((res) => res.arrayBuffer())
-      .catch((err) => {
-        console.log(err, 'error');
-      });
+    let jpgImage = '';
+
+    if (imageURL) {
+      const jpgImageBytes = await fetch(imageURL)
+        .then((res) => res.arrayBuffer())
+        .catch((err) => {});
+
+      jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+    }
 
     const flagImageBytes = await fetch(
       `https://flagcdn.com/32x24/${countryCode}.png`
     )
       .then((res) => res.arrayBuffer())
-      .catch((err) => {
-        console.log(err, 'error');
-      });
+      .catch((err) => {});
 
-    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     const flagImage = await pdfDoc.embedPng(flagImageBytes);
 
+    let logo 
+    if(companyLogo) {
+      const companyLogoBytes = await getAsByteArray(companyLogo)
+
+      if(companyLogo.type.split("/")[1].includes("jp")) {
+        logo = await pdfDoc.embedJpg(companyLogoBytes)
+      } else {
+        logo = await pdfDoc.embedPng(companyLogoBytes)
+      }
+    }
+
     // write image
-    if (getIDPositionProps(idType).image !== undefined) {
+    if (getIDPositionProps(idType).image !== undefined && jpgImage) {
       firstPage.drawImage(jpgImage, {
         x: getIDPositionProps(idType).image.x,
         y: getIDPositionProps(idType).image.y,
@@ -209,13 +273,13 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    // write image
+    // write caravan Logo image
     if (getIDPositionProps(idType).caravanLogo !== undefined) {
-      firstPage.drawImage(jpgImage, {
+      firstPage.drawImage(logo || jpgImage, {
         x: getIDPositionProps(idType).caravanLogo.x,
         y: height - getIDPositionProps(idType).caravanLogo.y,
-        width: 50,
-        height: 55,
+        width: 55,
+        height: 68,
       });
     }
 
@@ -243,7 +307,9 @@ const IDCard = ({ passengers, caravanName }) => {
     // write UMRAH year
     if (getIDPositionProps(idType).year !== undefined) {
       firstPage.drawText(
-        `${new Date().getFullYear()} / ${moment("2022", 'YYYY').endOf('iMonth').format('iYYYY')}`,
+        `${new Date().getFullYear()} / ${moment('2022', 'YYYY')
+          .endOf('iMonth')
+          .format('iYYYY')}`,
         {
           x: getIDPositionProps(idType).year.x,
           y: height - getIDPositionProps(idType).year.y,
@@ -300,31 +366,27 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    try {
-
-      /// write medinah hotel
-      if (getIDPositionProps(idType)?.medinahHotel !== undefined) {
-        firstPage.drawText(detail?.arrivalHotel?.split(".")?.[0], {
-          x: getIDPositionProps(idType)?.medinahHotel?.x,
-          y: height - getIDPositionProps(idType).medinahHotel.y,
-          size: 8,
-          font: helveticaFont,
-          color: rgb(0, 0, 0),
-        });
-      }
-      /// write mekah hotel
-      if (getIDPositionProps(idType)?.mekahHotel !== undefined) {
-        firstPage.drawText(detail?.departureHotel?.split(".")?.[0], {
-          x: getIDPositionProps(idType)?.mekahHotel?.x,
-          y: height - getIDPositionProps(idType)?.mekahHotel?.y,
-          size: 8,
-          font: helveticaFont,
-          color: rgb(0, 0, 0),
-        });
-      }
-    } catch {
-      console.warn('hotel name error')
+    /// write medinah hotel
+    if (getIDPositionProps(idType)?.medinahHotel !== undefined) {
+      firstPage.drawText(medinahHotelName, {
+        x: getIDPositionProps(idType)?.medinahHotel?.x,
+        y: height - getIDPositionProps(idType).medinahHotel.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
     }
+    /// write mekah hotel
+    if (getIDPositionProps(idType)?.mekahHotel !== undefined) {
+      firstPage.drawText(mekahHotelName, {
+        x: getIDPositionProps(idType)?.mekahHotel?.x,
+        y: height - getIDPositionProps(idType)?.mekahHotel?.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+
     // write full name
     if (getIDPositionProps(idType).name !== undefined) {
       const nameParts = name.split(' ');
@@ -383,7 +445,10 @@ const IDCard = ({ passengers, caravanName }) => {
 
     const pdfBytes = await pdfDoc.save();
 
-    download(pdfBytes, `${name}.pdf`, 'application/pdf');
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+
+    return url;
   };
 
   return (
@@ -397,18 +462,37 @@ const IDCard = ({ passengers, caravanName }) => {
               idType: '',
               reportName: '',
             }}
-            onSubmit={(values) => {
-              passengers.forEach((passenger) => {
-                createPDF(
+            onSubmit={async (values, actions) => {
+              actions.setSubmitting(true);
+
+              const fns = passengers.map(async (passenger) => {
+                return await createPDF(
                   values?.idType,
                   passenger?.name,
                   passenger?.passportNumber,
                   passenger?.birthDate,
                   caravanName,
                   passenger?.nationality,
-                  values?.telNumber
+                  values?.telNumber,
+                  values.medinahHotel,
+                  values.mekahHotel
                 );
               });
+
+              const results = Promise.all(fns);
+
+              results
+                .then((data) => {
+                  downloadFiles(data, (done) => {
+                    if (done) {
+                      // actions.setSubmitting(false);
+                    }
+                  });
+                })
+                .catch((err) => {
+                  alert('An error occurred!! - ' + err.message);
+                  // actions.setSubmitting(false);
+                });
             }}
           >
             {({
@@ -418,135 +502,239 @@ const IDCard = ({ passengers, caravanName }) => {
               errors,
               isSubmitting,
               touched,
-            }) => (
-              <Form style={{ width: '90%' }}>
-                <Grid item xs={12} style={{ marginBottom: '1rem' }}>
-                  <FormControl className={classes.root} fullWidth>
-                    <InputLabel
-                      shrink={false}
-                      className={classes.inputLabel}
-                      style={{
-                        color:
-                          touched.idType && Boolean(errors.idType)
-                            ? 'red'
-                            : null,
-                      }}
-                      htmlFor={'idType'}
-                      placeholder={'idType'}
-                      required={true}
-                    >
-                      ID Type
-                    </InputLabel>
+            }) => {
+              return (
+                <Form style={{ width: '90%' }}>
+                  <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+                    <FormControl className={classes.root} fullWidth>
+                      <InputLabel
+                        shrink={false}
+                        className={classes.inputLabel}
+                        style={{
+                          color:
+                            touched.idType && Boolean(errors.idType)
+                              ? 'red'
+                              : null,
+                        }}
+                        htmlFor={'idType'}
+                        placeholder={'idType'}
+                        required={true}
+                      >
+                        ID Type
+                      </InputLabel>
 
-                    <Grid container alignItems="center">
-                      <Grid item xs={12}>
-                        <Field
-                          as={Select}
-                          className={classes.container}
-                          name="idType"
-                          required={true}
-                          id="idType"
-                          placeholder="ID Type"
-                          variant="outlined"
-                          fullWidth
-                          error={!!errors.idType}
-                          value={values.idType}
-                          onChange={(e) => {
-                            setFieldValue('idType', e.target.value);
+                      <Grid container alignItems="center">
+                        <Grid item xs={12}>
+                          <Field
+                            as={Select}
+                            className={classes.container}
+                            name="idType"
+                            required={true}
+                            id="idType"
+                            placeholder="ID Type"
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.idType}
+                            value={values.idType}
+                            onChange={(e) => {
+                              setFieldValue('idType', e.target.value);
 
-                            if (e.target.value === 'hotel_holy') {
-                              setPreviewURL(HotelHolyPreview);
-                            } else if (e.target.value === 'hotel') {
-                              setPreviewURL(HotelPreview);
-                            } else if (e.target.value === 'hotel_wave') {
-                              setPreviewURL(HotelWavePreview);
-                            } else if (e.target.value === 'otago') {
-                              setPreviewURL(OtagoPreview);
-                            } else if (e.target.value === 'otago_basic') {
-                              setPreviewURL(OtagoBasicPreview);
-                            } else if (e.target.value === 'otago_blur') {
-                              setPreviewURL(OtagoBlurPreview);
-                            } else if (e.target.value === 'otago_leaf') {
-                              setPreviewURL(OtagoLeafPreview);
-                            } else if (e.target.value === 'otag_madinah') {
-                              setPreviewURL(OtagoMadinahPreview);
-                            }
+                              if (e.target.value === 'hotel_holy') {
+                                setPreviewURL(HotelHolyPreview);
+                              } else if (e.target.value === 'hotel') {
+                                setPreviewURL(HotelPreview);
+                              } else if (e.target.value === 'hotel_wave') {
+                                setPreviewURL(HotelWavePreview);
+                              } else if (e.target.value === 'otago') {
+                                setPreviewURL(OtagoPreview);
+                              } else if (e.target.value === 'otago_basic') {
+                                setPreviewURL(OtagoBasicPreview);
+                              } else if (e.target.value === 'otago_blur') {
+                                setPreviewURL(OtagoBlurPreview);
+                              } else if (e.target.value === 'otago_leaf') {
+                                setPreviewURL(OtagoLeafPreview);
+                              } else if (e.target.value === 'otag_madinah') {
+                                setPreviewURL(OtagoMadinahPreview);
+                              }
+                            }}
+                          >
+                            <MenuItem value="hotel"> Hotel </MenuItem>
+                            <MenuItem value="hotel_holy"> Hotel Holy </MenuItem>
+                            <MenuItem value="hotel_wave"> Hotel Wave </MenuItem>
+                            <MenuItem value="otago"> Otago </MenuItem>
+                            <MenuItem value="otago_basic">
+                              {' '}
+                              Otago Basic{' '}
+                            </MenuItem>
+                            <MenuItem value="otago_blur"> Otago Blur </MenuItem>
+                            <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
+                            <MenuItem value="otago_madinah">
+                              {' '}
+                              Otago Madinah{' '}
+                            </MenuItem>
+                          </Field>
+                        </Grid>
+                      </Grid>
+
+                      <FormHelperText error={!!errors.idType}>
+                        {touched.idType && errors.idType}
+                      </FormHelperText>
+                    </FormControl>
+
+                    <FormControl className={classes.root} fullWidth>
+                      <InputLabel
+                        shrink={false}
+                        className={classes.inputLabel}
+                        style={{
+                          color:
+                            touched.telNumber && Boolean(errors.telNumber)
+                              ? 'red'
+                              : null,
+                        }}
+                        htmlFor={'telNumber'}
+                        placeholder={'telNumber'}
+                        required={true}
+                      >
+                        Telephone Number
+                      </InputLabel>
+
+                      <Grid container alignItems="center">
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            className={classes.container}
+                            name="telNumber"
+                            required={true}
+                            id="telNumber"
+                            type="tel"
+                            minLength="10"
+                            placeholder="Telephone Number"
+                            variant="outlined"
+                            error={!!errors.telNumber}
+                            value={values.telNumber}
+                          />
+                        </Grid>
+                      </Grid>
+
+                      <FormHelperText error={!!errors.telNumber}>
+                        {touched.telNumber && errors.telNumber}
+                      </FormHelperText>
+                    </FormControl>
+
+                    <FormControl className={classes.root} fullWidth>
+                      <InputLabel
+                        shrink={false}
+                        className={classes.inputLabel}
+                        style={{
+                          color:
+                            touched.mekkahHotel && Boolean(errors.mekkahHotel)
+                              ? 'red'
+                              : null,
+                        }}
+                        htmlFor={'mekkahHotel'}
+                        placeholder={'Mekah Hotel Name'}
+                        required={true}
+                      >
+                        Mekah Hotel Name
+                      </InputLabel>
+
+                      <Grid container alignItems="center">
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            className={classes.container}
+                            name="mekahHotel"
+                            required={true}
+                            id="mekahHotel"
+                            type="text"
+                            placeholder="Mekah Hotel Name"
+                            variant="outlined"
+                            error={!!errors.mekahHotel}
+                            value={values.mekahHotel}
+                          />
+                        </Grid>
+                      </Grid>
+
+                      <FormHelperText error={!!errors.mekahHotel}>
+                        {touched.mekahHotel && errors.mekahHotel}
+                      </FormHelperText>
+                    </FormControl>
+
+                    <FormControl className={classes.root} fullWidth>
+                      <InputLabel
+                        shrink={false}
+                        className={classes.inputLabel}
+                        style={{
+                          color:
+                            touched.medinahHotel && Boolean(errors.medinahHotel)
+                              ? 'red'
+                              : null,
+                        }}
+                        htmlFor={'medinahHotel'}
+                        placeholder={'medinahHotel'}
+                        required={true}
+                      >
+                        Medinah Hotel Name
+                      </InputLabel>
+
+                      <Grid container alignItems="center">
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            className={classes.container}
+                            name="medinahHotel"
+                            required={true}
+                            id="medinahHotel"
+                            type="tel"
+                            minLength="10"
+                            placeholder="Medinah Hotel Name"
+                            variant="outlined"
+                            error={!!errors.medinahHotel}
+                            value={values.medinahHotel}
+                          />
+                        </Grid>
+                      </Grid>
+
+                      <FormHelperText error={!!errors.medinahHotel}>
+                        {touched.medinahHotel && errors.medinahHotel}
+                      </FormHelperText>
+                    </FormControl>
+
+                    <FormControl className={classes.root} fullWidth>
+                      <Button variant="outlined" component="label">
+                        Upload Company's Logo
+                        <input
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          onChange={async (e) => {
+                            setCompanyLogo(e.target.files[0]);
+                            
                           }}
-                        >
-                          <MenuItem value="hotel"> Hotel </MenuItem>
-                          <MenuItem value="hotel_holy"> Hotel Holy </MenuItem>
-                          <MenuItem value="hotel_wave"> Hotel Wave </MenuItem>
-                          <MenuItem value="otago"> Otago </MenuItem>
-                          <MenuItem value="otago_basic"> Otago Basic </MenuItem>
-                          <MenuItem value="otago_blur"> Otago Blur </MenuItem>
-                          <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
-                          <MenuItem value="otago_madinah">
-                            {' '}
-                            Otago Madinah{' '}
-                          </MenuItem>
-                        </Field>
-                      </Grid>
-                    </Grid>
-
-                    <FormHelperText error={!!errors.idType}>
-                      {touched.idType && errors.idType}
-                    </FormHelperText>
-                  </FormControl>
-                  <FormControl className={classes.root} fullWidth>
-                    <InputLabel
-                      shrink={false}
-                      className={classes.inputLabel}
-                      style={{
-                        color:
-                          touched.telNumber && Boolean(errors.telNumber)
-                            ? 'red'
-                            : null,
-                      }}
-                      htmlFor={'telNumber'}
-                      placeholder={'telNumber'}
-                      required={true}
-                    >
-                      Telephone Number
-                    </InputLabel>
-
-                    <Grid container alignItems="center">
-                      <Grid item xs={12}>
-                        <Field
-                          as={TextField}
-                          fullWidth
-                          className={classes.container}
-                          name="telNumber"
-                          required={true}
-                          id="telNumber"
-                          type="tel"
-                          minLength="10"
-                          placeholder="Telephone Number"
-                          variant="outlined"
-                          error={!!errors.telNumber}
-                          value={values.telNumber}
                         />
-                      </Grid>
-                    </Grid>
-
-                    <FormHelperText error={!!errors.telNumber}>
-                      {touched.telNumber && errors.telNumber}
-                    </FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item justifyContent="flex-start">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    className={classes.submitBtn}
-                    size="large"
-                    type="submit"
-                  >
-                    Print Cards
-                  </Button>
-                </Grid>
-              </Form>
-            )}
+                      </Button>
+                      {companyLogo && <p> {companyLogo.name} </p>}
+                    </FormControl>
+                  </Grid>
+                  <Grid item justifyContent="flex-start">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      className={classes.submitBtn}
+                      size="large"
+                      type="submit"
+                      disabled={isSubmitting || !isValid}
+                    >
+                      {isSubmitting ? 'Printing...' : 'Print Cards'}
+                    </Button>
+                  </Grid>
+                </Form>
+              );
+            }}
           </Formik>
         </Grid>
       </Grid>
