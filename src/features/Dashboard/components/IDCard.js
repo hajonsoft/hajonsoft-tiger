@@ -156,6 +156,7 @@ const IDCard = ({ passengers, caravanName }) => {
   const [companyLogo, setCompanyLogo] = React.useState();
   const classes = useStyles();
 
+  console.log(detail)
 
   React.useEffect(() => {
     firebase
@@ -462,7 +463,7 @@ const IDCard = ({ passengers, caravanName }) => {
               reportName: '',
             }}
             onSubmit={async (values, actions) => {
-              // actions.setSubmitting(true);
+              actions.setSubmitting(true);
 
               const fns = passengers.map(async (passenger) => {
                 return await createPDF(
@@ -711,7 +712,7 @@ const IDCard = ({ passengers, caravanName }) => {
                           hidden
                           onChange={async (e) => {
                             setCompanyLogo(e.target.files[0]);
-                            const logo = e.target.files[0]
+                            
                           }}
                         />
                       </Button>
