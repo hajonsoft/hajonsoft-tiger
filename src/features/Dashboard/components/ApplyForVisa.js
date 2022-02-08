@@ -324,7 +324,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       info: {
         pax: travellersData.length,
         caravan: sanitizeCaravanName(caravan),
-        caravanUrl: `https://${firebaseConfig.projectId}/${caravan}/customers`,
+        caravanUrl: `https://${firebaseConfig.projectId}.web.app/${caravan}/customers`,
         munazim: firebaseConfig.projectId,
       },
       travellers: travellersData,

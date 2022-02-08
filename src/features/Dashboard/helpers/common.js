@@ -15,8 +15,14 @@ export function getPassengersJSON(passengers, data) {
   } else {
     packageTravellers = passengers;
   }
-  const sortedTravellers = packageTravellers.filter(traveller => traveller.gender === "Male").sort((a,b) => moment(a).isAfter(b) ? -1 : 1);
-  sortedTravellers.push(...packageTravellers.filter(traveller => traveller.gender !== "Male").sort((a,b) => moment(a).isAfter(b) ? -1 : 1));
+  let sortedTravellers;
+  const adultMales = packageTravellers.filter(traveller => traveller.gender === "Male" && moment().diff(traveller.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  const adultFemales = packageTravellers.filter(traveller => traveller.gender !== "Male" && moment().diff(traveller.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  const minors = packageTravellers.filter(traveller => moment().diff(traveller.birthDate, 'years') <= 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  sortedTravellers = adultMales || [];
+  sortedTravellers.push(...adultFemales);
+  sortedTravellers.push(...minors);
+
   const exportData = sortedTravellers.map((passenger) => {
     const _nameParts = nameParts(passenger.name);
     let _nameArabicParts = nameParts(passenger.nameArabic);
@@ -28,6 +34,8 @@ export function getPassengersJSON(passengers, data) {
     const issuerCode = codeLine?.substring(2, 5);
 
     return {
+      slug: `${passenger.name} ${moment().diff(moment(passenger.birthDate), "years", true)
+        .toFixed(2)} ${passenger.gender} ${passenger.nationality}`,
       nationality: {
         name: passenger.nationality,
         code: nationalities.find((x) => x.name === passenger.nationality)?.code,
@@ -40,7 +48,7 @@ export function getPassengersJSON(passengers, data) {
         telCode: nationalities.find((x) => x.code === issuerCode)?.telCode,
       },
       name: {
-        full: passenger.name.replace(/[^A-Z ]/g, " "),
+        full: passenger.name.replace(/[^A-Z ]/g, " ")?.trim(),
         given: _nameParts.slice(0, -1).join(' ').trim(),
         first: _nameParts[0],
         last: _nameParts[3],
