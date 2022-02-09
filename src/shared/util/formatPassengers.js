@@ -22,7 +22,7 @@ export function formatPassengers(passengers) {
             ),
             passExpireDt: moment(passengers[i].passExpireDt).format("D-MMM-YYYY"),
             passIssueDt: moment(passengers[i].passIssueDt).format("D-MMM-YYYY"),
-            amadeusNM: `NM1${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
+            amadeusNM: `NM1${_.last(nameParts)}/${_.head(nameParts)} ${gTitle(
                 passengers[i]
             )}`,
             saber_: `-${_.head(nameParts)}/${_.last(nameParts)} ${gTitle(
@@ -33,10 +33,8 @@ export function formatPassengers(passengers) {
                     "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
             saberSRDOC: `Not Implemented`,
             mofaNumberBarcode: <Barcode value={passengers[i].mofaNumber} displayValue={false} />,
-
         });
     }
-
     return formattedPassengers;
 }
 
