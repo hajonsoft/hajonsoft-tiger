@@ -16,7 +16,7 @@ import OtagoBasicPreview from '../../../assets/otago_basic.png';
 import OtagoBlurPreview from '../../../assets/otago_blur.png';
 import OtagoLeafPreview from '../../../assets/otago_leaf.png';
 import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
-import { makeStyles, TextField } from '@material-ui/core';
+import { CircularProgress, makeStyles, TextField } from '@material-ui/core';
 import { Field } from 'formik';
 import firebase from '../../../firebaseapp';
 import axios from 'axios';
@@ -154,6 +154,7 @@ const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
   const [detail, setDetail] = React.useState({});
   const [companyLogo, setCompanyLogo] = React.useState();
+  const [downloading, setDownloading] = React.useState(false);
   const classes = useStyles();
 
   console.log(detail)
@@ -402,7 +403,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write lastName
     if (getIDPositionProps(idType).lastName !== undefined) {
-      firstPage.drawText(_.head(name.split(' ')), {
+      firstPage.drawText(_.last(name.split(' ')), {
         x: getIDPositionProps(idType).lastName.x,
         y: height - getIDPositionProps(idType).lastName.y,
         size: 8,
@@ -463,8 +464,7 @@ const IDCard = ({ passengers, caravanName }) => {
               reportName: '',
             }}
             onSubmit={async (values, actions) => {
-              actions.setSubmitting(true);
-
+              setDownloading(true);
               const fns = passengers.map(async (passenger) => {
                 return await createPDF(
                   values?.idType,
@@ -486,6 +486,7 @@ const IDCard = ({ passengers, caravanName }) => {
                   downloadFiles(data, (done) => {
                     if (done) {
                       // actions.setSubmitting(false);
+                      setDownloading(false);
                     }
                   });
                 })
@@ -727,9 +728,10 @@ const IDCard = ({ passengers, caravanName }) => {
                       className={classes.submitBtn}
                       size="large"
                       type="submit"
-                      disabled={isSubmitting || !isValid}
+                      disabled={downloading || !isValid}
+                      startIcon={downloading && <CircularProgress size={16} />}
                     >
-                      {isSubmitting ? 'Printing...' : 'Print Cards'}
+                      {downloading ? 'Printing...' : 'Print Cards'}
                     </Button>
                   </Grid>
                 </Form>
