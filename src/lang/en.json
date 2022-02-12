@@ -126,7 +126,7 @@
   "privacy-policy": "Privacy Policy",
   "live-chat-is-available-monday-friday-9am-5pm-pst-and-in-many-cases-after-hours-and-weekends-contact-us-at-1-949-522-1879-whatsapp-viber-etc": "Live Chat is available Monday-Friday 9AM-5PM PST and in many cases after hours & weekends. Contact us at +1 949-522-1879 whatsapp, viber, etc...",
   "group-chat-with-us-on-whatsapp-slack-telegram-or-bip-if-you-are-not-already-a-member-in-a-group-please-send-us-a-live-chat-request-we-will-introduce-you-to-a-number-of-groups": "Group chat with us on whatsapp, slack, telegram or BiP. If you are not already a member in a group please send us a live chat request. We will introduce you to a number of groups.",
-  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "Send us an email to hajonsoft@gmail.com or Create a Help Ticket in slack. Creating a ticket is easy. Tickets are a great way to keep a request visible",
+  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "To report a bug or request a new feature, please create an issue in our github page. Creating an issue is a great way to make your request visible. ",
   "schedule-a-meeting-0": "schedule a meeting",
   "book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to": "Book a live meeting for training or support, we will use google meet to screen share.... Since the technician who will meet you may be in a different time zone, it is important to use this link to",
   "community-support": "COMMUNITY SUPPORT",
@@ -181,5 +181,7 @@
   "muhram": "Muhram",
   "days-ago": "days ago",
   "mofaNumber": "Mofa#",
-  "eNumber": "E#"
+  "eNumber": "E#",
+  "mekkah-hotel-name": "Mekkah Hotel Name",
+  "medinah-hotel-name": "Medinah Hotel Name"
 }
