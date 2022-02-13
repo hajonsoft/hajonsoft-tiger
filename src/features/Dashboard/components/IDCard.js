@@ -147,16 +147,19 @@ const getIDPositionProps = (idType) => {
       },
       verticalPassportNumber: {
         x: 10,
-        y: 40,
+        y: 50,
       },
-
+      verticalPhoneNumber: {
+        x: 10,
+        y: 35,
+      },
       verticalMedinahHotel: {
         x: 10,
-        y: 25,
+        y: 19,
       },
       verticalMekahHotel: {
         x: 10,
-        y: 10,
+        y: 4,
       },
       verticalCountryLogo: {
         x: 2,
@@ -453,6 +456,31 @@ const IDCard = ({ passengers, caravanName }) => {
         end: {
           x: width - 5,
           y: getIDPositionProps(idType).verticalPassportNumber.y - 5,
+        },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+      });
+    }
+    // write vertical phone Label
+    if (getIDPositionProps(idType).verticalPhoneNumber !== undefined) {
+      firstPage.drawText('Phone No:  ' + telephone, {
+        x: getIDPositionProps(idType).verticalPhoneNumber.x,
+        y: getIDPositionProps(idType).verticalPhoneNumber.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(27 / 255, 61 / 255, 250 / 255),
+      });
+    }
+    //write vertical phone label line
+    if (getIDPositionProps(idType).verticalPhoneNumber !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalPhoneNumber.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalPhoneNumber.y - 5,
         },
         thickness: 1,
         color: rgb(0, 0, 0),
