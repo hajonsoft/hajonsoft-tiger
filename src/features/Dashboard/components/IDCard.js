@@ -26,7 +26,7 @@ import _ from 'lodash';
 import JSZip from 'jszip';
 import saveAs from 'save-as';
 import JSZipUtils from 'jszip-utils';
-import t from '../../../shared/util/trans'
+import t from '../../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -135,7 +135,7 @@ const getIDPositionProps = (idType) => {
     return {
       verticalCaravanLogo: {
         x: 25,
-        y: 190
+        y: 190,
       },
       verticalImage: {
         x: 60,
@@ -143,27 +143,24 @@ const getIDPositionProps = (idType) => {
       },
       verticalName: {
         x: 60,
-        y: 60,
+        y: 62,
       },
       verticalPassportNumber: {
-        x: 20,
+        x: 10,
         y: 40,
       },
-      tripName: {
-        x: 130,
-        y: 54,
-      },
-      medinahHotel: {
+
+      verticalMedinahHotel: {
         x: 10,
-        y: 105,
+        y: 25,
       },
-      mekahHotel: {
-        x: 128,
-        y: 105,
+      verticalMekahHotel: {
+        x: 10,
+        y: 10,
       },
-      telephone: {
-        x: 110,
-        y: 140,
+      verticalCountryLogo: {
+        x: 2,
+        y: 153,
       },
     };
   }
@@ -198,7 +195,7 @@ const IDCard = ({ passengers, caravanName }) => {
     let count = 0;
 
     pdfBytes.forEach(function (url, idx) {
-      const filename = `${caravanName}-${idx}`
+      const filename = `${caravanName}-${idx}`;
       // loading a file and add it in a zip file
       JSZipUtils.getBinaryContent(url, function (err, data) {
         if (err) {
@@ -208,7 +205,7 @@ const IDCard = ({ passengers, caravanName }) => {
         count++;
         if (count === pdfBytes.length) {
           zip.generateAsync({ type: 'blob' }).then(function (content) {
-            saveAs(content, caravanName + ".zip");
+            saveAs(content, caravanName + '.zip');
             cb(true);
           });
         }
@@ -234,7 +231,7 @@ const IDCard = ({ passengers, caravanName }) => {
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const { height } = firstPage.getSize();
+    const { height, width } = firstPage.getSize();
 
     let imageURL = '';
 
@@ -243,7 +240,7 @@ const IDCard = ({ passengers, caravanName }) => {
         .storage()
         .ref(`${nationality}/${passportNumber}.jpg`)
         .getDownloadURL();
-    } catch (err) { }
+    } catch (err) {}
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 
@@ -261,7 +258,7 @@ const IDCard = ({ passengers, caravanName }) => {
     if (imageURL) {
       const jpgImageBytes = await fetch(imageURL)
         .then((res) => res.arrayBuffer())
-        .catch((err) => { });
+        .catch((err) => {});
 
       jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     }
@@ -270,18 +267,18 @@ const IDCard = ({ passengers, caravanName }) => {
       `https://flagcdn.com/32x24/${countryCode}.png`
     )
       .then((res) => res.arrayBuffer())
-      .catch((err) => { });
+      .catch((err) => {});
 
     const flagImage = await pdfDoc.embedPng(flagImageBytes);
 
-    let logo
+    let logo;
     if (companyLogo) {
-      const companyLogoBytes = await getAsByteArray(companyLogo)
+      const companyLogoBytes = await getAsByteArray(companyLogo);
 
-      if (companyLogo.type.split("/")[1].includes("jp")) {
-        logo = await pdfDoc.embedJpg(companyLogoBytes)
+      if (companyLogo.type.split('/')[1].includes('jp')) {
+        logo = await pdfDoc.embedJpg(companyLogoBytes);
       } else {
-        logo = await pdfDoc.embedPng(companyLogoBytes)
+        logo = await pdfDoc.embedPng(companyLogoBytes);
       }
     }
 
@@ -300,8 +297,8 @@ const IDCard = ({ passengers, caravanName }) => {
       firstPage.drawImage(jpgImage, {
         x: getIDPositionProps(idType).verticalImage.x,
         y: getIDPositionProps(idType).verticalImage.y,
-        width: 80,
-        height: 90,
+        width: 85,
+        height: 110,
       });
     }
 
@@ -335,6 +332,38 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
+    // write vertical country flag logo
+    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+      firstPage.drawImage(flagImage, {
+        x: getIDPositionProps(idType).verticalCountryLogo.x,
+        y: getIDPositionProps(idType).verticalCountryLogo.y,
+        width: 50,
+        height: 30,
+      });
+    }
+
+    // write vertical nationality
+    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+      firstPage.drawText(nationality.toUpperCase(), {
+        x: getIDPositionProps(idType).verticalCountryLogo.x,
+        y: getIDPositionProps(idType).verticalCountryLogo.y - 10,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(240 / 255, 12 / 255, 12 / 255)
+      });
+    }
+
+    // write vertical date
+    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+      firstPage.drawText( moment().format("MMMM").slice(0, 3) + ", " + moment().format("YYYY") , {
+        x: getIDPositionProps(idType).verticalCountryLogo.x,
+        y: getIDPositionProps(idType).verticalCountryLogo.y - 20,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(240 / 255, 12 / 255, 12 / 255)
+      });
+    }
+
     // write UMRAH
     if (getIDPositionProps(idType).umrah !== undefined) {
       firstPage.drawText('UMRAH', {
@@ -363,11 +392,11 @@ const IDCard = ({ passengers, caravanName }) => {
     }
 
     // Print a gird
-    for (let x = 0; x < 200; x += 50) {
-      for (let y = 0; y < 250; y += 50) {
-        firstPage.drawText('=', { x, y, size: 10, font: helveticaFont });
-      }
-    }
+    // for (let x = 0; x < 200; x += 50) {
+    //   for (let y = 0; y < 250; y += 50) {
+    //     firstPage.drawText('=', { x, y, size: 10, font: helveticaFont });
+    //   }
+    // }
 
     // write telephone
     if (getIDPositionProps(idType).telephone !== undefined) {
@@ -405,13 +434,65 @@ const IDCard = ({ passengers, caravanName }) => {
     }
 
     // write vertical passport Label
-    if (getIDPositionProps(idType).verticalPassportLabel !== undefined) {
-      firstPage.drawText('PASS #', {
-        x: getIDPositionProps(idType).verticalPassportLabel.x,
-        y: getIDPositionProps(idType).verticalPassportLabel.y,
-        size: 8,
+    if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
+      firstPage.drawText('Passport No:  ' + passportNumber, {
+        x: getIDPositionProps(idType).verticalPassportNumber.x,
+        y: getIDPositionProps(idType).verticalPassportNumber.y,
+        size: 10,
         font: helveticaFont,
+        color: rgb(27 / 255, 61 / 255, 250 / 255),
+      });
+    }
+    // vertical passport label line
+    if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalPassportNumber.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalPassportNumber.y - 5,
+        },
+        thickness: 1,
         color: rgb(0, 0, 0),
+      });
+    }
+
+    // write vertical medinah hotel
+    if (getIDPositionProps(idType).verticalMedinahHotel !== undefined) {
+      firstPage.drawText(medinahHotelName, {
+        x: getIDPositionProps(idType).verticalMedinahHotel.x,
+        y: getIDPositionProps(idType).verticalMedinahHotel.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(27 / 255, 61 / 255, 250 / 255),
+      });
+    }
+    // vertical medinah hotel line
+    if (getIDPositionProps(idType).verticalMedinahHotel !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalMedinahHotel.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalMedinahHotel.y - 5,
+        },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write vertical mekha hotel
+    if (getIDPositionProps(idType).verticalMekahHotel !== undefined) {
+      firstPage.drawText(mekahHotelName, {
+        x: getIDPositionProps(idType).verticalMekahHotel.x,
+        y: getIDPositionProps(idType).verticalMekahHotel.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(27 / 255, 61 / 255, 250 / 255),
       });
     }
 
@@ -427,7 +508,10 @@ const IDCard = ({ passengers, caravanName }) => {
     }
 
     /// write medinah hotel
-    if (getIDPositionProps(idType)?.medinahHotel !== undefined && medinahHotelName) {
+    if (
+      getIDPositionProps(idType)?.medinahHotel !== undefined &&
+      medinahHotelName
+    ) {
       firstPage.drawText(medinahHotelName, {
         x: getIDPositionProps(idType)?.medinahHotel?.x,
         y: height - getIDPositionProps(idType).medinahHotel.y,
@@ -437,7 +521,10 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
     /// write mekah hotel
-    if (getIDPositionProps(idType)?.mekahHotel !== undefined && mekahHotelName) {
+    if (
+      getIDPositionProps(idType)?.mekahHotel !== undefined &&
+      mekahHotelName
+    ) {
       firstPage.drawText(mekahHotelName, {
         x: getIDPositionProps(idType)?.mekahHotel?.x,
         y: height - getIDPositionProps(idType)?.mekahHotel?.y,
@@ -640,7 +727,9 @@ const IDCard = ({ passengers, caravanName }) => {
                             <MenuItem value="otago_basic">Otago Basic</MenuItem>
                             <MenuItem value="otago_blur"> Otago Blur </MenuItem>
                             <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
-                            <MenuItem value="otago_madinah">Otago Madinah</MenuItem>
+                            <MenuItem value="otago_madinah">
+                              Otago Madinah
+                            </MenuItem>
                             <MenuItem value="vertical_blank">Vertical</MenuItem>
                           </Field>
                         </Grid>
@@ -780,7 +869,6 @@ const IDCard = ({ passengers, caravanName }) => {
                           hidden
                           onChange={async (e) => {
                             setCompanyLogo(e.target.files[0]);
-
                           }}
                         />
                       </Button>
