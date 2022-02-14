@@ -125,7 +125,7 @@
   "privacy-policy": "سياسة خاصة",
   "live-chat-is-available-monday-friday-9am-5pm-pst-and-in-many-cases-after-hours-and-weekends-contact-us-at-1-949-522-1879-whatsapp-viber-etc": "تتوفر الدردشة الحية من الاثنين إلى الجمعة من 9 صباحًا حتى 5 مساءً بتوقيت المحيط الهادئ وفي كثير من الحالات بعد ساعات",
   "group-chat-with-us-on-whatsapp-slack-telegram-or-bip-if-you-are-not-already-a-member-in-a-group-please-send-us-a-live-chat-request-we-will-introduce-you-to-a-number-of-groups": "دردشة جماعية معنا على whatsapp أو Slack أو Telegram أو BiP. \nإذا لم تكن بالفعل عضوًا في مجموعة ، فالرجاء إرسال طلب دردشة مباشرة إلينا. \nسوف نقدم لك عددًا من المجموعات.",
-  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "أرسل لنا بريدًا إلكترونيًا إلى hajonsoft@gmail.com أو قم بإنشاء تذكرة مساعدة في Slack. \nإنشاء تذكرة أمر سهل. \nتعد التذاكر طريقة رائعة لإبقاء الطلب مرئيًا",
+  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "للإبلاغ عن خطأ أو طلب ميزة جديدة ، يرجى إنشاء مشكلة في صفحة جيثب الخاصة بنا. \nيعد إنشاء مشكلة طريقة رائعة لجعل طلبك مرئيًا.",
   "schedule-a-meeting-0": "تحديد ميعاد للإجتماع",
   "book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to": "احجز اجتماعًا مباشرًا للتدريب أو الدعم ، سنستخدم خدمة Google Meet لمشاركة الشاشة .... نظرًا لأن الفني الذي سيقابلك قد يكون في منطقة زمنية مختلفة ، فمن المهم استخدام هذا الرابط لـ",
   "community-support": "دعم المجتمع",
@@ -181,5 +181,9 @@
   "muhram": "محرم",
   "days-ago": "أيام مضت",
   "mofaNumber": "موفا",
-  "eNumber": "إي#"
+  "eNumber": "إي#",
+  "mekkah-hotel-name": "اسم فندق مكة",
+  "medinah-hotel-name": "اسم فندق المدينة المنورة",
+  "card-preview": "معاينة البطاقة",
+  "card-options": "خيارات البطاقة"
 }

@@ -126,7 +126,7 @@
   "privacy-policy": "Politique de confidentialité",
   "live-chat-is-available-monday-friday-9am-5pm-pst-and-in-many-cases-after-hours-and-weekends-contact-us-at-1-949-522-1879-whatsapp-viber-etc": "Le chat en direct est disponible du lundi au vendredi de 9 h 00 à 17 h 00 HNP et dans de nombreux cas après les heures d'ouverture",
   "group-chat-with-us-on-whatsapp-slack-telegram-or-bip-if-you-are-not-already-a-member-in-a-group-please-send-us-a-live-chat-request-we-will-introduce-you-to-a-number-of-groups": "Discutez en groupe avec nous sur WhatsApp, Slack, Telegram ou BiP. \nSi vous n'êtes pas déjà membre d'un groupe, veuillez nous envoyer une demande de chat en direct. \nNous vous présenterons plusieurs groupes.",
-  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "Envoyez-nous un e-mail à hajonsoft@gmail.com ou créez un ticket d'aide dans Slack. \nCréer un ticket est simple. \nLes billets sont un excellent moyen de garder une demande visible",
+  "send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible": "Pour signaler un bogue ou demander une nouvelle fonctionnalité, veuillez créer un problème sur notre page github. \nLa création d'un problème est un excellent moyen de rendre votre demande visible.",
   "schedule-a-meeting-0": "planifier une réunion",
   "book-a-live-meeting-for-training-or-support-we-will-use-google-meet-to-screen-share-since-the-technician-who-will-meet-you-may-be-in-a-different-time-zone-it-is-important-to-use-this-link-to": "Réservez une réunion en direct pour une formation ou une assistance, nous utiliserons google meet pour partager l'écran... Étant donné que le technicien qui vous rencontrera peut se trouver dans un fuseau horaire différent, il est important d'utiliser ce lien pour",
   "community-support": "SOUTIEN COMMUNAUTAIRE",
@@ -181,5 +181,9 @@
   "muhram": "Mouhram",
   "days-ago": "il y a quelques jours",
   "mofaNumber": "Mofa",
-  "eNumber": "E"
+  "eNumber": "E",
+  "mekkah-hotel-name": "Nom de l'hôtel de La Mecque",
+  "medinah-hotel-name": "Nom de l'hôtel à Médine",
+  "card-preview": "Aperçu de la carte",
+  "card-options": "Options de carte"
 }

@@ -16,7 +16,8 @@ import OtagoBasicPreview from '../../../assets/otago_basic.png';
 import OtagoBlurPreview from '../../../assets/otago_blur.png';
 import OtagoLeafPreview from '../../../assets/otago_leaf.png';
 import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
-import { CircularProgress, makeStyles, TextField } from '@material-ui/core';
+import verticalBlank from '../../../assets/vertical_blank.png';
+import { Box, CircularProgress, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Field } from 'formik';
 import firebase from '../../../firebaseapp';
 import axios from 'axios';
@@ -25,6 +26,7 @@ import _ from 'lodash';
 import JSZip from 'jszip';
 import saveAs from 'save-as';
 import JSZipUtils from 'jszip-utils';
+import t from '../../../shared/util/trans';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -129,6 +131,41 @@ const getIDPositionProps = (idType) => {
         y: 140,
       },
     };
+  } else if (idType.includes('vertical')) {
+    return {
+      verticalCaravanLogo: {
+        x: 25,
+        y: 190,
+      },
+      verticalImage: {
+        x: 60,
+        y: 75,
+      },
+      verticalName: {
+        x: 60,
+        y: 62,
+      },
+      verticalPassportNumber: {
+        x: 10,
+        y: 50,
+      },
+      verticalPhoneNumber: {
+        x: 10,
+        y: 35,
+      },
+      verticalMedinahHotel: {
+        x: 10,
+        y: 19,
+      },
+      verticalMekahHotel: {
+        x: 10,
+        y: 4,
+      },
+      verticalCountryLogo: {
+        x: 2,
+        y: 153,
+      },
+    };
   }
 };
 
@@ -152,32 +189,16 @@ function readFile(file) {
 
 const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
-  const [detail, setDetail] = React.useState({});
   const [companyLogo, setCompanyLogo] = React.useState();
   const [downloading, setDownloading] = React.useState(false);
   const classes = useStyles();
-
-  console.log(detail)
-
-  React.useEffect(() => {
-    firebase
-      .database()
-      .ref('protected/onlinePackage')
-      .once('value', (snapshot) => {
-        setDetail(
-          Object.values(snapshot.toJSON()).find((x) =>
-            x.name.includes(caravanName)
-          )
-        );
-      });
-  }, [caravanName]);
 
   const downloadFiles = (pdfBytes, cb) => {
     const zip = new JSZip();
     let count = 0;
 
     pdfBytes.forEach(function (url, idx) {
-      const filename = `${caravanName}-${idx}`
+      const filename = `${caravanName}-${idx}`;
       // loading a file and add it in a zip file
       JSZipUtils.getBinaryContent(url, function (err, data) {
         if (err) {
@@ -187,7 +208,7 @@ const IDCard = ({ passengers, caravanName }) => {
         count++;
         if (count === pdfBytes.length) {
           zip.generateAsync({ type: 'blob' }).then(function (content) {
-            saveAs(content, caravanName + ".zip");
+            saveAs(content, caravanName + '.zip');
             cb(true);
           });
         }
@@ -213,7 +234,7 @@ const IDCard = ({ passengers, caravanName }) => {
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const { height } = firstPage.getSize();
+    const { height, width } = firstPage.getSize();
 
     let imageURL = '';
 
@@ -222,7 +243,7 @@ const IDCard = ({ passengers, caravanName }) => {
         .storage()
         .ref(`${nationality}/${passportNumber}.jpg`)
         .getDownloadURL();
-    } catch (err) {}
+    } catch (err) { }
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 
@@ -240,7 +261,7 @@ const IDCard = ({ passengers, caravanName }) => {
     if (imageURL) {
       const jpgImageBytes = await fetch(imageURL)
         .then((res) => res.arrayBuffer())
-        .catch((err) => {});
+        .catch((err) => { });
 
       jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     }
@@ -249,18 +270,21 @@ const IDCard = ({ passengers, caravanName }) => {
       `https://flagcdn.com/32x24/${countryCode}.png`
     )
       .then((res) => res.arrayBuffer())
-      .catch((err) => {});
+      .catch((err) => { });
 
-    const flagImage = await pdfDoc.embedPng(flagImageBytes);
+    let flagImage;
+    if (flagImageBytes) {
+      flagImage = await pdfDoc.embedPng(flagImageBytes);
+    }
 
-    let logo 
-    if(companyLogo) {
-      const companyLogoBytes = await getAsByteArray(companyLogo)
+    let logo;
+    if (companyLogo) {
+      const companyLogoBytes = await getAsByteArray(companyLogo);
 
-      if(companyLogo.type.split("/")[1].includes("jp")) {
-        logo = await pdfDoc.embedJpg(companyLogoBytes)
+      if (companyLogo.type.split('/')[1].includes('jp')) {
+        logo = await pdfDoc.embedJpg(companyLogoBytes);
       } else {
-        logo = await pdfDoc.embedPng(companyLogoBytes)
+        logo = await pdfDoc.embedPng(companyLogoBytes);
       }
     }
 
@@ -274,6 +298,16 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
+    // write image
+    if (getIDPositionProps(idType).verticalImage !== undefined && jpgImage) {
+      firstPage.drawImage(jpgImage, {
+        x: getIDPositionProps(idType).verticalImage.x,
+        y: getIDPositionProps(idType).verticalImage.y,
+        width: 85,
+        height: 110,
+      });
+    }
+
     // write caravan Logo image
     if (getIDPositionProps(idType).caravanLogo !== undefined) {
       firstPage.drawImage(logo || jpgImage, {
@@ -284,13 +318,57 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    // write flag image
-    if (getIDPositionProps(idType).countryFlag !== undefined) {
-      firstPage.drawImage(flagImage, {
-        x: getIDPositionProps(idType).countryFlag.x,
-        y: height - getIDPositionProps(idType).countryFlag.y,
-        width: 28,
-        height: 28,
+    // write caravan Logo image
+    if (getIDPositionProps(idType).verticalCaravanLogo !== undefined) {
+      firstPage.drawImage(logo || jpgImage, {
+        x: getIDPositionProps(idType).verticalCaravanLogo.x,
+        y: getIDPositionProps(idType).verticalCaravanLogo.y,
+        width: 100,
+        height: 50,
+      });
+    }
+
+    if (flagImage) {
+      // write flag image
+      if (getIDPositionProps(idType).countryFlag !== undefined) {
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(idType).countryFlag.x,
+          y: height - getIDPositionProps(idType).countryFlag.y,
+          width: 28,
+          height: 28,
+        });
+      }
+
+      // write vertical country flag logo
+      if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(idType).verticalCountryLogo.x,
+          y: getIDPositionProps(idType).verticalCountryLogo.y,
+          width: 50,
+          height: 30,
+        });
+      }
+    }
+
+    // write vertical nationality
+    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+      firstPage.drawText(nationality.toUpperCase(), {
+        x: getIDPositionProps(idType).verticalCountryLogo.x,
+        y: getIDPositionProps(idType).verticalCountryLogo.y - 10,
+        size: 12,
+        font: helveticaFont,
+        color: rgb(240 / 255, 12 / 255, 12 / 255)
+      });
+    }
+
+    // write vertical date
+    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+      firstPage.drawText(moment().format("MMMM").slice(0, 3) + ", " + moment().format("YYYY"), {
+        x: getIDPositionProps(idType).verticalCountryLogo.x,
+        y: getIDPositionProps(idType).verticalCountryLogo.y - 20,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(74/255, 20/255, 140/255)
       });
     }
 
@@ -320,6 +398,13 @@ const IDCard = ({ passengers, caravanName }) => {
         }
       );
     }
+
+    // Print a gird
+    // for (let x = 0; x < 200; x += 50) {
+    //   for (let y = 0; y < 250; y += 50) {
+    //     firstPage.drawText('=', { x, y, size: 10, font: helveticaFont });
+    //   }
+    // }
 
     // write telephone
     if (getIDPositionProps(idType).telephone !== undefined) {
@@ -356,6 +441,94 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
+    // write vertical passport Label
+    if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
+      firstPage.drawText('Passport No:  ' + passportNumber, {
+        x: getIDPositionProps(idType).verticalPassportNumber.x,
+        y: getIDPositionProps(idType).verticalPassportNumber.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(0,77/255,64/255),
+      });
+    }
+    // vertical passport label line
+    if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalPassportNumber.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalPassportNumber.y - 5,
+        },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+      });
+    }
+    // write vertical phone Label
+    if (getIDPositionProps(idType).verticalPhoneNumber !== undefined) {
+      firstPage.drawText('Phone No:  ' + telephone, {
+        x: getIDPositionProps(idType).verticalPhoneNumber.x,
+        y: getIDPositionProps(idType).verticalPhoneNumber.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(38/255,50/255,56/255),
+      });
+    }
+    //write vertical phone label line
+    if (getIDPositionProps(idType).verticalPhoneNumber !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalPhoneNumber.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalPhoneNumber.y - 5,
+        },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write vertical medinah hotel
+    if (getIDPositionProps(idType).verticalMedinahHotel !== undefined) {
+      firstPage.drawText(medinahHotelName, {
+        x: getIDPositionProps(idType).verticalMedinahHotel.x,
+        y: getIDPositionProps(idType).verticalMedinahHotel.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(27/255,94/255,32/255),
+      });
+    }
+    // vertical medinah hotel line
+    if (getIDPositionProps(idType).verticalMedinahHotel !== undefined) {
+      firstPage.drawLine({
+        start: {
+          x: 5,
+          y: getIDPositionProps(idType).verticalMedinahHotel.y - 5,
+        },
+        end: {
+          x: width - 5,
+          y: getIDPositionProps(idType).verticalMedinahHotel.y - 5,
+        },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write vertical mekha hotel
+    if (getIDPositionProps(idType).verticalMekahHotel !== undefined) {
+      firstPage.drawText(mekahHotelName, {
+        x: getIDPositionProps(idType).verticalMekahHotel.x,
+        y: getIDPositionProps(idType).verticalMekahHotel.y,
+        size: 10,
+        font: helveticaFont,
+        color: rgb(1/255,87/255,155/255),
+      });
+    }
+
     /// write firstName
     if (getIDPositionProps(idType).firstName !== undefined) {
       firstPage.drawText(name.split(' ')[0], {
@@ -368,7 +541,10 @@ const IDCard = ({ passengers, caravanName }) => {
     }
 
     /// write medinah hotel
-    if (getIDPositionProps(idType)?.medinahHotel !== undefined) {
+    if (
+      getIDPositionProps(idType)?.medinahHotel !== undefined &&
+      medinahHotelName
+    ) {
       firstPage.drawText(medinahHotelName, {
         x: getIDPositionProps(idType)?.medinahHotel?.x,
         y: height - getIDPositionProps(idType).medinahHotel.y,
@@ -378,7 +554,10 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
     /// write mekah hotel
-    if (getIDPositionProps(idType)?.mekahHotel !== undefined) {
+    if (
+      getIDPositionProps(idType)?.mekahHotel !== undefined &&
+      mekahHotelName
+    ) {
       firstPage.drawText(mekahHotelName, {
         x: getIDPositionProps(idType)?.mekahHotel?.x,
         y: height - getIDPositionProps(idType)?.mekahHotel?.y,
@@ -395,6 +574,19 @@ const IDCard = ({ passengers, caravanName }) => {
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).name.x,
         y: height - getIDPositionProps(idType).name.y,
+        size: 8,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    }
+
+    // write full name
+    if (getIDPositionProps(idType).verticalName !== undefined) {
+      const nameParts = name.split(' ');
+      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      firstPage.drawText(shortName, {
+        x: getIDPositionProps(idType).verticalName.x,
+        y: getIDPositionProps(idType).verticalName.y,
         size: 8,
         font: helveticaFont,
         color: rgb(0, 0, 0),
@@ -456,7 +648,9 @@ const IDCard = ({ passengers, caravanName }) => {
     <Grid container>
       <Grid item md={6}>
         <Grid container spacing={3}>
-          <h1>options</h1>
+          <Box mb={2}>
+          <Typography variant='h4'>{t('card-options')}</Typography>
+          </Box>
           <Formik
             enableReinitialize
             initialValues={{
@@ -485,14 +679,14 @@ const IDCard = ({ passengers, caravanName }) => {
                 .then((data) => {
                   downloadFiles(data, (done) => {
                     if (done) {
-                      // actions.setSubmitting(false);
                       setDownloading(false);
                     }
                   });
                 })
                 .catch((err) => {
+                  console.log('%cMyProject%cline:679%cerr', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px', err)
                   alert('An error occurred!! - ' + err.message);
-                  // actions.setSubmitting(false);
+                  setDownloading(false);
                 });
             }}
           >
@@ -556,6 +750,8 @@ const IDCard = ({ passengers, caravanName }) => {
                                 setPreviewURL(OtagoLeafPreview);
                               } else if (e.target.value === 'otag_madinah') {
                                 setPreviewURL(OtagoMadinahPreview);
+                              } else if (e.target.value === 'vertical_blank') {
+                                setPreviewURL(verticalBlank);
                               }
                             }}
                           >
@@ -563,16 +759,13 @@ const IDCard = ({ passengers, caravanName }) => {
                             <MenuItem value="hotel_holy"> Hotel Holy </MenuItem>
                             <MenuItem value="hotel_wave"> Hotel Wave </MenuItem>
                             <MenuItem value="otago"> Otago </MenuItem>
-                            <MenuItem value="otago_basic">
-                              {' '}
-                              Otago Basic{' '}
-                            </MenuItem>
+                            <MenuItem value="otago_basic">Otago Basic</MenuItem>
                             <MenuItem value="otago_blur"> Otago Blur </MenuItem>
                             <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
                             <MenuItem value="otago_madinah">
-                              {' '}
-                              Otago Madinah{' '}
+                              Otago Madinah
                             </MenuItem>
+                            <MenuItem value="vertical_blank">Vertical</MenuItem>
                           </Field>
                         </Grid>
                       </Grid>
@@ -634,10 +827,9 @@ const IDCard = ({ passengers, caravanName }) => {
                               : null,
                         }}
                         htmlFor={'mekkahHotel'}
-                        placeholder={'Mekah Hotel Name'}
-                        required={true}
+                        placeholder={'Makkah Hotel Name'}
                       >
-                        Mekah Hotel Name
+                        {t('mekkah-hotel-name')}
                       </InputLabel>
 
                       <Grid container alignItems="center">
@@ -647,10 +839,10 @@ const IDCard = ({ passengers, caravanName }) => {
                             fullWidth
                             className={classes.container}
                             name="mekahHotel"
-                            required={true}
+                            required={false}
                             id="mekahHotel"
                             type="text"
-                            placeholder="Mekah Hotel Name"
+                            placeholder="Makkah Hotel Name"
                             variant="outlined"
                             error={!!errors.mekahHotel}
                             value={values.mekahHotel}
@@ -675,9 +867,8 @@ const IDCard = ({ passengers, caravanName }) => {
                         }}
                         htmlFor={'medinahHotel'}
                         placeholder={'medinahHotel'}
-                        required={true}
                       >
-                        Medinah Hotel Name
+                        {t('medinah-hotel-name')}
                       </InputLabel>
 
                       <Grid container alignItems="center">
@@ -687,7 +878,7 @@ const IDCard = ({ passengers, caravanName }) => {
                             fullWidth
                             className={classes.container}
                             name="medinahHotel"
-                            required={true}
+                            required={false}
                             id="medinahHotel"
                             type="tel"
                             minLength="10"
@@ -713,7 +904,6 @@ const IDCard = ({ passengers, caravanName }) => {
                           hidden
                           onChange={async (e) => {
                             setCompanyLogo(e.target.files[0]);
-                            
                           }}
                         />
                       </Button>
@@ -742,7 +932,7 @@ const IDCard = ({ passengers, caravanName }) => {
       </Grid>
 
       <Grid item md={6}>
-        <h1>IMAGE PREVIEW</h1>
+        <Typography variant='h4'>{t('card-preview')}</Typography>
         {previewURL && (
           <img
             src={previewURL}

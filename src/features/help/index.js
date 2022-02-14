@@ -41,6 +41,10 @@ const helpCards = [
   {
     title: "E-MAIL",
     icon: <EmailOutlinedIcon style={{ fontSize: 80, color: "silver" }} />,
+    linkElement: (
+      // eslint-disable-next-line jsx-a11y/anchor-has-content
+      <a href="https://github.com/hajonsoft/hajonsoft-tiger/issues" title="github" >Github</a>
+    ),
     content:
       t('send-us-an-email-to-hajonsoft-gmail-com-or-create-a-help-ticket-in-slack-creating-a-ticket-is-easy-tickets-are-a-great-way-to-keep-a-request-visible'),
   },
