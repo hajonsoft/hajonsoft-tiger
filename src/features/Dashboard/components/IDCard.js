@@ -17,7 +17,7 @@ import OtagoBlurPreview from '../../../assets/otago_blur.png';
 import OtagoLeafPreview from '../../../assets/otago_leaf.png';
 import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
 import verticalBlank from '../../../assets/vertical_blank.png';
-import { CircularProgress, makeStyles, TextField } from '@material-ui/core';
+import { Box, CircularProgress, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Field } from 'formik';
 import firebase from '../../../firebaseapp';
 import axios from 'axios';
@@ -243,7 +243,7 @@ const IDCard = ({ passengers, caravanName }) => {
         .storage()
         .ref(`${nationality}/${passportNumber}.jpg`)
         .getDownloadURL();
-    } catch (err) {}
+    } catch (err) { }
 
     const { data } = await axios.get('https://flagcdn.com/en/codes.json');
 
@@ -261,7 +261,7 @@ const IDCard = ({ passengers, caravanName }) => {
     if (imageURL) {
       const jpgImageBytes = await fetch(imageURL)
         .then((res) => res.arrayBuffer())
-        .catch((err) => {});
+        .catch((err) => { });
 
       jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     }
@@ -270,9 +270,12 @@ const IDCard = ({ passengers, caravanName }) => {
       `https://flagcdn.com/32x24/${countryCode}.png`
     )
       .then((res) => res.arrayBuffer())
-      .catch((err) => {});
+      .catch((err) => { });
 
-    const flagImage = await pdfDoc.embedPng(flagImageBytes);
+    let flagImage;
+    if (flagImageBytes) {
+      flagImage = await pdfDoc.embedPng(flagImageBytes);
+    }
 
     let logo;
     if (companyLogo) {
@@ -325,24 +328,26 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    // write flag image
-    if (getIDPositionProps(idType).countryFlag !== undefined) {
-      firstPage.drawImage(flagImage, {
-        x: getIDPositionProps(idType).countryFlag.x,
-        y: height - getIDPositionProps(idType).countryFlag.y,
-        width: 28,
-        height: 28,
-      });
-    }
+    if (flagImage) {
+      // write flag image
+      if (getIDPositionProps(idType).countryFlag !== undefined) {
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(idType).countryFlag.x,
+          y: height - getIDPositionProps(idType).countryFlag.y,
+          width: 28,
+          height: 28,
+        });
+      }
 
-    // write vertical country flag logo
-    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
-      firstPage.drawImage(flagImage, {
-        x: getIDPositionProps(idType).verticalCountryLogo.x,
-        y: getIDPositionProps(idType).verticalCountryLogo.y,
-        width: 50,
-        height: 30,
-      });
+      // write vertical country flag logo
+      if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(idType).verticalCountryLogo.x,
+          y: getIDPositionProps(idType).verticalCountryLogo.y,
+          width: 50,
+          height: 30,
+        });
+      }
     }
 
     // write vertical nationality
@@ -358,12 +363,12 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write vertical date
     if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
-      firstPage.drawText( moment().format("MMMM").slice(0, 3) + ", " + moment().format("YYYY") , {
+      firstPage.drawText(moment().format("MMMM").slice(0, 3) + ", " + moment().format("YYYY"), {
         x: getIDPositionProps(idType).verticalCountryLogo.x,
         y: getIDPositionProps(idType).verticalCountryLogo.y - 20,
         size: 10,
         font: helveticaFont,
-        color: rgb(240 / 255, 12 / 255, 12 / 255)
+        color: rgb(74/255, 20/255, 140/255)
       });
     }
 
@@ -443,7 +448,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalPassportNumber.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(27 / 255, 61 / 255, 250 / 255),
+        color: rgb(0,77/255,64/255),
       });
     }
     // vertical passport label line
@@ -468,7 +473,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalPhoneNumber.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(27 / 255, 61 / 255, 250 / 255),
+        color: rgb(38/255,50/255,56/255),
       });
     }
     //write vertical phone label line
@@ -494,7 +499,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalMedinahHotel.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(27 / 255, 61 / 255, 250 / 255),
+        color: rgb(27/255,94/255,32/255),
       });
     }
     // vertical medinah hotel line
@@ -520,7 +525,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalMekahHotel.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(27 / 255, 61 / 255, 250 / 255),
+        color: rgb(1/255,87/255,155/255),
       });
     }
 
@@ -643,7 +648,9 @@ const IDCard = ({ passengers, caravanName }) => {
     <Grid container>
       <Grid item md={6}>
         <Grid container spacing={3}>
-          <h1>options</h1>
+          <Box mb={2}>
+          <Typography variant='h4'>{t('card-options')}</Typography>
+          </Box>
           <Formik
             enableReinitialize
             initialValues={{
@@ -672,12 +679,12 @@ const IDCard = ({ passengers, caravanName }) => {
                 .then((data) => {
                   downloadFiles(data, (done) => {
                     if (done) {
-                      // actions.setSubmitting(false);
                       setDownloading(false);
                     }
                   });
                 })
                 .catch((err) => {
+                  console.log('%cMyProject%cline:679%cerr', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px', err)
                   alert('An error occurred!! - ' + err.message);
                   setDownloading(false);
                 });
@@ -925,7 +932,7 @@ const IDCard = ({ passengers, caravanName }) => {
       </Grid>
 
       <Grid item md={6}>
-        <h1>IMAGE PREVIEW</h1>
+        <Typography variant='h4'>{t('card-preview')}</Typography>
         {previewURL && (
           <img
             src={previewURL}
