@@ -468,7 +468,7 @@ const IDCard = ({ passengers, caravanName }) => {
     }
     // write vertical phone Label
     if (getIDPositionProps(idType).verticalPhoneNumber !== undefined) {
-      firstPage.drawText('Phone No:  ' + telephone, {
+      firstPage.drawText(telephone, {
         x: getIDPositionProps(idType).verticalPhoneNumber.x,
         y: getIDPositionProps(idType).verticalPhoneNumber.y,
         size: 10,
