@@ -467,7 +467,7 @@ const Dashboard = () => {
                 options={{
                   actionsColumnIndex: -1,
                   grouping: false,
-                  pageSize: 5,
+                  pageSize: 20,
                   headerStyle: {
                     backgroundColor: "#f0f3f7",
                     color: "#385273",
