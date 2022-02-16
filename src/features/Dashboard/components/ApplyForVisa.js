@@ -40,6 +40,12 @@ import reservationCompleteImage from "../../../images/reservation-complete.svg";
 import t from '../../../shared/util/trans';
 import { getPassengersJSON, getStorageUrl, zipWithPhotos } from "../helpers/common";
 import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
+import wtuImg from '../../../assets/wtu.jpg'
+import gmaImg from '../../../assets/gma.jpg'
+import twfImg from '../../../assets/twf.jpg'
+import enjImg from '../../../assets/enj.jpg'
+import vstImg from '../../../assets/vst.jpg'
+import hsfImg from '../../../assets/hsf.jpg'
 
 const webcrypto = require("cryptr");
 
@@ -101,14 +107,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const serviceProviders = [
   { value: "bau", name: "Bab-al-umrah (Inactive)" },
-  { value: "wtu", name: "Way-to-umrah [https://www.waytoumrah.com]" },
-  { value: "gma", name: "Gabul-ya-hajj [https://eumra.com]" },
-  { value: "twf", name: "Tawaf [https://tawaf.com.sa]" },
-  { value: "hsf", name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]" },
-  { value: "enj", name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]" },
+  { value: "wtu", name: "Way-to-umrah [https://www.waytoumrah.com]", img: wtuImg },
+  { value: "gma", name: "Gabul-ya-hajj [https://eumra.com]", img: gmaImg },
+  { value: "twf", name: "Tawaf [https://tawaf.com.sa]", img: twfImg },
+  { value: "hsf", name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]", img: hsfImg },
+  { value: "enj", name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]", img: enjImg },
   { value: "ehr", name: "Ehaj (Reservation)" },
   { value: "ehj", name: "Ehaj (Submit)" },
-  { value: "vst", name: "Visit-visa [https://visa.visitsaudi.com]" },
+  { value: "vst", name: "Visit-visa [https://visa.visitsaudi.com]", img: vstImg },
   { value: "mot", name: "Egypt-Tourism" },
 ];
 
@@ -356,6 +362,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     )?.name;
   };
 
+  const getServiceProviderProfileImage = (u) => {
+    return serviceProviders.find(
+      (serviceProvider) => serviceProvider.value === u
+    )?.img;
+  };
+
   const getSelectedServiceProviderProfile = () => {
     if (visaSystems && visaSystems?.length > 0) {
       const defaultSystem = visaSystems[selectedVisaSystem];
@@ -493,7 +505,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             }
                           >
                             <MenuItem value={""} key="defaultvalue_serviceproviderprofile">
-                              <Typography color="textSecondary">Please select service provider profile</Typography>
+                              <Typography color="textSecondary">{t('please-select-service-provider-profile')}</Typography>
                             </MenuItem>
                             {visaSystems &&
                               visaSystems?.length > 0 &&
@@ -501,10 +513,17 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                                 <MenuItem value={i} key={x.username}>
                                   <Grid
                                     container
-                                    justifyContent="space-between"
                                     alignItems="center"
+                                    spacing={1}
                                   >
                                     <Grid item>
+                                      {getServiceProviderProfileImage(
+                                        x.usap
+                                      ) && <img src={getServiceProviderProfileImage(
+                                        x.usap
+                                      )} width="100" height="50" alt={x.username}/>}
+                                    </Grid>
+                                    <Grid item style={{flexGrow: 1}}>
                                       {`${getServiceProviderProfileName(
                                         x.usap
                                       )} ${x.username}`}
@@ -558,7 +577,14 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         >
                           {serviceProviders.map((ausap) => (
                             <MenuItem value={ausap.value}>
-                              {ausap.name}
+                              <Grid container spacing={1} alignItems="center">
+                                <Grid item>
+                                  {ausap.img && <img src={ausap.img} width="100" height="50" alt={ausap.name} />}
+                                </Grid>
+                                <Grid item>
+                                  {ausap.name}
+                                </Grid>
+                              </Grid>
                             </MenuItem>
                           ))}
                         </Select>
