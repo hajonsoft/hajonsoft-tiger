@@ -328,6 +328,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       system: {
         username: exportVisaSystem?.username && crypt.encrypt(exportVisaSystem?.username),
         password: exportVisaSystem?.password && crypt.encrypt(exportVisaSystem?.password),
+        embassy: exportVisaSystem?.embassy,
         name: exportVisaSystem?.usap,
       },
       info: {
