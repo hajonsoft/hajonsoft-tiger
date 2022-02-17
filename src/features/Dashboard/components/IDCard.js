@@ -137,6 +137,10 @@ const getIDPositionProps = (idType) => {
         x: 25,
         y: 190,
       },
+      verticalCaravanName: {
+        x: 5,
+        y: 120,
+      },
       verticalImage: {
         x: 60,
         y: 75,
@@ -361,15 +365,19 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    // write vertical date
-    if (getIDPositionProps(idType).verticalCountryLogo !== undefined) {
-      firstPage.drawText(moment().format("MMMM").slice(0, 3) + ", " + moment().format("YYYY"), {
-        x: getIDPositionProps(idType).verticalCountryLogo.x,
-        y: getIDPositionProps(idType).verticalCountryLogo.y - 20,
-        size: 10,
-        font: helveticaFont,
-        color: rgb(74/255, 20/255, 140/255)
-      });
+    // write vertical caravan name
+    if (getIDPositionProps(idType).verticalCaravanName !== undefined) {
+      const caravanNameParts = caravanName.trim().split(' ');
+      for (let i = 0; i < caravanNameParts.length; i++) {
+        firstPage.drawText(caravanNameParts[i], {
+          x: getIDPositionProps(idType).verticalCaravanName.x,
+          y: getIDPositionProps(idType).verticalCaravanName.y - i * 10,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(0/255, 0/255, 0/255)
+        });
+      }
+
     }
 
     // write UMRAH
@@ -582,7 +590,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).verticalName !== undefined) {
-      const nameParts = name.split(' ');
+      const nameParts = name.trim().split(' ');
       const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).verticalName.x,
