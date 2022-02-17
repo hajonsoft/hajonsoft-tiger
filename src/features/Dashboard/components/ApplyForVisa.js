@@ -46,6 +46,7 @@ import twfImg from '../../../assets/twf.jpg'
 import enjImg from '../../../assets/enj.jpg'
 import vstImg from '../../../assets/vst.jpg'
 import hsfImg from '../../../assets/hsf.jpg'
+import sbrImg from '../../../assets/sbr.jpg'
 
 const webcrypto = require("cryptr");
 
@@ -116,6 +117,8 @@ const serviceProviders = [
   { value: "ehj", name: "Ehaj (Submit)" },
   { value: "vst", name: "Visit-visa [https://visa.visitsaudi.com]", img: vstImg },
   { value: "mot", name: "Egypt-Tourism" },
+  { value: "sbr", name: "Sabre Ticket Reduce [https://srw.sabre.com/]", img: sbrImg },
+
 ];
 
 const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
