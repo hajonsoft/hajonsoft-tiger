@@ -1,27 +1,21 @@
 import {
-  Box,
-  Button,
-  Grid,
-  MenuItem,
+  Button, MenuItem,
   Select,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import ExploreIcon from '@material-ui/icons/Explore';
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import React, { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import firebase from '../../firebaseapp';
-import trans from '../../shared/util/trans';
+import reservationCompleteImage from '../../images/reservation-complete.svg';
+import { default as t, default as trans } from '../../shared/util/trans';
 import BasicReservation from './components/BasicReservation';
 import FullReservation from './components/FullReservation';
-import reservationCompleteImage from '../../images/reservation-complete.svg';
-import t from '../../shared/util/trans';
+import S from './style';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,12 +64,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
 
 const Reservation = ({ lang, onLanguageChange }) => {
   const classes = useStyles();
@@ -117,85 +105,52 @@ const Reservation = ({ lang, onLanguageChange }) => {
   };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    if (value){
+      setValue(0);
+    } else {
+      setValue(1);
+    }
+    
   };
 
   return (
     <>
-      <Grid container style={{ backgroundColor: '#ccc', minHeight: '100vh' }}>
-        <Grid item xs={3}>
-          <Tabs
-            orientation="vertical"
-            value={value}
-            onChange={handleChange}
-            className={classes.tabs}
-            variant="fullWidth"
-            textColor="primary"
+      <S.Head>
+        <S.Title>
+          <S.ReservationType variant='h5' color='textPrimary'>{!value ? trans('reservation.full-reservation') : trans('reservation.quick-reservation')}</S.ReservationType>
+          <S.NotReady variant='caption'>Not ready?</S.NotReady>
+          <S.SwitchControl size="small" component="button" onClick={handleChange}>{value ? trans('reservation.full-reservation') : trans('reservation.quick-reservation')}</S.SwitchControl>
+          <S.CaravanName variant="h4" color="textSecondary">{params.packageName}</S.CaravanName>
+        </S.Title>
+        <S.Language>
+          <Select
+            value={lang}
+            onChange={(e) => onLanguageChange(e.target.value)}
+            variant="standard"
           >
-            <Tab
-              style={{ width: '100%' }}
-              label={
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                  justifyContent="center"
-                >
-                  <Grid item>
-                    <ExploreIcon fontSize="small" />
-                  </Grid>
-                  <Grid item>{trans('reservation.full-reservation')}</Grid>
-                </Grid>
-              }
-              {...a11yProps(0)}
-            />
-            <Tab
-              style={{ width: '100%' }}
-              label={
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={1}
-                  justifyContent="center"
-                >
-                  <Grid item>
-                    <FlightTakeoffIcon fontSize="small" />
-                  </Grid>
-                  <Grid item>{trans('reservation.quick-reservation')}</Grid>
-                </Grid>
-              }
-              {...a11yProps(1)}
-            />
-          </Tabs>
-          <Box p={4} style={{ display: 'flex', justifyContent: 'center' }}>
-            <Select
-              value={lang}
-              onChange={(e) => onLanguageChange(e.target.value)}
-              variant="standard"
-            >
-              <MenuItem value="en">
-                <Typography variant="body1">English</Typography>
-              </MenuItem>
-              <MenuItem value="fr">
-                <Typography variant="body1">Française</Typography>
-              </MenuItem>
-              <MenuItem value="ar">
-                <Typography variant="body1">اللغه العربيه</Typography>
-              </MenuItem>
-            </Select>
-          </Box>
-        </Grid>
-        <Grid item xs={9}>
-          {value === 0 ? (
-            <FullReservation openSuccessModal={handleOpen} isModalOpen={open} />
-          ) : (
-            <BasicReservation
-              openSuccessModal={handleOpen}
-              isModalOpen={open}
-            />
-          )}
-        </Grid>
-      </Grid>
+            <MenuItem value="en">
+              <Typography variant="body1">English</Typography>
+            </MenuItem>
+            <MenuItem value="fr">
+              <Typography variant="body1">Française</Typography>
+            </MenuItem>
+            <MenuItem value="ar">
+              <Typography variant="body1">اللغه العربيه</Typography>
+            </MenuItem>
+          </Select>
+        </S.Language>
+
+      </S.Head>
+      <S.ReservationForm>
+      {value === 0 ? (
+        <FullReservation openSuccessModal={handleOpen} isModalOpen={open} />
+      ) : (
+        <BasicReservation
+          openSuccessModal={handleOpen}
+          isModalOpen={open}
+        />
+      )}
+      </S.ReservationForm>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

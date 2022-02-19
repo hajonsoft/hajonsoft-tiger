@@ -4,15 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import emailjs from 'emailjs-com';
 import { Form, Formik } from 'formik';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { nationalities } from '../../../data/nationality';
 import firebase from '../../../firebaseapp';
 import t from '../../../shared/util/trans';
 import InputControl from './InputControl';
-import emailjs from 'emailjs-com';
 
 const storage = firebase.storage();
 
@@ -249,25 +249,6 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
 
   return (
     <div>
-      <Grid
-        container
-        spacing={1}
-        alignItems="center"
-        justifyContent="center"
-        className={classes.titleContainer}
-      >
-        <Grid item>
-          <FlightTakeoffIcon fontSize="large" />
-        </Grid>
-        <Grid item>
-          <Typography variant="h5">
-            {t('reservation.full-reservation')}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="h5">{packageName}</Typography>
-        </Grid>
-      </Grid>
       {!reservationNumber && (
         <Formik
           initialValues={{ name: '', gender: '', nationality: '' }}
@@ -279,7 +260,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
               <Form className={classes.pt3rem}>
                 <Grid
                   container
-                  style={{ backgroundColor: 'white' }}
+                  style={{ backgroundColor: '#EBFFFD' }}
                   spacing={2}
                 >
                   <Grid item md={12}>
