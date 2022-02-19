@@ -305,7 +305,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item md={2} style={{backgroundColor: '#ff9900', padding: '32px 16px 8px 8px'}}>
+                  <Grid item md={2} style={{backgroundColor: '#ff9900', padding: '32px 16px 8px 8px', borderTopLeftRadius: '16px'}}>
                     <input ref={inputRef} hidden type="file" accept="image/*" />
                     <div className={classes.avatarContainer}>
                       <Avatar
@@ -331,7 +331,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                     </div>
                   </Grid>
                   <Grid item md={10}>
-                    <Grid container direction="column" spacing={2} style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 0 0 8px'}}>
+                    <Grid container direction="column" spacing={1} style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 8px 8px 8px', borderTopRightRadius: '16px',  borderBottomRightRadius: '16px'}}>
                       <Grid item md={12}>
                         <InputControl
                           name="name"
@@ -356,7 +356,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item container justifyContent="space-around" style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px'}}>
+                  <Grid item container justifyContent="space-around" style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 16px 8px 8px', borderTopRightRadius: '16px', borderBottomRightRadius: '16px', borderBottomLeftRadius: '16px'}}>
                     <Grid item md={5} xs={12}>
                       <InputControl
                         name="gender"

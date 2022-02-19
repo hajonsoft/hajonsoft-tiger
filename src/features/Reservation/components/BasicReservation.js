@@ -19,11 +19,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
   },
   submitBtn: {
-    background: "#178CF9",
-    paddingLeft: "3rem",
-    paddingRight: "3rem",
-    textTransform: "capitalize",
-    color: "white",
+    background: '#006b6b',
+    marginRight: '3rem',
+    textTransform: 'capitalize',
+    color: '#bfffff',
+    marginTop: '3rem',
+    width: '300px',
+    borderRadius: '16px',
+    fontSize: '24px'
   },
   mainContainer: {
     marginTop: 10,
