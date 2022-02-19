@@ -35,7 +35,7 @@
   "reservation.submitting": "Submitting...",
   "reservation.telephone": "Phone",
   "reservation.completed": "Thank you for your reservation",
-  "reservation.upload-your-passport": "Upload your passport",
+  "reservation.upload-your-passport": "Upload your passport. Biological information page",
   "reservation.upload-your-vaccine": "Upload your vaccine",
   "reservation.completed-subheader": "We will contact you for further details",
   "take-a-course": "Take a Course",
@@ -186,5 +186,10 @@
   "medinah-hotel-name": "Medinah Hotel Name",
   "card-preview": "Card Preview",
   "card-options": "Card options",
-  "please-select-service-provider-profile": "Please select service provider profile"
+  "please-select-service-provider-profile": "Please select service provider profile",
+  "reservation": {
+    "__i18n_ally_root__": {
+      "upload-your-passport": ""
+    }
+  }
 }

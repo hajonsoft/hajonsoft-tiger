@@ -117,7 +117,7 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
       {!reservationNumber && (
         <Grid
           container
-          style={{ backgroundColor: "#EBFFFD", minHeight: "100vh" }}
+          style={{ backgroundColor: "#00ffff", minHeight: "100vh" }}
         >
           <Grid className={classes.container}>
             <Grid

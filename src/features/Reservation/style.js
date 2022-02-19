@@ -20,12 +20,13 @@ S.Title = styled.div`
 
 S.ReservationType = styled(Typography)`
     padding-right: 8px;
-    color: eggplant;
+    color: #b30000;
 `;
 
 S.NotReady = styled(Typography)`
     padding-right: 8px;
     color: navy;
+    font-style: italic;
 `;
 
 S.SwitchText = styled.div``;
@@ -37,6 +38,7 @@ S.SwitchControl = styled(Link)`
 S.CaravanName = styled(Typography)`
     width: 100%;
     display: block;
+    color: $006b6b;
 
 `;
 
@@ -48,10 +50,11 @@ S.Language = styled.div`
 `;
 
 S.ReservationForm = styled.div`
-    padding: 1rem 6rem 12rem;
-    background-color: #EBFFFD;
+    padding: 1rem 4rem 12rem 2rem;
+    background-color: #00ffff;
     border-radius: 32px;
     margin: 1rem 2rem;
+    color: #006b6b;
 `;
 
 

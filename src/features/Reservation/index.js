@@ -118,9 +118,9 @@ const Reservation = ({ lang, onLanguageChange }) => {
       <S.Head>
         <S.Title>
           <S.ReservationType variant='h5' color='textPrimary'>{!value ? trans('reservation.full-reservation') : trans('reservation.quick-reservation')}</S.ReservationType>
-          <S.NotReady variant='caption'>Not ready?</S.NotReady>
-          <S.SwitchControl size="small" component="button" onClick={handleChange}>{value ? trans('reservation.full-reservation') : trans('reservation.quick-reservation')}</S.SwitchControl>
-          <S.CaravanName variant="h4" color="textSecondary">{params.packageName}</S.CaravanName>
+          <S.NotReady variant='normal'>Not ready?</S.NotReady>
+          <S.SwitchControl size="medium" component="button" onClick={handleChange}>{value ? trans('reservation.full-reservation') : trans('reservation.quick-reservation')}</S.SwitchControl>
+          <S.CaravanName variant="h4" >{params.packageName}</S.CaravanName>
         </S.Title>
         <S.Language>
           <Select

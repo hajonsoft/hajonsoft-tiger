@@ -186,5 +186,11 @@
   "medinah-hotel-name": "Nom de l'hôtel à Médine",
   "card-preview": "Aperçu de la carte",
   "card-options": "Options de carte",
-  "please-select-service-provider-profile": "Veuillez sélectionner le profil du fournisseur de services"
+  "please-select-service-provider-profile": "Veuillez sélectionner le profil du fournisseur de services",
+  "reservation": {
+    "__i18n_ally_root__": {
+      "upload-your-passport": ""
+    },
+    "upload-your-passport": "Téléchargez votre passeport. \nPage d'information biologique"
+  }
 }

@@ -186,5 +186,13 @@
   "medinah-hotel-name": "اسم فندق المدينة المنورة",
   "card-preview": "معاينة البطاقة",
   "card-options": "خيارات البطاقة",
-  "please-select-service-provider-profile": "يرجى تحديد ملف تعريف مزود الخدمة"
+  "please-select-service-provider-profile": "يرجى تحديد ملف تعريف مزود الخدمة",
+  "reservation": {
+    "upload-your-passport": "قم بتحميل جواز سفرك. \nصفحة المعلومات البيولوجية",
+    "__i18n_ally_root__": {
+      "__i18n_ally_root__": {
+        "upload-your-passport": ""
+      }
+    }
+  }
 }

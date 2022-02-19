@@ -23,11 +23,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
   },
   submitBtn: {
-    background: '#178CF9',
+    background: '#006b6b',
     marginRight: '3rem',
     textTransform: 'capitalize',
-    color: 'white',
-    marginBottom: '5rem',
+    color: '#bfffff',
+    marginTop: '3rem',
+    width: '300px',
+    borderRadius: '16px',
+    fontSize: '24px'
   },
   container: {
     maxWidth: 1000,
@@ -260,7 +263,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
               <Form className={classes.pt3rem}>
                 <Grid
                   container
-                  style={{ backgroundColor: '#EBFFFD' }}
+                  style={{ backgroundColor: '#00ffff' }}
                   spacing={2}
                 >
                   <Grid item md={12}>
@@ -302,7 +305,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item md={2}>
+                  <Grid item md={2} style={{backgroundColor: '#ff9900', padding: '32px 16px 8px 8px'}}>
                     <input ref={inputRef} hidden type="file" accept="image/*" />
                     <div className={classes.avatarContainer}>
                       <Avatar
@@ -327,8 +330,8 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </div>
                     </div>
                   </Grid>
-                  <Grid item md={9}>
-                    <Grid container direction="column" spacing={2}>
+                  <Grid item md={10}>
+                    <Grid container direction="column" spacing={2} style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 0 0 8px'}}>
                       <Grid item md={12}>
                         <InputControl
                           name="name"
@@ -353,7 +356,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item container justifyContent="space-around">
+                  <Grid item container justifyContent="space-around" style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px'}}>
                     <Grid item md={5} xs={12}>
                       <InputControl
                         name="gender"
@@ -397,7 +400,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                     </Box>
                   </Grid>
 
-                  <Grid container justifyContent="space-around" spacing={2}>
+                  <Grid container justifyContent="space-around" spacing={2} style={{backgroundColor: '#bfffff', padding: '16px', borderRadius: '16px'}}>
                     <Grid item xs={5} md={5}>
                       <InputControl
                         name="passportNumber"
@@ -477,7 +480,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid container justifyContent="space-around" spacing={1}>
+                  <Grid container justifyContent="space-around" spacing={1} style={{backgroundColor: '#ffcc80', padding: '16px', borderRadius: '16px'}}>
                     <Grid item xs={12} md={3}>
                       <InputControl
                         name="idNumber"
@@ -531,6 +534,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                     </Box>
                     <Box
                       className={classes.passportBox}
+                      style={{backgroundColor: '#ff9900', color: '#006b6b', borderRadius: '16px'}}
                       onClick={(e) => {
                         e.stopPropagation();
                         uploadImageHandler((val) => setVaccineURL(val));
@@ -564,7 +568,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid container justifyContent="space-around" spacing={2}>
+                  <Grid container justifyContent="space-around" spacing={2} style={{backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px'}}>
                     <Grid item xs={12} md={5}>
                       <InputControl
                         name="profession"
