@@ -1,16 +1,16 @@
-import { Button, Paper, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import ExploreIcon from "@material-ui/icons/Explore";
 import clsx from "classnames";
+import emailjs from 'emailjs-com';
 import { Form, Formik } from "formik";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import firebase from "../../../firebaseapp";
 import trans from "../../../shared/util/trans";
 import InputControl from "./InputControl";
-import emailjs from 'emailjs-com';
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
@@ -114,31 +114,10 @@ const BasicReservation = ( { openSuccessModal, isModalOpen } ) => {
 
   return (
     <div>
-      <Paper style={{ margin: "0.5rem" }}>
-        <Grid
-          container
-          alignItems="center"
-          spacing={1}
-          justifyContent="center"
-          className={classes.titleContainer}
-        >
-          <Grid item>
-            <ExploreIcon fontSize="medium" />
-          </Grid>
-          <Grid item>
-            <Typography variant="h5">
-              {trans("reservation.quick-reservation")}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h5">{`${packageName}`}</Typography>
-          </Grid>
-        </Grid>
-      </Paper>
       {!reservationNumber && (
         <Grid
           container
-          style={{ backgroundColor: "white", minHeight: "100vh" }}
+          style={{ backgroundColor: "#EBFFFD", minHeight: "100vh" }}
         >
           <Grid className={classes.container}>
             <Grid
