@@ -96,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
     height: '300px',
     cursor: 'pointer',
     overflow: 'hidden',
+    backgroundColor: '#80ffff',
+    borderRadius: '16px',
   },
 }));
 

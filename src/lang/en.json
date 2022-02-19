@@ -189,7 +189,13 @@
   "please-select-service-provider-profile": "Please select service provider profile",
   "reservation": {
     "__i18n_ally_root__": {
-      "upload-your-passport": ""
+      "upload-your-passport": "",
+      "__i18n_ally_root__": {
+        "__i18n_ally_root__": {
+          "upload-your-passport": ""
+        }
+      },
+      "upload-your-vaccine": ""
     }
   }
 }

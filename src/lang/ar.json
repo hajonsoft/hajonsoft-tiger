@@ -138,7 +138,7 @@
   "view-reservation-number": "عرض رقم الحجز",
   "continue-to-payment": "تابع إلى الدفع",
   "caravan-name": "اسم القافلة",
-  "reservation.upload-your-vaccine": "",
+  "reservation.upload-your-vaccine": "قم بتحميل اللقاح الخاص بك",
   "are-you-sure": "هل أنت متأكد؟",
   "import-again": "قم بالاستيراد مرة أخرى",
   "finish": "انهآء",
@@ -191,8 +191,14 @@
     "upload-your-passport": "قم بتحميل جواز سفرك. \nصفحة المعلومات البيولوجية",
     "__i18n_ally_root__": {
       "__i18n_ally_root__": {
-        "upload-your-passport": ""
+        "upload-your-passport": "",
+        "__i18n_ally_root__": {
+          "__i18n_ally_root__": {
+            "upload-your-passport": ""
+          }
+        }
       }
-    }
+    },
+    "upload-your-vaccine": "قم بتحميل اللقاح الخاص بك"
   }
 }
