@@ -51,8 +51,8 @@ const themes = {
   },
   wood: {
     primary: '#caa472',
-    secondary: '#400099',
-    tertiary: '#ffd980',
+    secondary: '#ffecbf',
+    tertiary: '#b37d00',
     color4: '#00487d',
     color5: '#ffecbf',
   },
@@ -93,7 +93,7 @@ const DoveHome = ({ lang, onLanguageChange }) => {
       direction="column"
     >
       <Grid item>
-        <DoveHeader theme={themes[Object.keys(themes)[theme]]} themes={themes} onThemeChange={handleOnThemeChange} />
+        <DoveHeader theme={themes[Object.keys(themes)?.[theme]]} themes={themes} onThemeChange={handleOnThemeChange} themeIndex={theme}/>
       </Grid>
       <Grid
         item
@@ -106,7 +106,7 @@ const DoveHome = ({ lang, onLanguageChange }) => {
       <Grid
         item
         style={{
-          backgroundColor: themes[Object.keys(themes)[theme]].secondary,
+          backgroundColor: themes[Object.keys(themes)?.[theme]]?.secondary || '#483c32',
         }}
       >
         <Advertisements />
