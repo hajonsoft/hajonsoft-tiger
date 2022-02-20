@@ -6,6 +6,6 @@
         "method": [
             "GET"
         ],
-        "maxAgeSeconds": 3600
+        "maxAgeSeconds": 3400
     }
 ]
