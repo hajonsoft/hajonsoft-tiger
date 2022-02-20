@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import moment from 'moment';
 import imoment from 'moment-hijri';
 import React from 'react';
@@ -85,11 +85,14 @@ const eventsAfter = (inputDate = new Date()) => {
 }
 
 const eventsNow = (inputDate = new Date()) => {
-  let reply = ` ${imoment(inputDate).iDayOfYear()} 👉 ${imoment(inputDate).format("iYYYY/iMMMM-iM/iD [is] dddd YYYY/MMM/D")}`;
-  const hajjAkbarDate = imoment(`${imoment().iYear()}/12/8`, "iYYYY/iM/iD");
-  reply += "👉 Hajj akbar in Tawba:3 👉 " + hajjAkbarDate.fromNow();
+  const hajjAkbarDate = imoment(`${imoment().iYear()}/12/8`, "iYYYY/iMM/iD").format('D MMM YYYY');
+  return  <Box style={{display: 'flex'}}>
+    <Typography variant='h5' >{imoment(inputDate).format("iYYYY/YYYY")}</Typography>
+    <Typography variant='h6' style={{marginLeft: '16px'}} color='textSecondary'>{imoment(inputDate).format("iMMM/MMM")}</Typography>
+    <Typography variant='subtitle' style={{marginLeft: '16px'}} color='textSecondary'>{imoment(inputDate).format("iDD/DD")}</Typography>
+    <Typography variant='normal' style={{marginLeft: '16px'}} >{`Hajj akbar: ${hajjAkbarDate}`}</Typography>
 
-  return reply;
+  </Box>
 }
 const eventsNearby = (inputDate) => {
   // const beforeAndAfter = getBeforeAndAfter(inputDate);
