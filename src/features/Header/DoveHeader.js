@@ -48,7 +48,7 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
                                                 fullWidth
                                                 onChange={onThemeChange}
                                             >
-                                                {themes.map((key, index) => <MenuItem value={key}>{key}</MenuItem>)}
+                                                {themes?.map(key => <MenuItem value={key}>{key}</MenuItem>)}
 
                                             </Select>
                                         </FormControl>

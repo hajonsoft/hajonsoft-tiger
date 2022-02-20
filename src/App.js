@@ -112,7 +112,6 @@ function App() {
 
   function handleOnThemeChange(e) {
     setThemeName(e.target.value);
-    console.log('%cMyProject%cline:114%ce.target.value', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px', e.target.value)
     const materialTheme =  getMaterialTheme(e.target.value);
     setTheme(materialTheme);
   }
