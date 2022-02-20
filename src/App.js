@@ -24,7 +24,28 @@ import messages_ar from "./lang/ar.json";
 import messages_en from "./lang/en.json";
 import messages_fr from "./lang/fr.json";
 import { store } from './redux/store';
+import berryTheme from "./theme/berry";
 import defaultTheme from "./theme/default";
+import lakeTheme from "./theme/lake";
+import leatherTheme from "./theme/leather";
+import morningTheme from "./theme/morning";
+import mountainTheme from "./theme/mountain";
+import natureTheme from "./theme/nature";
+import rockTheme from "./theme/rock";
+import woodTheme from "./theme/wood";
+
+const themes = [
+  'default',
+  'morning',
+  'lake',
+  'mountain',
+  'rocks',
+  'nature',
+  'wood',
+  'leather',
+  'berry',
+]
+
 
 const messages = {
   fr: messages_fr,
@@ -43,7 +64,7 @@ const browserLanguage = () => {
 function getSupportedLanguage() {
   const language = localStorage.getItem("langOverride") || browserLanguage();
   const supportedLanguage = "en";
-  if (language === "ar" || language === "en" || language === "fr"){
+  if (language === "ar" || language === "en" || language === "fr") {
     return language
   } else {
     return supportedLanguage;
@@ -52,6 +73,8 @@ function getSupportedLanguage() {
 }
 
 function App() {
+  const [themeName, setThemeName] = useState(getStoredTheme());
+  const [theme, setTheme] = useState(getMaterialTheme(themeName));
   const [language, setLanguage] = useState(getSupportedLanguage()
   );
   const [languageDirection, setLanguageDirection] = useState(
@@ -67,7 +90,7 @@ function App() {
       setLanguageDirection("ltr");
     }
     const supportedLanguage = "en";
-    if (lang === "ar" || lang === "en" || lang === "fr"){
+    if (lang === "ar" || lang === "en" || lang === "fr") {
       setLanguage(lang);
       localStorage.setItem("langOverride", lang);
     } else {
@@ -79,13 +102,27 @@ function App() {
 
   document.dir = languageDirection;
 
+  function getStoredTheme() {
+    const storedTheme = localStorage.getItem('theme');
+    if (themes.includes(storedTheme)){
+      return storedTheme;
+    }
+    return 'default';
+  }
+
+  function handleOnThemeChange(e) {
+    setThemeName(e.target.value);
+    console.log('%cMyProject%cline:114%ce.target.value', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px', e.target.value)
+    const materialTheme =  getMaterialTheme(e.target.value);
+    setTheme(materialTheme);
+  }
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <IntlProvider messages={messages[language]} locale={language}>
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
-              <DoveHome onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
+              <DoveHome onLanguageChange={(l) => handleLanguageChange(l)} lang={language} onThemeChange={handleOnThemeChange} selectedTheme={themeName} themes={themes} />
             </PublicRoute>
             <PublicRoute path="/login">
               <SignIn onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
@@ -137,6 +174,29 @@ function App() {
       </IntlProvider>
     </ThemeProvider>
   );
+
+  function getMaterialTheme(name) {
+    switch (name) {
+      case 'morning':
+        return morningTheme;
+      case 'lake':
+        return lakeTheme;
+      case 'mountain':
+        return mountainTheme;
+      case 'rock':
+        return rockTheme;
+      case 'nature':
+        return natureTheme;
+      case 'wood':
+        return woodTheme;
+      case 'leather':
+        return leatherTheme;
+      case 'berry':
+        return berryTheme;
+      default:
+        return defaultTheme;
+    }
+  }
 }
 
 export default App;
