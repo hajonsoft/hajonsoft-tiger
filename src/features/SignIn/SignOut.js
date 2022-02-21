@@ -1,41 +1,10 @@
-import { Paper, Box, makeStyles } from "@material-ui/core";
+import { Box, Card, Typography } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React from "react";
 import { useHistory } from "react-router";
-import { Typography } from "@material-ui/core";
-import logo from "../../images/logo.jpg";
-
-const useStyles = makeStyles({
-  container: {
-    maxWidth: 450,
-    margin: "0 auto",
-    width: "65%",
-    height: "auto",
-    background: "white",
-    boxShadow: "2px 0px 21px -8px rgba(120,89,120,1)"
-  },
-  containerHeader: {
-    fontSize: 26,
-    color: "#4caf50",
-    fontWeight: "bold",
-    padding: "1rem"
-  },
-  subHeaderText: {
-    color: "#88af4c",
-  },
-  text: {
-    fontSize: "18px",
-    margin: ".5rem auto",
-    padding: "1rem",
-    fontWeight: 300
-  },
-  topBottom: {
-    padding: ".25rem",
-    background: "#4caf50"
-  }
-});
+import logo from "../../images/icon_logo_png.png";
 
 const SignOut = () => {
-  const classes = useStyles();
   const history = useHistory();
 
   setTimeout(() => {
@@ -44,7 +13,7 @@ const SignOut = () => {
 
   return (
     <div style={{ height: "60vh", padding: "3rem" }}>
-      <Paper
+      <Card
         elevation={4}
         style={{
           height: "100%",
@@ -54,30 +23,18 @@ const SignOut = () => {
         }}
       >
         <Box p={4} style={{ display: "flex", justifyContent: "center" }}>
-          <img src={logo} alt="HajOnSoft"></img>
+          <img src={logo} alt="HajOnSoft" width={32}></img>
         </Box>
-        <Box className={classes.container}>
-        <Box className={classes.topBottom} />
-          <Typography className={classes.containerHeader}>
-            {" "}
-            We will be here{" "}
-            <span className={classes.subHeaderText}>
-              {" "}
-              when you come back{" "}
-            </span>{" "}
-          </Typography>
-          <Box>
-            <Typography className={classes.text}>
-              {" "}
-              You've successfully signed out of your account, you can login back anytime.
-            </Typography>
-            <Typography className={classes.text}>
-              When you are ready to login, just login back into your account
-            </Typography>
-            <Box className={classes.topBottom} />
-          </Box>
-        </Box>
-      </Paper>
+        <Typography color="textPrimary" variant="h5" gutterBottom>
+          We will be here when you come back
+        </Typography>
+        <Alert color="warning">
+          You've successfully signed out of your account, you can login back anytime.
+        </Alert>
+        <Alert color="info">
+          When you are ready to login, just login back into your account
+        </Alert>
+      </Card>
     </div>
   );
 };

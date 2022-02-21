@@ -694,6 +694,18 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               helperText={touched.eNumber && errors.eNumber}
                             />
                           </Grid>
+                          <Grid item xs={2} >
+                          <InputControl
+                              required={false}
+                              name="airlineRef"
+                              label={t('airlineRef')}
+                              value={values.airlineRef}
+                              error={
+                                touched.airlineRef && Boolean(errors.airlineRef)
+                              }
+                              helperText={touched.airlineRef && errors.airlineRef}
+                            />
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>

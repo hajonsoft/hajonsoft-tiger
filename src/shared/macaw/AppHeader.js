@@ -55,11 +55,11 @@ const AppHeader = () => {
       <Toolbar style={{ color: "#fff" }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
-            <Typography variant="subtitle1" style={{ color: 'indigo' }}>{`HAJonSoft | ${projectName}`}</Typography>
+            <Typography variant="subtitle1" color="success">{`HAJonSoft | ${projectName}`}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton onClick={() => history.push("/favorite")}>
-              <Badge badgeContent={favoriteCount()} color="primary">
+              <Badge badgeContent={favoriteCount()} color="success">
                 <FavoriteIcon />
               </Badge>
             </IconButton>
@@ -68,24 +68,31 @@ const AppHeader = () => {
           {!isMobile && (
             <Grid item xs={6}>
               <Button
+                color="secondary"
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/caravans")}
               >
                 {t('caravans')}
               </Button>
               <Button
+                color="secondary"
+
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/market")}
               >
                 {t('online')}
               </Button>
               <Button
+                color="secondary"
+
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/trade")}
               >
                 {t('trade')}
               </Button>
               <Button
+                color="secondary"
+
                 style={{ textTransform: "none" }}
                 onClick={() => history.push("/help")}
               >
@@ -105,6 +112,7 @@ const AppHeader = () => {
           >
             <Grid item>
               <Button
+                color="secondary"
                 onClick={() => history.push("/profile")}
                 style={{
                   textTransform: "none",
@@ -117,7 +125,9 @@ const AppHeader = () => {
               <img src={authData.photoURL} alt="profile" style={{ width: '32px', height: '32px', borderRadius: '16px' }} />
             </Grid>
             <Grid item>
-              <Button onClick={handleLogout}>
+              <Button
+                color="secondary"
+                onClick={handleLogout}>
                 {t('sign-out')}
               </Button>
             </Grid>
