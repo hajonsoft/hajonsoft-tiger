@@ -31,14 +31,14 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
             <Toolbar>
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item><Typography color="textPrimary" onClick={() => history.push("/")} variant="h4" align="center" style={{ cursor: "pointer" }}>{profile.name}</Typography></Grid>
-                    <Grid item md={6}>
+                    <Grid item md={8}>
                         <Box style={{ padding: '8px 32px', borderRadius: '16px', margin: '16px', backgroundColor: theme?.palette.background.paper, color: theme?.palette.text.secondary || '#483c32' }}>
                             <Grid container spacing={2} justifyContent="center">
                                 <Grid item><Button style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '16px' }} onClick={() => history.push('/')}>{t('home.home')}</Button></Grid>
                                 <Grid item><Button style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '16px' }} onClick={() => history.push('/hajj-packages')}>{t('hajj')}</Button></Grid>
                                 <Grid item><Button style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '16px' }} onClick={() => history.push('/umrah-packages')}>{t('umrah')}</Button></Grid>
                                 <Grid item><Button style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '16px' }} onClick={() => history.push('/tours')}>{t('tours')}</Button></Grid>
-                                <Grid item>
+                                {themes?.length > 0 && <Grid item>
                                     <Box style={{  marginRight: '16px', borderRadius: '16px' }}>
                                         <FormControl fullWidth>
                                             <InputLabel>{`Theme`}</InputLabel>
@@ -53,7 +53,7 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
                                         </FormControl>
                                     </Box>
 
-                                </Grid>
+                                </Grid>}
                                 <Grid item><Button style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '16px' }} onClick={() => history.push('/login')}>{t('admin-login')}</Button></Grid>
                             </Grid>
                         </Box>

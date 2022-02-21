@@ -112,6 +112,7 @@ function App() {
 
   function handleOnThemeChange(e) {
     setThemeName(e.target.value);
+    localStorage.setItem("theme", e.target.value);
     const materialTheme =  getMaterialTheme(e.target.value);
     setTheme(materialTheme);
   }

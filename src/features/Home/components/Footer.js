@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -18,11 +19,12 @@ const Footer = ({ lang, onLanguageChange }) => {
     onLanguageChange(e.target.value);
   };
 
+  const theme = useTheme();
   return (
     <Box
       style={{
-        backgroundColor: "#eceff1",
-        color: "#718196",
+        backgroundColor: theme.palette.grey['800'],
+        color: theme.palette.info.main,
         fontSize: "18px",
         width: "100%",
       }}
@@ -41,9 +43,8 @@ const Footer = ({ lang, onLanguageChange }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography
-                variant="h6"
+                variant="subtitle1"
                 gutterBottom
-                style={{ fontSize: "0.9rem" }}
                 component="div"
               >
                 {t("company")}
@@ -51,28 +52,27 @@ const Footer = ({ lang, onLanguageChange }) => {
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
               >
                 {t("about-us")}
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 {t("contact-us")}
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="#"
                 onClick={() => history.push("/login")}
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 {t("admin-login")}
               </Button>
@@ -83,9 +83,8 @@ const Footer = ({ lang, onLanguageChange }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography
-                variant="h6"
+                variant="subtitle2"
                 gutterBottom
-                style={{ fontSize: "0.9rem" }}
                 component="div"
               >
                 {t("support")}
@@ -93,27 +92,24 @@ const Footer = ({ lang, onLanguageChange }) => {
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
               >
                 Spiceworks
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
               >
                 {t("help-center")}
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
               >
                 {t("safety-center")}
               </Button>
@@ -124,9 +120,8 @@ const Footer = ({ lang, onLanguageChange }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography
-                variant="h6"
+                variant="subtitle1"
                 gutterBottom
-                style={{ fontSize: "0.9rem" }}
                 component="div"
               >
                 {t("reservations")}
@@ -134,28 +129,27 @@ const Footer = ({ lang, onLanguageChange }) => {
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="#"
                 onClick={() => history.push("/reserve/interest")}
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 {t("express-interest")}
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 {t("privacy-policy")}
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
               >
                 {t("terms-of-service")}
               </Button>
@@ -166,9 +160,7 @@ const Footer = ({ lang, onLanguageChange }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography
-                variant="h6"
-                gutterBottom
-                style={{ fontSize: "0.9rem" }}
+                variant="subtitle1"
                 component="div"
               >
                 {t('social-media')}
@@ -176,47 +168,50 @@ const Footer = ({ lang, onLanguageChange }) => {
             </Grid>
             <Grid item>
               <Button
-                size="small"
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 Instagram
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
+
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 Facebook
               </Button>
             </Grid>
             <Grid item>
               <Button
-                size="small"
+
                 href="https://hajonsoft.on.spiceworks.com/portal"
-                style={{ textTransform: "none", fontSize: "0.7rem" }}
+                style={{ textTransform: "none", color: theme.palette.text.secondary }}
+
               >
                 Twitter
               </Button>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={2} style={{color: theme.palette.text.secondary}}>
           <Select
             value={language}
             onChange={handleLanguageChange}
             variant="standard"
+            style={{color: theme.palette.text.secondary}}
           >
             <MenuItem value="en">
-              <Typography variant="body1">English</Typography>
+              <Typography variant="body1" style={{color: theme.palette.text.secondary}}>English</Typography>
             </MenuItem>
             <MenuItem value="ar">
-              <Typography variant="body1">اللغه العربيه</Typography>
+              <Typography variant="body1" style={{color: theme.palette.text.secondary}}>اللغه العربيه</Typography>
             </MenuItem>
             <MenuItem value="fr">
-              <Typography variant="body1">Française</Typography>
+              <Typography variant="body1" style={{color: theme.palette.text.secondary}}>Française</Typography>
             </MenuItem>
           </Select>
           <Box mt={2}>
