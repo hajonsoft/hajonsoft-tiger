@@ -39,7 +39,7 @@ const themes = [
   'morning',
   'lake',
   'mountain',
-  'rocks',
+  'rock',
   'nature',
   'wood',
   'leather',

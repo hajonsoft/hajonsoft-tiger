@@ -4,14 +4,14 @@ import {
 } from "@material-ui/core";
 const defaultTheme = createTheme({
   palette: {
-    primary: { main: '#2196f3' },
-    secondary: { main: '#007aa8' },
-    background: { default: '#ffe9bf', paper: '#80dcff' },
-    error: { main: '#b31600' },
-    success: { main: '#ff8f80' },
-    warning: { main: '#ffa800' },
-    info: { main: '#80dcff' },
-    text: { primary: '#005676', secondary: '#007aa8' },
+    primary: { main: '#cddc39' },
+    secondary: { main: '#a5b300' },
+    background: { default: '#faffbf', paper: '#f5ff80' },
+    error: { main: '#d60085' },
+    success: { main: '#a5b300' },
+    warning: { main: '#ebff00' },
+    info: { main: '#ae80ff' },
+    text: { primary: '#27006b', secondary: '#380099' },
   },
 });
 
