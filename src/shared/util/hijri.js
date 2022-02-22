@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, useTheme } from '@material-ui/core';
 import moment from 'moment';
 import imoment from 'moment-hijri';
 import React from 'react';
@@ -84,13 +84,17 @@ const eventsAfter = (inputDate = new Date()) => {
   );
 }
 
-const eventsNow = (inputDate = new Date()) => {
+export const EventsNow = (inputDate = new Date()) => {
+  const theme = useTheme();
   const hajjAkbarDate = imoment(`${imoment().iYear()}/12/8`, "iYYYY/iMM/iD").format('D MMM YYYY');
-  return  <Box style={{display: 'flex'}}>
-    <Typography variant='h5' >{imoment(inputDate).format("iYYYY/YYYY")}</Typography>
-    <Typography variant='h6' style={{marginLeft: '16px'}} color='textSecondary'>{imoment(inputDate).format("iMMM/MMM")}</Typography>
-    <Typography variant='subtitle' style={{marginLeft: '16px'}} color='textSecondary'>{imoment(inputDate).format("iDD/DD")}</Typography>
-    <Typography variant='normal' style={{marginLeft: '16px'}} >{`Hajj akbar: ${hajjAkbarDate}`}</Typography>
+  return <Box style={{ display: 'flex' , alignItems: 'center'}}>
+    <Typography variant='h4' color="primary" style={{ border: `4px solid ${theme.palette.success.main}`, padding: '8px', borderRadius: '16px' }} >{imoment(inputDate).format("iYYYY/YYYY")}</Typography>
+    <Box>
+
+      <Typography variant='h6' style={{ marginLeft: '16px' }} color='textSecondary'>{imoment(inputDate).format("DD MMM")}</Typography>
+      <Typography variant='subtitle' style={{ marginLeft: '16px' }} color='textSecondary'>{imoment(inputDate).format("iDD iMMM")}</Typography>
+    </Box>
+    <Typography variant='caption' style={{ marginLeft: '16px' }} >{`Hajj akbar: ${hajjAkbarDate}`}</Typography>
 
   </Box>
 }
@@ -102,4 +106,4 @@ const eventsNearby = (inputDate) => {
 const todayHijraDate = () => {
   return `${imoment().iDate()}-${hijraMonths[imoment().iMonth()]}-${imoment().iYear()}`
 }
-export { eventsNearby, todayHijraDate, eventsBefore, eventsAfter, eventsNow };
+export { eventsNearby, todayHijraDate, eventsBefore, eventsAfter };
