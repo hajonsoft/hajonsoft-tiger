@@ -1,6 +1,6 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Button, Card, Grid, Typography } from "@material-ui/core";
+import { Box, Button, Card, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
@@ -14,6 +14,8 @@ import { loginWithGoogle } from "./redux/authSlice";
 
 const SignIn = ({ onLanguageChange, lang }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const authData = useSelector((state) => state?.auth?.data);
 
@@ -42,7 +44,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
         component={Card}
         elevation={2}
         style={{
-          width: "30%",
+          width: isMobile? '100%' : "30%",
           margin: "auto",
           marginBottom: "5rem",
           borderRadius: '16px'
