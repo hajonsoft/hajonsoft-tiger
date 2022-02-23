@@ -30,7 +30,7 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
                 <title>{`🕊️| ${profile.name}`}</title>
             </Helmet>
                 <Grid container justifyContent="space-around" alignItems={isMobile? '': 'center'} direction={isMobile? 'column' : 'row'}>
-                    <Grid item><Typography color="secondary" onClick={() => history.push("/")} variant="h4" align="center" style={{ cursor: "pointer", padding: '16px' }}>{profile.name}</Typography></Grid>
+                    <Grid item><Typography color="info" onClick={() => history.push("/")} variant="h4" align="center" style={{ cursor: "pointer", padding: '16px' }}>{profile.name}</Typography></Grid>
                     <Grid item md={7} sm={12}>
                         <Box style={{ padding: isMobile? '0' : '8px 32px', borderRadius: isMobile? '0' : '16px', margin: isMobile? '0' : '16px', backgroundColor: theme?.palette.background.paper, color: theme?.palette.text.secondary, width: '100%' }}>
                             <Grid container spacing={2} justifyContent="center">

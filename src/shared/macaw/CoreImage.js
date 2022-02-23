@@ -85,7 +85,7 @@ const CoreImage = ({ record, setImage }) => {
           });
         });
     };
-    
+
     getImage();
   }, [record, record.nationality, record.passportNumber]);
 
@@ -138,7 +138,8 @@ const CoreImage = ({ record, setImage }) => {
         </CardContent>
       </Card>
 
-      <Typography color="textSecondary">We accept .jpg and .jpeg only {fileType}</Typography>
+      <Typography variant="caption" color="warning" component="p">{`ext. ${fileType}`}</Typography>
+      <Typography variant="caption" color="info" component="p">We accept .jpg and .jpeg</Typography>
       <input
         type="file"
         onChange={handleFileOnChange}
