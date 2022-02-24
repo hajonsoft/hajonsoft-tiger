@@ -169,6 +169,10 @@ const getIDPositionProps = (idType) => {
         x: 2,
         y: 153,
       },
+      verticalBackground: {
+        x: 0,
+        y: 0
+      }
     };
   }
 };
@@ -195,6 +199,8 @@ const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
   const [companyLogo, setCompanyLogo] = React.useState();
   const [downloading, setDownloading] = React.useState(false);
+  const [cardBackgroundColor, setCardBackgroundColor] = React.useState('r255g255b255');
+
   const classes = useStyles();
 
   const downloadFiles = (pdfBytes, cb) => {
@@ -259,6 +265,18 @@ const IDCard = ({ passengers, caravanName }) => {
         break;
       }
     }
+
+        // write caravan Logo image
+        if (getIDPositionProps(idType).verticalBackground !== undefined) {
+          firstPage.drawRectangle({
+            x: 0,
+            y: 0,
+            width: 150,
+            height: 250,
+            color: rgb(parseInt(cardBackgroundColor.substring(1,4))/255, parseInt(cardBackgroundColor.substring(5,8))/255, parseInt(cardBackgroundColor.substring(9))/255),
+            opacity: 1,
+          });
+        }
 
     let jpgImage = '';
 
@@ -374,7 +392,7 @@ const IDCard = ({ passengers, caravanName }) => {
           y: getIDPositionProps(idType).verticalCaravanName.y - i * 10,
           size: 10,
           font: helveticaFont,
-          color: rgb(0/255, 0/255, 0/255)
+          color: rgb(0 / 255, 0 / 255, 0 / 255)
         });
       }
 
@@ -456,7 +474,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalPassportNumber.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(0,77/255,64/255),
+        color: rgb(0, 77 / 255, 64 / 255),
       });
     }
     // vertical passport label line
@@ -481,7 +499,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalPhoneNumber.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(38/255,50/255,56/255),
+        color: rgb(38 / 255, 50 / 255, 56 / 255),
       });
     }
     //write vertical phone label line
@@ -507,7 +525,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalMedinahHotel.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(27/255,94/255,32/255),
+        color: rgb(27 / 255, 94 / 255, 32 / 255),
       });
     }
     // vertical medinah hotel line
@@ -533,7 +551,7 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalMekahHotel.y,
         size: 10,
         font: helveticaFont,
-        color: rgb(1/255,87/255,155/255),
+        color: rgb(1 / 255, 87 / 255, 155 / 255),
       });
     }
 
@@ -651,13 +669,26 @@ const IDCard = ({ passengers, caravanName }) => {
 
     return url;
   };
+  const colorItems = []
+  const minValue = 150;
+  for (let r = minValue; r < 255; r += 50) {
+    for (let g = minValue; g < 255; g += 50) {
+      for (let b = minValue; b < 255; b += 50) {
+        colorItems.push({ r, g, b })
+      }
+    }
+  }
+
+  const handleCardColorChange = (e) => {
+    setCardBackgroundColor(e.target.value)
+  }
 
   return (
     <Grid container>
       <Grid item md={6}>
         <Grid container spacing={3}>
           <Box mb={2}>
-          <Typography variant='h4'>{t('card-options')}</Typography>
+            <Typography variant='h4'>{t('card-options')}</Typography>
           </Box>
           <Formik
             enableReinitialize
@@ -723,11 +754,11 @@ const IDCard = ({ passengers, caravanName }) => {
                         placeholder={'idType'}
                         required={true}
                       >
-                        ID Type
+                        Choose ID design and color
                       </InputLabel>
 
                       <Grid container alignItems="center">
-                        <Grid item xs={12}>
+                        <Grid item xs={9}>
                           <Field
                             as={Select}
                             className={classes.container}
@@ -775,6 +806,11 @@ const IDCard = ({ passengers, caravanName }) => {
                             </MenuItem>
                             <MenuItem value="vertical_blank">Vertical</MenuItem>
                           </Field>
+                        </Grid>
+                        <Grid item xs={2} style={{marginLeft: '1rem'}}>
+                          <Select onChange={handleCardColorChange} fullWidth>
+                            {colorItems.map((colorItem) => <MenuItem value={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`} key={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`} ><div style={{ width: '100%', height: '25px', backgroundColor: `rgb(${colorItem.r},${colorItem.g},${colorItem.b})` }}></div></MenuItem>)}
+                          </Select>
                         </Grid>
                       </Grid>
 
@@ -944,7 +980,7 @@ const IDCard = ({ passengers, caravanName }) => {
         {previewURL && (
           <img
             src={previewURL}
-            style={{ width: '100%' }}
+            style={{ width: '100%', backgroundColor: `rgb(${cardBackgroundColor.r},${cardBackgroundColor.g},${cardBackgroundColor.b})` }}
             alt="id card type preview"
           />
         )}
