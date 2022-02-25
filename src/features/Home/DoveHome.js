@@ -1,5 +1,4 @@
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Box } from "@material-ui/core";
 import React from "react";
 import DoveHeader from "../Header/DoveHeader";
 import Advertisements from "../onlineCaravan/components/Advertisements";
@@ -7,16 +6,13 @@ import Footer from "./components/Footer";
 import ImportantDates from "./components/importantDates";
 
 
+
 const DoveHome = ({ lang, onLanguageChange, onThemeChange, themeName, themes }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <Box style={{ width: '100%', minHeight: '100vh' }}
+    <Box style={{ border: '2ox solid brown' }}
     >
       <DoveHeader onThemeChange={onThemeChange} themeName={themeName} themes={themes} />
-      {!isMobile && <Alert color="info">
-        <ImportantDates />
-      </Alert>}
+      <ImportantDates />
       <Box style={{ height: '100%' }}
       >
         <Advertisements />
