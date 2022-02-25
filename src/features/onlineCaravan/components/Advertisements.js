@@ -12,6 +12,7 @@ const Advertisements = () => {
 
   const advertisements = useSelector(state => state.online?.data);
   const loading = useSelector(state => state.online?.loading);
+  const error = useSelector(state => state.online?.error);
 
   useEffect(() => {
     dispatch(getOnlineCaravans());
@@ -37,10 +38,17 @@ const Advertisements = () => {
       {loading && <Grid container spacing={4} justifyContent="center" alignItems="center">
 
         <Grid item>
-          <CircularProgress size={64}/>
+          <CircularProgress size={64} />
         </Grid>
         <Grid item>
           <Typography variant="h4" color="textPrimary">{t('loading')}</Typography>
+        </Grid>
+
+      </Grid>}
+      {error && <Grid container spacing={4} justifyContent="center" alignItems="center">
+
+        <Grid item>
+          <Typography color="error">{error}</Typography>
         </Grid>
 
       </Grid>}
@@ -49,11 +57,11 @@ const Advertisements = () => {
           (advertisement, index) =>
             isCurrent(advertisement) && (
               <Grid item xs={12} lg={4} sm={12} md={6} key={advertisement.name}>
-                  <AdvertisementCard
-                    detail={advertisement}
-                    key={advertisement.name}
-                    index={index}
-                  />
+                <AdvertisementCard
+                  detail={advertisement}
+                  key={advertisement.name}
+                  index={index}
+                />
               </Grid>
             )
         )}

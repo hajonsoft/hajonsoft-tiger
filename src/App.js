@@ -46,7 +46,6 @@ const themes = [
   'berry',
 ]
 
-
 const messages = {
   fr: messages_fr,
   ar: messages_ar,
