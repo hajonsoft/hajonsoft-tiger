@@ -9,6 +9,7 @@ To signup a new customer (a.k.a Munazim), please see this video https://share.vi
 The main command is
 
 ```
+cd signup
 
 zsh nest project_name
 

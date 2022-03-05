@@ -107,7 +107,7 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
                                                         <PaletteOutlined
                                                             fontSize='8' />
                                                     </Icon>
-                                                    <Typography variant='subtitle2'>{key}
+                                                    <Typography variant='subtitle2' style={{textTransform: 'capitalize'}}>{key}
                                                     </Typography>
                                                 </Box>
                                             </MenuItem>
