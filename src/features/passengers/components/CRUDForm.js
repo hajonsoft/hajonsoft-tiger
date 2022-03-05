@@ -793,18 +793,6 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               {t('save-and-close')}
                             </Button>
                           </Grid>
-                          <Grid item>
-                            <Button
-                              type="button"
-                              disabled={isSubmitting}
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => handleSaveAndNext(values)}
-                              startIcon={<SaveOutlinedIcon />}
-                            >
-                              {t('save-and-next')}
-                            </Button>
-                          </Grid>
                         </React.Fragment>
                       )}
                     </Grid>
