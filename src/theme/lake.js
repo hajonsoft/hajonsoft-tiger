@@ -6,7 +6,7 @@ const defaultTheme = createTheme({
   palette: {
     primary: { main: '#4caf50' },
     secondary: { main: '#00c90e' },
-    background: { default: '#bfffc4', paper: '#80ff88' },
+    background: { default: '#ffffff', paper: '#ffffff' },
     error: { main: '#b34a00' },
     success: { main: '#ffb480' },
     warning: { main: '#ffdabf' },
