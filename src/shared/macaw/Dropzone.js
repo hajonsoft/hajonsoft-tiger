@@ -207,6 +207,12 @@ function DropZone({ packageName, onClose }) {
     tempLink.click();
   };
 
+  const handleStartScanClick = () => {
+    const tempLink = document.createElement("a");
+    tempLink.href = new URL("hawk://mode=scan,host=firebasetokenhere");
+    tempLink.click();
+  };
+
   return (
     <Dropzone onDrop={handleFileDrop}>
       {({ getRootProps, getInputProps }) => (
@@ -298,16 +304,19 @@ function DropZone({ packageName, onClose }) {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Grid item><Typography variant="subtitle1" color="textSecondary"> Drop your scan files here </Typography></Grid>
+                  <Grid item><Typography variant="subtitle1" color="textSecondary">Drop your scanned files here or click to select... </Typography></Grid>
                   <Grid item>
                     <FileCopyOutlinedIcon />
                   </Grid>
                   <Grid item container justifyContent="space-between" style={{marginTop: '10rem'}}>
                     <Grid item>
-                      <Button onClick={handle3MClick} startIcon={<FolderOpenOutlinedIcon />} size="small">3M</Button>
+                      <Button onClick={handle3MClick} startIcon={<FolderOpenOutlinedIcon />} size="small">3M AT9000MK2 folder </Button>
                     </Grid>
                     <Grid item>
-                      <Button onClick={handleComboClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >Combo smart</Button>
+                      <Button onClick={handleComboClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >ARH Combo Smart folder</Button>
+                    </Grid>
+                    <Grid item>
+                      <Button onClick={handleStartScanClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >Interactive Scan</Button>
                     </Grid>
                   </Grid>
                 </Grid>
