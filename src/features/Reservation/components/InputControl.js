@@ -29,16 +29,12 @@ const InputControl = (props) => {
   const {
     name,
     label,
-    disabled,
     error,
     helperText,
     placeholder,
     required,
     multiline,
     options,
-    type,
-    autoFocus,
-    value,
   } = props;
   const classes = useStyles(props);
 
@@ -59,19 +55,11 @@ const InputControl = (props) => {
           <Field
             as={options ? Select : OutlinedInput}
             className={classes.container}
-            name={name}
-            type={type}
-            required={required}
+            {...props}
             id={name}
-            placeholder={placeholder}
             variant="outlined"
-            disabled={!!disabled}
             fullWidth
-            multiline={multiline}
             rows={multiline ? 4 : undefined}
-            error={!!error}
-            autoFocus={autoFocus}
-            value={value}
           >
             {options &&
               options.map((option) => (

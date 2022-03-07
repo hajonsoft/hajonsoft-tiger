@@ -260,7 +260,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
           onSubmit={handleSubmitForm}
           validationSchema={validationSchema}
         >
-          {({ values, errors, touched, isSubmitting, isValid }) => {
+          {({ values, errors, touched, isSubmitting, isValid, setFieldValue }) => {
             return (
               <Form className={classes.pt3rem}>
                 <Grid
@@ -299,335 +299,349 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       )}
                     </Box>
                   </Grid>
-                  <Grid item md={12}>
-                    <Box ml={2}>
-                      <Typography variant="subtitle2">
-                        {t('reservation.basic-information')}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item md={2} style={{backgroundColor: '#ff9900', padding: '32px 16px 8px 8px', borderTopLeftRadius: '16px'}}>
-                    <input ref={inputRef} hidden type="file" accept="image/*" />
-                    <div className={classes.avatarContainer}>
-                      <Avatar
-                        src={
-                          photoURL
-                            ? photoURL
-                            : 'https://www.pngitem.com/pimgs/m/421-4212617_person-placeholder-image-transparent-hd-png-download.png'
-                        }
-                        className={classes.avatar}
-                      />
-                      <div className={classes.posRelative}>
-                        <div className={classes.imgIconContainer}>
-                          <IconButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              uploadImageHandler((val) => setPhotoURL(val));
-                            }}
-                          >
-                            <AddIcon className={classes.addIcon} />
-                          </IconButton>
+                </Grid>
+                <div style={{
+                  height: '90vh',
+                  overflowY: 'scroll'
+                }}>
+
+                  <Grid
+                    container
+                    style={{ backgroundColor: '#00ffff' }}
+                    spacing={2}
+                  >
+                    <Grid item md={12}>
+                      <Box ml={2}>
+                        <Typography variant="subtitle2">
+                          {t('reservation.basic-information')}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item md={2} style={{ backgroundColor: '#80ffff', padding: '32px 16px 8px 8px', borderTopLeftRadius: '16px' }}>
+                      <input ref={inputRef} hidden type="file" accept="image/*" />
+                      <div className={classes.avatarContainer}>
+                        <Avatar
+                          src={
+                            photoURL
+                              ? photoURL
+                              : 'https://www.pngitem.com/pimgs/m/421-4212617_person-placeholder-image-transparent-hd-png-download.png'
+                          }
+                          className={classes.avatar}
+                        />
+                        <div className={classes.posRelative}>
+                          <div className={classes.imgIconContainer}>
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                uploadImageHandler((val) => setPhotoURL(val));
+                              }}
+                            >
+                              <AddIcon className={classes.addIcon} />
+                            </IconButton>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Grid>
-                  <Grid item md={10}>
-                    <Grid container direction="column" spacing={1} style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 8px 8px 8px', borderTopRightRadius: '16px',  borderBottomRightRadius: '16px'}}>
-                      <Grid item md={12}>
+                    </Grid>
+                    <Grid item md={10}>
+                      <Grid container direction="column" spacing={1} style={{ backgroundColor: '#80ffff', width: '100%', padding: '16px 8px 8px 8px', borderTopRightRadius: '16px', borderBottomRightRadius: '16px' }}>
+                        <Grid item md={12}>
+                          <InputControl
+                            name="name"
+                            label={t('reservation.full-name')}
+                            required
+                            value={values.name}
+                            onChange={(e) => setFieldValue('name', e.target.value.toUpperCase()) }
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                          />
+                        </Grid>
+                        <Grid item md={12}>
+                          <InputControl
+                            name="nameArabic"
+                            label={t('reservation.arabic-name')}
+                            value={values.arabicName}
+                            error={
+                              touched.nameArabic && Boolean(errors.nameArabic)
+                            }
+                            helperText={touched.nameArabic && errors.nameArabic}
+                            required={false}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item container justifyContent="space-around" style={{ backgroundColor: '#80ffff', width: '100%', padding: '16px 16px 8px 8px', borderTopRightRadius: '16px', borderBottomRightRadius: '16px', borderBottomLeftRadius: '16px' }}>
+                      <Grid item md={5} xs={12}>
                         <InputControl
-                          name="name"
-                          label={t('reservation.full-name')}
+                          name="gender"
+                          label={t('reservation.gender')}
                           required
-                          value={values.name}
-                          error={touched.name && Boolean(errors.name)}
-                          helperText={touched.name && errors.name}
+                          value={values.gender}
+                          error={touched.gender && Boolean(errors.gender)}
+                          helperText={touched.gender && errors.gender}
+                          options={[
+                            { value: '', label: 'Gender' },
+                            { value: 'Male', label: 'Male' },
+                            { value: 'Female', label: 'Female' },
+                          ]}
                         />
                       </Grid>
-                      <Grid item md={12}>
+                      <Grid item md={5} xs={12}>
                         <InputControl
-                          name="nameArabic"
-                          label={t('reservation.arabic-name')}
-                          value={values.arabicName}
+                          name="nationality"
+                          label={t('reservation.nationality')}
+                          required
+                          value={values.nationality}
                           error={
-                            touched.nameArabic && Boolean(errors.nameArabic)
+                            touched.nationality && Boolean(errors.nationality)
                           }
-                          helperText={touched.nameArabic && errors.nameArabic}
+                          helperText={touched.nationality && errors.nationality}
+                          options={[
+                            { value: '', label: 'Nationality' },
+                            ...nationalities.map((nationality) => ({
+                              value: nationality.name,
+                              label: nationality.name,
+                            })),
+                          ]}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item md={12} className={classes.p1rem0}>
+                      <Box ml={2} mb={2}>
+                        <Typography variant="subtitle2">
+                          {t('passport-information')}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container justifyContent="space-around" spacing={2} style={{ backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px' }}>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="passportNumber"
+                          label={t('reservation.passport-number')}
+                          value={values.passportNumber}
+                          onChange={(e) => setFieldValue('passportNumber', e.target.value.toUpperCase())}
+                          error={
+                            touched.passportNumber &&
+                            Boolean(errors.passportNumber)
+                          }
+                          helperText={
+                            touched.passportNumber && errors.passportNumber
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="passPlaceOfIssue"
+                          label={t('reservation.issued-at')}
+                          value={values.passPlaceOfIssue}
+                          onChange={(e) => setFieldValue('passPlaceOfIssue', e.target.value.toUpperCase())}
+                          error={
+                            touched.passPlaceOfIssue &&
+                            Boolean(errors.passPlaceOfIssue)
+                          }
+                          helperText={
+                            touched.passPlaceOfIssue && errors.passPlaceOfIssue
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="passIssueDt"
+                          label={t('reservation.passport-issue-date')}
+                          value={values.passIssueDt}
+                          error={
+                            touched.passIssueDt && Boolean(errors.passIssueDt)
+                          }
+                          helperText={touched.passIssueDt && errors.passIssueDt}
+                          type="date"
+                        />
+                      </Grid>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="passExpireDt"
+                          label={t('reservation.passport-expire-date')}
+                          value={values.passExpireDt}
+                          error={
+                            touched.passExpireDt && Boolean(errors.passExpireDt)
+                          }
+                          helperText={touched.passExpireDt && errors.passExpireDt}
+                          type="date"
+                        />
+                      </Grid>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="birthDate"
+                          label={t('reservation.birth-date')}
+                          value={values.birthDate}
+                          error={touched.birthDate && Boolean(errors.birthDate)}
+                          helperText={touched.birthDate && errors.birthDate}
+                          type="date"
+                        />
+                      </Grid>
+                      <Grid item xs={5} md={5}>
+                        <InputControl
+                          name="birthPlace"
+                          label={t('reservation.birth-place')}
+                          onChange={(e) => setFieldValue('birthPlace', e.target.value.toUpperCase())}
+                          value={values.birthPlace}
+                          error={touched.birthPlace && Boolean(errors.birthPlace)}
+                          helperText={touched.birthPlace && errors.birthPlace}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item md={12} className={classes.p1rem0}>
+                      <Box ml={2} mb={2}>
+                        <Typography variant="subtitle2">
+                          {t('reservation.residency-permit-info')}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container justifyContent="space-around" spacing={1} style={{ backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px' }}>
+                      <Grid item xs={12} md={3}>
+                        <InputControl
+                          name="idNumber"
+                          required={false}
+                          label={t('reservation.id-number')}
+                          value={values.idNumber}
+                          error={touched.idNumber && Boolean(errors.idNumber)}
+                          helperText={touched.idNumber && errors.idNumber}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={3}>
+                        <InputControl
+                          name="idNumberIssueDate"
+                          label={t('reservation.id-issue-date')}
+                          required={false}
+                          value={values.idNumberIssueDate}
+                          error={
+                            touched.idNumberIssueDate &&
+                            Boolean(errors.idNumberIssueDate)
+                          }
+                          helperText={
+                            touched.idNumberIssueDate && errors.idNumberIssueDate
+                          }
+                          type="date"
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={3}>
+                        <InputControl
+                          name="idNumberExpireDate"
+                          label={t('reservation.id-expire-date')}
+                          value={values.idNumberExpireDate}
+                          required={false}
+                          error={
+                            touched.idNumberExpireDate &&
+                            Boolean(errors.idNumberExpireDate)
+                          }
+                          helperText={
+                            touched.idNumberExpireDate &&
+                            errors.idNumberExpireDate
+                          }
+                          type="date"
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item md={12}>
+                      <Box ml={2} mb={2}>
+                        <Typography variant="subtitle2">
+                          {t('reservation.upload-your-vaccine')}
+                        </Typography>
+                      </Box>
+                      <Box
+                        className={classes.passportBox}
+                        style={{ backgroundColor: '#80ffff', color: '#006b6b', borderRadius: '16px' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          uploadImageHandler((val) => setVaccineURL(val));
+                        }}
+                      >
+                        {vaccineURL ? (
+                          <img
+                            src={vaccineURL}
+                            width="100%"
+                            height="100%"
+                            alt="passport"
+                            style={{ objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <>
+                            <AddCircleOutlineIcon
+                              color="primary"
+                              fontSize="large"
+                            />
+                            <Typography>
+                              {t('reservation.upload-your-vaccine')}
+                            </Typography>
+                          </>
+                        )}
+                      </Box>
+                    </Grid>
+                    <Grid item md={12} className={classes.p1rem0}>
+                      <Box ml={2} mb={2}>
+                        <Typography variant="subtitle2">
+                          {t('more-information')}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container justifyContent="space-around" spacing={2} style={{ backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px' }}>
+                      <Grid item xs={12} md={5}>
+                        <InputControl
+                          name="profession"
+                          label={t('reservation.profession')}
+                          value={values.profession}
+                          error={touched.profession && Boolean(errors.profession)}
+                          helperText={touched.profession && errors.profession}
                           required={false}
                         />
                       </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item container justifyContent="space-around" style={{backgroundColor: '#ffe6bf', width: '100%', padding: '16px 16px 8px 8px', borderTopRightRadius: '16px', borderBottomRightRadius: '16px', borderBottomLeftRadius: '16px'}}>
-                    <Grid item md={5} xs={12}>
-                      <InputControl
-                        name="gender"
-                        label={t('reservation.gender')}
-                        required
-                        value={values.gender}
-                        error={touched.gender && Boolean(errors.gender)}
-                        helperText={touched.gender && errors.gender}
-                        options={[
-                          { value: '', label: 'Gender' },
-                          { value: 'Male', label: 'Male' },
-                          { value: 'Female', label: 'Female' },
-                        ]}
-                      />
-                    </Grid>
-                    <Grid item md={5} xs={12}>
-                      <InputControl
-                        name="nationality"
-                        label={t('reservation.nationality')}
-                        required
-                        value={values.nationality}
-                        error={
-                          touched.nationality && Boolean(errors.nationality)
-                        }
-                        helperText={touched.nationality && errors.nationality}
-                        options={[
-                          { value: '', label: 'Nationality' },
-                          ...nationalities.map((nationality) => ({
-                            value: nationality.name,
-                            label: nationality.name,
-                          })),
-                        ]}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item md={12} className={classes.p1rem0}>
-                    <Box ml={2} mb={2}>
-                      <Typography variant="subtitle2">
-                        {t('passport-information')}
-                      </Typography>
-                    </Box>
-                  </Grid>
-
-                  <Grid container justifyContent="space-around" spacing={2} style={{backgroundColor: '#bfffff', padding: '16px', borderRadius: '16px'}}>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="passportNumber"
-                        label={t('reservation.passport-number')}
-                        value={values.passportNumber}
-                        error={
-                          touched.passportNumber &&
-                          Boolean(errors.passportNumber)
-                        }
-                        helperText={
-                          touched.passportNumber && errors.passportNumber
-                        }
-                      />
-                    </Grid>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="passPlaceOfIssue"
-                        label={t('reservation.issued-at')}
-                        value={values.passPlaceOfIssue}
-                        error={
-                          touched.passPlaceOfIssue &&
-                          Boolean(errors.passPlaceOfIssue)
-                        }
-                        helperText={
-                          touched.passPlaceOfIssue && errors.passPlaceOfIssue
-                        }
-                      />
-                    </Grid>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="passIssueDt"
-                        label={t('reservation.passport-issue-date')}
-                        value={values.passIssueDt}
-                        error={
-                          touched.passIssueDt && Boolean(errors.passIssueDt)
-                        }
-                        helperText={touched.passIssueDt && errors.passIssueDt}
-                        type="date"
-                      />
-                    </Grid>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="passExpireDt"
-                        label={t('reservation.passport-expire-date')}
-                        value={values.passExpireDt}
-                        error={
-                          touched.passExpireDt && Boolean(errors.passExpireDt)
-                        }
-                        helperText={touched.passExpireDt && errors.passExpireDt}
-                        type="date"
-                      />
-                    </Grid>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="birthDate"
-                        label={t('reservation.birth-date')}
-                        value={values.birthDate}
-                        error={touched.birthDate && Boolean(errors.birthDate)}
-                        helperText={touched.birthDate && errors.birthDate}
-                        type="date"
-                      />
-                    </Grid>
-                    <Grid item xs={5} md={5}>
-                      <InputControl
-                        name="birthPlace"
-                        label={t('reservation.birth-place')}
-                        value={values.birthPlace}
-                        error={touched.birthPlace && Boolean(errors.birthPlace)}
-                        helperText={touched.birthPlace && errors.birthPlace}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item md={12} className={classes.p1rem0}>
-                    <Box ml={2} mb={2}>
-                      <Typography variant="subtitle2">
-                        {t('reservation.residency-permit-info')}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid container justifyContent="space-around" spacing={1} style={{backgroundColor: '#ffcc80', padding: '16px', borderRadius: '16px'}}>
-                    <Grid item xs={12} md={3}>
-                      <InputControl
-                        name="idNumber"
-                        required={false}
-                        label={t('reservation.id-number')}
-                        value={values.idNumber}
-                        error={touched.idNumber && Boolean(errors.idNumber)}
-                        helperText={touched.idNumber && errors.idNumber}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <InputControl
-                        name="idNumberIssueDate"
-                        label={t('reservation.id-issue-date')}
-                        required={false}
-                        value={values.idNumberIssueDate}
-                        error={
-                          touched.idNumberIssueDate &&
-                          Boolean(errors.idNumberIssueDate)
-                        }
-                        helperText={
-                          touched.idNumberIssueDate && errors.idNumberIssueDate
-                        }
-                        type="date"
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <InputControl
-                        name="idNumberExpireDate"
-                        label={t('reservation.id-expire-date')}
-                        value={values.idNumberExpireDate}
-                        required={false}
-                        error={
-                          touched.idNumberExpireDate &&
-                          Boolean(errors.idNumberExpireDate)
-                        }
-                        helperText={
-                          touched.idNumberExpireDate &&
-                          errors.idNumberExpireDate
-                        }
-                        type="date"
-                      />
-                    </Grid>
-                  </Grid>
-
-                  <Grid item md={12}>
-                    <Box ml={2} mb={2}>
-                      <Typography variant="subtitle2">
-                        {t('reservation.upload-your-vaccine')}
-                      </Typography>
-                    </Box>
-                    <Box
-                      className={classes.passportBox}
-                      style={{backgroundColor: '#ff9900', color: '#006b6b', borderRadius: '16px'}}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        uploadImageHandler((val) => setVaccineURL(val));
-                      }}
-                    >
-                      {vaccineURL ? (
-                        <img
-                          src={vaccineURL}
-                          width="100%"
-                          height="100%"
-                          alt="passport"
-                          style={{ objectFit: 'cover' }}
+                      <Grid item xs={12} md={5}>
+                        <InputControl
+                          name="phone"
+                          required={false}
+                          label={t('reservation.telephone')}
+                          value={values.phone}
+                          error={touched.phone && Boolean(errors.phone)}
+                          helperText={touched.phone && errors.phone}
                         />
-                      ) : (
-                        <>
-                          <AddCircleOutlineIcon
-                            color="primary"
-                            fontSize="large"
-                          />
-                          <Typography>
-                            {t('reservation.upload-your-vaccine')}
-                          </Typography>
-                        </>
-                      )}
-                    </Box>
-                  </Grid>
-                  <Grid item md={12} className={classes.p1rem0}>
-                    <Box ml={2} mb={2}>
-                      <Typography variant="subtitle2">
-                        {t('more-information')}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid container justifyContent="space-around" spacing={2} style={{backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px'}}>
-                    <Grid item xs={12} md={5}>
-                      <InputControl
-                        name="profession"
-                        label={t('reservation.profession')}
-                        value={values.profession}
-                        error={touched.profession && Boolean(errors.profession)}
-                        helperText={touched.profession && errors.profession}
-                        required={false}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={5}>
-                      <InputControl
-                        name="phone"
-                        required={false}
-                        label={t('reservation.telephone')}
-                        value={values.phone}
-                        error={touched.phone && Boolean(errors.phone)}
-                        helperText={touched.phone && errors.phone}
-                      />
-                    </Grid>
-                    <Grid item md={11}>
-                      <InputControl
-                        name="email"
-                        label={t('reservation.email')}
-                        value={values.email}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                        required={false}
-                      />
-                    </Grid>
-                    <Grid item md={11}>
-                      <InputControl
-                        multiline
-                        required={false}
-                        name="comments"
-                        label={t('reservation.message')}
-                        value={values.comments}
-                        error={touched.comments && Boolean(errors.comments)}
-                        helperText={touched.comments && errors.comments}
-                      />
+                      </Grid>
+                      <Grid item md={11}>
+                        <InputControl
+                          name="email"
+                          label={t('reservation.email')}
+                          value={values.email}
+                          error={touched.email && Boolean(errors.email)}
+                          helperText={touched.email && errors.email}
+                          required={false}
+                        />
+                      </Grid>
+                      <Grid item md={11}>
+                        <InputControl
+                          multiline
+                          required={false}
+                          name="comments"
+                          label={t('reservation.message')}
+                          value={values.comments}
+                          error={touched.comments && Boolean(errors.comments)}
+                          helperText={touched.comments && errors.comments}
+                        />
+                      </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item container justifyContent="flex-end">
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={!isValid || isSubmitting}
-                        className={classes.submitBtn}
-                        size="large"
-                        type="submit"
-                        startIcon={<FlightTakeoffIcon />}
-                      >
-                        {isSubmitting
-                          ? t('reservation.submitting')
-                          : t('reservation.submit')}
-                      </Button>
-                    </Grid>
+                </div>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={!isValid || isSubmitting}
+                      className={classes.submitBtn}
+                      size="large"
+                      type="submit"
+                      startIcon={<FlightTakeoffIcon />}
+                    >
+                      {isSubmitting
+                        ? t('reservation.submitting')
+                        : t('reservation.submit')}
+                    </Button>
                   </Grid>
                 </Grid>
               </Form>
