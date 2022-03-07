@@ -11,7 +11,7 @@ const defaultTheme = createTheme({
     success: { main: '#ffb480' },
     warning: { main: '#ffdabf' },
     info: { main: '#ff80d9' },
-    text: { primary: '#910066', secondary: '#cf0092' },
+    text: { primary: '#b34a00', secondary: '#cf0092' },
   },
 });
 

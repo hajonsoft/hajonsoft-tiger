@@ -6,7 +6,8 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import _ from "lodash";
@@ -27,6 +28,7 @@ const AppHeader = () => {
   )}`;
 
   let history = useHistory();
+  const theme = useTheme();
   const passengers = useSelector(state => state.passenger?.data);
 
   const handleLogout = () => {
@@ -68,32 +70,25 @@ const AppHeader = () => {
           {!isMobile && (
             <Grid item xs={6}>
               <Button
-                color="secondary"
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: theme.palette.background.default }}
                 onClick={() => history.push("/caravans")}
               >
                 {t('caravans')}
               </Button>
               <Button
-                color="secondary"
-
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: theme.palette.background.default }}
                 onClick={() => history.push("/market")}
               >
                 {t('online')}
               </Button>
               <Button
-                color="secondary"
-
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: theme.palette.background.default }}
                 onClick={() => history.push("/trade")}
               >
                 {t('trade')}
               </Button>
               <Button
-                color="secondary"
-
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: theme.palette.background.default }}
                 onClick={() => history.push("/help")}
               >
                 {t('support-1')}
@@ -112,10 +107,9 @@ const AppHeader = () => {
           >
             <Grid item>
               <Button
-                color="secondary"
                 onClick={() => history.push("/profile")}
                 style={{
-                  textTransform: "none",
+                  textTransform: "none", color: theme.palette.background.default
                 }}
               >
                 {`${authData.email}`}
@@ -126,7 +120,7 @@ const AppHeader = () => {
             </Grid>
             <Grid item>
               <Button
-                color="secondary"
+                style={{ color: theme.palette.background.default}}
                 onClick={handleLogout}>
                 {t('sign-out')}
               </Button>
