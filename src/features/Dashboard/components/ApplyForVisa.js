@@ -1,18 +1,22 @@
 import {
   Box,
-  Button, Checkbox,
-  CircularProgress, Dialog,
+  Button,
+  Checkbox,
+  CircularProgress,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl, FormControlLabel, Grid,
+  FormControl,
+  FormControlLabel,
+  Grid,
   IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -35,18 +39,26 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import firebaseConfig from "../../../firebaseConfig";
-import hawkImg from '../../../images/hawk.svg';
+import hawkImg from "../../../images/hawk.svg";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
-import t from '../../../shared/util/trans';
-import { getPassengersJSON, getStorageUrl, zipWithPhotos } from "../helpers/common";
-import { createVisaSystem, deleteVisaSystem, getVisaSystems } from "../redux/visaSystemSlice";
-import wtuImg from '../../../assets/wtu.jpg'
-import gmaImg from '../../../assets/gma.jpg'
-import twfImg from '../../../assets/twf.jpg'
-import enjImg from '../../../assets/enj.jpg'
-import vstImg from '../../../assets/vst.jpg'
-import hsfImg from '../../../assets/hsf.jpg'
-import sbrImg from '../../../assets/sbr.jpg'
+import t from "../../../shared/util/trans";
+import {
+  getPassengersJSON,
+  getStorageUrl,
+  zipWithPhotos,
+} from "../helpers/common";
+import {
+  createVisaSystem,
+  deleteVisaSystem,
+  getVisaSystems,
+} from "../redux/visaSystemSlice";
+import wtuImg from "../../../assets/wtu.jpg";
+import gmaImg from "../../../assets/gma.jpg";
+import twfImg from "../../../assets/twf.jpg";
+import enjImg from "../../../assets/enj.jpg";
+import vstImg from "../../../assets/vst.jpg";
+import hsfImg from "../../../assets/hsf.jpg";
+import sbrImg from "../../../assets/sbr.jpg";
 
 const webcrypto = require("cryptr");
 
@@ -108,17 +120,36 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const serviceProviders = [
   { value: "bau", name: "Bab-al-umrah (Inactive)" },
-  { value: "wtu", name: "Way-to-umrah [https://www.waytoumrah.com]", img: wtuImg },
+  {
+    value: "wtu",
+    name: "Way-to-umrah [https://www.waytoumrah.com]",
+    img: wtuImg,
+  },
   { value: "gma", name: "Gabul-ya-hajj [https://eumra.com]", img: gmaImg },
   { value: "twf", name: "Tawaf [https://tawaf.com.sa]", img: twfImg },
-  { value: "hsf", name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]", img: hsfImg },
-  { value: "enj", name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]", img: enjImg },
+  {
+    value: "hsf",
+    name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]",
+    img: hsfImg,
+  },
+  {
+    value: "enj",
+    name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]",
+    img: enjImg,
+  },
   { value: "ehr", name: "Ehaj (Reservation)" },
   { value: "ehj", name: "Ehaj (Submit)" },
-  { value: "vst", name: "Visit-visa [https://visa.visitsaudi.com]", img: vstImg },
+  {
+    value: "vst",
+    name: "Visit-visa [https://visa.visitsaudi.com]",
+    img: vstImg,
+  },
   { value: "mot", name: "Egypt-Tourism" },
-  { value: "sbr", name: "Sabre Ticket Reduce [https://srw.sabre.com/]", img: sbrImg },
-
+  {
+    value: "sbr",
+    name: "Sabre Ticket Reduce [https://srw.sabre.com/]",
+    img: sbrImg,
+  },
 ];
 
 const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
@@ -126,96 +157,115 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const dispatch = useDispatch();
 
   const [expandedPanel, setExpandedPanel] = React.useState("");
-  const [selectedPassengers, setSelectedPassengers] = React.useState(
-    passengers
-  );
-  const [serviceProviderAddMode, setServiceProviderAddMode] = React.useState(
-    false
-  );
-  const [selectedServiceProvider, setSelectedServiceProvider] = React.useState(
-    ""
-  );
-  const [
-    serviceProviderUsername,
-    setServiceProviderProfileUsername,
-  ] = React.useState("");
-  const [
-    serviceProviderPassword,
-    setServiceProviderProfilePassword,
-  ] = React.useState("");
-  const [
-    serviceProviderEmbassy,
-    setServiceProviderProfileEmbassy,
-  ] = React.useState("");
+  const [selectedPassengers, setSelectedPassengers] =
+    React.useState(passengers);
+  const [serviceProviderAddMode, setServiceProviderAddMode] =
+    React.useState(false);
+  const [selectedServiceProvider, setSelectedServiceProvider] =
+    React.useState("");
+  const [serviceProviderUsername, setServiceProviderProfileUsername] =
+    React.useState("");
+  const [serviceProviderPassword, setServiceProviderProfilePassword] =
+    React.useState("");
+  const [serviceProviderEmbassy, setServiceProviderProfileEmbassy] =
+    React.useState("");
 
   const [downloadFileName, setDownloadFileName] = useState("");
   const [downloading, setDownloading] = useState(false);
-  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(localStorage.getItem('selected-service-provider-profile') || '');
+  const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(
+    localStorage.getItem("selected-service-provider-profile") || ""
+  );
   const [sendingMail, setSendingMail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState();
+  const profile = useSelector((state) => state?.profile?.data);
 
   async function sendEmail() {
     setSendingMail(true);
     const travellersData = getPassengersJSON(selectedPassengers);
 
     for (let index = 0; index < travellersData.length; index++) {
+      const traveller = travellersData[index];
 
-      const traveller = travellersData[index]
-
-      // verify name 
-      if (!traveller.name.full.trim()) {
-        alert("Can't send visa by proxy. Some of your passengers does not seems to have a full name")
-        return
+      // verify profile email
+      if (!profile.email) {
+        alert(
+          "Can't send visa by proxy. Notification email is missing in profile. To enter notification email, click your login (header top right)."
+        );
+        return setSendingMail(false);
       }
 
-      // verify nationality 
+      // verify name
+      if (!traveller.name.full.trim()) {
+        alert(
+          "Can't send visa by proxy. Some of your passengers does not seems to have a full name"
+        );
+        return setSendingMail(false);
+      }
+
+      // verify nationality
       if (!traveller.nationality.name.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`
+        );
+        return setSendingMail(false);
       }
 
       // verify gender
       if (!traveller.gender.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a gender. Please fill the gender field to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a gender. Please fill the gender field to continue`
+        );
+        return setSendingMail(false);
       }
 
       // verify passportNumber
       if (!traveller.passportNumber.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`
+        );
+        return setSendingMail(false);
       }
 
       // verify place of issue
       if (!traveller.placeOfIssue.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`
+        );
+        return setSendingMail(false);
       }
 
       // verify birth date
       if (!traveller.dob.dmy.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`
+        );
+        return setSendingMail(false);
       }
 
       // verify birth place
       if (!traveller.birthPlace.trim()) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`
+        );
+        return setSendingMail(false);
       }
 
-      // verify photo 
+      // verify photo
       try {
         const photoUrl = await getStorageUrl(
           `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
         );
         if (!photoUrl) {
-          alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`)
-          return
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
+          );
+          return setSendingMail(false);
         }
       } catch (err) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
+        );
+        return setSendingMail(false);
       }
 
       // verify passport
@@ -224,12 +274,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
           `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
         );
         if (!passportUrl) {
-          alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`)
-          return
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
+          );
+          return setSendingMail(false);
         }
       } catch (err) {
-        alert(`Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`)
-        return
+        alert(
+          `Can't send visa by proxy. The passenger with the name ( ${traveller.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
+        );
+        return setSendingMail(false);
       }
     }
 
@@ -253,14 +307,21 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
     const bundleFile = await zip.generateAsync({
       type: "base64",
-      mimeType: "application/zip"
+      mimeType: "application/zip",
     });
 
     const data = {
       summary: `${firebaseConfig.projectId}: ${travellersData.length} PAX (${exportVisaSystem.usap})\n   node . file=bundle.zip`,
-      description: `${JSON.stringify(travellersData.map(traveller => `${traveller.name?.full}-${traveller.nationality?.name}`), null, 2)}`,
+      description: `${JSON.stringify(
+        travellersData.map(
+          (traveller) =>
+            `${traveller.name?.full}-${traveller.nationality?.name}`
+        ),
+        null,
+        2
+      )}`,
       variable_7e6p61s: bundleFile,
-      embassy: 'embassy: ' + exportVisaSystem.embassy,
+      embassy: "embassy: " + exportVisaSystem.embassy,
     };
 
     emailjs
@@ -278,7 +339,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
           setEmailSuccess(false);
         }
       );
-
   }
 
   React.useEffect(() => {
@@ -286,12 +346,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     dispatch(getVisaSystems());
   }, [dispatch, passengers]);
 
-  const visaSystems = useSelector(state => state.visaSystem?.data);
+  const visaSystems = useSelector((state) => state.visaSystem?.data);
 
   const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
       setSelectedVisaSystem(systemIndex);
-      localStorage.setItem('selected-service-provider-profile', systemIndex);
+      localStorage.setItem("selected-service-provider-profile", systemIndex);
     }
   };
 
@@ -303,22 +363,24 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   };
 
   const handleDoneAddServiceProviderProfile = () => {
-    dispatch(createVisaSystem({
-      usap: selectedServiceProvider,
-      username: serviceProviderUsername,
-      password: serviceProviderPassword,
-      embassy: serviceProviderEmbassy,
-    }))
+    dispatch(
+      createVisaSystem({
+        usap: selectedServiceProvider,
+        username: serviceProviderUsername,
+        password: serviceProviderPassword,
+        embassy: serviceProviderEmbassy,
+      })
+    );
     setServiceProviderAddMode(false);
   };
   const handleOnDeleteServiceProviderProfile = (visaSystemIndex) => {
-    dispatch(deleteVisaSystem(visaSystems[visaSystemIndex]._fid))
+    dispatch(deleteVisaSystem(visaSystems[visaSystemIndex]._fid));
   };
 
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
     setDownloadFileName("");
-    setTimeout(makePassengersFile, 1000)
+    setTimeout(makePassengersFile, 1000);
   };
 
   async function makePassengersFile() {
@@ -326,8 +388,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
-        username: exportVisaSystem?.username && crypt.encrypt(exportVisaSystem?.username),
-        password: exportVisaSystem?.password && crypt.encrypt(exportVisaSystem?.password),
+        username:
+          exportVisaSystem?.username &&
+          crypt.encrypt(exportVisaSystem?.username),
+        password:
+          exportVisaSystem?.password &&
+          crypt.encrypt(exportVisaSystem?.password),
         embassy: exportVisaSystem?.embassy,
         name: exportVisaSystem?.usap,
       },
@@ -346,9 +412,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
-      const fileName = `${sanitizeCaravanName(caravan) +
+      const fileName = `${
+        sanitizeCaravanName(caravan) +
         "_" +
-        parseInt(moment().format("X")).toString(36)}.zip`;
+        parseInt(moment().format("X")).toString(36)
+      }.zip`;
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
@@ -387,9 +455,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const tempLink = document.createElement("a");
     tempLink.href = new URL(
       "hawk://mode=send,fileName=" +
-      downloadFileName +
-      ",host=" +
-      firebaseConfig.projectId
+        downloadFileName +
+        ",host=" +
+        firebaseConfig.projectId
     );
     tempLink.click();
   };
@@ -423,12 +491,14 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         maxWidth="lg"
         keepMounted
       >
-        <DialogTitle>{t('apply-for-visa')}</DialogTitle>
+        <DialogTitle>{t("apply-for-visa")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {t('hajonsoft-uses-hawk-application-to-connect-to-travel-service-providers-if-you-are-new-or-using-macos-you-can-select-visa-by-proxy-use-eagle-or')}{" "}
+            {t(
+              "hajonsoft-uses-hawk-application-to-connect-to-travel-service-providers-if-you-are-new-or-using-macos-you-can-select-visa-by-proxy-use-eagle-or"
+            )}{" "}
             <a href="https://hajonsoft.talentlms.com/catalog/info/id:125">
-              {t('take-a-course')}
+              {t("take-a-course")}
             </a>
           </DialogContentText>
 
@@ -439,7 +509,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t('step-1-choose-passengers')}
+                  {t("step-1-choose-passengers")}
                 </Typography>
                 <Typography
                   className={classes.secondaryHeading}
@@ -449,15 +519,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                 <Grid container justifyContent="space-between">
                   <Grid item md={6}>
                     <Button onClick={() => setSelectedPassengers(passengers)}>
-                      {t('select-all')}
+                      {t("select-all")}
                     </Button>
                   </Grid>
                   <Grid item md={6} container justifyContent="flex-end">
                     <Button onClick={() => setSelectedPassengers([])}>
-                      {t('deselect-all')}
+                      {t("deselect-all")}
                     </Button>
                   </Grid>
-                  {passengers && passengers.length > 0 &&
+                  {passengers &&
+                    passengers.length > 0 &&
                     passengers?.map((passenger) => (
                       <Grid item key={passenger._fid}>
                         <FormControlLabel
@@ -489,7 +560,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t('step-2-choose-service-provider-profile')}
+                  {t("step-2-choose-service-provider-profile")}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
                   {getSelectedServiceProviderProfile()}
@@ -501,15 +572,22 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     <Grid container alignItems="center">
                       <Grid item md={11}>
                         <FormControl fullWidth variant="filled">
-                          <InputLabel>{t('service-provider-profile')}</InputLabel>
+                          <InputLabel>
+                            {t("service-provider-profile")}
+                          </InputLabel>
                           <Select
                             value={selectedVisaSystem}
                             onChange={(e) =>
                               handleServiceProviderProfileChange(e.target.value)
                             }
                           >
-                            <MenuItem value={""} key="defaultvalue_serviceproviderprofile">
-                              <Typography color="textSecondary">{t('please-select-service-provider-profile')}</Typography>
+                            <MenuItem
+                              value={""}
+                              key="defaultvalue_serviceproviderprofile"
+                            >
+                              <Typography color="textSecondary">
+                                {t("please-select-service-provider-profile")}
+                              </Typography>
                             </MenuItem>
                             {visaSystems &&
                               visaSystems?.length > 0 &&
@@ -523,11 +601,18 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                                     <Grid item>
                                       {getServiceProviderProfileImage(
                                         x.usap
-                                      ) && <img src={getServiceProviderProfileImage(
-                                        x.usap
-                                      )} width="100" height="50" alt={x.username}/>}
+                                      ) && (
+                                        <img
+                                          src={getServiceProviderProfileImage(
+                                            x.usap
+                                          )}
+                                          width="100"
+                                          height="50"
+                                          alt={x.username}
+                                        />
+                                      )}
                                     </Grid>
-                                    <Grid item style={{flexGrow: 1}}>
+                                    <Grid item style={{ flexGrow: 1 }}>
                                       {`${getServiceProviderProfileName(
                                         x.usap
                                       )} ${x.username}`}
@@ -555,7 +640,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         </FormControl>
                       </Grid>
                       <Grid item md={1}>
-                        <IconButton aria-label="add" onClick={() => setServiceProviderAddMode(true)}>
+                        <IconButton
+                          aria-label="add"
+                          onClick={() => setServiceProviderAddMode(true)}
+                        >
                           <AddIcon />
                         </IconButton>
                       </Grid>
@@ -569,7 +657,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       spacing={2}
                     >
                       <Grid item md={12}>
-                        {t('enter-service-provider-profile-details-then-press-done')}
+                        {t(
+                          "enter-service-provider-profile-details-then-press-done"
+                        )}
                       </Grid>
                       <Grid item md={7}>
                         <Select
@@ -583,11 +673,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             <MenuItem value={ausap.value}>
                               <Grid container spacing={1} alignItems="center">
                                 <Grid item>
-                                  {ausap.img && <img src={ausap.img} width="100" height="50" alt={ausap.name} />}
+                                  {ausap.img && (
+                                    <img
+                                      src={ausap.img}
+                                      width="100"
+                                      height="50"
+                                      alt={ausap.name}
+                                    />
+                                  )}
                                 </Grid>
-                                <Grid item>
-                                  {ausap.name}
-                                </Grid>
+                                <Grid item>{ausap.name}</Grid>
                               </Grid>
                             </MenuItem>
                           ))}
@@ -630,7 +725,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Button
                           onClick={() => setServiceProviderAddMode(false)}
                         >
-                          {t('cancel')}
+                          {t("cancel")}
                         </Button>
                       </Grid>
                       <Grid item md={1}>
@@ -638,7 +733,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           onClick={handleDoneAddServiceProviderProfile}
                           color="primary"
                         >
-                          {t('done')}
+                          {t("done")}
                         </Button>
                       </Grid>
                     </Grid>
@@ -652,33 +747,33 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t('step-3-bundle-and-process')}
+                  {t("step-3-bundle-and-process")}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
-                  {t('create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket')}
+                  {t(
+                    "create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket"
+                  )}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  spacing={2}
-                >
+                <Grid container justifyContent="space-between" spacing={2}>
                   <Grid item md={12}>
                     <Typography variant="body1">
-                      {t('bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk')}{" "}
+                      {t(
+                        "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk"
+                      )}{" "}
                       <a href="https://meetings.hubspot.com/haj-onsoft">
                         {" "}
-                        {t('schedule-a-meeting')}
+                        {t("schedule-a-meeting")}
                       </a>
                       ` - OR - `
                       <a href="https://hajonsoft.talentlms.com/unit/view/id:2124">
-                        {t('or-watch-install-video')}
+                        {t("or-watch-install-video")}
                       </a>
                     </Typography>
                     <Box style={{ textAlign: "right", width: "100%" }}>
                       <Typography variant="body2" align="right">
-                        {t('useful-links')}
+                        {t("useful-links")}
                         <a
                           style={{ marginLeft: "2rem" }}
                           target="_blank"
@@ -709,19 +804,38 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   <Grid item md={12}>
                     <Grid container justifyContent="space-around" spacing={1}>
                       <Grid item md={3}>
-                        <Typography variant="h5">{t('step-1-bundle')}</Typography>
-                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? downloadFileName : t('required')}</Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          {t('bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller')}
+                        <Typography variant="h5">
+                          {t("step-1-bundle")}
                         </Typography>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                        <Typography
+                          variant="subtitle2"
+                          color="textSecondary"
+                          gutterBottom
+                        >
+                          {downloadFileName ? downloadFileName : t("required")}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          {t(
+                            "bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller"
+                          )}
+                        </Typography>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: "1rem",
+                          }}
+                        >
                           {!downloading && (
                             <Button
-                              disabled={selectedVisaSystem === "" || downloading}
+                              disabled={
+                                selectedVisaSystem === "" || downloading
+                              }
                               onClick={handleDownloadZipFileClick}
                               startIcon={<CloudDownloadOutlined />}
-                              style={{ textTransform: 'none' }}>
-                              {t('download-now')}
+                              style={{ textTransform: "none" }}
+                            >
+                              {t("download-now")}
                             </Button>
                           )}
                           {downloading && (
@@ -738,22 +852,43 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Divider orientation="vertical" />
                       </Grid>
                       <Grid item md={3}>
-                        <Typography variant="h5">{t('step-2-hawk')}</Typography>
-                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{downloadFileName ? `node . file=${downloadFileName}` : t('optional')}</Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          {t('hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting')}
+                        <Typography variant="h5">{t("step-2-hawk")}</Typography>
+                        <Typography
+                          variant="subtitle2"
+                          color="textSecondary"
+                          gutterBottom
+                        >
+                          {downloadFileName
+                            ? `node . file=${downloadFileName}`
+                            : t("optional")}
                         </Typography>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                        <Typography variant="caption" color="textSecondary">
+                          {t(
+                            "hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting"
+                          )}
+                        </Typography>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: "1rem",
+                          }}
+                        >
                           <Button
                             disabled={!downloadFileName}
                             onClick={handleSendDownloadedFile}
-                            style={{ textTransform: 'none' }}
+                            style={{ textTransform: "none" }}
                             startIcon={<CloudUploadOutlined />}
                           >
-                            {t('hawk-bundle')}
+                            {t("hawk-bundle")}
                           </Button>
                           <Button onClick={handleOpenHawk}>
-                            <img src={hawkImg} alt="hawk" width="32" height="32" />
+                            <img
+                              src={hawkImg}
+                              alt="hawk"
+                              width="32"
+                              height="32"
+                            />
                           </Button>
                         </div>
                       </Grid>
@@ -761,18 +896,37 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Divider orientation="vertical" />
                       </Grid>
                       <Grid item md={4}>
-                        <Typography variant="h5">{t('or-visa-by-proxy')} <CheckCircle color="action" /> </Typography>
-                        <Typography variant="subtitle2" color="textSecondary" gutterBottom>{t('premium-support-service')}</Typography>
+                        <Typography variant="h5">
+                          {t("or-visa-by-proxy")} <CheckCircle color="action" />{" "}
+                        </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          color="textSecondary"
+                          gutterBottom
+                        >
+                          {t("premium-support-service")}
+                        </Typography>
                         <Typography variant="caption" color="textSecondary">
-                          {t('we-use-spicework-to-manage-visa-by-proxy-tickets-email-to')}
+                          {t(
+                            "we-use-spicework-to-manage-visa-by-proxy-tickets-email-to"
+                          )}
                         </Typography>
 
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem', alignItems: 'center' }}>
-                          <Button onClick={sendEmail}
-                            style={{ textTransform: 'none' }}
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: "1rem",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Button
+                            onClick={sendEmail}
+                            style={{ textTransform: "none" }}
                             startIcon={<Person />}
-                            target="_blank">
-                            {t('create-visa-by-proxy-ticket')}
+                            target="_blank"
+                          >
+                            {t("create-visa-by-proxy-ticket")}
                           </Button>
                           <div>
                             <a
@@ -780,7 +934,14 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              <AlternateEmail style={{ width: '16px', height: '16px', color: '#009688', marginLeft: '0.5rem' }} />
+                              <AlternateEmail
+                                style={{
+                                  width: "16px",
+                                  height: "16px",
+                                  color: "#009688",
+                                  marginLeft: "0.5rem",
+                                }}
+                              />
                             </a>
                           </div>
                         </div>
@@ -794,7 +955,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>{t('close')}</Button>
+          <Button onClick={onClose}>{t("close")}</Button>
         </DialogActions>
       </Dialog>
 
@@ -818,7 +979,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             {sendingMail && !emailSuccess && (
               <>
                 {" "}
-                <h2 style={{ textAlign: "center" }}>{`Creating visa by proxy request for ${selectedPassengers.length} passengers. Embassy: ${visaSystems[selectedVisaSystem].embassy}`}</h2>
+                <h2
+                  style={{ textAlign: "center" }}
+                >{`Creating visa by proxy request for ${selectedPassengers.length} passengers. Embassy: ${visaSystems[selectedVisaSystem].embassy}`}</h2>
                 <div
                   style={{
                     display: "flex",
@@ -837,7 +1000,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     style={{ textAlign: "center", paddingTop: "1rem" }}
                   >
                     {" "}
-                    {t('this-might-take-some-time-please-do-not-refresh-page')}{" "}
+                    {t(
+                      "this-might-take-some-time-please-do-not-refresh-page"
+                    )}{" "}
                   </Typography>
                 </div>{" "}
               </>
@@ -845,7 +1010,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
             {emailSuccess === false && sendingMail && (
               <p style={{ textAlign: "center" }}>
                 {" "}
-                {t('couldnt-create-ticket-please-try-again')}{" "}
+                {t("couldnt-create-ticket-please-try-again")}{" "}
               </p>
             )}
             {emailSuccess === true && sendingMail && (
@@ -858,7 +1023,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   />
                 </div>
                 <Typography style={{ textAlign: "center" }}>
-                  {t('your-visa-by-proxy-request-has-been-created-please-check-your-email')}
+                  {t(
+                    "your-visa-by-proxy-request-has-been-created-please-check-your-email"
+                  )}
                 </Typography>
                 <div className={classes.mailBtnContainer}>
                   <Button
@@ -870,7 +1037,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       setEmailSuccess(false);
                     }}
                   >
-                    {t('continue-to-app')}
+                    {t("continue-to-app")}
                   </Button>
                 </div>
               </>
