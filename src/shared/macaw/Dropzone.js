@@ -1,8 +1,8 @@
-import { Grid , Typography} from "@material-ui/core";
+import { Grid, Tooltip, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
+import FolderOpenOutlinedIcon from "@material-ui/icons/FolderOpenOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
@@ -15,7 +15,7 @@ import firebase from "../../firebaseapp";
 import Worker from "../../workers/parser.worker";
 import firebaseArabicName from "../../features/arabicName/firebaseArabicName";
 import CustomerImportCard from "../../features/passengers/components/CustomerImportCard";
-import t from '../../shared/util/trans';
+import t from "../../shared/util/trans";
 const storage = firebase.storage();
 
 const getFullArabicName = (arabicNameDictionary) => {
@@ -86,8 +86,9 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
       const metadata = {
         contentType: "image/jpeg",
       };
-      const fileName = `${values.nationality ||
-        "unknown"}/${values.passportNumber || "unknown"}.jpg`;
+      const fileName = `${values.nationality || "unknown"}/${
+        values.passportNumber || "unknown"
+      }.jpg`;
       let ref = storage.ref(fileName);
       ref
         .put(image, metadata)
@@ -105,8 +106,9 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
       const metadata = {
         contentType: "image/jpeg",
       };
-      const passportFileName = `${values.nationality ||
-        "unknown"}/${values.passportNumber || "unknown"}_passport.jpg`;
+      const passportFileName = `${values.nationality || "unknown"}/${
+        values.passportNumber || "unknown"
+      }_passport.jpg`;
       let ref = storage.ref(passportFileName);
       ref.put(passportImage, metadata);
     }
@@ -222,8 +224,9 @@ function DropZone({ packageName, onClose }) {
               <Grid container spacing={1}>
                 {importsLength - failed.length ? (
                   <Grid item xs={12}>
-                    <Alert severity="success" color="info">{`${importsLength -
-                      failed.length} customers imported`}</Alert>
+                    <Alert severity="success" color="info">{`${
+                      importsLength - failed.length
+                    } customers imported`}</Alert>
                   </Grid>
                 ) : (
                   ""
@@ -252,7 +255,7 @@ function DropZone({ packageName, onClose }) {
                       }}
                       startIcon={<RefreshOutlined />}
                     >
-                      {t('import-again')}
+                      {t("import-again")}
                     </Button>
                   </Grid>
                   <Grid item>
@@ -267,7 +270,7 @@ function DropZone({ packageName, onClose }) {
                       }}
                       startIcon={<RefreshOutlined />}
                     >
-                      {t('finish')}
+                      {t("finish")}
                     </Button>
                   </Grid>
                 </Grid>
@@ -304,19 +307,50 @@ function DropZone({ packageName, onClose }) {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Grid item><Typography variant="subtitle1" color="textSecondary">Drop your scanned files here or click to select... </Typography></Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Drop your scanned files here or click to select...{" "}
+                    </Typography>
+                  </Grid>
                   <Grid item>
                     <FileCopyOutlinedIcon />
                   </Grid>
-                  <Grid item container justifyContent="space-between" style={{marginTop: '10rem'}}>
+                  <Grid
+                    item
+                    container
+                    justifyContent="space-between"
+                    style={{ marginTop: "10rem" }}
+                  >
                     <Grid item>
-                      <Button onClick={handle3MClick} startIcon={<FolderOpenOutlinedIcon />} size="small">3M AT9000MK2 folder </Button>
+                      <Tooltip title="c:\hajonsoft">
+                        <Button
+                          onClick={handle3MClick}
+                          startIcon={<FolderOpenOutlinedIcon />}
+                          size="small"
+                        >
+                          3M AT9000MK2 folder
+                        </Button>
+                      </Tooltip>
                     </Grid>
                     <Grid item>
-                      <Button onClick={handleComboClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >ARH Combo Smart folder</Button>
+                      <Tooltip title="c:\Program Files\GX\demos\PrDemoSDL\log">
+                        <Button
+                          onClick={handleComboClick}
+                          startIcon={<FolderOpenOutlinedIcon />}
+                          size="small"
+                        >
+                          ARH Combo Smart folder
+                        </Button>
+                      </Tooltip>
                     </Grid>
                     <Grid item>
-                      <Button onClick={handleStartScanClick} startIcon={<FolderOpenOutlinedIcon />} size="small" >Interactive Scan</Button>
+                      <Button
+                        onClick={handleStartScanClick}
+                        startIcon={<FolderOpenOutlinedIcon />}
+                        size="small"
+                      >
+                        Interactive Scan
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>
