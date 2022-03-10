@@ -7,6 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
+import moment from "moment-timezone";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import t from "../../../shared/util/trans";
@@ -228,6 +229,11 @@ const Footer = ({ lang, onLanguageChange }) => {
           <Typography variant="caption">
             &copy; {new Date().getFullYear()} Copyright:{" "}
             {window.location.origin}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="caption">
+            {moment.tz.guess()}
           </Typography>
         </Box>
       </Grid>
