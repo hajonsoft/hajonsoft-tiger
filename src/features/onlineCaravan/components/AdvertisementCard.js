@@ -62,18 +62,17 @@ const AdvertisementCard = ({ detail, index }) => {
         <Typography
           gutterBottom
           variant="h5"
-          component="h2"
           className={classes.title}
         >
           {detail.name}
         </Typography>
-        <Typography component="h1" className={classes.subTitle}>
+        <Typography variant="h1" className={classes.subTitle}>
           {detail.headline}
         </Typography>
         <Typography
           variant="body1"
           className={classes.description}
-          style={{ maxLines: 4 }}
+          style={{ maxLines: 3 }}
         >
           {detail.description || "Call for details."}
         </Typography>
@@ -82,17 +81,16 @@ const AdvertisementCard = ({ detail, index }) => {
         <Button
           title={`Make reservation to ${detail.name}`}
           color="primary"
-          style={{color: "#4caf50"}}
+          variant="contained"
           onClick={() => history.push(`/reserve/${detail.name}`)}
+          style={{textTransform: 'none'}}
         >
           {t('reservation.reserve')}
         </Button>
         <Button
           title={`Learn more about ${detail.name} package`}
           onClick={() => history.push(`/package/detail/${detail.name}`)}
-          size="large"
-          style={{color: "#4caf50"}}
-          color="primary"
+          style={{textTransform: 'none'}}
         >
           {t('learn-more')}
         </Button>

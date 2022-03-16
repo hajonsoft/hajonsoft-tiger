@@ -393,23 +393,23 @@ const Dashboard = () => {
                         setState((st) => ({ ...st, record: rowData }));
                       },
                     },
-                  !isPast &&
-                    state.mode === "list" && {
-                      icon: () => <tableIcons.Delete />,
-                      name: "delete",
-                      tooltip: `Delete ${title}`,
-                      onClick: (event, rowData) =>
-                        setState((st) => ({
-                          ...st,
-                          mode: "delete",
-                          record: rowData,
-                        })),
-                    },
                   !isPast && {
                     icon: () => <tableIcons.CallMerge />,
                     name: "merge",
                     tooltip: `Merge ${title}`,
                     onClick: (event, rowData) => handleMergeClick(rowData),
+                  },
+                  !isPast &&
+                  state.mode === "list" && {
+                    icon: () => <tableIcons.Delete />,
+                    name: "delete",
+                    tooltip: `Delete ${title}`,
+                    onClick: (event, rowData) =>
+                      setState((st) => ({
+                        ...st,
+                        mode: "delete",
+                        record: rowData,
+                      })),
                   },
                 ]}
                 components={{
@@ -436,7 +436,7 @@ const Dashboard = () => {
                           }
                           size="small"
                         >
-                          <DeleteOutlined />
+                          <DeleteOutlined color="error"/>
                         </IconButton>
                       )}
                       {props.action.name === "add" && (
@@ -455,10 +455,9 @@ const Dashboard = () => {
                           onClick={(event) =>
                             props.action.onClick(event, props.data)
                           }
-                          color="secondary"
                           size="small"
                         >
-                          <CallMergeIcon />
+                          <CallMergeIcon color="secondary" />
                         </IconButton>
                       )}
                     </div>

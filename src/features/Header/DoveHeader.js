@@ -59,7 +59,6 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
           }}
         >
           <Typography
-            color="textPrimary"
             onClick={() => history.push("/")}
             variant="h3"
           >
@@ -68,7 +67,6 @@ const DoveHeader = ({ onThemeChange, themeName, themes }) => {
           <Typography
             style={{ paddingLeft: "32px", paddingBottom: "8px" }}
             variant="subtitle2"
-            color="textSecondary"
           >
             {profile?.tel || "XXXX-XXX-XXX"}
           </Typography>

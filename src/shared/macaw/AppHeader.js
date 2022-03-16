@@ -57,12 +57,12 @@ const AppHeader = () => {
       <Toolbar style={{ color: "#fff" }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
-            <Typography variant="subtitle1" color="success">{`HAJonSoft | ${projectName}`}</Typography>
+            <Typography variant="subtitle1" >{`HAJonSoft | ${projectName}`}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton onClick={() => history.push("/favorite")}>
-              <Badge badgeContent={favoriteCount()} color="success">
-                <FavoriteIcon />
+              <Badge badgeContent={favoriteCount()} >
+                <FavoriteIcon style={{color: '#fff'}}/>
               </Badge>
             </IconButton>
           </Grid>
