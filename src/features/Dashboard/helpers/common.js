@@ -117,15 +117,24 @@ export async function zipWithPhotos(data, packageData) {
   const travellersCount = passengers.length;
   for (let index = 0; index < travellersCount; index++) {
     const traveller = passengers[index];
-    const photoUrl = await getStorageUrl(
+    let [photoUrl, passportUrl, vaccineUrl] = await Promise.all([
+      getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
-    ) || 'https://via.placeholder.com/200';
-    const passportUrl = await getStorageUrl(
+    ),
+    getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
-    ) || 'https://via.placeholder.com/400x300';
-    let vaccineUrl = await getStorageUrl(
+    ),
+    getStorageUrl(
       `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
-    );
+    )
+    ]);
+    if (!photoUrl) {
+      photoUrl = 'https://via.placeholder.com/200';
+    }
+
+    if (!passportUrl){
+      passportUrl = 'https://via.placeholder.com/400x300';
+    }
     if (!vaccineUrl) {
       vaccineUrl = passportUrl;
     }
@@ -135,6 +144,7 @@ export async function zipWithPhotos(data, packageData) {
       vaccine: vaccineUrl,
     };
   }
+
   const jsonData = JSON.stringify(data);
   zip.file("data.json", jsonData);
   return zip;
@@ -144,6 +154,7 @@ export const getStorageUrl = async (blobPath) => {
   try {
     const blobRef = storage.ref(blobPath);
     const blobUrl = await blobRef.getDownloadURL();
+    //TODO: Store the url back to the traveller
     return blobUrl;
   } catch (err) {
     console.log(

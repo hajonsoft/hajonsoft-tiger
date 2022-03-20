@@ -96,6 +96,8 @@ function Table({
       "birthDate",
       "birthPlace",
       "email",
+      "eNumber",
+      "eNumberBarcode",
       "gender",
       "idNumber",
       "idNumberExpireDate",

@@ -32,7 +32,8 @@ export function formatPassengers(passengers) {
                 "DDMMMYY")}-${passengers?.[i]?.gender?.substring(0, 1)}-${moment(passengers?.[i]?.passExpireDt).format(
                     "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
             saberSRDOC: `Not Implemented`,
-            mofaNumberBarcode: <Barcode value={passengers[i].mofaNumber} displayValue={false} />,
+            mofaNumberBarcode: <div style={{padding: '8px 16px, border: 5px solid brown'}}><Barcode value={passengers[i].mofaNumber} displayValue={false} /></div>,
+            eNumberBarcode: <div style={{padding: '8px 16px'}}><Barcode value={passengers[i].eNumber} displayValue={false} /> </div>,
         });
     }
     return formattedPassengers;
