@@ -1,44 +1,83 @@
-import { Button, Card, CardActions, CardContent } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CircularProgress,
+} from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import React, { useState } from "react";
-import { createCodeline } from '../util/codeline';
+import React, { useState, createRef, useEffect } from "react";
+import { createCodeline } from "../util/codeline";
+import { useScreenshot, createFileName } from "use-react-screenshot";
+import "./customer-code-line.css";
 
 const name = "codeLine";
 
 const CustomerCodeline = ({ mode, record, setFieldValue }) => {
+  const ref = createRef(null);
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0,
+  });
   const [editMode, setEditMode] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [line1, setLine1] = useState(
     record.codeLine &&
-    record.codeLine.length > 44 &&
-    record.codeLine.substring(0, 44)
+      record.codeLine.length > 44 &&
+      record.codeLine.substring(0, 44)
   );
   const [line2, setLine2] = useState(
     record.codeLine &&
-    record.codeLine.length > 45 &&
-    record.codeLine.substring(44)
+      record.codeLine.length > 45 &&
+      record.codeLine.substring(44)
   );
 
+  useEffect(() => {
+    const download = (
+      image,
+      { name = record.passportNumber, extension = "jpg" } = {}
+    ) => {
+      const a = document.createElement("a");
+      a.href = image;
+      a.download = createFileName(extension, name);
+      a.click();
+      setDownloading(false);
+    };
+    if (downloading) {
+      takeScreenShot(ref.current).then(download);
+    }
+  }, [downloading, ref, takeScreenShot, record.passportNumber]);
   const handleOnApply = () => {
     setFieldValue(name, line1 + line2);
     setEditMode(false);
   };
 
   const handleGenerateCodeline = () => {
-    const codeline = createCodeline(record)
-    setLine1(codeline.substring(0,44));
+    const codeline = createCodeline(record);
+    setLine1(codeline.substring(0, 44));
     setLine2(codeline.substring(44));
-    setFieldValue(name,codeline);
+    setFieldValue(name, codeline);
   };
-  const handlePDF417 = () => { };
+  const handlePDF417 = () => {};
+
+  console.log(image);
   return (
     <Grid item xs={12}>
       <Card>
         <CardContent>
-          <Grid container>
+          <Grid
+            container
+            ref={ref}
+            style={{ padding: downloading ? "100px 0 32px 32px" : "0" }}
+          >
             <Grid item xs={12}>
-              {!editMode && <div style={{fontFamily: 'verdana, san serif', letterSpacing: '1px', fontSize: '15px', marginBottom: '8px', fontWeight: '500'}}>{line1}</div>}
+              {!editMode && (
+                <div style={{ fontFamily: "ocrb", marginBottom: "8px" }}>
+                  {line1}
+                </div>
+              )}
               {editMode && (
                 <div>
                   <TextField
@@ -62,8 +101,11 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
               )}
             </Grid>
             <Grid item xs={12}>
-              {!editMode && <div style={{fontFamily: 'verdana, san serif', letterSpacing: '1px', fontSize: '15px', marginBottom: '8px', fontWeight: '500'}}>{line2}</div>}
-
+              {!editMode && (
+                <div style={{ fontFamily: "ocrb", marginBottom: "8px" }}>
+                  {line2}
+                </div>
+              )}
               {editMode && (
                 <div>
                   <TextField
@@ -91,7 +133,25 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
         <CardActions>
           {!editMode && <Button onClick={() => setEditMode(true)}>Edit</Button>}
           {!editMode && <Button onClick={handlePDF417}>PDF417</Button>}
-          {!editMode && <Button onClick={() => {} }>Download</Button>}
+          {!editMode && (
+            <Button
+              startIcon={
+                <div>
+                  {downloading && (
+                    <CircularProgress
+                      color="secondary"
+                      size={30}
+                      thickness={3}
+                      variant="indeterminate"
+                    />
+                  )}
+                </div>
+              }
+              onClick={() => setDownloading(true)}
+            >
+              {`${downloading ? 'Downloading' : 'Download MRZ Image'}`}
+            </Button>
+          )}
 
           {editMode && (
             <div>
