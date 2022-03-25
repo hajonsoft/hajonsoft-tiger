@@ -3,7 +3,7 @@ import {
 } from "@material-ui/core";
 import { PrintOutlined, SaveOutlined } from "@material-ui/icons";
 import Edit from "@material-ui/icons/Edit";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import ReactToPrint from "react-to-print";
 import { formatPassengers } from "../../../shared/util/formatPassengers";
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const EmbassyReports = ({ passengers }) => {
-  const [data, setData] = useState(formatPassengers(passengers));
+  const [data, setData] = useState([]);
   const [title, setTitle] = useState("Customers");
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles();
@@ -46,6 +46,10 @@ const EmbassyReports = ({ passengers }) => {
     {
       Header: 'Seq',
       accessor: 'seq',
+    },
+    {
+      Header: 'Photo',
+      accessor: 'photo',
     },
     {
       Header: 'Name',
@@ -63,12 +67,25 @@ const EmbassyReports = ({ passengers }) => {
       Header: 'Birth Date',
       accessor: 'birthDate',
     },
+    {
+      Header: 'Barcode',
+      accessor: 'eNumberBarcode',
+    },
   ]);
   const [openSaveModal, setOpenSaveModal] = useState('');
   const [saveReportName, setSaveReportName] = useState('');
   const inputRef = useRef(null);
   const printTableRef = useRef();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function prepareReportData() {
+      const formattedPassengers = await formatPassengers(passengers);
+      setData(formattedPassengers);
+    }
+    prepareReportData();
+
+  }, [passengers]);
 
   return (
     <>
@@ -178,13 +195,13 @@ const EmbassyReports = ({ passengers }) => {
         <PrintableTable
           ref={printTableRef}
           columns={columns}
-          data={formatPassengers(data)}
+          data={data}
         />
       </div>
 
       <Table
         columns={columns}
-        data={formatPassengers(data)}
+        data={data}
         onFilterColumn={(isFiltering) => {
           if (isFiltering) {
             setColumns((prev) => [{ Header: '', accessor: 'delete' }, ...prev]);

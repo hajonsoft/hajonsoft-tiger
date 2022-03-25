@@ -1,10 +1,9 @@
 table {
     border: 1px solid #ccc;
     border-collapse: collapse;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
-    width: 100%;
-    table-layout: fixed;
+    width: 98%;
   }
   
   table caption {
@@ -13,21 +12,21 @@ table {
   }
   
   table tr {
-    background-color: #f8f8f8;
     border: 1px solid #ddd;
-    padding: .35em;
+    padding: 2px;
   }
   
   table th,
   table td {
-    padding: .625em;
-    text-align: center;
+    padding: 2px;
+    text-align: left;
+    white-space: nowrap;
   }
   
   table th {
     font-size: .85em;
     letter-spacing: .1em;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     /* color: #03a9f4; */
   }
   

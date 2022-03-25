@@ -10,9 +10,36 @@ export const getUpcomingCaravans = createAsyncThunk(
       .database()
       .ref('/customer')
       .once('value');
-    return flatten(resultSnapshot, 'caravan');
+    const flatResult = flatten(resultSnapshot, 'caravan');
+    const promiseArray = [];
+    for (const caravan of Object.keys(flatResult)) {
+      for (const passenger of flatResult[caravan]) {
+        promiseArray.push(getPhoto(passenger));
+      }
+    }
+
+    const promiseResult = await Promise.all(promiseArray);
+    console.log('%cMyProject%cline:21%cpromiseResult', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px', promiseResult)
+    for (const caravan of Object.keys(flatResult)) {
+      for (const passenger of flatResult[caravan]) {
+        passenger.photo = promiseResult.find(x=> x.fid === passenger._fid)?.photo;
+      }
+    }
+    return flatResult;
   }
 );
+
+const getPhoto = async (passenger) => {
+  try {
+    const url = await firebase
+      .storage()
+      .ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`)
+      .getDownloadURL();
+    return { fid: passenger._fid, photo: url };
+  } catch {
+    return { fid: passenger._fid, photo: 'https://via.placeholder.com/32' };
+  }
+}
 
 export const createUpcomingCaravan = createAsyncThunk(
   'caravan/create',
@@ -324,16 +351,16 @@ const caravanSlice = createSlice({
         state.data[action.meta.arg.newCaravan] = [];
       }
 
-      for(let i = 0; i < action.meta.arg.passengers.length; i++) {
+      for (let i = 0; i < action.meta.arg.passengers.length; i++) {
         state.data[action.meta.arg.newCaravan].push({
-            ...action.meta.arg?.passengers?.[i],
-            _fid: action.payload?.[i],
-          });
-          state.data[action.meta.arg.oldCaravan] = state.data[
-            action.meta.arg.oldCaravan
-          ]?.filter(
-            (passenger) => passenger._fid !== action.meta.arg?.passengers?.[i]?._fid
-          );
+          ...action.meta.arg?.passengers?.[i],
+          _fid: action.payload?.[i],
+        });
+        state.data[action.meta.arg.oldCaravan] = state.data[
+          action.meta.arg.oldCaravan
+        ]?.filter(
+          (passenger) => passenger._fid !== action.meta.arg?.passengers?.[i]?._fid
+        );
       }
 
       state.loading = false;

@@ -1,6 +1,7 @@
 export const flatten = (snapshot, name = "data") => {
     const output = {};
     const data = snapshot.toJSON();
+    console.log('%cMyProject%cline:3%cdata', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px', data)
     // input => {key1: {fid1: {name: ''}, fid2: {name: ''}}, key2: {fid3: {name: ''}, fid4: {name: ''}} }
     // output => {key1: [{fid1: '', name: ''}, {fid2: '', name: ''}], key2: [{fid3: '', name: ''}, {fid4: '', name: ''}]}
     // TODO: Review the logic below there must be an easier way to convert 

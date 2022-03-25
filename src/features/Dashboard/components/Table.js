@@ -112,6 +112,7 @@ function Table({
       "passPlaceOfIssue",
       "passportNumber",
       "phone",
+      "photo",
       "profession",
       "relationship",
       "amadeusNM",
