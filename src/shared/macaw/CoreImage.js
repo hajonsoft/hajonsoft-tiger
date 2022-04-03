@@ -51,7 +51,13 @@ const CoreImage = ({ record, setImage }) => {
 
   useEffect(() => {
     async function getImage() {
-      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 1) {
+      console.log('%cMyProject%cline:54%crecord.photo', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px', record.photo)
+      if (record.photo){
+         setUrl(record.photo);
+         setLoading(false);
+         return;
+      }
+      if (record?.nationality?.length > 3 && record?.passportNumber?.length > 1 && !record.photo) {
         try {
           const imgUrl = await firebase
             .storage()
@@ -87,7 +93,7 @@ const CoreImage = ({ record, setImage }) => {
     };
 
     getImage();
-  }, [record, record.nationality, record.passportNumber]);
+  }, [record, record.nationality, record.passportNumber, record.photo]);
 
 
 
@@ -116,7 +122,7 @@ const CoreImage = ({ record, setImage }) => {
               alt={'portrait'}
               className={classes.imgContainer}
               style={{ display: url ? "block" : "none" }}
-              onload={() => setLoading(false)}
+              onLoad={() => setLoading(false)}
             ></img>
             <Link
               href="#"

@@ -11,35 +11,34 @@ export const getUpcomingCaravans = createAsyncThunk(
       .ref('/customer')
       .once('value');
     const flatResult = flatten(resultSnapshot, 'caravan');
-    const promiseArray = [];
-    for (const caravan of Object.keys(flatResult)) {
-      for (const passenger of flatResult[caravan]) {
-        promiseArray.push(getPhoto(passenger));
-      }
-    }
+    // const promiseArray = [];
+    // for (const caravan of Object.keys(flatResult)) {
+    //   for (const passenger of flatResult[caravan]) {
+    //     promiseArray.push(getPhoto(passenger));
+    //   }
+    // }
 
-    const promiseResult = await Promise.all(promiseArray);
-    console.log('%cMyProject%cline:21%cpromiseResult', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px', promiseResult)
-    for (const caravan of Object.keys(flatResult)) {
-      for (const passenger of flatResult[caravan]) {
-        passenger.photo = promiseResult.find(x=> x.fid === passenger._fid)?.photo;
-      }
-    }
+    // const promiseResult = await Promise.all(promiseArray);
+    // for (const caravan of Object.keys(flatResult)) {
+    //   for (const passenger of flatResult[caravan]) {
+    //     passenger.photo = promiseResult.find(x=> x.fid === passenger._fid)?.photo;
+    //   }
+    // }
     return flatResult;
   }
 );
 
-const getPhoto = async (passenger) => {
-  try {
-    const url = await firebase
-      .storage()
-      .ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`)
-      .getDownloadURL();
-    return { fid: passenger._fid, photo: url };
-  } catch {
-    return { fid: passenger._fid, photo: 'https://via.placeholder.com/32' };
-  }
-}
+// const getPhoto = async (passenger) => {
+//   try {
+//     const url = await firebase
+//       .storage()
+//       .ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`)
+//       .getDownloadURL();
+//     return { fid: passenger._fid, photo: url };
+//   } catch {
+//     return { fid: passenger._fid, photo: 'https://via.placeholder.com/32' };
+//   }
+// }
 
 export const createUpcomingCaravan = createAsyncThunk(
   'caravan/create',
