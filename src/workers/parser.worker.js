@@ -87,15 +87,15 @@ function parseDetailsFromTxt(codelineFile) {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
     reader.onload = (result) => {
-      let codeline = reader.result;
+      let codeLine = reader.result;
       let record = {};
       try {
-        codeline = codeline
+        codeLine = codeLine
           .replace("/\r\n/", "")
           .replace("/\n/", "")
           .replace("/\r/", "");
-        let mrz1 = codeline.substring(0, 44),
-          mrz2 = codeline.substring(45, 89);
+        let mrz1 = codeLine.substring(0, 44),
+          mrz2 = codeLine.substring(45, 89);
         let parsed = parse([mrz1, mrz2]);
         record = parsed.fields;
         record.codeLine = mrz1 + mrz2;
@@ -166,6 +166,7 @@ function formatRecord(record) {
     passportNumber: record.documentNumber,
     passExpireDt: passExpireDt.format(),
     createDt: moment().format(),
+    comments: record.comments || '',
   };
   formattedRecord.passIssueDt = defaultIssueDate(passExpireDt, formattedRecord);
   return formattedRecord;
@@ -245,13 +246,40 @@ onmessage = async (msg) => {
     ) {
       postMessage({ type: "debug", data: file });
       ComboFiles.push(file);
-    } else {
+    } else if (/^[0-9]+-[A-Za-z]/.test(file.name)) {
       let index = file.name.split("-")[0];
       if (index in ThreeMFiles) {
         ThreeMFiles[index].push(file);
       } else {
         ThreeMFiles[index] = [file];
       }
+    } else {
+      // Upload one image file as a full customer. Customer name is the image name
+      console.log(file.name)
+      const uniqueNumber = moment().valueOf();
+      // Passport number and nationality should not change later otherwise the photo and passport images will disappear
+      const fileName = file.name.replace(/[^A-Za-z ]/,' ');
+      const splitName = fileName.split(' ');
+      const record = {
+        id: uniqueNumber,
+        birthDate: '701026',
+        expirationDate: '251026',
+        nationality: 'France',
+        firstName: splitName[0].trim(),
+        lastName: fileName.replace(splitName[0], '').trim(),
+        codeLine: 'P<EGYBITAH<<MAGED<MAHER<RAGHEB<<<<<<<<<<<<<<A122188682EGY8402127M2105194<<<<<<<<<<<<<<08',
+        documentNumber: file.name.substring(0,9),
+        issuingState: 'France',
+        comments: 'imported with rule: first 9 characters = passport number, remaining is name'
+      };
+      let formattedRecord = formatRecord(record);
+      formattedRecord.image = file;
+      formattedRecord.passportImage = file;
+      postMessage({
+        type: "import prepared",
+        import: formattedRecord,
+        id: uniqueNumber,
+      });
     }
   }
   postMessage({
