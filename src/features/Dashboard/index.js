@@ -56,6 +56,7 @@ import {
 } from "./redux/caravanSlice";
 import { getPastCaravans } from "./redux/pastCaravanSlice";
 import { faPassport } from "@fortawesome/free-solid-svg-icons";
+import { isResult } from "../../redux/helpers";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -99,6 +100,7 @@ const Dashboard = () => {
   const caravans = useSelector((state) => state.caravan?.data);
   const pastCaravans = useSelector((state) => state.past?.data);
   const loading = useSelector((state) => state.caravan?.loading);
+  const keyword = useSelector((state) => state.caravan?.keyword);
   const error = useSelector((state) => state.caravan?.error);
   const history = useHistory();
   const title = !isPast ? t("caravan") : t("past-caravans");
@@ -198,19 +200,19 @@ const Dashboard = () => {
         .sort()
         .map((v) => ({
           name: v,
-          total: pastCaravans[v].length,
-          expired: pastCaravans[v].filter((c) =>
-            dayjs(c.passExpireDt).isBefore(dayjs().add(6, "month"))
-          ),
+          total: pastCaravans[v].filter(passenger=> isResult(passenger,keyword)).length,
+          expired: pastCaravans[v].filter((passenger) =>
+          isResult(passenger,keyword) && dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
+        ),
         }));
     }
     return Object.keys(caravans)
       .sort()
       .map((v) => ({
         name: v,
-        total: caravans[v].length,
-        expired: caravans[v].filter((c) =>
-          dayjs(c.passExpireDt).isBefore(dayjs().add(-6, "month"))
+        total: caravans[v].filter(passenger=> isResult(passenger,keyword)).length,
+        expired: caravans[v].filter((passenger) =>
+          isResult(passenger,keyword) && dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
         ),
       }));
   };

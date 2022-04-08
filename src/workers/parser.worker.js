@@ -267,10 +267,10 @@ onmessage = async (msg) => {
         nationality: 'France',
         firstName: splitName[0].trim(),
         lastName: fileName.replace(splitName[0], '').trim(),
-        codeLine: 'P<EGYBITAH<<MAGED<MAHER<RAGHEB<<<<<<<<<<<<<<A122188682EGY8402127M2105194<<<<<<<<<<<<<<08',
+        codeLine: 'P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<1234567897XXX2001012M3201015<<<<<<<<<<<<<<04',
         documentNumber: file.name.substring(0,9),
         issuingState: 'France',
-        comments: 'imported with rule: first 9 characters = passport number, remaining is name'
+        comments: 'imported with rule: first 9 characters = passport number, remaining is name',     
       };
       let formattedRecord = formatRecord(record);
       formattedRecord.image = file;
