@@ -57,6 +57,7 @@ import {
 } from '../Dashboard/redux/caravanSlice';
 import t from '../../shared/util/trans';
 import dayjs from 'dayjs';
+import { isResult } from '../../redux/helpers';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -117,6 +118,7 @@ const Passengers = () => {
   const caravans = useSelector((state) => state.caravan?.data);
   const loading = useSelector((state) => state.caravan?.loading);
   const error = useSelector((state) => state.caravan?.error);
+  const keyword = useSelector((state) => state.caravan?.keyword);
   const passengers = _.cloneDeep(caravans?.[packageName]);
   const [ newCaravan, setNewCaravan] = useState("")
 
@@ -436,7 +438,7 @@ const Passengers = () => {
                   </div>
                 ),
               }}
-              data={passengers}
+              data={passengers.filter(passenger => isResult(passenger,keyword))}
               // detailPanel={(rowData) => (
               //   <CustomerDetail customer={rowData} caravan={packageName} />
               // )}
@@ -516,6 +518,7 @@ const Passengers = () => {
               ]}
               options={{
                 actionsColumnIndex: -1,
+                search: false,
                 grouping: true,
                 exportAllData: true,
                 pageSize: 50,
@@ -524,7 +527,6 @@ const Passengers = () => {
                 exportFileName: packageName,
                 exportButton: true,
                 columnsButton: true,
-                searchAutoFocus: true,
                 headerStyle: {
                   backgroundColor: '#f0f3f7',
                   color: '#385273',

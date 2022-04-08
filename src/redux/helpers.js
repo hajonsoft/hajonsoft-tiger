@@ -28,3 +28,8 @@ export const flattenOnlineCaravans = (snapshot) => {
     })
     return output;
 }
+
+export const isResult = (passenger, word) => {
+    const searchWord = word?.toLowerCase();
+    return passenger?.name?.toLowerCase()?.includes(searchWord) || passenger?.passportNumber?.toLowerCase()?.includes(searchWord) || passenger?.nationality?.toLowerCase()?.includes(searchWord)
+  }

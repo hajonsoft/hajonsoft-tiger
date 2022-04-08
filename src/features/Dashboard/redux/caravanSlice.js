@@ -205,6 +205,12 @@ const caravanSlice = createSlice({
     loading: false,
     error: '',
     data: {},
+    keyword: '',
+  },
+  reducers: {
+  setKeyword: (state, action) => {
+    state.keyword = action.payload
+  },
   },
   extraReducers: (builder) => {
     builder.addCase(getUpcomingCaravans.pending, (state, action) => {
@@ -362,3 +368,5 @@ const caravanSlice = createSlice({
 });
 
 export default caravanSlice.reducer;
+export const { setKeyword } = caravanSlice.actions
+
