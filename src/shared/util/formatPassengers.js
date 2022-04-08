@@ -4,7 +4,7 @@ import React from 'react';
 import Barcode from 'react-barcode';
 import { nationalities } from "../../data/nationality";
 
-export async function formatPassengers(passengers) {
+export  function formatPassengers(passengers) {
     const formattedPassengers = [];
     for (let i = 0; i < passengers.length; i++) {
         const nameParts = passengers[i].name.split(" ");
@@ -35,7 +35,6 @@ export async function formatPassengers(passengers) {
             saberSRDOC: `Not Implemented`,
             mofaNumberBarcode: <div style={{ padding: '8px 16px, border: 5px solid brown' }}><Barcode value={passengers[i].mofaNumber} displayValue={false} /></div>,
             eNumberBarcode: passengers[i].eNumber ? <Barcode value={passengers[i].eNumber} displayValue={true} width="1" height="20" /> : null,
-            photo: <img src={passengers[i].photo} alt="traveller" style={{width: '32px', height: '32px', borderRadius: '50%'}}/>,
         });
     }
     return formattedPassengers;
