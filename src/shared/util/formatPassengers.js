@@ -1,13 +1,14 @@
-import React from 'react';
-import { nationalities } from "../../data/nationality";
-import moment from "moment";
-import Barcode from 'react-barcode'
 import _ from "lodash";
+import moment from "moment";
+import React from 'react';
+import Barcode from 'react-barcode';
+import { nationalities } from "../../data/nationality";
 
-export function formatPassengers(passengers) {
+export  function formatPassengers(passengers) {
     const formattedPassengers = [];
     for (let i = 0; i < passengers.length; i++) {
         const nameParts = passengers[i].name.split(" ");
+        // const url = await getPassengerPhoto(passengers[i]);
         const nationality = nationalities?.find(nationalityRecord => nationalityRecord.name === passengers?.[i]?.nationality)?.code;
         const issueCountry = passengers?.[i]?.codeLine?.substring(2, 5) || nationality;
         formattedPassengers.push({
@@ -32,12 +33,13 @@ export function formatPassengers(passengers) {
                 "DDMMMYY")}-${passengers?.[i]?.gender?.substring(0, 1)}-${moment(passengers?.[i]?.passExpireDt).format(
                     "DDMMMYY")}-${_.last(nameParts)}-${_.head(nameParts)}/P1`.toUpperCase(),
             saberSRDOC: `Not Implemented`,
-            mofaNumberBarcode: <div style={{padding: '8px 16px, border: 5px solid brown'}}><Barcode value={passengers[i].mofaNumber} displayValue={false} /></div>,
-            eNumberBarcode: <div style={{padding: '8px 16px'}}><Barcode value={passengers[i].eNumber} displayValue={false} /> </div>,
+            mofaNumberBarcode: <div style={{ padding: '8px 16px, border: 5px solid brown' }}><Barcode value={passengers[i].mofaNumber} displayValue={false} /></div>,
+            eNumberBarcode: passengers[i].eNumber ? <Barcode value={passengers[i].eNumber} displayValue={true} width="1" height="20" /> : null,
         });
     }
     return formattedPassengers;
 }
+
 
 function gTitle(passenger, g = "amadeus") {
     if (!passenger.birthDate) return "XX";

@@ -109,16 +109,18 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
-  const savePortrait = (values, image) => {
+  const savePortrait = async (values, image) => {
     if (image) {
       const metadata = {
         contentType: "image/jpeg",
         passportNumber: values.passportNumber,
       };
       const fileName = `${values.nationality}/${values.passportNumber}.jpg`;
-      console.log('%c 🌰 fileName: ', 'font-size:20px;background-color: #FCA650;color:#fff;', fileName);
       let ref = storage.ref(fileName);
-      ref.put(image, metadata);
+      await ref.put(image, metadata);
+      const downloadUrl = await ref.getDownloadURL();
+      dispatch(updatePassenger({name: packageName, passenger: {...values, photo: downloadUrl}}));
+
     }
   };
 

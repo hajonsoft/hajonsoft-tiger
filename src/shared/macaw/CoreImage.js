@@ -116,7 +116,7 @@ const CoreImage = ({ record, setImage }) => {
               alt={'portrait'}
               className={classes.imgContainer}
               style={{ display: url ? "block" : "none" }}
-              onload={() => setLoading(false)}
+              onLoad={() => setLoading(false)}
             ></img>
             <Link
               href="#"
