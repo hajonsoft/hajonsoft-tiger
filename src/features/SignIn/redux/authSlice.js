@@ -4,9 +4,8 @@ import firebase from '../../../firebaseapp';
 export const loginWithGoogle = createAsyncThunk('auth/google', async () => {
     let provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope("email");
-    const user = await firebase.auth().signInWithPopup(provider);
-    //TODO: user seem to be a snapshot, I got this error in console A non-serializable value was detected in an action, in the path: `payload.user`. Value: 
-    return user;
+    const result = await firebase.auth().signInWithPopup(provider);
+    return result;
 })
 export const signOutWithGoogle = createAsyncThunk('auth/signout', async () => {
     let provider = new firebase.auth.GoogleAuthProvider();
@@ -30,6 +29,7 @@ export const authSlice = createSlice({
                 name: action.payload.user.displayName,
                 email: action.payload.user.email,
                 photoURL: action.payload.user.photoURL,
+                accessToken: action.payload.credential.accessToken,
             }
             state.data = user;            
             state.loading = false;
