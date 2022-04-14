@@ -9,7 +9,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import React, { useState, createRef, useEffect } from "react";
-import { createCodeline } from "../util/codeline";
+import { createCodeLine } from "../util/codeline";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import "./customer-code-line.css";
 
@@ -55,10 +55,10 @@ const CustomerCodeline = ({ mode, record, setFieldValue }) => {
   };
 
   const handleGenerateCodeline = () => {
-    const codeline = createCodeline(record);
-    setLine1(codeline.substring(0, 44));
-    setLine2(codeline.substring(44));
-    setFieldValue(name, codeline);
+    const codeLine = createCodeLine(record);
+    setLine1(codeLine.substring(0, 44));
+    setLine2(codeLine.substring(44));
+    setFieldValue(name, codeLine);
   };
   const handlePDF417 = () => {};
 

@@ -2,35 +2,38 @@ import jszip from "jszip";
 import moment from "moment";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
-import { createCodeline } from "../../../shared/util/codeline";
+import { createCodeLine } from "../../../shared/util/codeline";
 import { nameParts } from "../../../shared/util/nameParts";
 
 const storage = firebase.storage();
 
 export function getPassengersJSON(passengers, data) {
-  let packageTravellers;
+  let packageTravelers;
   if (data && data.name) {
     const packageName = data.name;
-    packageTravellers = passengers[packageName];
+    packageTravelers = passengers[packageName];
   } else {
-    packageTravellers = passengers;
+    packageTravelers = passengers;
   }
-  let sortedTravellers;
-  const adultMales = packageTravellers.filter(traveller => traveller.gender === "Male" && moment().diff(traveller.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
-  const adultFemales = packageTravellers.filter(traveller => traveller.gender !== "Male" && moment().diff(traveller.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
-  const minors = packageTravellers.filter(traveller => moment().diff(traveller.birthDate, 'years') <= 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
-  sortedTravellers = adultMales || [];
-  sortedTravellers.push(...adultFemales);
-  sortedTravellers.push(...minors);
+  let sortedTravelers;
+  const adultMales = packageTravelers.filter(traveler => traveler.gender === "Male" && moment().diff(traveler.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  const adultFemales = packageTravelers.filter(traveler => traveler.gender !== "Male" && moment().diff(traveler.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  const minors = packageTravelers.filter(traveler => moment().diff(traveler.birthDate, 'years') <= 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  sortedTravelers = adultMales || [];
+  sortedTravelers.push(...adultFemales);
+  sortedTravelers.push(...minors);
 
-  const exportData = sortedTravellers.map((passenger) => {
+  const exportData = sortedTravelers.map((passenger) => {
     const _nameParts = nameParts(passenger.name);
     let _nameArabicParts = nameParts(passenger.nameArabic);
     if (_nameArabicParts[0] === "invalid") {
       _nameArabicParts = ["", "", "", ""];
     }
 
-    const codeLine = passenger.codeLine || createCodeline(passenger);
+    const codeLine = passenger?.codeLine?.trim() || createCodeLine(passenger);
+    if (!codeLine){
+      return '';
+    }
     const issuerCode = codeLine?.substring(2, 5);
 
     return {
@@ -103,7 +106,7 @@ export function getPassengersJSON(passengers, data) {
     };
   });
 
-  return exportData;
+  return exportData.filter(d => d && d !== '');
 }
 
 export async function zipWithPhotos(data, packageData) {
@@ -114,18 +117,19 @@ export async function zipWithPhotos(data, packageData) {
   } else {
     passengers = data.travellers;
   }
-  const travellersCount = passengers.length;
-  for (let index = 0; index < travellersCount; index++) {
-    const traveller = passengers[index];
+  passengers = passengers.filter(d=> d && d !== '');
+  const travelersCount = passengers.length;
+  for (let index = 0; index < travelersCount; index++) {
+    const traveler = passengers[index];
     let [photoUrl, passportUrl, vaccineUrl] = await Promise.all([
       getStorageUrl(
-      `${traveller.nationality.name}/${traveller.passportNumber}.jpg`
+      `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
     ),
     getStorageUrl(
-      `${traveller.nationality.name}/${traveller.passportNumber}_passport.jpg`
+      `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
     ),
     getStorageUrl(
-      `${traveller.nationality.name}/${traveller.passportNumber}_vaccine.jpg`
+      `${traveler.nationality.name}/${traveler.passportNumber}_vaccine.jpg`
     )
     ]);
     if (!photoUrl) {
@@ -138,7 +142,7 @@ export async function zipWithPhotos(data, packageData) {
     if (!vaccineUrl) {
       vaccineUrl = passportUrl;
     }
-    traveller.images = {
+    traveler.images = {
       photo: photoUrl,
       passport: passportUrl,
       vaccine: vaccineUrl,
