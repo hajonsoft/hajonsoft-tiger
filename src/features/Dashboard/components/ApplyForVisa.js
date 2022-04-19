@@ -58,6 +58,7 @@ import wtuImg from "../../../assets/wtu.jpg";
 import gmaImg from "../../../assets/gma.jpg";
 import twfImg from "../../../assets/twf.jpg";
 import enjImg from "../../../assets/enj.jpg";
+import ehjImg from "../../../assets/ehj.jpg";
 import vstImg from "../../../assets/vst.jpg";
 import hsfImg from "../../../assets/hsf.jpg";
 import sbrImg from "../../../assets/sbr.jpg";
@@ -140,8 +141,7 @@ const serviceProviders = [
     name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]",
     img: enjImg,
   },
-  { value: "ehr", name: "Ehaj (Reservation)" },
-  { value: "ehj", name: "Ehaj (Submit)" },
+  { value: "ehj", name: "Ehaj [https://ehaj.haj.gov.sa/]", img: ehjImg },
   {
     value: "vst",
     name: "Visit-visa [https://visa.visitsaudi.com]",
