@@ -93,8 +93,11 @@ function Table({
 
   const getOptions = () => {
     const totalColumns = [
+      "amadeusNM",
+      "amadeusSRDOC",
       "birthDate",
       "birthPlace",
+      "firstName",
       "email",
       "eNumber",
       "eNumberBarcode",
@@ -102,6 +105,7 @@ function Table({
       "idNumber",
       "idNumberExpireDate",
       "idNumberIssueDate",
+      "lastName",
       "mofaNumber",
       "mofaNumberBarcode",
       "name",
@@ -114,10 +118,9 @@ function Table({
       "phone",
       "profession",
       "relationship",
-      "amadeusNM",
       "saber_",
-      "amadeusSRDOC",
       "saberSRDOC",
+      "title",
     ];
 
     // return totalColumns.filter(column => !columns.includes(column) )
