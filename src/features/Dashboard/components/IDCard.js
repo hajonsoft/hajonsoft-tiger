@@ -1,59 +1,36 @@
-import React from 'react';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import { Formik, Form } from 'formik';
-import HotelHolyPreview from '../../../assets/hotel_holy.png';
-import HotelWavePreview from '../../../assets/hotel_wave.png';
-import HotelPreview from '../../../assets/hotel.png';
-import OtagoPreview from '../../../assets/otago.png';
-import OtagoBasicPreview from '../../../assets/otago_basic.png';
-import OtagoBlurPreview from '../../../assets/otago_blur.png';
-import OtagoLeafPreview from '../../../assets/otago_leaf.png';
-import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
-import verticalBlank from '../../../assets/vertical_blank.png';
-import { Box, CircularProgress, makeStyles, TextField, Typography } from '@material-ui/core';
-import { Field } from 'formik';
-import firebase from '../../../firebaseapp';
-import axios from 'axios';
-import moment from 'moment-hijri';
-import _ from 'lodash';
-import JSZip from 'jszip';
-import saveAs from 'save-as';
-import JSZipUtils from 'jszip-utils';
-import t from '../../../shared/util/trans';
+import {
+  CircularProgress, TextField,
+  Typography
+} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import axios from "axios";
+import { Field, Form, Formik } from "formik";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import _ from "lodash";
+import moment from "moment-hijri";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import React from "react";
+import saveAs from "save-as";
+import HotelPreview from "../../../assets/hotel.png";
+import HotelHolyPreview from "../../../assets/hotel_holy.png";
+import HotelWavePreview from "../../../assets/hotel_wave.png";
+import OtagoPreview from "../../../assets/otago.png";
+import OtagoBasicPreview from "../../../assets/otago_basic.png";
+import OtagoBlurPreview from "../../../assets/otago_blur.png";
+import OtagoLeafPreview from "../../../assets/otago_leaf.png";
+import OtagoMadinahPreview from "../../../assets/otago_madinah.png";
+import verticalBlank from "../../../assets/vertical_blank.png";
+import firebase from "../../../firebaseapp";
+import t from "../../../shared/util/trans";
+import S from "./styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: 15,
-    marginBottom: 15,
-  },
-  container: {
-    borderColor: theme.palette.primary.main,
-  },
-  inputLabel: {
-    marginTop: '-45px',
-    color: () => '',
-    '&.focused': {
-      color: theme.palette.primary.main,
-    },
-  },
-  submitBtn: {
-    background: '#178CF9',
-    marginRight: '3rem',
-    textTransform: 'capitalize',
-    color: 'white',
-    marginBottom: '5rem',
-  },
-}));
 
 const getIDPositionProps = (idType) => {
-  if (idType.includes('otago')) {
+  if (idType.includes("otago")) {
     return {
       umrah: {
         x: 15,
@@ -96,7 +73,7 @@ const getIDPositionProps = (idType) => {
         y: 107,
       },
     };
-  } else if (idType.includes('hotel')) {
+  } else if (idType.includes("hotel")) {
     return {
       image: {
         x: 9,
@@ -131,7 +108,7 @@ const getIDPositionProps = (idType) => {
         y: 140,
       },
     };
-  } else if (idType.includes('vertical')) {
+  } else if (idType.includes("vertical")) {
     return {
       verticalCaravanLogo: {
         x: 25,
@@ -171,8 +148,8 @@ const getIDPositionProps = (idType) => {
       },
       verticalBackground: {
         x: 0,
-        y: 0
-      }
+        y: 0,
+      },
     };
   }
 };
@@ -187,8 +164,8 @@ function readFile(file) {
     let reader = new FileReader();
 
     // Register event listeners
-    reader.addEventListener('loadend', (e) => resolve(e.target.result));
-    reader.addEventListener('error', reject);
+    reader.addEventListener("loadend", (e) => resolve(e.target.result));
+    reader.addEventListener("error", reject);
 
     // Read file
     reader.readAsArrayBuffer(file);
@@ -199,9 +176,8 @@ const IDCard = ({ passengers, caravanName }) => {
   const [previewURL, setPreviewURL] = React.useState(null);
   const [companyLogo, setCompanyLogo] = React.useState();
   const [downloading, setDownloading] = React.useState(false);
-  const [cardBackgroundColor, setCardBackgroundColor] = React.useState('r255g255b255');
-
-  const classes = useStyles();
+  const [cardBackgroundColor, setCardBackgroundColor] =
+    React.useState("r255g255b255");
 
   const downloadFiles = (pdfBytes, cb) => {
     const zip = new JSZip();
@@ -214,11 +190,11 @@ const IDCard = ({ passengers, caravanName }) => {
         if (err) {
           throw err; // or handle the error
         }
-        zip.file(filename + '.pdf', data, { binary: true });
+        zip.file(filename + ".pdf", data, { binary: true });
         count++;
         if (count === pdfBytes.length) {
-          zip.generateAsync({ type: 'blob' }).then(function (content) {
-            saveAs(content, caravanName + '.zip');
+          zip.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, caravanName + ".zip");
             cb(true);
           });
         }
@@ -246,18 +222,18 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height, width } = firstPage.getSize();
 
-    let imageURL = '';
+    let imageURL = "";
 
     try {
       imageURL = await firebase
         .storage()
         .ref(`${nationality}/${passportNumber}.jpg`)
         .getDownloadURL();
-    } catch (err) { }
+    } catch (err) {}
 
-    const { data } = await axios.get('https://flagcdn.com/en/codes.json');
+    const { data } = await axios.get("https://flagcdn.com/en/codes.json");
 
-    let countryCode = '';
+    let countryCode = "";
 
     for (const key in data) {
       if (data[key].toLowerCase() === nationality.toLowerCase()) {
@@ -266,24 +242,28 @@ const IDCard = ({ passengers, caravanName }) => {
       }
     }
 
-        // write caravan Logo image
-        if (getIDPositionProps(idType).verticalBackground !== undefined) {
-          firstPage.drawRectangle({
-            x: 0,
-            y: 0,
-            width: 150,
-            height: 250,
-            color: rgb(parseInt(cardBackgroundColor.substring(1,4))/255, parseInt(cardBackgroundColor.substring(5,8))/255, parseInt(cardBackgroundColor.substring(9))/255),
-            opacity: 1,
-          });
-        }
+    // write caravan Logo image
+    if (getIDPositionProps(idType).verticalBackground !== undefined) {
+      firstPage.drawRectangle({
+        x: 0,
+        y: 0,
+        width: 150,
+        height: 250,
+        color: rgb(
+          parseInt(cardBackgroundColor.substring(1, 4)) / 255,
+          parseInt(cardBackgroundColor.substring(5, 8)) / 255,
+          parseInt(cardBackgroundColor.substring(9)) / 255
+        ),
+        opacity: 1,
+      });
+    }
 
-    let jpgImage = '';
+    let jpgImage = "";
 
     if (imageURL) {
       const jpgImageBytes = await fetch(imageURL)
         .then((res) => res.arrayBuffer())
-        .catch((err) => { });
+        .catch((err) => {});
 
       jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
     }
@@ -292,7 +272,7 @@ const IDCard = ({ passengers, caravanName }) => {
       `https://flagcdn.com/32x24/${countryCode}.png`
     )
       .then((res) => res.arrayBuffer())
-      .catch((err) => { });
+      .catch((err) => {});
 
     let flagImage;
     if (flagImageBytes) {
@@ -303,7 +283,7 @@ const IDCard = ({ passengers, caravanName }) => {
     if (companyLogo) {
       const companyLogoBytes = await getAsByteArray(companyLogo);
 
-      if (companyLogo.type.split('/')[1].includes('jp')) {
+      if (companyLogo.type.split("/")[1].includes("jp")) {
         logo = await pdfDoc.embedJpg(companyLogoBytes);
       } else {
         logo = await pdfDoc.embedPng(companyLogoBytes);
@@ -379,28 +359,27 @@ const IDCard = ({ passengers, caravanName }) => {
         y: getIDPositionProps(idType).verticalCountryLogo.y - 10,
         size: 12,
         font: helveticaFont,
-        color: rgb(240 / 255, 12 / 255, 12 / 255)
+        color: rgb(240 / 255, 12 / 255, 12 / 255),
       });
     }
 
     // write vertical caravan name
     if (getIDPositionProps(idType).verticalCaravanName !== undefined) {
-      const caravanNameParts = caravanName.trim().split(' ');
+      const caravanNameParts = caravanName.trim().split(" ");
       for (let i = 0; i < caravanNameParts.length; i++) {
         firstPage.drawText(caravanNameParts[i], {
           x: getIDPositionProps(idType).verticalCaravanName.x,
           y: getIDPositionProps(idType).verticalCaravanName.y - i * 10,
           size: 10,
           font: helveticaFont,
-          color: rgb(0 / 255, 0 / 255, 0 / 255)
+          color: rgb(0 / 255, 0 / 255, 0 / 255),
         });
       }
-
     }
 
     // write UMRAH
     if (getIDPositionProps(idType).umrah !== undefined) {
-      firstPage.drawText('UMRAH', {
+      firstPage.drawText("UMRAH", {
         x: getIDPositionProps(idType).umrah.x,
         y: height - getIDPositionProps(idType).umrah.y,
         size: 10,
@@ -412,9 +391,9 @@ const IDCard = ({ passengers, caravanName }) => {
     // write UMRAH year
     if (getIDPositionProps(idType).year !== undefined) {
       firstPage.drawText(
-        `${new Date().getFullYear()} / ${moment('2022', 'YYYY')
-          .endOf('iMonth')
-          .format('iYYYY')}`,
+        `${new Date().getFullYear()} / ${moment("2022", "YYYY")
+          .endOf("iMonth")
+          .format("iYYYY")}`,
         {
           x: getIDPositionProps(idType).year.x,
           y: height - getIDPositionProps(idType).year.y,
@@ -445,8 +424,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).fullName !== undefined) {
-      const nameParts = name.split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).fullName.x,
         y: height - getIDPositionProps(idType).fullName.y,
@@ -458,7 +437,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write passport Label
     if (getIDPositionProps(idType).passportLabel !== undefined) {
-      firstPage.drawText('PASS #', {
+      firstPage.drawText("PASS #", {
         x: getIDPositionProps(idType).passportLabel.x,
         y: height - getIDPositionProps(idType).passportLabel.y,
         size: 8,
@@ -469,7 +448,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write vertical passport Label
     if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
-      firstPage.drawText('Passport No:  ' + passportNumber, {
+      firstPage.drawText("Passport No:  " + passportNumber, {
         x: getIDPositionProps(idType).verticalPassportNumber.x,
         y: getIDPositionProps(idType).verticalPassportNumber.y,
         size: 10,
@@ -557,7 +536,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write firstName
     if (getIDPositionProps(idType).firstName !== undefined) {
-      firstPage.drawText(name.split(' ')[0], {
+      firstPage.drawText(name.split(" ")[0], {
         x: getIDPositionProps(idType).firstName.x,
         y: height - getIDPositionProps(idType).firstName.y,
         size: 8,
@@ -595,8 +574,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).name !== undefined) {
-      const nameParts = name.split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).name.x,
         y: height - getIDPositionProps(idType).name.y,
@@ -608,8 +587,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).verticalName !== undefined) {
-      const nameParts = name.trim().split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.trim().split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).verticalName.x,
         y: getIDPositionProps(idType).verticalName.y,
@@ -621,7 +600,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write lastName
     if (getIDPositionProps(idType).lastName !== undefined) {
-      firstPage.drawText(_.last(name.split(' ')), {
+      firstPage.drawText(_.last(name.split(" ")), {
         x: getIDPositionProps(idType).lastName.x,
         y: height - getIDPositionProps(idType).lastName.y,
         size: 8,
@@ -642,7 +621,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write birthDate
     if (getIDPositionProps(idType).birthDate !== undefined) {
-      firstPage.drawText(new Date(birthDate).toLocaleDateString('en-US'), {
+      firstPage.drawText(new Date(birthDate).toLocaleDateString("en-US"), {
         x: getIDPositionProps(idType).birthDate.x,
         y: height - getIDPositionProps(idType).birthDate.y,
         size: 8,
@@ -664,328 +643,258 @@ const IDCard = ({ passengers, caravanName }) => {
 
     const pdfBytes = await pdfDoc.save();
 
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = window.URL.createObjectURL(blob);
 
     return url;
   };
-  const colorItems = []
+  const colorItems = [];
   const minValue = 150;
   for (let r = minValue; r < 255; r += 50) {
     for (let g = minValue; g < 255; g += 50) {
       for (let b = minValue; b < 255; b += 50) {
-        colorItems.push({ r, g, b })
+        colorItems.push({ r, g, b });
       }
     }
   }
 
   const handleCardColorChange = (e) => {
-    setCardBackgroundColor(e.target.value)
-  }
+    setCardBackgroundColor(e.target.value);
+  };
 
   return (
-    <Grid container>
-      <Grid item md={6}>
-        <Grid container spacing={3}>
-          <Box mb={2}>
-            <Typography variant='h4'>{t('card-options')}</Typography>
-          </Box>
-          <Formik
-            enableReinitialize
-            initialValues={{
-              idType: '',
-              reportName: '',
-            }}
-            onSubmit={async (values, actions) => {
-              setDownloading(true);
-              const fns = passengers.map(async (passenger) => {
-                return await createPDF(
-                  values?.idType,
-                  passenger?.name,
-                  passenger?.passportNumber,
-                  passenger?.birthDate,
-                  caravanName,
-                  passenger?.nationality,
-                  values?.telNumber,
-                  values.medinahHotel,
-                  values.mekahHotel
-                );
-              });
+    <S.Container>
+      <S.Left>
+        <Typography variant="h4" gutterBottom>
+          {t("card-options")}
+        </Typography>
 
-              const results = Promise.all(fns);
-
-              results
-                .then((data) => {
-                  downloadFiles(data, (done) => {
-                    if (done) {
-                      setDownloading(false);
-                    }
-                  });
-                })
-                .catch((err) => {
-                  console.log('%cMyProject%cline:679%cerr', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px', err)
-                  alert('An error occurred!! - ' + err.message);
-                  setDownloading(false);
-                });
-            }}
-          >
-            {({
-              setFieldValue,
-              isValid,
-              values,
-              errors,
-              isSubmitting,
-              touched,
-            }) => {
-              return (
-                <Form style={{ width: '90%' }}>
-                  <Grid item xs={12} style={{ marginBottom: '1rem' }}>
-                    <FormControl className={classes.root} fullWidth>
-                      <InputLabel
-                        shrink={false}
-                        className={classes.inputLabel}
-                        style={{
-                          color:
-                            touched.idType && Boolean(errors.idType)
-                              ? 'red'
-                              : null,
-                        }}
-                        htmlFor={'idType'}
-                        placeholder={'idType'}
-                        required={true}
-                      >
-                        Choose ID design and color
-                      </InputLabel>
-
-                      <Grid container alignItems="center">
-                        <Grid item xs={9}>
-                          <Field
-                            as={Select}
-                            className={classes.container}
-                            name="idType"
-                            required={true}
-                            id="idType"
-                            placeholder="ID Type"
-                            variant="outlined"
-                            fullWidth
-                            error={!!errors.idType}
-                            value={values.idType}
-                            onChange={(e) => {
-                              setFieldValue('idType', e.target.value);
-
-                              if (e.target.value === 'hotel_holy') {
-                                setPreviewURL(HotelHolyPreview);
-                              } else if (e.target.value === 'hotel') {
-                                setPreviewURL(HotelPreview);
-                              } else if (e.target.value === 'hotel_wave') {
-                                setPreviewURL(HotelWavePreview);
-                              } else if (e.target.value === 'otago') {
-                                setPreviewURL(OtagoPreview);
-                              } else if (e.target.value === 'otago_basic') {
-                                setPreviewURL(OtagoBasicPreview);
-                              } else if (e.target.value === 'otago_blur') {
-                                setPreviewURL(OtagoBlurPreview);
-                              } else if (e.target.value === 'otago_leaf') {
-                                setPreviewURL(OtagoLeafPreview);
-                              } else if (e.target.value === 'otag_madinah') {
-                                setPreviewURL(OtagoMadinahPreview);
-                              } else if (e.target.value === 'vertical_blank') {
-                                setPreviewURL(verticalBlank);
-                              }
-                            }}
-                          >
-                            <MenuItem value="hotel"> Hotel </MenuItem>
-                            <MenuItem value="hotel_holy"> Hotel Holy </MenuItem>
-                            <MenuItem value="hotel_wave"> Hotel Wave </MenuItem>
-                            <MenuItem value="otago"> Otago </MenuItem>
-                            <MenuItem value="otago_basic">Otago Basic</MenuItem>
-                            <MenuItem value="otago_blur"> Otago Blur </MenuItem>
-                            <MenuItem value="otago_leaf"> Otago Leaf </MenuItem>
-                            <MenuItem value="otago_madinah">
-                              Otago Madinah
-                            </MenuItem>
-                            <MenuItem value="vertical_blank">Vertical</MenuItem>
-                          </Field>
-                        </Grid>
-                        <Grid item xs={2} style={{marginLeft: '1rem'}}>
-                          <Select onChange={handleCardColorChange} fullWidth>
-                            {colorItems.map((colorItem) => <MenuItem value={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`} key={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`} ><div style={{ width: '100%', height: '25px', backgroundColor: `rgb(${colorItem.r},${colorItem.g},${colorItem.b})` }}></div></MenuItem>)}
-                          </Select>
-                        </Grid>
-                      </Grid>
-
-                      <FormHelperText error={!!errors.idType}>
-                        {touched.idType && errors.idType}
-                      </FormHelperText>
-                    </FormControl>
-
-                    <FormControl className={classes.root} fullWidth>
-                      <InputLabel
-                        shrink={false}
-                        className={classes.inputLabel}
-                        style={{
-                          color:
-                            touched.telNumber && Boolean(errors.telNumber)
-                              ? 'red'
-                              : null,
-                        }}
-                        htmlFor={'telNumber'}
-                        placeholder={'telNumber'}
-                        required={true}
-                      >
-                        Telephone Number
-                      </InputLabel>
-
-                      <Grid container alignItems="center">
-                        <Grid item xs={12}>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            className={classes.container}
-                            name="telNumber"
-                            required={true}
-                            id="telNumber"
-                            type="tel"
-                            minLength="10"
-                            placeholder="Telephone Number"
-                            variant="outlined"
-                            error={!!errors.telNumber}
-                            value={values.telNumber}
-                          />
-                        </Grid>
-                      </Grid>
-
-                      <FormHelperText error={!!errors.telNumber}>
-                        {touched.telNumber && errors.telNumber}
-                      </FormHelperText>
-                    </FormControl>
-
-                    <FormControl className={classes.root} fullWidth>
-                      <InputLabel
-                        shrink={false}
-                        className={classes.inputLabel}
-                        style={{
-                          color:
-                            touched.mekkahHotel && Boolean(errors.mekkahHotel)
-                              ? 'red'
-                              : null,
-                        }}
-                        htmlFor={'mekkahHotel'}
-                        placeholder={'Makkah Hotel Name'}
-                      >
-                        {t('mekkah-hotel-name')}
-                      </InputLabel>
-
-                      <Grid container alignItems="center">
-                        <Grid item xs={12}>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            className={classes.container}
-                            name="mekahHotel"
-                            required={false}
-                            id="mekahHotel"
-                            type="text"
-                            placeholder="Makkah Hotel Name"
-                            variant="outlined"
-                            error={!!errors.mekahHotel}
-                            value={values.mekahHotel}
-                          />
-                        </Grid>
-                      </Grid>
-
-                      <FormHelperText error={!!errors.mekahHotel}>
-                        {touched.mekahHotel && errors.mekahHotel}
-                      </FormHelperText>
-                    </FormControl>
-
-                    <FormControl className={classes.root} fullWidth>
-                      <InputLabel
-                        shrink={false}
-                        className={classes.inputLabel}
-                        style={{
-                          color:
-                            touched.medinahHotel && Boolean(errors.medinahHotel)
-                              ? 'red'
-                              : null,
-                        }}
-                        htmlFor={'medinahHotel'}
-                        placeholder={'medinahHotel'}
-                      >
-                        {t('medinah-hotel-name')}
-                      </InputLabel>
-
-                      <Grid container alignItems="center">
-                        <Grid item xs={12}>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            className={classes.container}
-                            name="medinahHotel"
-                            required={false}
-                            id="medinahHotel"
-                            type="tel"
-                            minLength="10"
-                            placeholder="Medinah Hotel Name"
-                            variant="outlined"
-                            error={!!errors.medinahHotel}
-                            value={values.medinahHotel}
-                          />
-                        </Grid>
-                      </Grid>
-
-                      <FormHelperText error={!!errors.medinahHotel}>
-                        {touched.medinahHotel && errors.medinahHotel}
-                      </FormHelperText>
-                    </FormControl>
-
-                    <FormControl className={classes.root} fullWidth>
-                      <Button variant="outlined" component="label">
-                        Upload Company's Logo
-                        <input
-                          type="file"
-                          accept="image/*"
-                          hidden
-                          onChange={async (e) => {
-                            setCompanyLogo(e.target.files[0]);
-                          }}
-                        />
-                      </Button>
-                      {companyLogo && <p> {companyLogo.name} </p>}
-                    </FormControl>
-                  </Grid>
-                  <Grid item justifyContent="flex-start">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      className={classes.submitBtn}
-                      size="large"
-                      type="submit"
-                      disabled={downloading || !isValid}
-                      startIcon={downloading && <CircularProgress size={16} />}
-                    >
-                      {downloading ? 'Printing...' : 'Print Cards'}
-                    </Button>
-                  </Grid>
-                </Form>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            idType: "",
+            reportName: "",
+          }}
+          onSubmit={async (values, actions) => {
+            setDownloading(true);
+            const fns = passengers.map(async (passenger) => {
+              return await createPDF(
+                values?.idType,
+                passenger?.name,
+                passenger?.passportNumber,
+                passenger?.birthDate,
+                caravanName,
+                passenger?.nationality,
+                values?.telNumber,
+                values.medinahHotel,
+                values.mekahHotel
               );
-            }}
-          </Formik>
-        </Grid>
-      </Grid>
+            });
 
-      <Grid item md={6}>
-        <Typography variant='h4'>{t('card-preview')}</Typography>
+            const results = Promise.all(fns);
+
+            results
+              .then((data) => {
+                downloadFiles(data, (done) => {
+                  if (done) {
+                    setDownloading(false);
+                  }
+                });
+              })
+              .catch((err) => {
+                console.log(
+                  "%cMyProject%cline:679%cerr",
+                  "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+                  "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+                  "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
+                  err
+                );
+                alert("An error occurred!! - " + err.message);
+                setDownloading(false);
+              });
+          }}
+        >
+          {({
+            setFieldValue,
+            isValid,
+            values,
+            errors,
+            isSubmitting,
+            touched,
+          }) => {
+            return (
+              <Form>
+                <S.Control>
+                  <Field
+                    as={Select}
+                    name="idType"
+                    required={true}
+                    id="idType"
+                    label="ID Type"
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.idType}
+                    value={values.idType}
+                    onChange={(e) => {
+                      setFieldValue("idType", e.target.value);
+
+                      if (e.target.value === "hotel_holy") {
+                        setPreviewURL(HotelHolyPreview);
+                      } else if (e.target.value === "hotel") {
+                        setPreviewURL(HotelPreview);
+                      } else if (e.target.value === "hotel_wave") {
+                        setPreviewURL(HotelWavePreview);
+                      } else if (e.target.value === "otago") {
+                        setPreviewURL(OtagoPreview);
+                      } else if (e.target.value === "otago_basic") {
+                        setPreviewURL(OtagoBasicPreview);
+                      } else if (e.target.value === "otago_blur") {
+                        setPreviewURL(OtagoBlurPreview);
+                      } else if (e.target.value === "otago_leaf") {
+                        setPreviewURL(OtagoLeafPreview);
+                      } else if (e.target.value === "otag_madinah") {
+                        setPreviewURL(OtagoMadinahPreview);
+                      } else if (e.target.value === "vertical_blank") {
+                        setPreviewURL(verticalBlank);
+                      }
+                    }}
+                  >
+                    <MenuItem value="hotel"> Hotel </MenuItem>
+                    <MenuItem value="hotel_holy">Hotel Holy</MenuItem>
+                    <MenuItem value="hotel_wave">Hotel Wave</MenuItem>
+                    <MenuItem value="otago"> Otago </MenuItem>
+                    <MenuItem value="otago_basic">Otago Basic</MenuItem>
+                    <MenuItem value="otago_blur">Otago Blur</MenuItem>
+                    <MenuItem value="otago_leaf">Otago Leaf</MenuItem>
+                    <MenuItem value="otago_madinah">Otago Madinah</MenuItem>
+                    <MenuItem value="vertical_blank">Vertical</MenuItem>
+                  </Field>
+                  <FormHelperText error={!!errors.idType}>
+                    {touched.idType && errors.idType}
+                  </FormHelperText>
+                </S.Control>
+                <S.Control>
+                  <Select onChange={handleCardColorChange} fullWidth>
+                    {colorItems.map((colorItem) => (
+                      <MenuItem
+                        value={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`}
+                        key={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`}
+                      >
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "25px",
+                            backgroundColor: `rgb(${colorItem.r},${colorItem.g},${colorItem.b})`,
+                          }}
+                        ></div>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </S.Control>
+                <S.Control>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="telNumber"
+                    required={true}
+                    id="telNumber"
+                    type="tel"
+                    minLength="10"
+                    placeholder="Telephone Number"
+                    variant="outlined"
+                    error={!!errors.telNumber}
+                    value={values.telNumber}
+                  />
+                  <FormHelperText error={!!errors.telNumber}>
+                    {touched.telNumber && errors.telNumber}
+                  </FormHelperText>
+                </S.Control>
+                <S.Control>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="mekahHotel"
+                    required={false}
+                    id="mekahHotel"
+                    type="text"
+                    placeholder="Makkah Hotel Name"
+                    variant="outlined"
+                    error={!!errors.mekahHotel}
+                    value={values.mekahHotel}
+                  />
+
+                  <FormHelperText error={!!errors.mekahHotel}>
+                    {touched.mekahHotel && errors.mekahHotel}
+                  </FormHelperText>
+                </S.Control>
+                <S.Control>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    name="medinahHotel"
+                    required={false}
+                    id="medinahHotel"
+                    type="tel"
+                    minLength="10"
+                    placeholder="Medinah Hotel Name"
+                    variant="outlined"
+                    error={!!errors.medinahHotel}
+                    value={values.medinahHotel}
+                  />
+
+                  <FormHelperText error={!!errors.medinahHotel}>
+                    {touched.medinahHotel && errors.medinahHotel}
+                  </FormHelperText>
+                </S.Control>
+                <S.Control>
+                  <Button variant="outlined" component="label">
+                    Upload Company's Logo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={async (e) => {
+                        setCompanyLogo(e.target.files[0]);
+                      }}
+                    />
+                  </Button>
+                  {companyLogo && <p> {companyLogo.name} </p>}
+                </S.Control>
+                <S.Control>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    disabled={downloading || !isValid}
+                    startIcon={downloading && <CircularProgress size={16} />}
+                  >
+                    {downloading ? "Printing..." : "Print Cards"}
+                  </Button>
+                </S.Control>
+              </Form>
+            );
+          }}
+        </Formik>
+      </S.Left>
+
+      <S.Right>
+        <Typography variant="h4" gutterBottom>
+          {t("card-preview")}
+        </Typography>
         {previewURL && (
           <img
             src={previewURL}
-            style={{ width: '100%', backgroundColor: `rgb(${cardBackgroundColor.r},${cardBackgroundColor.g},${cardBackgroundColor.b})` }}
+            style={{
+              width: "100%",
+              backgroundColor: `rgb(${cardBackgroundColor.r},${cardBackgroundColor.g},${cardBackgroundColor.b})`,
+            }}
             alt="id card type preview"
           />
         )}
-      </Grid>
-    </Grid>
+      </S.Right>
+    </S.Container>
   );
 };
 
