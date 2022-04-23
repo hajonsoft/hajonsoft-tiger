@@ -1,7 +1,4 @@
-import {
-  CircularProgress, TextField,
-  Typography
-} from "@material-ui/core";
+import { CircularProgress, TextField, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -27,7 +24,6 @@ import verticalBlank from "../../../assets/vertical_blank.png";
 import firebase from "../../../firebaseapp";
 import t from "../../../shared/util/trans";
 import S from "./styles";
-
 
 const getIDPositionProps = (idType) => {
   if (idType.includes("otago")) {
@@ -725,12 +721,12 @@ const IDCard = ({ passengers, caravanName }) => {
             return (
               <Form>
                 <S.Control>
+                  <Typography>Design</Typography>
                   <Field
                     as={Select}
                     name="idType"
                     required={true}
                     id="idType"
-                    label="ID Type"
                     variant="outlined"
                     fullWidth
                     error={!!errors.idType}
@@ -774,7 +770,11 @@ const IDCard = ({ passengers, caravanName }) => {
                   </FormHelperText>
                 </S.Control>
                 <S.Control>
-                  <Select onChange={handleCardColorChange} fullWidth>
+                  <Select
+                    onChange={handleCardColorChange}
+                    variant="outlined"
+                    fullWidth
+                  >
                     {colorItems.map((colorItem) => (
                       <MenuItem
                         value={`r${colorItem.r}g${colorItem.g}b${colorItem.b}`}
@@ -848,7 +848,7 @@ const IDCard = ({ passengers, caravanName }) => {
                 </S.Control>
                 <S.Control>
                   <Button variant="outlined" component="label">
-                    Upload Company's Logo
+                    Choose Logo
                     <input
                       type="file"
                       accept="image/*"
@@ -864,13 +864,13 @@ const IDCard = ({ passengers, caravanName }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    fullWidth
                     size="large"
+                    fullWidth
                     type="submit"
                     disabled={downloading || !isValid}
                     startIcon={downloading && <CircularProgress size={16} />}
                   >
-                    {downloading ? "Printing..." : "Print Cards"}
+                    {downloading ? "Creating..." : "Create Cards"}
                   </Button>
                 </S.Control>
               </Form>

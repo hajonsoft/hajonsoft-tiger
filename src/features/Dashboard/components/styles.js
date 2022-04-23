@@ -15,6 +15,10 @@ S.Left = styled.div`
 
 S.Control = styled.div`
   margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 `;
 
 S.Right = styled.div``;
