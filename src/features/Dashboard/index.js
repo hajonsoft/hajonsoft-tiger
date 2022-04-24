@@ -58,7 +58,7 @@ import { getPastCaravans } from "./redux/pastCaravanSlice";
 import { faPassport } from "@fortawesome/free-solid-svg-icons";
 import { isResult } from "../../redux/helpers";
 
-const tableIcons = {
+export const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),

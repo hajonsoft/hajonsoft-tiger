@@ -1,8 +1,9 @@
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, Box } from "@material-ui/core";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import BulkUpload from "./features/BulkUpload";
 import Dashboard from "./features/Dashboard";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
@@ -52,58 +53,58 @@ const messages = {
   en: messages_en,
 };
 const browserLanguage = () => {
-
   const navigatorLang = navigator.language.split(/[-_]/)[0];
-  if (navigatorLang === "en" || navigatorLang === "ar" || navigatorLang === "fr") {
+  if (
+    navigatorLang === 'en' ||
+    navigatorLang === 'ar' ||
+    navigatorLang === 'fr'
+  ) {
     return navigatorLang;
   }
-  return 'en'
-}
+  return 'en';
+};
 
 function getSupportedLanguage() {
-  const language = localStorage.getItem("langOverride") || browserLanguage();
-  const supportedLanguage = "en";
-  if (language === "ar" || language === "en" || language === "fr") {
-    return language
+  const language = localStorage.getItem('langOverride') || browserLanguage();
+  const supportedLanguage = 'en';
+  if (language === 'ar' || language === 'en' || language === 'fr') {
+    return language;
   } else {
     return supportedLanguage;
   }
-
 }
 
 function App() {
   const [themeName, setThemeName] = useState(getStoredTheme());
   const [theme, setTheme] = useState(getMaterialTheme(themeName));
-  const [language, setLanguage] = useState(getSupportedLanguage()
-  );
+  const [language, setLanguage] = useState(getSupportedLanguage());
   const [languageDirection, setLanguageDirection] = useState(
-    localStorage.getItem("langOverride") === "ar" ? "rtl" : "ltr"
+    localStorage.getItem('langOverride') === 'ar' ? 'rtl' : 'ltr'
   );
 
   const handleLanguageChange = (lang) => {
-    if (lang === "ar" && languageDirection !== "rtl") {
-      setLanguageDirection("rtl");
+    if (lang === 'ar' && languageDirection !== 'rtl') {
+      setLanguageDirection('rtl');
     }
 
-    if (lang !== "ar" && languageDirection === "rtl") {
-      setLanguageDirection("ltr");
+    if (lang !== 'ar' && languageDirection === 'rtl') {
+      setLanguageDirection('ltr');
     }
-    const supportedLanguage = "en";
-    if (lang === "ar" || lang === "en" || lang === "fr") {
+    const supportedLanguage = 'en';
+    if (lang === 'ar' || lang === 'en' || lang === 'fr') {
       setLanguage(lang);
-      localStorage.setItem("langOverride", lang);
+      localStorage.setItem('langOverride', lang);
     } else {
       setLanguage(supportedLanguage);
-      localStorage.setItem("langOverride", supportedLanguage);
+      localStorage.setItem('langOverride', supportedLanguage);
     }
-
   };
 
   document.dir = languageDirection;
 
   function getStoredTheme() {
     const storedTheme = localStorage.getItem('theme');
-    if (themes.includes(storedTheme)){
+    if (themes.includes(storedTheme)) {
       return storedTheme;
     }
     return 'default';
@@ -111,8 +112,8 @@ function App() {
 
   function handleOnThemeChange(e) {
     setThemeName(e.target.value);
-    localStorage.setItem("theme", e.target.value);
-    const materialTheme =  getMaterialTheme(e.target.value);
+    localStorage.setItem('theme', e.target.value);
+    const materialTheme = getMaterialTheme(e.target.value);
     setTheme(materialTheme);
   }
   return (
@@ -121,15 +122,27 @@ function App() {
         <Router>
           <Provider store={store}>
             <PublicRoute exact path="/">
-              <DoveHome onLanguageChange={(l) => handleLanguageChange(l)} lang={language} onThemeChange={handleOnThemeChange} selectedTheme={themeName} themes={themes} />
+              <DoveHome
+                onLanguageChange={(l) => handleLanguageChange(l)}
+                lang={language}
+                onThemeChange={handleOnThemeChange}
+                selectedTheme={themeName}
+                themes={themes}
+              />
+            </PublicRoute>
+            <PublicRoute path="/bulk-reserve">
+              <BulkUpload />
             </PublicRoute>
             <PublicRoute path="/login">
-              <SignIn onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
+              <SignIn
+                onLanguageChange={(l) => handleLanguageChange(l)}
+                lang={language}
+              />
             </PublicRoute>
             <PublicRoute path="/logout">
               <SignOut />
             </PublicRoute>
-            <Route path="/reserve/:packageName" >
+            <Route path="/reserve/:packageName">
               <Reservation
                 onLanguageChange={(l) => handleLanguageChange(l)}
                 lang={language}
@@ -145,7 +158,10 @@ function App() {
               <ToursAdvertisements />
             </PublicRoute>
             <PublicRoute exact path="/package/detail/:packageName">
-              <AdvertisementDetail onLanguageChange={(l) => handleLanguageChange(l)} lang={language} />
+              <AdvertisementDetail
+                onLanguageChange={(l) => handleLanguageChange(l)}
+                lang={language}
+              />
             </PublicRoute>
             <PrivateRoute path="/caravans">
               <Dashboard />
