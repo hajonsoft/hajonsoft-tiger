@@ -1,5 +1,5 @@
 import { nationalities } from "../../data/nationality";
-import { nameParts } from "./nameParts";
+import { nameParts } from "./name";
 import moment from "moment";
 
 const checkDigitDiagram = {
