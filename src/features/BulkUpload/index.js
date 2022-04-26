@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
+import {Box, Button} from '@material-ui/core'
 import MaterialTable from 'material-table';
 import { tableIcons } from '../Dashboard';
 import firebase from '../../firebaseapp';
+import UploadPhoto from './uploadPhoto';
 
 const BulkUpload = () => {
   const location = useLocation();
   const history = useHistory();
   const params = new URLSearchParams(location.search);
   const passportJSON = JSON.parse(JSON.stringify(params.get('json')));
+  const [photoMode, setPhotoMode] = useState(false);
   const [passportsDetails, setPassportsDetails] = useState(
     JSON.parse(passportJSON).map((passportDetail) => ({
       name: passportDetail.given_names_readable,
@@ -25,37 +28,32 @@ const BulkUpload = () => {
 
   const packageName = params.get('caravan');
 
+  function savePassengers(passportsDetails, packageName) {
+    const reservationReference = firebase
+      .database()
+      .ref(`customer/online`);
+  
+    passportsDetails.forEach((passport) => {
+      reservationReference.push({
+        ...passport,
+        packageName,
+      });
+    });
+    setPhotoMode(true)
+  }
+
   return (
     <div style={{ maxWidth: '100%', padding: '1rem' }}>
+      {photoMode && <UploadPhoto passportsDetails={passportsDetails} />}
+
+      {!photoMode && <>
+      <Box style={{display: 'flex', justifyContent: 'flex-end', padding: '16px'}}>
+        <Button variant="contained" onClick={() => savePassengers(passportsDetails, packageName, history)} color="primary" size="large">Continue ... </Button>
+      </Box>
       <MaterialTable
         options={{
           search: false,
         }}
-        actions={[
-          {
-            icon: tableIcons.Add,
-            tooltip: `Add Reservation`,
-            name: 'add',
-            isFreeAction: true,
-            onClick: (e) => {
-              const reservationReference = firebase
-                .database()
-                .ref(`customer/online`);
-
-              passportsDetails.forEach((passport) => {
-                reservationReference.push({
-                  ...passport,
-                  packageName,
-                });
-              });
-
-              setTimeout(() => {
-                history.push('/');
-                alert('Uploaded Successfully');
-              }, 1500);
-            },
-          },
-        ]}
         icons={tableIcons}
         cellEditable={{
           cellStyle: {},
@@ -95,8 +93,11 @@ const BulkUpload = () => {
         data={passportsDetails}
         title="Bulk Reservation"
       />
+      </>}
     </div>
   );
 };
 
 export default BulkUpload;
+
+

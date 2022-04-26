@@ -1,4 +1,4 @@
-import { ThemeProvider, Box } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
 import React, { useState } from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
