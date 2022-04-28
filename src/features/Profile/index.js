@@ -12,9 +12,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import firebaseConfig from "../../firebaseConfig";
-import { getProfile, updateProfile } from './redux/profileSlice';
+import { getProfile, updateProfile } from "./redux/profileSlice";
 import InputControl from "../Reservation/components/InputControl";
-import t from '../../shared/util/trans';
+import t from "../../shared/util/trans";
+import CoreLogo from "../../shared/macaw/CoreLogo";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -48,34 +49,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const record = useSelector(state => state?.profile?.data);
+  const record = useSelector((state) => state?.profile?.data);
 
   useEffect(() => {
-    dispatch(getProfile())
+    dispatch(getProfile());
   }, [dispatch]);
 
   const onClose = () => history.push("/caravans");
 
   const handleSubmitForm = async (values, actions) => {
-    dispatch(updateProfile({profileData: values}));
+    dispatch(updateProfile({ profileData: values }));
     onClose();
   };
   return (
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={record || {name: firebaseConfig.projectId}}
+        initialValues={record || { name: firebaseConfig.projectId }}
         onSubmit={handleSubmitForm}
       >
-        {({
-          values,
-          errors,
-          touched,
-          isSubmitting,
-        }) => (
+        {({ values, errors, touched, isSubmitting }) => (
           <Form>
             <Card raised className={classes.formContainer}>
               <CardHeader
@@ -93,7 +89,7 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="name"
-                      label={t('public-name')}
+                      label={t("public-name")}
                       value={values?.name}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
@@ -103,11 +99,13 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="email"
-                      label={t('notifications-email')}
+                      label={t("notifications-email")}
                       required={true}
                       value={values?.email}
                       error={touched.email && Boolean(errors.email)}
-                      helperText={t('notifications-reservations-visa-by-proxy-etc')}
+                      helperText={t(
+                        "notifications-reservations-visa-by-proxy-etc"
+                      )}
                       disabled={false}
                     />
                   </Grid>
@@ -115,7 +113,7 @@ const Profile = () => {
                     <InputControl
                       name="tel"
                       required={false}
-                      label={t('public-telephone-number')}
+                      label={t("public-telephone-number")}
                       value={values?.tel}
                       error={touched.tel && Boolean(errors.tel)}
                       helperText={touched.tel && errors.tel}
@@ -125,7 +123,7 @@ const Profile = () => {
                     <InputControl
                       name="address"
                       required={false}
-                      label={t('public-company-address')}
+                      label={t("public-company-address")}
                       value={values?.address}
                       error={touched.address && Boolean(errors.address)}
                       helperText={touched.address && errors.address}
@@ -134,9 +132,9 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="facebookPage"
-                      label={t('public-facebook-link')}
+                      label={t("public-facebook-link")}
                       required={false}
-                      value={values?.facebookPage || 'facebook.com'}
+                      value={values?.facebookPage || "facebook.com"}
                       error={
                         touched.facebookPage && Boolean(errors.facebookPage)
                       }
@@ -146,12 +144,27 @@ const Profile = () => {
                   <Grid item xs={12}>
                     <InputControl
                       name="about"
-                      label={t('public-company-description')}
+                      label={t("public-company-description")}
                       required={false}
                       value={values?.about}
                       error={touched.about && Boolean(errors.about)}
                       multiline
                       helperText={touched.about && errors.about}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputControl
+                      name="ehajCode"
+                      label={t("ehaj-code")}
+                      required={false}
+                      value={values?.ehajCode}
+                      error={touched.ehajCode && Boolean(errors.ehajCode)}
+                      helperText={touched.ehajCode && errors.ehajCode}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CoreLogo
+                      record={{ nationality: "logo", passportNumber: "000" }}
                     />
                   </Grid>
                 </Grid>
@@ -166,7 +179,7 @@ const Profile = () => {
                   onClick={onClose}
                   startIcon={<CancelOutlinedIcon />}
                 >
-                  {t('cancel')}
+                  {t("cancel")}
                 </Button>
 
                 <Button
@@ -176,7 +189,7 @@ const Profile = () => {
                   color="primary"
                   startIcon={<SaveOutlinedIcon />}
                 >
-                  {t('save')}
+                  {t("save")}
                 </Button>
               </CardActions>
             </Card>
