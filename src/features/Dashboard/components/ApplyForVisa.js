@@ -307,6 +307,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         munazim: firebaseConfig.projectId,
         databaseURL: firebaseConfig.databaseURL,
         accessToken: auth.accessToken,
+        ehajCode: profile.ehajCode
       },
       travellers: travelersData,
     };
@@ -411,6 +412,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         munazim: firebaseConfig.projectId,
         databaseURL: firebaseConfig.databaseURL,
         accessToken: auth.accessToken,
+        ehajCode: profile.ehajCode,
       },
       travellers: travelersData,
     };
