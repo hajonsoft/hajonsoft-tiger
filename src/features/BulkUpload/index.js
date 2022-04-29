@@ -5,6 +5,8 @@ import MaterialTable from 'material-table';
 import { tableIcons } from '../Dashboard';
 import firebase from '../../firebaseapp';
 import UploadPhoto from './uploadPhoto';
+import { nationalities } from '../../data/nationality';
+import moment from 'moment';
 
 const BulkUpload = () => {
   const location = useLocation();
@@ -16,12 +18,12 @@ const BulkUpload = () => {
     JSON.parse(passportJSON).map((passportDetail) => ({
       name: passportDetail.given_names_readable,
       gender: passportDetail.sex === 'M' ? 'Male' : 'Female',
-      nationality: passportDetail.nationality,
+      nationality: nationalities.find(n => n.code === passportDetail.nationality)?.name,
       passportNumber: passportDetail.document_number,
       passPlaceOfIssue: passportDetail.issuing_country,
-      passIssueDt: passportDetail.est_issuing_date_readable,
-      passExpireDt: passportDetail.expiration_date_readable,
-      birthDate: passportDetail.dob_readable,
+      passIssueDt: moment(passportDetail.est_issuing_date_readable,'dd.MM.yyyy').format('YYYY-MM-DD'),
+      passExpireDt: moment(passportDetail.expiration_date_readable,'dd.MM.yyyy').format('YYYY-MM-DD'),
+      birthDate: moment(passportDetail.dob_readable,'dd.MM.yyyy').format('YYYY-MM-DD'),
       birthPlace: passportDetail.nationality,
     }))
   );

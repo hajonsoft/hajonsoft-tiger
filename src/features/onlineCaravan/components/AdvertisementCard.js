@@ -11,7 +11,7 @@ import { packageImage } from "../../../shared/util/packageImage";
 import t from "../../../shared/util/trans";
 import { Box, Modal } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
+import mrzScanner from "../../../assets/mrz-scanner.png";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -75,49 +75,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TEMP_JSON = `[
-  {
-    "issuing_country" : "EGY",
-    "nationality" : "EGY",
-    "sex" : "M",
-    "surname" : "Shoman",
-    "dob_readable" : "17.08.1988",
-    "expiration_date_readable" : "29.05.2017",
-    "given_names_readable" : "Islam Mahmoud Mahmoud Mohamed",
-    "expiration_date_raw" : "170529",
-    "est_issuing_date_raw" : "100530",
-    "optionals" : "",
-    "document_type_readable" : "Passport",
-    "document_type_raw" : "P",
-    "est_issuing_date_readable" : "30.05.2010",
-    "document_number" : "A01805459",
-    "dob_raw" : "880817"
-  },
-  {
-    "issuing_country" : "EGY",
-    "nationality" : "EGY",
-    "sex" : "M",
-    "surname" : "Hassadj",
-    "dob_readable" : "11.12.1987",
-    "expiration_date_readable" : "23.04.2017",
-    "given_names_readable" : "Moameej Mohamed Ahmed Eldawy",
-    "expiration_date_raw" : "170423",
-    "est_issuing_date_raw" : "100424",
-    "optionals" : "",
-    "document_type_readable" : "Passport",
-    "document_type_raw" : "P",
-    "est_issuing_date_readable" : "24.04.2010",
-    "document_number" : "A01571313",
-    "dob_raw" : "871211"
-  }
-]`
+// const TEMP_JSON = `[
+//   {
+//     "issuing_country" : "EGY",
+//     "nationality" : "EGY",
+//     "sex" : "M",
+//     "surname" : "Shoman",
+//     "dob_readable" : "17.08.1988",
+//     "expiration_date_readable" : "29.05.2017",
+//     "given_names_readable" : "Islam Mahmoud Mahmoud Mohamed",
+//     "expiration_date_raw" : "170529",
+//     "est_issuing_date_raw" : "100530",
+//     "optionals" : "",
+//     "document_type_readable" : "Passport",
+//     "document_type_raw" : "P",
+//     "est_issuing_date_readable" : "30.05.2010",
+//     "document_number" : "A01805459",
+//     "dob_raw" : "880817"
+//   },
+//   {
+//     "issuing_country" : "EGY",
+//     "nationality" : "EGY",
+//     "sex" : "M",
+//     "surname" : "Hassadj",
+//     "dob_readable" : "11.12.1987",
+//     "expiration_date_readable" : "23.04.2017",
+//     "given_names_readable" : "Moameej Mohamed Ahmed Eldawy",
+//     "expiration_date_raw" : "170423",
+//     "est_issuing_date_raw" : "100424",
+//     "optionals" : "",
+//     "document_type_readable" : "Passport",
+//     "document_type_raw" : "P",
+//     "est_issuing_date_readable" : "24.04.2010",
+//     "document_number" : "A01571313",
+//     "dob_raw" : "871211"
+//   }
+// ]`
 
 const AdvertisementCard = ({ detail, index }) => {
   const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const [reserveJSON, setReserveJSON] = useState(TEMP_JSON);
+  const [reserveJSON, setReserveJSON] = useState('');
 
   if (!detail) {
     return null;
@@ -169,9 +169,9 @@ const AdvertisementCard = ({ detail, index }) => {
           variant="contained"
           onClick={handleOpen}
           style={{ textTransform: "none" }}
-          endIcon={<PhoneAndroidIcon />}
+          endIcon={<img src={mrzScanner} width="32" height="32" alt="mrz scanner app" />}
         >
-          Scan
+          MRZ Scanner
         </Button>
         <Button
           title={`Learn more about ${detail.name} package`}
@@ -190,10 +190,10 @@ const AdvertisementCard = ({ detail, index }) => {
       >
           <Box style={getModalStyle()} className={classes.paper}>
             <Box style={{ width: '100%'}}>
-              <Typography gutterBottom> MRZ scanner JSON</Typography>
+              <Typography gutterBottom> MRZ Scanner app</Typography>
             </Box>
             <TextField
-              label="Paste JSON here"
+              label="Paste JSON from MRZ Scanner app here"
               multiline
               value={reserveJSON}
               onChange={(e) => setReserveJSON(e.target.value)}
