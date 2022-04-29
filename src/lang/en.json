@@ -198,9 +198,16 @@
               "upload-your-passport": "",
               "__i18n_ally_root__": {
                 "__i18n_ally_root__": {
-                  "upload-your-passport": ""
+                  "upload-your-passport": "",
+                  "__i18n_ally_root__": {
+                    "__i18n_ally_root__": {
+                      "upload-your-passport": ""
+                    }
+                  },
+                  "upload-your-vaccine": ""
                 }
-              }
+              },
+              "upload-your-vaccine": ""
             }
           },
           "upload-your-vaccine": ""
@@ -209,5 +216,6 @@
       "upload-your-vaccine": ""
     }
   },
-  "airlineRef": "Airline Ref#"
+  "airlineRef": "Airline Ref#",
+  "ehaj-code": "Ehaj Code"
 }

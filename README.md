@@ -25,6 +25,10 @@ To learn about HAJonSoft repos please watch this video [![image](https://user-im
 yarn start or npm start
 ```
 
+## Copilot
+
+Let's use copilot,  some tips are [here](https://travis.media/how-to-use-github-copilot-vscode/)
+
 ## Redux and Toolkit
 ---
 For redux code walkthrough see video (public)

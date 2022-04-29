@@ -3,7 +3,7 @@ import moment from "moment";
 import { nationalities } from "../../../data/nationality";
 import firebase from "../../../firebaseapp";
 import { createCodeLine } from "../../../shared/util/codeline";
-import { nameParts } from "../../../shared/util/nameParts";
+import { nameParts } from "../../../shared/util/name";
 
 const storage = firebase.storage();
 

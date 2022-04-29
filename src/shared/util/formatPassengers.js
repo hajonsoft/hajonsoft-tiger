@@ -3,6 +3,7 @@ import moment from "moment";
 import React from "react";
 import Barcode from "react-barcode";
 import { nationalities } from "../../data/nationality";
+import { sanitizeName } from "./name";
 
 export function formatPassengers(passengers) {
   const formattedPassengers = [];
@@ -49,8 +50,8 @@ export function formatPassengers(passengers) {
         </div>
       ),
       title: gTitle(passengers[i]),
-      firstName: passengers[i].name.split(" ")[0],
-      lastName: _.last(passengers[i].name.split(" ")),
+      firstName: sanitizeName(passengers[i].name.split(" ")[0]),
+      lastName: sanitizeName(_.last(passengers[i].name.split(" "))),
       eNumberBarcode: passengers[i].eNumber ? (
         <Barcode
           value={passengers[i].eNumber}

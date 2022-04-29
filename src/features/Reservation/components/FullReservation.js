@@ -24,11 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   submitBtn: {
     background: '#006b6b',
-    marginRight: '3rem',
     textTransform: 'capitalize',
     color: '#bfffff',
     marginTop: '3rem',
-    width: '300px',
+    width: '100%',
     borderRadius: '16px',
     fontSize: '24px'
   },
@@ -253,7 +252,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
   };
 
   return (
-    <div>
+    <div style={{margin: '0 auto'}}>
       {!reservationNumber && (
         <Formik
           initialValues={{ name: '', gender: '', nationality: '' }}
@@ -268,7 +267,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                   style={{ backgroundColor: '#00ffff' }}
                   spacing={2}
                 >
-                  <Grid item md={12}>
+                  <Grid item md={12} sm={12} xs={12}>
                     <Typography variant="subtitle2">
                       {t('reservation.upload-your-passport')}
                     </Typography>
@@ -292,7 +291,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                             color="primary"
                             fontSize="large"
                           />
-                          <Typography>
+                          <Typography align='center'>
                             {t('reservation.upload-your-passport')}
                           </Typography>
                         </>
@@ -310,14 +309,14 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                     style={{ backgroundColor: '#00ffff' }}
                     spacing={2}
                   >
-                    <Grid item md={12}>
+                    <Grid item md={12} sm={12}>
                       <Box ml={2}>
                         <Typography variant="subtitle2">
                           {t('reservation.basic-information')}
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item md={2} style={{ backgroundColor: '#80ffff', padding: '32px 16px 8px 8px', borderTopLeftRadius: '16px' }}>
+                    <Grid item md={2} sm={12} style={{ backgroundColor: '#80ffff', padding: '32px 16px 8px 8px', borderTopLeftRadius: '16px' }}>
                       <input ref={inputRef} hidden type="file" accept="image/*" />
                       <div className={classes.avatarContainer}>
                         <Avatar
@@ -342,9 +341,9 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                         </div>
                       </div>
                     </Grid>
-                    <Grid item md={10}>
+                    <Grid item md={10} xs={12} sm={12}>
                       <Grid container direction="column" spacing={1} style={{ backgroundColor: '#80ffff', width: '100%', padding: '16px 8px 8px 8px', borderTopRightRadius: '16px', borderBottomRightRadius: '16px' }}>
-                        <Grid item md={12}>
+                        <Grid item md={12} xs={12} sm={12}>
                           <InputControl
                             name="name"
                             label={t('reservation.full-name')}
@@ -355,7 +354,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                             helperText={touched.name && errors.name}
                           />
                         </Grid>
-                        <Grid item md={12}>
+                        <Grid item md={12} sm={12} xs={12}>
                           <InputControl
                             name="nameArabic"
                             label={t('reservation.arabic-name')}
@@ -413,7 +412,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                       </Box>
                     </Grid>
                     <Grid container justifyContent="space-around" spacing={2} style={{ backgroundColor: '#80ffff', padding: '16px', borderRadius: '16px' }}>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  md={5} xs={12} sm={12}>
                         <InputControl
                           name="passportNumber"
                           label={t('reservation.passport-number')}
@@ -428,7 +427,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  xs={12} sm={12} md={5}>
                         <InputControl
                           name="passPlaceOfIssue"
                           label={t('reservation.issued-at')}
@@ -443,7 +442,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           }
                         />
                       </Grid>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  xs={12} sm={12} md={5}>
                         <InputControl
                           name="passIssueDt"
                           label={t('reservation.passport-issue-date')}
@@ -455,7 +454,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           type="date"
                         />
                       </Grid>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  xs={12} sm={12} md={5}>
                         <InputControl
                           name="passExpireDt"
                           label={t('reservation.passport-expire-date')}
@@ -467,7 +466,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           type="date"
                         />
                       </Grid>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  xs={12} sm={12} md={5}>
                         <InputControl
                           name="birthDate"
                           label={t('reservation.birth-date')}
@@ -477,7 +476,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           type="date"
                         />
                       </Grid>
-                      <Grid item xs={5} md={5}>
+                      <Grid item  xs={12} sm={12} md={5}>
                         <InputControl
                           name="birthPlace"
                           label={t('reservation.birth-place')}
@@ -540,8 +539,8 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                         />
                       </Grid>
                     </Grid>
-                    <Grid item md={12}>
-                      <Box ml={2} mb={2}>
+                    <Grid item md={12} xs={12}>
+                      <Box ml={2} mb={2} xs={12} sm={12}>
                         <Typography variant="subtitle2">
                           {t('reservation.upload-your-vaccine')}
                         </Typography>
@@ -568,7 +567,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                               color="primary"
                               fontSize="large"
                             />
-                            <Typography>
+                            <Typography align="center">
                               {t('reservation.upload-your-vaccine')}
                             </Typography>
                           </>
@@ -603,7 +602,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           helperText={touched.phone && errors.phone}
                         />
                       </Grid>
-                      <Grid item md={11}>
+                      <Grid item md={11}  xs={12} sm={12}>
                         <InputControl
                           name="email"
                           label={t('reservation.email')}
@@ -613,7 +612,7 @@ const FullReservation = ({ openSuccessModal, isModalOpen }) => {
                           required={false}
                         />
                       </Grid>
-                      <Grid item md={11}>
+                      <Grid item md={11} xs={12} sm={12}>
                         <InputControl
                           multiline
                           required={false}

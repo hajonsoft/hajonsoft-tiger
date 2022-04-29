@@ -19,7 +19,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -297,6 +297,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       system: {
         username: crypt.encrypt(exportVisaSystem.username),
         password: crypt.encrypt(exportVisaSystem.password),
+        ehajCode: profile?.ehajCode || "",
         embassy: exportVisaSystem.embassy,
         name: exportVisaSystem.usap,
       },
@@ -401,6 +402,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         password:
           exportVisaSystem?.password &&
           crypt.encrypt(exportVisaSystem?.password),
+        ehajCode: profile?.ehajCode || "",
         embassy: exportVisaSystem?.embassy,
         name: exportVisaSystem?.usap,
       },
@@ -421,10 +423,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       var csvURL = window.URL.createObjectURL(newFile);
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
-      const fileName = `${sanitizeCaravanName(caravan) +
+      const fileName = `${
+        sanitizeCaravanName(caravan) +
         "_" +
         parseInt(moment().format("X")).toString(36)
-        }.zip`;
+      }.zip`;
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
       tempLink.click();
@@ -463,9 +466,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const tempLink = document.createElement("a");
     tempLink.href = new URL(
       "hawk://mode=send,fileName=" +
-      downloadFileName +
-      ",host=" +
-      firebaseConfig.projectId
+        downloadFileName +
+        ",host=" +
+        firebaseConfig.projectId
     );
     tempLink.click();
   };
@@ -494,7 +497,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     navigator.clipboard.writeText(`node . file=${downloadFileName}`);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
-  }
+  };
 
   return (
     <>
@@ -616,15 +619,15 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                                       {getServiceProviderProfileImage(
                                         x.usap
                                       ) && (
-                                          <img
-                                            src={getServiceProviderProfileImage(
-                                              x.usap
-                                            )}
-                                            width="100"
-                                            height="50"
-                                            alt={x.username}
-                                          />
-                                        )}
+                                        <img
+                                          src={getServiceProviderProfileImage(
+                                            x.usap
+                                          )}
+                                          width="100"
+                                          height="50"
+                                          alt={x.username}
+                                        />
+                                      )}
                                     </Grid>
                                     <Grid item style={{ flexGrow: 1 }}>
                                       {`${getServiceProviderProfileName(
@@ -872,17 +875,27 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           color="textSecondary"
                           gutterBottom
                         >
-                          {downloadFileName
-                            ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          {downloadFileName ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                            >
                               <Typography variant="caption">
                                 {`node . file=${downloadFileName}`}
                               </Typography>
-                              <IconButton aria-label="copy" onClick={handleCopyNodeInfo}>
+                              <IconButton
+                                aria-label="copy"
+                                onClick={handleCopyNodeInfo}
+                              >
                                 <FileCopyOutlinedIcon />
                               </IconButton>
-
                             </div>
-                            : t("optional")}
+                          ) : (
+                            t("optional")
+                          )}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t(
@@ -1068,7 +1081,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         </Fade>
       </Modal>
       <Snackbar open={showAlert} autoHideDuration={6000}>
-        <Alert severity="success" color="info" >Copied!</Alert>
+        <Alert severity="success" color="info">
+          Copied!
+        </Alert>
       </Snackbar>
     </>
   );
