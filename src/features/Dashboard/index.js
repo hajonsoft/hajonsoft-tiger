@@ -29,7 +29,7 @@ import DetailsIcon from "@material-ui/icons/Details";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
-import GroupIcon from "@material-ui/icons/Group";
+import ExploreIcon from "@material-ui/icons/Explore";
 import LastPage from "@material-ui/icons/LastPage";
 import NearMeIcon from "@material-ui/icons/NearMe";
 import Remove from "@material-ui/icons/Remove";
@@ -90,9 +90,8 @@ const Dashboard = () => {
   const [isPast, setIsPast] = useState(false);
   const [holdData, setHoldData] = useState([]);
   const [state, setState] = useState({ mode: "list", record: {} });
-  const [showConfirmDeleteExpired, setShowConfirmDeleteExpired] = useState(
-    false
-  );
+  const [showConfirmDeleteExpired, setShowConfirmDeleteExpired] =
+    useState(false);
   const [applyForVisaOpen, setApplyForVisaOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   // Redux
@@ -104,6 +103,12 @@ const Dashboard = () => {
   const error = useSelector((state) => state.caravan?.error);
   const history = useHistory();
   const title = !isPast ? t("caravan") : t("past-caravans");
+  const paxUpcoming = Object.entries(caravans).reduce((acc, [key, value]) => {
+    return acc + value.length;
+  }, 0);
+  const paxPast = Object.entries(pastCaravans).reduce((acc, [key, value]) => {
+    return acc + value.length;
+  }, 0);
   // use Effect
   useEffect(() => {
     dispatch(getUpcomingCaravans());
@@ -114,10 +119,15 @@ const Dashboard = () => {
     return (
       <Grid container spacing={2} alignItems="center">
         <Grid item>
-          <GroupIcon />
+          <ExploreIcon />
         </Grid>
         <Grid item>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6" component="span">
+            {title}
+          </Typography>
+          <Typography variant="caption" component="span"> {' '}
+            {isPast ? paxPast : paxUpcoming}
+          </Typography>
         </Grid>
       </Grid>
     );
@@ -200,19 +210,26 @@ const Dashboard = () => {
         .sort()
         .map((v) => ({
           name: v,
-          total: pastCaravans[v].filter(passenger=> isResult(passenger,keyword)).length,
-          expired: pastCaravans[v].filter((passenger) =>
-          isResult(passenger,keyword) && dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
-        ),
+          total: pastCaravans[v].filter((passenger) =>
+            isResult(passenger, keyword)
+          ).length,
+          expired: pastCaravans[v].filter(
+            (passenger) =>
+              isResult(passenger, keyword) &&
+              dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
+          ),
         }));
     }
     return Object.keys(caravans)
       .sort()
       .map((v) => ({
         name: v,
-        total: caravans[v].filter(passenger=> isResult(passenger,keyword)).length,
-        expired: caravans[v].filter((passenger) =>
-          isResult(passenger,keyword) && dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
+        total: caravans[v].filter((passenger) => isResult(passenger, keyword))
+          .length,
+        expired: caravans[v].filter(
+          (passenger) =>
+            isResult(passenger, keyword) &&
+            dayjs(passenger.passExpireDt).isBefore(dayjs().add(-6, "month"))
         ),
       }));
   };
@@ -225,7 +242,7 @@ const Dashboard = () => {
   const handleMergeClick = (rowData) => {
     if (state.mode === "merge") {
       for (const passenger of caravans[state.record.name]) {
-        dispatch(createPassenger({name: rowData.name, passenger}))
+        dispatch(createPassenger({ name: rowData.name, passenger }));
       }
       dispatch(deleteUpcomingCaravan(state.record.name));
       // delete caravan rowData.name
@@ -312,10 +329,13 @@ const Dashboard = () => {
                         rowData.name === state.record.name ? (
                           <Grid container spacing={2} alignItem="center">
                             <Grid item>
-                              <CallMergeIcon color="secondary" size="small"/>
+                              <CallMergeIcon color="secondary" size="small" />
                             </Grid>
                             <Grid item>
-                              <tableIcons.Delete color="secondary" size="small"/>
+                              <tableIcons.Delete
+                                color="secondary"
+                                size="small"
+                              />
                             </Grid>
                             <Grid item>
                               <Typography
@@ -402,17 +422,17 @@ const Dashboard = () => {
                     onClick: (event, rowData) => handleMergeClick(rowData),
                   },
                   !isPast &&
-                  state.mode === "list" && {
-                    icon: () => <tableIcons.Delete />,
-                    name: "delete",
-                    tooltip: `Delete ${title}`,
-                    onClick: (event, rowData) =>
-                      setState((st) => ({
-                        ...st,
-                        mode: "delete",
-                        record: rowData,
-                      })),
-                  },
+                    state.mode === "list" && {
+                      icon: () => <tableIcons.Delete />,
+                      name: "delete",
+                      tooltip: `Delete ${title}`,
+                      onClick: (event, rowData) =>
+                        setState((st) => ({
+                          ...st,
+                          mode: "delete",
+                          record: rowData,
+                        })),
+                    },
                 ]}
                 components={{
                   Action: (props) => (
@@ -438,7 +458,7 @@ const Dashboard = () => {
                           }
                           size="small"
                         >
-                          <DeleteOutlined color="error"/>
+                          <DeleteOutlined color="error" />
                         </IconButton>
                       )}
                       {props.action.name === "add" && (
