@@ -33,6 +33,11 @@ const onlineCaravanSlice = createSlice({
         error: '',
         data: {}
     },
+    reducers: {
+        setScannerData: (state, action) => {
+          state.data = action.payload;
+        },
+      },
     extraReducers: (builder) => {
         builder.addCase(getOnlineCaravans.pending, (state, action) => {
             state.loading = true;
@@ -97,3 +102,4 @@ const onlineCaravanSlice = createSlice({
 })
 
 export default onlineCaravanSlice.reducer;
+export const { setScannerData } = onlineCaravanSlice.actions;
