@@ -532,7 +532,7 @@ const Passengers = () => {
                         <Chip
                           icon={<FileCopyIcon />}
                           label={getPassengerCount(rowData)}
-                          color="secondary"
+                          color="warning"
                         />
                       )}
                     </>
