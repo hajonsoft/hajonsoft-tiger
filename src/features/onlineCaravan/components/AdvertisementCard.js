@@ -12,6 +12,8 @@ import t from "../../../shared/util/trans";
 import { Box, Link, Modal } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import mrzScanner from "../../../assets/mrz-scanner.png";
+import { useDispatch } from "react-redux";
+import { setScannerData } from "../redux/onlineCaravanSlice";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -115,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
 const AdvertisementCard = ({ detail, index }) => {
   const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
 
   const [reserveJSON, setReserveJSON] = useState('');
@@ -129,6 +132,15 @@ const AdvertisementCard = ({ detail, index }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleMakeReservation = (reserveJSON) => {
+    if (reserveJSON) {
+        dispatch(setScannerData({reserveJSON, caravan: detail.name}));
+        history.push(
+          `/bulk-reserve`
+        );
+      }
   };
 
   return (
@@ -230,13 +242,7 @@ const AdvertisementCard = ({ detail, index }) => {
             title={`Make reservation to ${detail.name}`}
             color="primary"
             variant="contained"
-            onClick={() => {
-              if (reserveJSON) {
-                history.push(
-                  `/bulk-reserve?json=${reserveJSON}&caravan=${detail.name}`
-                );
-              }
-            }}
+            onClick={() => handleMakeReservation(reserveJSON)}
             style={{ textTransform: "none" }}
           >
             Continue

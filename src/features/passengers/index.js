@@ -12,52 +12,53 @@ import {
   Modal,
   Box,
   makeStyles,
-} from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Link from '@material-ui/core/Link';
-import Snackbar from '@material-ui/core/Snackbar';
-import AddBox from '@material-ui/icons/AddBox';
-import Checkbox from '@material-ui/core/Checkbox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import DetailsIcon from '@material-ui/icons/Details';
-import Edit from '@material-ui/icons/Edit';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import HomeIcon from '@material-ui/icons/Home';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import Alert from '@material-ui/lab/Alert';
-import MaterialTable, { MTableToolbar } from 'material-table';
-import moment from 'moment';
-import pluralize from 'pluralize';
-import _ from 'lodash';
-import React, { forwardRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import AppHeader from '../../shared/macaw/AppHeader';
-import CRUDForm from './components/CRUDForm';
-import CaravanSelectInput from './components/CaravanSelectInput';
+} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import Link from "@material-ui/core/Link";
+import Snackbar from "@material-ui/core/Snackbar";
+import AddBox from "@material-ui/icons/AddBox";
+import Checkbox from "@material-ui/core/Checkbox";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import Check from "@material-ui/icons/Check";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import Clear from "@material-ui/icons/Clear";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import DetailsIcon from "@material-ui/icons/Details";
+import Edit from "@material-ui/icons/Edit";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FilterList from "@material-ui/icons/FilterList";
+import FirstPage from "@material-ui/icons/FirstPage";
+import HomeIcon from "@material-ui/icons/Home";
+import LastPage from "@material-ui/icons/LastPage";
+import Remove from "@material-ui/icons/Remove";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+import Search from "@material-ui/icons/Search";
+import ViewColumn from "@material-ui/icons/ViewColumn";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import Alert from "@material-ui/lab/Alert";
+import MaterialTable, { MTableToolbar } from "material-table";
+import moment from "moment";
+import pluralize from "pluralize";
+import _ from "lodash";
+import React, { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import AppHeader from "../../shared/macaw/AppHeader";
+import Passenger from "./components/Passenger";
+import CaravanSelectInput from "./components/CaravanSelectInput";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import {
   deletePassenger,
   getUpcomingCaravans,
   movePassengers,
   updatePassenger,
-} from '../Dashboard/redux/caravanSlice';
-import t from '../../shared/util/trans';
-import dayjs from 'dayjs';
-import { isResult } from '../../redux/helpers';
+} from "../Dashboard/redux/caravanSlice";
+import t from "../../shared/util/trans";
+import dayjs from "dayjs";
+import { isResult } from "../../redux/helpers";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -113,34 +114,34 @@ const tableIcons = {
 const Passengers = () => {
   let { packageName } = useParams();
   const dispatch = useDispatch();
-  const classes = useStyles()
+  const classes = useStyles();
 
   const caravans = useSelector((state) => state.caravan?.data);
   const loading = useSelector((state) => state.caravan?.loading);
   const error = useSelector((state) => state.caravan?.error);
   const keyword = useSelector((state) => state.caravan?.keyword);
   const passengers = _.cloneDeep(caravans?.[packageName]);
-  const [ newCaravan, setNewCaravan] = useState("")
+  const [newCaravan, setNewCaravan] = useState("");
 
   const [state, setState] = useState({
-    mode: 'list',
+    mode: "list",
     record: {},
     customerKey: 0,
   });
   const [passengersToMove, setPassengersToMove] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-  const title = 'Passenger';
+  const title = "Passenger";
   const history = useHistory();
 
   if (loading) {
     return (
       <div
         style={{
-          display: 'flex',
-          height: '100vh',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <CircularProgress size={40} />
@@ -155,24 +156,24 @@ const Passengers = () => {
   const handleWhatsappClick = (phone) => {
     if (!phone) return;
     let whatsappPhone = phone;
-    if (phone.startsWith('00')) {
+    if (phone.startsWith("00")) {
       whatsappPhone = phone.subString(2);
     }
     const url = `https://api.whatsapp.com/send?phone=+${encodeURIComponent(
-      whatsappPhone.replace(/[^0-9]/g, '')
+      whatsappPhone.replace(/[^0-9]/g, "")
     )}`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   const Title = () => {
     return (
-      <div style={{ width: '500px' }}>
+      <div style={{ width: "500px" }}>
         <Breadcrumbs>
           <Link
             color="inherit"
             href="#"
             onClick={handleBack}
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: "flex", alignItems: "center" }}
           >
             <HomeIcon />
             <Typography>Home</Typography>
@@ -192,13 +193,26 @@ const Passengers = () => {
         }
       }
     }
-    setState((st) => ({ ...st, mode: 'update', record: nextPassenger }));
+    setState((st) => ({ ...st, mode: "update", record: nextPassenger }));
   };
 
   const handleOnConfirmDelete = (passenger) => {
     dispatch(deletePassenger({ packageName, passenger }));
-    setState((st) => ({ ...st, mode: 'list', record: {} }));
+    setState((st) => ({ ...st, mode: "list", record: {} }));
   };
+
+  const passengerList = () => {
+    // apply filter
+    return passengers.filter((passenger) => isResult(passenger, keyword));
+  };
+
+  const getPassengerCount = (passenger) => {
+    const count =   passengers.filter((p) => p.passportNumber === passenger.passportNumber)?.length;
+    console.log('%cMyProject%cline:210%ccount', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px', count)
+    return count;
+
+  }
+  
 
   return (
     <React.Fragment>
@@ -209,32 +223,41 @@ const Passengers = () => {
         }}
       >
         <Box className={classes.paper}>
-          <Typography className={classes.title}> Select Caravan to move passengers to  </Typography>
+          <Typography className={classes.title}>
+            {" "}
+            Select Caravan to move passengers to{" "}
+          </Typography>
           <Grid item xs={12}>
-            <CaravanSelectInput onSelect={(newCaravanName) => {
-              setNewCaravan(newCaravanName)
-            }} customers={passengersToMove} caravan={packageName} />
+            <CaravanSelectInput
+              onSelect={(newCaravanName) => {
+                setNewCaravan(newCaravanName);
+              }}
+              customers={passengersToMove}
+              caravan={packageName}
+            />
           </Grid>
           <Grid
             item
             xs={12}
-            style={{ display: 'flex', justifyContent: 'flex-end' }}
+            style={{ display: "flex", justifyContent: "flex-end" }}
           >
             <Button
               style={{
-                background: 'rgb(227, 242, 253)',
-                textTransform: 'none',
-                color: '#03a9f4',
-                paddingLeft: '2rem',
-                paddingRight: '2rem',
+                background: "rgb(227, 242, 253)",
+                textTransform: "none",
+                color: "#03a9f4",
+                paddingLeft: "2rem",
+                paddingRight: "2rem",
               }}
               onClick={() => {
-                dispatch(movePassengers({
-                  newCaravan,
-                  oldCaravan: packageName,
-                  passengers: passengersToMove
-                }))
-                setPassengersToMove([])
+                dispatch(
+                  movePassengers({
+                    newCaravan,
+                    oldCaravan: packageName,
+                    passengers: passengersToMove,
+                  })
+                );
+                setPassengersToMove([]);
                 setOpenModal(false);
               }}
             >
@@ -246,32 +269,32 @@ const Passengers = () => {
 
       <div
         style={{
-          backgroundColor: 'snow',
+          backgroundColor: "snow",
         }}
       >
         <AppHeader />
         <div>
-          {state.mode !== 'list' && state.mode !== 'delete' && (
-            <CRUDForm
+          {state.mode !== "list" && state.mode !== "delete" && (
+            <Passenger
               mode={state.mode}
               record={state.record}
               title={title}
               onClose={() => {
                 dispatch(getUpcomingCaravans());
-                setState((st) => ({ ...st, mode: 'list', record: {} }));
+                setState((st) => ({ ...st, mode: "list", record: {} }));
               }}
               onNext={bringNext}
             />
           )}
-          {state.mode === 'list' && (
+          {state.mode === "list" && (
             <MaterialTable
               icons={tableIcons}
               title={<Title />}
               columns={[
-                { title: t('name'), field: 'name' },
+                { title: t("name"), field: "name" },
                 {
-                  title: t('phone'),
-                  field: 'phone',
+                  title: t("phone"),
+                  field: "phone",
                   render: (rowData) =>
                     rowData.phone && (
                       <Grid container>
@@ -284,10 +307,10 @@ const Passengers = () => {
                       </Grid>
                     ),
                 },
-                { title: t('nationality'), field: 'nationality' },
+                { title: t("nationality"), field: "nationality" },
                 {
-                  title: t('birth-date'),
-                  field: 'birthDate',
+                  title: t("birth-date"),
+                  field: "birthDate",
                   render: (rowData) => {
                     if (
                       rowData.birthDate &&
@@ -298,12 +321,12 @@ const Passengers = () => {
                           avatar={
                             <Avatar>
                               {moment(rowData.birthDate).isValid() &&
-                                moment().diff(rowData.birthDate, 'years')}
+                                moment().diff(rowData.birthDate, "years")}
                             </Avatar>
                           }
                           variant="outlined"
                           label={moment(rowData.birthDate).format(
-                            'DD-MMM-yyyy'
+                            "DD-MMM-yyyy"
                           )}
                         />
                       );
@@ -312,8 +335,8 @@ const Passengers = () => {
                   },
                 },
                 {
-                  title: t('expire-date'),
-                  field: 'Expire date',
+                  title: t("expire-date"),
+                  field: "Expire date",
                   render: (rowData) => {
                     if (
                       rowData.passExpireDt &&
@@ -325,75 +348,75 @@ const Passengers = () => {
                             <Avatar>
                               {dayjs(rowData.passExpireDt).diff(
                                 dayjs(),
-                                'month'
+                                "month"
                               ) <= 0 && (
                                 <div
                                   style={{
-                                    backgroundColor: '#e53935',
-                                    width: '100%',
-                                    height: '100%',
+                                    backgroundColor: "#e53935",
+                                    width: "100%",
+                                    height: "100%",
                                   }}
                                 ></div>
                               )}
                               {dayjs(rowData.passExpireDt).isValid() &&
                                 dayjs(rowData.passExpireDt).diff(
                                   dayjs(),
-                                  'month'
+                                  "month"
                                 ) > 0 &&
                                 dayjs(rowData.passExpireDt).diff(
                                   dayjs(),
-                                  'month'
+                                  "month"
                                 ) <= 6 && (
                                   <div
                                     style={{
-                                      backgroundColor: '#d32f2f',
-                                      width: '100%',
-                                      height: '100%',
-                                      color: 'white',
-                                      display: 'flex',
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
+                                      backgroundColor: "#d32f2f",
+                                      width: "100%",
+                                      height: "100%",
+                                      color: "white",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
                                     }}
                                   >
                                     {dayjs(rowData.passExpireDt).diff(
                                       dayjs(),
-                                      'month'
+                                      "month"
                                     )}
                                   </div>
                                 )}
                               {dayjs(rowData.passExpireDt).diff(
                                 dayjs(),
-                                'month'
+                                "month"
                               ) > 6 &&
                                 dayjs(rowData.passExpireDt).diff(
                                   dayjs(),
-                                  'month'
+                                  "month"
                                 ) < 12 && (
                                   <div
                                     style={{
-                                      backgroundColor: '#ffcdd2',
-                                      width: '100%',
-                                      height: '100%',
-                                      display: 'flex',
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
+                                      backgroundColor: "#ffcdd2",
+                                      width: "100%",
+                                      height: "100%",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
                                     }}
                                   >
                                     {dayjs(rowData.passExpireDt).diff(
                                       dayjs(),
-                                      'month'
+                                      "month"
                                     )}
                                   </div>
                                 )}
                               {dayjs(rowData.passExpireDt).diff(
                                 dayjs(),
-                                'month'
+                                "month"
                               ) >= 12 && (
                                 <div
                                   style={{
-                                    backgroundColor: 'white',
-                                    width: '100%',
-                                    height: '100%',
+                                    backgroundColor: "white",
+                                    width: "100%",
+                                    height: "100%",
                                   }}
                                 ></div>
                               )}
@@ -401,7 +424,7 @@ const Passengers = () => {
                           }
                           variant="outlined"
                           label={dayjs(rowData.passExpireDt).format(
-                            'DD-MMM-YYYY'
+                            "DD-MMM-YYYY"
                           )}
                         />
                       );
@@ -418,9 +441,9 @@ const Passengers = () => {
                     {passengersToMove.length > 0 && (
                       <div
                         style={{
-                          display: 'flex',
-                          justifyContent: 'flex-end',
-                          padding: '.5rem 1rem',
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          padding: ".5rem 1rem",
                         }}
                       >
                         <Button
@@ -428,7 +451,7 @@ const Passengers = () => {
                           color="primary"
                           disableElevation
                           onClick={() => {
-                            setOpenModal(true)
+                            setOpenModal(true);
                           }}
                         >
                           Move Passengers
@@ -438,7 +461,7 @@ const Passengers = () => {
                   </div>
                 ),
               }}
-              data={passengers.filter(passenger => isResult(passenger,keyword))}
+              data={passengerList()}
               // detailPanel={(rowData) => (
               //   <CustomerDetail customer={rowData} caravan={packageName} />
               // )}
@@ -448,7 +471,7 @@ const Passengers = () => {
                   tooltip: `Add ${title}`,
                   isFreeAction: true,
                   onClick: (event) =>
-                    setState((st) => ({ ...st, mode: 'create' })),
+                    setState((st) => ({ ...st, mode: "create" })),
                 },
                 (rowData) => ({
                   icon: () =>
@@ -472,9 +495,9 @@ const Passengers = () => {
                     );
                   },
                 }),
-                {
+                (rowData) => ({
                   icon: () => <tableIcons.Checkbox color="action" />,
-                  tooltip: 'Move passenger',
+                  tooltip: "Move passenger",
                   onClick: (event, rowData) => {
                     if (event.target.checked) {
                       setPassengersToMove((prev) => [...prev, rowData]);
@@ -484,8 +507,8 @@ const Passengers = () => {
                       });
                     }
                   },
-                },
-                {
+                }),
+                (rowData) => ({
                   icon: () => <tableIcons.Edit color="action" />,
                   tooltip: `Edit ${title}`,
                   onClick: (event, rowData) => {
@@ -494,27 +517,39 @@ const Passengers = () => {
                     }
                     setState((st) => ({
                       ...st,
-                      mode: 'update',
+                      mode: "update",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
                     }));
                   },
-                },
-                {
-                  icon: () => <tableIcons.Delete color="error" />,
+                }),
+                (rowData) => ({
+                  icon: () => (
+                    <>
+                      {getPassengerCount(rowData) === 1 ? (
+                        <tableIcons.Delete color="error" />
+                      ) : (
+                        <Chip
+                          icon={<FileCopyIcon />}
+                          label={getPassengerCount(rowData)}
+                          color="secondary"
+                        />
+                      )}
+                    </>
+                  ),
                   tooltip: `Delete ${title}`,
                   onClick: (event, rowData) => {
                     if (Array.isArray(rowData)) {
-                      return; //TODO process multiple selection deletes
+                      return;
                     }
                     setState((st) => ({
                       ...st,
-                      mode: 'delete',
+                      mode: "delete",
                       record: rowData,
                       // customerKey: travellers.map((s) => s.key)[rowData.tableData.id],
                     }));
                   },
-                },
+                }),
               ]}
               options={{
                 actionsColumnIndex: -1,
@@ -528,10 +563,10 @@ const Passengers = () => {
                 exportButton: true,
                 columnsButton: true,
                 headerStyle: {
-                  backgroundColor: '#f0f3f7',
-                  color: '#385273',
-                  fontSize: '1.1rem',
-                  paddingLeft: '0px',
+                  backgroundColor: "#f0f3f7",
+                  color: "#385273",
+                  fontSize: "1.1rem",
+                  paddingLeft: "0px",
                 },
               }}
               localization={{
@@ -548,16 +583,16 @@ const Passengers = () => {
       </Snackbar>
 
       <Dialog
-        open={state.mode === 'delete'}
+        open={state.mode === "delete"}
         onClose={() =>
           setState((st) => ({
             ...st,
-            mode: 'list',
+            mode: "list",
             record: {},
           }))
         }
       >
-        <DialogTitle>{t('are-you-sure')}</DialogTitle>
+        <DialogTitle>{t("are-you-sure")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {`You want to delete ${state.record.name}. This is a permenant deletion and can not be undone.`}
@@ -568,7 +603,7 @@ const Passengers = () => {
             onClick={() =>
               setState((st) => ({
                 ...st,
-                mode: 'list',
+                mode: "list",
                 record: {},
               }))
             }
@@ -579,7 +614,7 @@ const Passengers = () => {
           </Button>
           <Button
             onClick={() => handleOnConfirmDelete(state.record)}
-            style={{ backgroundColor: '#ef5350', color: '#fff' }}
+            style={{ backgroundColor: "#ef5350", color: "#fff" }}
             variant="contained"
             autoFocus
           >
