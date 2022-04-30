@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
+const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const [photoMode, setPhotoMode] = React.useState("photo");
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -805,4 +805,4 @@ const CRUDForm = ({ mode, record, customerKey, title, onClose, onNext }) => {
   );
 };
 
-export default CRUDForm;
+export default Passenger;
