@@ -1,42 +1,43 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import {
   Typography,
   Box,
   Avatar,
   IconButton,
   makeStyles,
-} from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import t from '../../shared/util/trans';
-import firebase from '../../firebaseapp';
-import AddIcon from '@material-ui/icons/AddCircle';
-import { ArrowRightAltOutlined } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
+  Button,
+} from "@material-ui/core";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import t from "../../shared/util/trans";
+import firebase from "../../firebaseapp";
+import AddIcon from "@material-ui/icons/AddCircle";
+import { ArrowRightAltOutlined } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
-    color: '#385273',
+    color: "#385273",
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   submitBtn: {
-    background: '#006b6b',
-    marginRight: '3rem',
-    textTransform: 'capitalize',
-    color: '#bfffff',
-    marginTop: '3rem',
-    width: '300px',
-    borderRadius: '16px',
-    fontSize: '24px',
+    background: "#006b6b",
+    marginRight: "3rem",
+    textTransform: "capitalize",
+    color: "#bfffff",
+    marginTop: "3rem",
+    width: "300px",
+    borderRadius: "16px",
+    fontSize: "24px",
   },
   p5: {
     padding: 5,
   },
   avatarContainer: {
-    border: '1px solid #F7F7FA',
-    padding: '1.4rem',
-    borderRadius: '50%',
-    width: '80px',
+    border: "1px solid #F7F7FA",
+    padding: "1.4rem",
+    borderRadius: "50%",
+    width: "80px",
   },
   avatar: {
     width: 75,
@@ -44,72 +45,72 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
   },
   posRelative: {
-    position: 'relative',
+    position: "relative",
   },
   imgIconContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: -35,
     left: 64,
   },
   addIcon: {
-    color: '#157CFC',
-    fontSize: '1.75rem',
+    color: "#157CFC",
+    fontSize: "1.75rem",
   },
   mt10: {
     marginTop: 10,
   },
   imgText: {
-    color: '#8A9EB5',
-    fontSize: '0.75rem',
-    textAlign: 'left',
-    padding: '1.5rem 0px',
+    color: "#8A9EB5",
+    fontSize: "0.75rem",
+    textAlign: "left",
+    padding: "1.5rem 0px",
   },
   pt3rem: {
-    paddingTop: '1.5rem',
+    paddingTop: "1.5rem",
   },
   pb0: {
     padding: 0,
   },
   p1rem0: {
-    padding: '1rem 0px',
+    padding: "1rem 0px",
   },
   pt1rem: {
-    paddingTop: '1rem',
+    paddingTop: "1rem",
   },
   mb1rem: {
-    marginBottom: '1rem',
+    marginBottom: "1rem",
   },
   passportBox: {
-    border: '1px solid #ccc',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '300px',
-    cursor: 'pointer',
-    overflow: 'hidden',
-    borderRadius: '16px',
+    border: "1px solid #ccc",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "300px",
+    cursor: "pointer",
+    overflow: "hidden",
+    borderRadius: "16px",
   },
   container: {
-    maxWidth: '450px',
-    boxShadow: ' 4px 0px 11px -3px rgba(0,0,0,0.56)',
-    borderRadius: '6px',
-    padding: '1rem',
-    marginTop: '1rem',
+    maxWidth: "450px",
+    boxShadow: " 4px 0px 11px -3px rgba(0,0,0,0.56)",
+    borderRadius: "6px",
+    padding: "1rem",
+    marginTop: "1rem",
   },
   root: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 
 const UploadPhoto = ({ passportsDetails }) => {
-  const [passportURL, setPassportURL] = useState('');
-  const [photoURL, setPhotoURL] = useState('');
+  const [passportURL, setPassportURL] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
   const [index, setIndex] = useState(0);
   const inputRef = useRef(null);
   const classes = useStyles();
@@ -132,35 +133,35 @@ const UploadPhoto = ({ passportsDetails }) => {
   const handleOnNext = async () => {
     if (passportURL) {
       const passportFileName = `${
-        passportsDetails[index].nationality || 'unknown'
-      }/${passportsDetails[index].passportNumber || 'unknown'}_passport.jpg`;
+        passportsDetails[index].nationality || "unknown"
+      }/${passportsDetails[index].passportNumber || "unknown"}_passport.jpg`;
 
       let passportRef = storage.ref(passportFileName);
       passportRef
-        .putString(passportURL, 'data_url')
+        .putString(passportURL, "data_url")
         .then((snap) => {
           console.log(snap, 1);
         })
         .catch((error) => {
           // alert('An error 2 occurred');
-          console.log(error, '___error2___');
+          console.log(error, "___error2___");
           return;
         });
     }
 
     if (photoURL) {
       const photoFileName = `${
-        passportsDetails[index].nationality || 'unknown'
-      }/${passportsDetails[index].passportNumber || 'unknown'}.jpg`;
+        passportsDetails[index].nationality || "unknown"
+      }/${passportsDetails[index].passportNumber || "unknown"}.jpg`;
       let photoRef = storage.ref(photoFileName);
       photoRef
-        .putString(photoURL, 'data_url')
+        .putString(photoURL, "data_url")
         .then((snap) => {
           console.log(snap, 1);
         })
         .catch((error) => {
           // alert('An error occurred');
-          console.log(error, '__error___');
+          console.log(error, "__error___");
           return;
         });
     }
@@ -170,23 +171,29 @@ const UploadPhoto = ({ passportsDetails }) => {
     } else {
       // This is the last passport do not increase the index
       // save it and redirect to the next page
-      history.push('/');
+      history.push("/");
     }
 
-    setPassportURL('');
-    setPhotoURL('');
+    setPassportURL("");
+    setPhotoURL("");
   };
 
   return (
     <Box className={classes.root}>
       <Box className={classes.container}>
-        <h2>{passportsDetails[index].name}</h2>
-        <Typography variant="subtitle2">Upload User Photo</Typography>
+        <Typography variant="h6">{passportsDetails[index].name}</Typography>
+        <Typography variant="caption" gutterBottom>
+          {passportsDetails[index].passportNumber}
+        </Typography>
+        <hr />
+        <Typography variant="subtitle2">
+          Upload passenger portrait photo
+        </Typography>
 
         <Box
           style={{
-            padding: '32px 16px 8px 8px',
-            borderTopLeftRadius: '16px',
+            padding: "32px 16px 8px 8px",
+            borderTopLeftRadius: "16px",
           }}
         >
           <input ref={inputRef} hidden type="file" accept="image/*" />
@@ -195,7 +202,7 @@ const UploadPhoto = ({ passportsDetails }) => {
               src={
                 photoURL
                   ? photoURL
-                  : 'https://www.pngitem.com/pimgs/m/421-4212617_person-placeholder-image-transparent-hd-png-download.png'
+                  : "https://www.pngitem.com/pimgs/m/421-4212617_person-placeholder-image-transparent-hd-png-download.png"
               }
               className={classes.avatar}
             />
@@ -216,16 +223,16 @@ const UploadPhoto = ({ passportsDetails }) => {
 
         <Box>
           <Typography variant="subtitle2">
-            {t('reservation.upload-your-passport')}
+            {t("reservation.upload-your-passport")}
           </Typography>
           <Box
             className={classes.passportBox}
             onClick={(e) => {
               e.stopPropagation();
               uploadImageHandler((val) => {
-                console.log(val, "val from upload")
-                setPassportURL(val)
-              } );
+                console.log(val, "val from upload");
+                setPassportURL(val);
+              });
             }}
           >
             {passportURL ? (
@@ -238,7 +245,7 @@ const UploadPhoto = ({ passportsDetails }) => {
             ) : (
               <>
                 <AddCircleOutlineIcon color="primary" fontSize="large" />
-                <Typography>{t('reservation.upload-your-passport')}</Typography>
+                <Typography>{t("reservation.upload-your-passport")}</Typography>
               </>
             )}
           </Box>
@@ -246,20 +253,21 @@ const UploadPhoto = ({ passportsDetails }) => {
 
         <Box
           style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginTop: '1rem',
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "1rem",
           }}
         >
-          <IconButton
-            variant="contained"
+          <Button
             color="primary"
-            size="large"
+            size="medium"
+            variant="contained"
             onClick={handleOnNext}
+            startIcon={<ArrowRightAltOutlined />}
           >
-            <ArrowRightAltOutlined fontSize="1rem" />
-          </IconButton>
+            {t("next")}
+          </Button>
         </Box>
       </Box>
     </Box>

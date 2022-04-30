@@ -35,7 +35,7 @@
   "reservation.submitting": "جاري الحجز ...",
   "reservation.telephone": "هاتف",
   "reservation.completed": "تم استلام الحجز. شكرا لك",
-  "reservation.upload-your-passport": "قم بتحميل جواز سفرك",
+  "reservation.upload-your-passport": "تحميل صورة جواز سفر الراكب (صفحة السيرة الذاتية فقط)",
   "reservation.completed-subheader": "سوف نتصل بك لمزيد من التفاصيل",
   "take-a-course": "إبدأ محاضره",
   "caravans": "الرحلات",
@@ -188,7 +188,7 @@
   "card-options": "خيارات البطاقة",
   "please-select-service-provider-profile": "يرجى تحديد ملف تعريف مزود الخدمة",
   "reservation": {
-    "upload-your-passport": "قم بتحميل جواز سفرك. \nصفحة المعلومات البيولوجية",
+    "upload-your-passport": "تحميل صورة جواز سفر الراكب (صفحة السيرة الذاتية فقط)",
     "__i18n_ally_root__": {
       "__i18n_ally_root__": {
         "upload-your-passport": "",
@@ -203,9 +203,46 @@
                     "upload-your-passport": "",
                     "__i18n_ally_root__": {
                       "__i18n_ally_root__": {
-                        "upload-your-passport": ""
+                        "upload-your-passport": "",
+                        "__i18n_ally_root__": {
+                          "__i18n_ally_root__": {
+                            "upload-your-passport": "",
+                            "__i18n_ally_root__": {
+                              "__i18n_ally_root__": {
+                                "upload-your-passport": "",
+                                "__i18n_ally_root__": {
+                                  "__i18n_ally_root__": {
+                                    "upload-your-passport": "",
+                                    "__i18n_ally_root__": {
+                                      "__i18n_ally_root__": {
+                                        "upload-your-passport": "",
+                                        "__i18n_ally_root__": {
+                                          "__i18n_ally_root__": {
+                                            "upload-your-passport": "",
+                                            "__i18n_ally_root__": {
+                                              "__i18n_ally_root__": {
+                                                "upload-your-passport": ""
+                                              }
+                                            },
+                                            "upload-your-vaccine": ""
+                                          }
+                                        },
+                                        "upload-your-vaccine": ""
+                                      }
+                                    },
+                                    "upload-your-vaccine": ""
+                                  }
+                                },
+                                "upload-your-vaccine": ""
+                              }
+                            },
+                            "upload-your-vaccine": ""
+                          }
+                        },
+                        "upload-your-vaccine": ""
                       }
-                    }
+                    },
+                    "upload-your-vaccine": ""
                   }
                 },
                 "upload-your-vaccine": ""
@@ -220,5 +257,6 @@
     "upload-your-vaccine": "قم بتحميل اللقاح الخاص بك"
   },
   "airlineRef": "مرجع خطوط الطيران",
-  "ehaj-code": "كود ايهاج"
+  "ehaj-code": "كود ايهاج",
+  "next": "التالي"
 }

@@ -35,7 +35,7 @@
   "reservation.submitting": "Soumission...",
   "reservation.telephone": "Téléphone",
   "reservation.completed": "Je vous remercie de votre réservation",
-  "reservation.upload-your-passport": "Téléchargez votre passeport",
+  "reservation.upload-your-passport": "Télécharger l'image du passeport du passager (page bio uniquement)",
   "reservation.upload-your-vaccine": "Téléchargez votre vaccin",
   "reservation.completed-subheader": "Nous vous contacterons pour plus de détails",
   "take-a-course": "Prendre un cours",
@@ -201,7 +201,48 @@
                   "upload-your-passport": "",
                   "__i18n_ally_root__": {
                     "__i18n_ally_root__": {
-                      "upload-your-passport": ""
+                      "upload-your-passport": "",
+                      "__i18n_ally_root__": {
+                        "__i18n_ally_root__": {
+                          "upload-your-passport": "",
+                          "__i18n_ally_root__": {
+                            "__i18n_ally_root__": {
+                              "upload-your-passport": "",
+                              "__i18n_ally_root__": {
+                                "__i18n_ally_root__": {
+                                  "upload-your-passport": "",
+                                  "__i18n_ally_root__": {
+                                    "__i18n_ally_root__": {
+                                      "upload-your-passport": "",
+                                      "__i18n_ally_root__": {
+                                        "__i18n_ally_root__": {
+                                          "upload-your-passport": "",
+                                          "__i18n_ally_root__": {
+                                            "__i18n_ally_root__": {
+                                              "upload-your-passport": "",
+                                              "__i18n_ally_root__": {
+                                                "__i18n_ally_root__": {
+                                                  "upload-your-passport": ""
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "upload-your-vaccine": ""
+                                        }
+                                      },
+                                      "upload-your-vaccine": ""
+                                    }
+                                  },
+                                  "upload-your-vaccine": ""
+                                }
+                              },
+                              "upload-your-vaccine": ""
+                            }
+                          },
+                          "upload-your-vaccine": ""
+                        }
+                      },
+                      "upload-your-vaccine": ""
                     }
                   },
                   "upload-your-vaccine": ""
@@ -215,8 +256,9 @@
       },
       "upload-your-vaccine": ""
     },
-    "upload-your-passport": "Téléchargez votre passeport. \nPage d'information biologique"
+    "upload-your-passport": "Télécharger l'image du passeport du passager (page bio uniquement)"
   },
   "airlineRef": "Réf compagnie aérienne",
-  "ehaj-code": "Code Ehaj"
+  "ehaj-code": "Code Ehaj",
+  "next": "Suivant"
 }

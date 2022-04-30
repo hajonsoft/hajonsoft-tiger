@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { packageImage } from "../../../shared/util/packageImage";
 import t from "../../../shared/util/trans";
-import { Box, Modal } from "@material-ui/core";
+import { Box, Link, Modal } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import mrzScanner from "../../../assets/mrz-scanner.png";
 
@@ -169,7 +169,14 @@ const AdvertisementCard = ({ detail, index }) => {
           variant="contained"
           onClick={handleOpen}
           style={{ textTransform: "none" }}
-          endIcon={<img src={mrzScanner} width="32" height="32" alt="mrz scanner app" />}
+          endIcon={
+            <img
+              src={mrzScanner}
+              width="32"
+              height="32"
+              alt="mrz scanner app"
+            />
+          }
         >
           MRZ Scanner
         </Button>
@@ -188,35 +195,53 @@ const AdvertisementCard = ({ detail, index }) => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-          <Box style={getModalStyle()} className={classes.paper}>
-            <Box style={{ width: '100%'}}>
-              <Typography gutterBottom> MRZ Scanner app</Typography>
-            </Box>
-            <TextField
-              label="Paste JSON from MRZ Scanner app here"
-              multiline
-              value={reserveJSON}
-              onChange={(e) => setReserveJSON(e.target.value)}
-              fullWidth
-              rows={4}
-              variant="filled"
-            />
-            <Button
-              title={`Make reservation to ${detail.name}`}
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                if (reserveJSON) {
-                  history.push(
-                    `/bulk-reserve?json=${reserveJSON}&caravan=${detail.name}`
-                  );
-                }
+        <Box style={getModalStyle()} className={classes.paper}>
+          <Box
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "1rem",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                alignItems: "center",
               }}
-              style={{ textTransform: "none" }}
             >
-              Continue
-            </Button>
+              <img src={mrzScanner} width="32" alt="mrz scanner app" />
+              <Typography> MRZ Scanner</Typography>
+            </div>
+            <Link href="http://mrzscanner.com">http://mrzscanner.com</Link>
           </Box>
+          <TextField
+            label="Paste JSON from MRZ Scanner app here"
+            multiline
+            value={reserveJSON}
+            onChange={(e) => setReserveJSON(e.target.value)}
+            fullWidth
+            rows={4}
+            variant="filled"
+          />
+          <Button
+            title={`Make reservation to ${detail.name}`}
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              if (reserveJSON) {
+                history.push(
+                  `/bulk-reserve?json=${reserveJSON}&caravan=${detail.name}`
+                );
+              }
+            }}
+            style={{ textTransform: "none" }}
+          >
+            Continue
+          </Button>
+        </Box>
       </Modal>
     </Card>
   );
