@@ -120,7 +120,7 @@ const AdvertisementCard = ({ detail, index }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
 
-  const [reserveJSON, setReserveJSON] = useState('');
+  const [reserveJSON, setReserveJSON] = useState("");
 
   if (!detail) {
     return null;
@@ -134,13 +134,15 @@ const AdvertisementCard = ({ detail, index }) => {
     setOpen(false);
   };
 
-  const handleMakeReservation = (reserveJSON) => {
-    if (reserveJSON) {
-        dispatch(setScannerData({reserveJSON, caravan: detail.name}));
-        history.push(
-          `/bulk-reserve`
-        );
-      }
+  const handleMakeReservation = async (reserveJSON, pasteFirst = false) => {
+    let json = reserveJSON;
+    if (pasteFirst) {
+      json = await navigator.clipboard.readText();
+    }
+    if (json) {
+      dispatch(setScannerData({ reserveJSON: json, caravan: detail.name }));
+      history.push(`/bulk-reserve`);
+    }
   };
 
   return (
@@ -238,15 +240,26 @@ const AdvertisementCard = ({ detail, index }) => {
             rows={4}
             variant="filled"
           />
-          <Button
-            title={`Make reservation to ${detail.name}`}
-            color="primary"
-            variant="contained"
-            onClick={() => handleMakeReservation(reserveJSON)}
-            style={{ textTransform: "none" }}
-          >
-            Continue
-          </Button>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Button
+              title={`Make reservation to ${detail.name}`}
+              color="secondary"
+              variant="outlined"
+              onClick={() => handleMakeReservation(reserveJSON, true)}
+              style={{ textTransform: "none" }}
+            >
+              Paste & Continue
+            </Button>
+            <Button
+              title={`Make reservation to ${detail.name}`}
+              color="primary"
+              variant="contained"
+              onClick={() => handleMakeReservation(reserveJSON, false)}
+              style={{ textTransform: "none" }}
+            >
+              Continue
+            </Button>
+          </div>
         </Box>
       </Modal>
     </Card>
