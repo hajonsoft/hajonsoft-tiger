@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import firebase from "./../../../firebaseapp";
+import firebase from "../../../firebaseapp";
 
 export const createReport = createAsyncThunk(
   "report/create",

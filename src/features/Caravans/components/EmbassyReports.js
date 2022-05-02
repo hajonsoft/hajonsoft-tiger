@@ -14,7 +14,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import ReactToPrint from "react-to-print";
 import { formatPassengers } from "../../../shared/util/formatPassengers";
-import { createReport } from "../../Dashboard/redux/reportSlice";
+import { createReport } from "../redux/reportSlice";
 import PrintableTable from "./PrintableTable";
 import Table from "./Table";
 

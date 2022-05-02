@@ -102,12 +102,19 @@ const Dashboard = () => {
   const keyword = useSelector((state) => state.caravan?.keyword);
   const error = useSelector((state) => state.caravan?.error);
   const history = useHistory();
+
   const title = !isPast ? t("caravan") : t("past-caravans");
-  const paxUpcoming = Object.entries(caravans).reduce((acc, [key, value]) => {
-    return acc + value.length;
+  const paxUpcoming = Object.entries(caravans).reduce((acc, [name, pax]) => {
+    return acc + pax.length;
   }, 0);
-  const paxPast = Object.entries(pastCaravans).reduce((acc, [key, value]) => {
-    return acc + value.length;
+  const duplicatePaxUpcoming =  Object.entries(caravans).reduce((acc, [name, pax]) => {
+    return acc + pax.filter(p => p.isDuplicate).length;
+  }, 0);
+  const paxPast = Object.entries(pastCaravans).reduce((acc, [name, pax]) => {
+    return acc + pax.length;
+  }, 0);
+  const duplicatePaxPast = Object.entries(pastCaravans).reduce((acc, [name, pax]) => {
+    return acc + pax.filter(p => p.isDuplicate).length;
   }, 0);
   // use Effect
   useEffect(() => {
@@ -126,7 +133,7 @@ const Dashboard = () => {
             {title}
           </Typography>
           <Typography variant="caption" component="span"> {' '}
-            {isPast ? paxPast : paxUpcoming}
+            {isPast ? `${paxPast} pax, ${duplicatePaxPast} duplicates` : `${paxUpcoming} pax, ${duplicatePaxUpcoming} duplicates`}
           </Typography>
         </Grid>
       </Grid>
@@ -213,6 +220,8 @@ const Dashboard = () => {
           total: pastCaravans[v].filter((passenger) =>
             isResult(passenger, keyword)
           ).length,
+          duplicates: pastCaravans[v].filter((passenger) => !!passenger.isDuplicate && passenger.duplicateCount > 0)
+          .length,
           expired: pastCaravans[v].filter(
             (passenger) =>
               isResult(passenger, keyword) &&
@@ -226,6 +235,8 @@ const Dashboard = () => {
         name: v,
         total: caravans[v].filter((passenger) => isResult(passenger, keyword))
           .length,
+        duplicates: caravans[v].filter((passenger) => passenger.isDuplicate && passenger.duplicateCount > 0)
+        .length,
         expired: caravans[v].filter(
           (passenger) =>
             isResult(passenger, keyword) &&
@@ -364,6 +375,10 @@ const Dashboard = () => {
                   {
                     title: t("total"),
                     field: "total",
+                  },
+                  {
+                    title: "duplicate",
+                    field: "duplicates",
                   },
                   {
                     title: t("expired-passports"),
@@ -529,7 +544,7 @@ const Dashboard = () => {
         <DialogTitle>are you sure?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`You want to delete ${state.record.name} caravan? This is a permenant deletion and can not be undone.`}
+            {`You want to delete ${state.record.name} caravan? This is a permanent deletion and can not be undone.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

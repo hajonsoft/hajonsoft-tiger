@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { nationalities } from "../../data/nationality";
 import firebase from "../../firebaseapp";
-import { tableIcons } from "../Dashboard";
+import { tableIcons } from "../Caravans";
 import UploadPhoto from "./uploadPhoto";
 
 const BulkUpload = () => {

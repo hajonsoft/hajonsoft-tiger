@@ -5,7 +5,7 @@ import PrintRoundedIcon from "@material-ui/icons/PrintRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 // import PrintableTable from "./PrintableTable";
 import ReactToPrint from "react-to-print";
-import { deleteReport } from "../../Dashboard/redux/reportSlice";
+import { deleteReport } from "../redux/reportSlice";
 import { useDispatch } from "react-redux";
 import PrintableTable from "./PrintableTable";
 

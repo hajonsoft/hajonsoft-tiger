@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/SignIn/redux/authSlice';
-import caravanReducer from '../features/Dashboard/redux/caravanSlice';
-import pastCaravanReducer from '../features/Dashboard/redux/pastCaravanSlice';
-import visaSystemReducer from '../features/Dashboard/redux/visaSystemSlice';
+import caravanReducer from '../features/Caravans/redux/caravanSlice';
+import pastCaravanReducer from '../features/Caravans/redux/pastCaravanSlice';
+import visaSystemReducer from '../features/Caravans/redux/visaSystemSlice';
 import onlineCaravanReducer from '../features/onlineCaravan/redux/onlineCaravanSlice'
-import reportReducer from "../features/Dashboard/redux/reportSlice"
+import reportReducer from "../features/Caravans/redux/reportSlice"
 import profileReducer from '../features/Profile/redux/profileSlice'
 
 export const store = configureStore({

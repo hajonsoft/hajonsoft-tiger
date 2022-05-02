@@ -55,7 +55,7 @@ import {
   getUpcomingCaravans,
   movePassengers,
   updatePassenger,
-} from "../Dashboard/redux/caravanSlice";
+} from "../Caravans/redux/caravanSlice";
 import t from "../../shared/util/trans";
 import dayjs from "dayjs";
 import { isResult } from "../../redux/helpers";
@@ -205,14 +205,6 @@ const Passengers = () => {
     // apply filter
     return passengers.filter((passenger) => isResult(passenger, keyword));
   };
-
-  const getPassengerCount = (passenger) => {
-    const count =   passengers.filter((p) => p.passportNumber === passenger.passportNumber)?.length;
-    console.log('%cMyProject%cline:210%ccount', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px', count)
-    return count;
-
-  }
-  
 
   return (
     <React.Fragment>
@@ -526,12 +518,12 @@ const Passengers = () => {
                 (rowData) => ({
                   icon: () => (
                     <>
-                      {getPassengerCount(rowData) === 1 ? (
+                      {!rowData.isDuplicate ? (
                         <tableIcons.Delete color="error" />
                       ) : (
                         <Chip
                           icon={<FileCopyIcon />}
-                          label={getPassengerCount(rowData)}
+                          label={rowData.duplicateCount}
                           color="warning"
                         />
                       )}

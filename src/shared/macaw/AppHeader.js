@@ -18,7 +18,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { setKeyword } from "../../features/Dashboard/redux/caravanSlice";
+import { setKeyword } from "../../features/Caravans/redux/caravanSlice";
 import { signOutWithGoogle } from "../../features/SignIn/redux/authSlice";
 import firebaseConfig from "../../firebaseConfig";
 import t from "../util/trans";
