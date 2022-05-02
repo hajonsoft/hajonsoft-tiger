@@ -13,13 +13,13 @@ import {
   Grid,
   IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   Snackbar,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -31,15 +31,26 @@ import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import { AlternateEmail, CloudDownloadOutlined } from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add";
-import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
-import Person from "@material-ui/icons/Person";
 import CheckCircle from "@material-ui/icons/CheckCircle";
+import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
+import Person from "@material-ui/icons/Person";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import { Alert } from "@material-ui/lab";
 import emailjs from "emailjs-com";
 import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ehjImg from "../../../assets/ehj.jpg";
+import enjImg from "../../../assets/enj.jpg";
+import gmaImg from "../../../assets/gma.jpg";
+import hsfImg from "../../../assets/hsf.jpg";
+import sbrImg from "../../../assets/sbr.jpg";
+import twfImg from "../../../assets/twf.jpg";
+import vstImg from "../../../assets/vst.jpg";
+import wtuImg from "../../../assets/wtu.jpg";
 import firebaseConfig from "../../../firebaseConfig";
 import hawkImg from "../../../images/hawk.svg";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
@@ -47,22 +58,13 @@ import t from "../../../shared/util/trans";
 import {
   getPassengersJSON,
   getStorageUrl,
-  zipWithPhotos,
+  zipWithPhotos
 } from "../helpers/common";
 import {
   createVisaSystem,
   deleteVisaSystem,
-  getVisaSystems,
+  getVisaSystems
 } from "../redux/visaSystemSlice";
-import wtuImg from "../../../assets/wtu.jpg";
-import gmaImg from "../../../assets/gma.jpg";
-import twfImg from "../../../assets/twf.jpg";
-import enjImg from "../../../assets/enj.jpg";
-import ehjImg from "../../../assets/ehj.jpg";
-import vstImg from "../../../assets/vst.jpg";
-import hsfImg from "../../../assets/hsf.jpg";
-import sbrImg from "../../../assets/sbr.jpg";
-import { Alert } from "@material-ui/lab";
 
 const webcrypto = require("cryptr");
 
@@ -788,34 +790,63 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         {t("or-watch-install-video")}
                       </a>
                     </Typography>
-                    <Box style={{ textAlign: "right", width: "100%" }}>
+                    <Box
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        width: "100%",
+                      }}
+                    >
                       <Typography variant="body2" align="right">
                         {t("useful-links")}
-                        <a
-                          style={{ marginLeft: "2rem" }}
+                      </Typography>
+                      <Box
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: 'flex-end',
+                          marginLeft: "8px",
+                        }}
+                      >
+                        <Link
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://nodejs.org/"
+                          style={{marginRight: '16px' }}
                         >
-                          NodeJs
-                        </a>
-                        <a
-                          style={{ marginLeft: "1rem" }}
+                          node-js,
+                        </Link>
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://go.dev/dl/"
+                          style={{marginRight: '16px' }}
+
+                        >
+                          go,
+                        </Link>
+                        <Link
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://git-scm.com/downloads"
+
                         >
                           git
-                        </a>
-                        <a
-                          style={{ marginLeft: "1rem" }}
+                        </Link>
+                        <PowerSettingsNewIcon width="16px" 
+                          style={{margin: '0 16px 0 16px' }}
+                        
+                        />
+                        <Link
                           target="_blank"
                           rel="noopener noreferrer"
+
                           href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                         >
-                          Hawk
-                        </a>
-                      </Typography>
+                          Hawk for windows
+                        </Link>
+                      </Box>
                     </Box>
                   </Grid>
                   <Grid item md={12}>
