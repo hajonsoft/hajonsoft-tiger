@@ -16,7 +16,7 @@ import moment from 'moment';
 import React from "react";
 import { useDispatch } from "react-redux";
 import firebase from "../../../firebaseapp";
-import { updatePassenger } from "../../Dashboard/redux/caravanSlice";
+import { updatePassenger } from "../../Caravans/redux/caravanSlice";
 import CoreImage from "./CoreImage";
 import CoreTextField from "./CoreTextField";
 import CustomerBirthDate from './CustomerBirthDate';

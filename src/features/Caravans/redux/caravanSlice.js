@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { flatten } from "../../../redux/helpers";
-import firebase from "./../../../firebaseapp";
+import firebase from "../../../firebaseapp";
 
 // action creators
 export const getUpcomingCaravans = createAsyncThunk(

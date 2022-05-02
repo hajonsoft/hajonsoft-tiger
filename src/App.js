@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import BulkUpload from "./features/BulkUpload";
-import Dashboard from "./features/Dashboard";
+import Dashboard from "./features/Caravans";
 import Favorite from "./features/favorite";
 import Help from "./features/help";
 import DoveHome from "./features/Home/DoveHome";

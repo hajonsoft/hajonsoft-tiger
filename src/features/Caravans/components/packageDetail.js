@@ -11,7 +11,7 @@ import {
 import BarChartRoundedIcon from "@material-ui/icons/BarChartRounded";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllReports } from "../../Dashboard/redux/reportSlice";
+import { getAllReports } from "../redux/reportSlice";
 import { setPastCaravan } from "../redux/caravanSlice";
 import BioStatistics from "./BioStatistics";
 import EmbassyReports from "./EmbassyReports";

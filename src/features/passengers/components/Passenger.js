@@ -38,7 +38,7 @@ import CustomerCodeline from "../../../shared/macaw/CustomerCodeline";
 import Dropzone from "../../../shared/macaw/Dropzone";
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { useDispatch, useSelector } from "react-redux";
-import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Dashboard/redux/caravanSlice";
+import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Caravans/redux/caravanSlice";
 import t from '../../../shared/util/trans';
 import { analytics } from '../../analytics/firebaseAnalytics';
 
