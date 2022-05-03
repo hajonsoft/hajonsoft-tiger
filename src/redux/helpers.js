@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const flatten = (snapshot, name = "data") => {
   const data = snapshot.toJSON();
   // input => {key1: {fid1: {name: ''}, fid2: {name: ''}}, key2: {fid3: {name: ''}, fid4: {name: ''}} }
@@ -11,7 +13,7 @@ export const flatten = (snapshot, name = "data") => {
 
   // caravan loop (small)
   Object.entries(data).forEach(([caravan, paxMap]) => {
-     targetPaxList = [];
+    targetPaxList = [];
     // pax loop
     Object.entries(paxMap).forEach(([id, paxRecord]) => {
       // duplicate check
@@ -49,7 +51,7 @@ export const flatten = (snapshot, name = "data") => {
       targetPaxList.push(targetPax);
     });
     // Push target data, caravan as key and target pax and list of pax
-    targetData = {...targetData,  [caravan]: targetPaxList };
+    targetData = { ...targetData, [caravan]: targetPaxList };
   });
 
   return targetData;
@@ -68,10 +70,37 @@ export const flattenOnlineCaravans = (snapshot) => {
 };
 
 export const isResult = (passenger, word) => {
-  const searchWord = word?.toLowerCase();
-  return (
-    passenger?.name?.toLowerCase()?.includes(searchWord) ||
-    passenger?.passportNumber?.toLowerCase()?.includes(searchWord) ||
-    passenger?.nationality?.toLowerCase()?.includes(searchWord)
-  );
+  const searchWord = word?.toString().toLowerCase();
+  // If search word is a date, then search by date within one month of birthDate, issue date, expiry date
+  if (searchWord.match(/^\d{2,4}.?\d{2}.?\d{2,4}$/)) {
+    const searchDate = moment(word);
+    if (searchDate.isValid()) {
+      const searchDateAhead = moment(searchDate).add(1, "month");
+      const searchDateBehind = moment(searchDate).subtract(1, "month");
+      const isBetweenBirthDate = moment(passenger?.birthDate).isBetween(
+        searchDateBehind,
+        searchDateAhead
+      );
+      const isBetweenIssueDate = moment(passenger?.passIssueDt).isBetween(
+        searchDateBehind,
+        searchDateAhead
+      );
+      const isBetweenExpiryDate = moment(passenger?.passExpireDt).isBetween(
+        searchDateBehind,
+        searchDateAhead
+      );
+
+      return isBetweenBirthDate || isBetweenIssueDate || isBetweenExpiryDate;
+    }
+    return false;
+  }
+
+  const passportNumber = passenger?.passportNumber?.toString();
+  const isPassportResult = passportNumber?.toLowerCase()?.includes(searchWord);
+  const isNameResult = passenger?.name?.toLowerCase()?.includes(searchWord);
+  const isNationalityResult = passenger?.nationality
+    ?.toLowerCase()
+    ?.includes(searchWord);
+
+  return isNameResult || isPassportResult || isNationalityResult;
 };
