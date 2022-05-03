@@ -587,7 +587,7 @@ const Passengers = () => {
         <DialogTitle>{t("are-you-sure")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`You want to delete ${state.record.name}. This is a permenant deletion and can not be undone.`}
+            {`You want to delete ${state.record.name} from ${packageName}. This is a permanent deletion and can not be undone.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
