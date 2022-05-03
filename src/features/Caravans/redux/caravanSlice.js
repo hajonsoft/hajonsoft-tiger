@@ -206,6 +206,9 @@ export const movePassengers = createAsyncThunk(
   async ({ newCaravan, oldCaravan, passengers }) => {
     const results = [];
     for (const passenger of passengers) {
+      // delete isDuplicate property from passenger
+      delete passenger.isDuplicate;
+      delete passenger.duplicateCount;
       const result = await firebase
         .database()
         .ref(

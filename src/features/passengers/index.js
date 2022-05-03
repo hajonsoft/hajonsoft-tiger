@@ -524,7 +524,7 @@ const Passengers = () => {
                         <Chip
                           icon={<FileCopyIcon />}
                           label={rowData.duplicateCount}
-                          color="warning"
+                          color="secondary"
                         />
                       )}
                     </>

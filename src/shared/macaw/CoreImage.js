@@ -138,8 +138,8 @@ const CoreImage = ({ record, setImage }) => {
         </CardContent>
       </Card>
 
-      <Typography variant="caption" color="warning" component="p">{`ext. ${fileType}`}</Typography>
-      <Typography variant="caption" color="info" component="p">We accept .jpg and .jpeg</Typography>
+      <Typography variant="caption" color="textSecondary" component="p">{`ext. ${fileType}`}</Typography>
+      <Typography variant="caption" color="textSecondary" component="p">We accept .jpg and .jpeg</Typography>
       <input
         type="file"
         onChange={handleFileOnChange}

@@ -68,7 +68,6 @@ export const flattenOnlineCaravans = (snapshot) => {
 };
 
 export const isResult = (passenger, word) => {
-  console.log('%c 🍲 passenger: ', 'font-size:20px;background-color: #42b983;color:#fff;', passenger);
   const searchWord = word?.toLowerCase();
   return (
     passenger?.name?.toLowerCase()?.includes(searchWord) ||
