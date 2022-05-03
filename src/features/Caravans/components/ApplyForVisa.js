@@ -51,7 +51,7 @@ import sbrImg from "../../../assets/sbr.jpg";
 import twfImg from "../../../assets/twf.jpg";
 import vstImg from "../../../assets/vst.jpg";
 import wtuImg from "../../../assets/wtu.jpg";
-import visImg from "../../../assets/vis.svg";
+import vsnImg from "../../../assets/vsn.svg";
 import firebaseConfig from "../../../firebaseConfig";
 import hawkImg from "../../../images/hawk.svg";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
@@ -160,9 +160,9 @@ const serviceProviders = [
     img: sbrImg,
   },
   {
-    value: "vis",
+    value: "vsn",
     name: "Google vision (premium passport recognition) [https://cloud.google.com/vision/]",
-    img: visImg,
+    img: vsnImg,
   },
 ];
 
