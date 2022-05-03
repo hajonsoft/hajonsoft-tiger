@@ -233,6 +233,7 @@ function defaultIssueDate(passExpireDt, record) {
   }
   return issueDate.format();
 }
+
 onmessage = async (msg) => {
   let files = msg.data.files;
   // let packageName = msg.data.packageName;
@@ -255,7 +256,6 @@ onmessage = async (msg) => {
       }
     } else {
       // Upload one image file as a full customer. Customer name is the image name
-      console.log(file.name)
       const uniqueNumber = moment().valueOf();
       // Passport number and nationality should not change later otherwise the photo and passport images will disappear
       const fileName = file.name.replace(/[^A-Za-z ]/,' ');
@@ -264,13 +264,13 @@ onmessage = async (msg) => {
         id: uniqueNumber,
         birthDate: '701026',
         expirationDate: '251026',
-        nationality: 'France',
+        nationality: 'Stateless XXX',
         firstName: splitName[0].trim(),
-        lastName: fileName.replace(splitName[0], '').trim(),
+        lastName: 'image file',
         codeLine: 'P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<1234567897XXX2001012M3201015<<<<<<<<<<<<<<04',
-        documentNumber: file.name.substring(0,9),
-        issuingState: 'France',
-        comments: 'imported with rule: first 9 characters = passport number, remaining is name',     
+        documentNumber: uniqueNumber,
+        issuingState: 'Stateless',
+        comments: `imported from ${file.name}`,     
       };
       let formattedRecord = formatRecord(record);
       formattedRecord.image = file;

@@ -2,20 +2,20 @@ import { Grid, Tooltip, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import FolderOpenOutlinedIcon from "@material-ui/icons/FolderOpenOutlined";
 import { makeStyles } from "@material-ui/core/styles";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
+import FolderOpenOutlinedIcon from "@material-ui/icons/FolderOpenOutlined";
 import RefreshOutlined from "@material-ui/icons/RefreshOutlined";
 import SaveAltOutlined from "@material-ui/icons/SaveAltOutlined";
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
 import { nationalities } from "../../data/nationality";
-import firebase from "../../firebaseapp";
-import Worker from "../../workers/parser.worker";
 import firebaseArabicName from "../../features/arabicName/firebaseArabicName";
 import CustomerImportCard from "../../features/passengers/components/CustomerImportCard";
+import firebase from "../../firebaseapp";
 import t from "../../shared/util/trans";
+import Worker from "../../workers/parser.worker";
 const storage = firebase.storage();
 
 const getFullArabicName = (arabicNameDictionary) => {
@@ -68,8 +68,8 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
   let passportImage = values.passportImage;
   delete values["passportImage"];
 
-  const englishName = values["name"];
-  const passengerNationality = values["nationality"];
+  const englishName = values["name"] || "undefined";
+  const passengerNationality = values["nationality"] || "Stateless XXX";
   const isArabic = nationalities.find(
     (nationality) => nationality.name === passengerNationality
   )?.isArabic;
@@ -83,9 +83,7 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
     customerRef.push(values);
 
     if (image) {
-      const metadata = {
-        contentType: "image/jpeg",
-      };
+      const metadata = {};
       const fileName = `${values.nationality || "unknown"}/${
         values.passportNumber || "unknown"
       }.jpg`;
@@ -103,9 +101,7 @@ const saveCustomerToFirebase = async (values, packageName, callback) => {
     }
 
     if (passportImage) {
-      const metadata = {
-        contentType: "image/jpeg",
-      };
+      const metadata = {};
       const passportFileName = `${values.nationality || "unknown"}/${
         values.passportNumber || "unknown"
       }_passport.jpg`;
@@ -309,7 +305,7 @@ function DropZone({ packageName, onClose }) {
                 >
                   <Grid item>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Drop your scanned files here or click to select...{" "}
+                      Drop your scanned files here 3M files, or comboSmart zip. We accept passport images as well!
                     </Typography>
                   </Grid>
                   <Grid item>

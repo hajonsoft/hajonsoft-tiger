@@ -18,7 +18,7 @@ import {
   Select,
   Snackbar,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -51,6 +51,7 @@ import sbrImg from "../../../assets/sbr.jpg";
 import twfImg from "../../../assets/twf.jpg";
 import vstImg from "../../../assets/vst.jpg";
 import wtuImg from "../../../assets/wtu.jpg";
+import visImg from "../../../assets/vis.svg";
 import firebaseConfig from "../../../firebaseConfig";
 import hawkImg from "../../../images/hawk.svg";
 import reservationCompleteImage from "../../../images/reservation-complete.svg";
@@ -58,12 +59,12 @@ import t from "../../../shared/util/trans";
 import {
   getPassengersJSON,
   getStorageUrl,
-  zipWithPhotos
+  zipWithPhotos,
 } from "../helpers/common";
 import {
   createVisaSystem,
   deleteVisaSystem,
-  getVisaSystems
+  getVisaSystems,
 } from "../redux/visaSystemSlice";
 
 const webcrypto = require("cryptr");
@@ -125,7 +126,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const serviceProviders = [
-  { value: "bau", name: "Bab-al-umrah (Inactive)" },
+  {
+    value: "bau",
+    name: "Bab-al-umrah (Inactive now)",
+  },
   {
     value: "wtu",
     name: "Way-to-umrah [https://www.waytoumrah.com]",
@@ -154,6 +158,11 @@ const serviceProviders = [
     value: "sbr",
     name: "Sabre Ticket Reduce [https://srw.sabre.com/]",
     img: sbrImg,
+  },
+  {
+    value: "vis",
+    name: "Google vision (premium passport recognition) [https://cloud.google.com/vision/]",
+    img: visImg,
   },
 ];
 
@@ -695,8 +704,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                                   {ausap.img && (
                                     <img
                                       src={ausap.img}
-                                      width="100"
-                                      height="50"
+                                      width="24"
                                       alt={ausap.name}
                                     />
                                   )}
@@ -805,7 +813,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: 'flex-end',
+                          justifyContent: "flex-end",
                           marginLeft: "8px",
                         }}
                       >
@@ -813,7 +821,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://nodejs.org/"
-                          style={{marginRight: '16px' }}
+                          style={{ marginRight: "16px" }}
                         >
                           node-js,
                         </Link>
@@ -821,8 +829,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://go.dev/dl/"
-                          style={{marginRight: '16px' }}
-
+                          style={{ marginRight: "16px" }}
                         >
                           go,
                         </Link>
@@ -830,18 +837,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://git-scm.com/downloads"
-
                         >
                           git
                         </Link>
-                        <PowerSettingsNewIcon width="16px" 
-                          style={{margin: '0 16px 0 16px' }}
-                        
+                        <PowerSettingsNewIcon
+                          width="16px"
+                          style={{ margin: "0 16px 0 16px" }}
                         />
                         <Link
                           target="_blank"
                           rel="noopener noreferrer"
-
                           href="https://github.com/hajonsoft/hajonsoft-hawk/raw/main/hawk/bin/Release/hawk.exe"
                         >
                           Hawk for windows
