@@ -11,34 +11,9 @@ export const getUpcomingCaravans = createAsyncThunk(
       .ref("/customer")
       .once("value");
     const flatResult = flatten(resultSnapshot, "caravan");
-    // const promiseArray = [];
-    // for (const caravan of Object.keys(flatResult)) {
-    //   for (const passenger of flatResult[caravan]) {
-    //     promiseArray.push(getPhoto(passenger));
-    //   }
-    // }
-
-    // const promiseResult = await Promise.all(promiseArray);
-    // for (const caravan of Object.keys(flatResult)) {
-    //   for (const passenger of flatResult[caravan]) {
-    //     passenger.photo = promiseResult.find(x=> x.fid === passenger._fid)?.photo;
-    //   }
-    // }
     return flatResult;
   }
 );
-
-// const getPhoto = async (passenger) => {
-//   try {
-//     const url = await firebase
-//       .storage()
-//       .ref(`${passenger.nationality}/${passenger.passportNumber}.jpg`)
-//       .getDownloadURL();
-//     return { fid: passenger._fid, photo: url };
-//   } catch {
-//     return { fid: passenger._fid, photo: 'https://via.placeholder.com/32' };
-//   }
-// }
 
 export const createUpcomingCaravan = createAsyncThunk(
   "caravan/create",

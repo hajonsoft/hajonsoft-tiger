@@ -37,8 +37,8 @@ export const flatten = (snapshot, name = "data") => {
       }
       // Push target pax to an array
       const targetPax = {
-        _fid: id,
         ...paxRecord,
+        _fid: id,
         isDuplicate:
           duplicateMap[paxRecord.passportNumber]?.[paxRecord.nationality]
             ?.isDuplicate,
