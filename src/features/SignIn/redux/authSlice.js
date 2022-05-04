@@ -31,8 +31,9 @@ export const authSlice = createSlice({
                 photoURL: action.payload.user.photoURL,
                 accessToken: action.payload.credential.accessToken,
             }
-            state.data = user;            
+            state.data = user;
             state.loading = false;
+            state.error= '' ;
         });
         builder.addCase(loginWithGoogle.rejected, (state, action) => {
             state.loading = false;
