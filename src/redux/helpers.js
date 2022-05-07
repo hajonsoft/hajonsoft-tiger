@@ -43,7 +43,7 @@ export const flatten = (snapshot, name = "data") => {
         _fid: id,
         isDuplicate:
           duplicateMap[paxRecord.passportNumber]?.[paxRecord.nationality]
-            ?.isDuplicate,
+            ?.isDuplicate || false,
         duplicateCount:
           duplicateMap[paxRecord.passportNumber]?.[paxRecord.nationality]
             ?.count,

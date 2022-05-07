@@ -182,8 +182,12 @@ export const movePassengers = createAsyncThunk(
     const results = [];
     for (const passenger of passengers) {
       // delete isDuplicate property from passenger
+      if (passenger.isDuplicate) {
       delete passenger.isDuplicate;
+      }
+      if (passenger.duplicateCount) {
       delete passenger.duplicateCount;
+      }
       const result = await firebase
         .database()
         .ref(

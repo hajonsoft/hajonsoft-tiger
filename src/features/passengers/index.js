@@ -203,7 +203,7 @@ const Passengers = () => {
 
   const passengerList = () => {
     // apply filter
-    return passengers.filter((passenger) => isResult(passenger, keyword));
+    return passengers?.filter((passenger) => isResult(passenger, keyword));
   };
 
   return (
@@ -518,7 +518,7 @@ const Passengers = () => {
                 (rowData) => ({
                   icon: () => (
                     <>
-                      {!rowData.isDuplicate ? (
+                      {!rowData?.isDuplicate ? (
                         <tableIcons.Delete color="error" />
                       ) : (
                         <Chip

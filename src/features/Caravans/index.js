@@ -220,7 +220,7 @@ const Dashboard = () => {
           total: pastCaravans[v].filter((passenger) =>
             isResult(passenger, keyword)
           ).length,
-          duplicates: pastCaravans[v].filter((passenger) => !!passenger.isDuplicate && passenger.duplicateCount > 0)
+          duplicates: pastCaravans[v].filter((passenger) => !!passenger?.isDuplicate && passenger?.duplicateCount > 0)
           .length,
           expired: pastCaravans[v].filter(
             (passenger) =>
@@ -235,7 +235,7 @@ const Dashboard = () => {
         name: v,
         total: caravans[v].filter((passenger) => isResult(passenger, keyword))
           .length,
-        duplicates: caravans[v].filter((passenger) => passenger.isDuplicate && passenger.duplicateCount > 0)
+        duplicates: caravans[v].filter((passenger) => passenger?.isDuplicate && passenger?.duplicateCount > 0)
         .length,
         expired: caravans[v].filter(
           (passenger) =>
