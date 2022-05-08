@@ -1,6 +1,14 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Button, Card, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
@@ -15,7 +23,7 @@ import { loginWithGoogle } from "./redux/authSlice";
 const SignIn = ({ onLanguageChange, lang }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const authData = useSelector((state) => state?.auth?.data);
 
@@ -27,11 +35,7 @@ const SignIn = ({ onLanguageChange, lang }) => {
     return <Redirect to="/caravans" />;
   }
   return (
-    <Grid
-      container
-      direction="column"
-      spacing={1}
-    >
+    <Grid container direction="column" spacing={1}>
       <Grid item>
         <DoveHeader />
       </Grid>
@@ -44,10 +48,10 @@ const SignIn = ({ onLanguageChange, lang }) => {
         component={Card}
         elevation={2}
         style={{
-          width: isMobile? '100%' : "30%",
+          width: isMobile ? "100%" : "30%",
           margin: "auto",
           marginBottom: "5rem",
-          borderRadius: '16px'
+          borderRadius: "16px",
         }}
       >
         <Grid item>
@@ -62,10 +66,14 @@ const SignIn = ({ onLanguageChange, lang }) => {
           >
             <Box p={2}>{t("welcome-to")}</Box>
           </Typography>
-
-          <Typography align="center" variant="h6" color="textSecondary">
-            {t("humming-bird")}
-          </Typography>
+          <div style={{ display: "flex", gap: '8px', alignItems: 'center' }}>
+            <Typography align="center" variant="h6" color="textSecondary">
+              {t("humming-bird")}
+            </Typography>
+            <Typography variant="caption">
+              {process.env.REACT_APP_VERSION}
+            </Typography>
+          </div>
         </Grid>
         <Grid item>
           <Button
