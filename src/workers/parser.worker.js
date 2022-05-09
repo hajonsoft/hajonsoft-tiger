@@ -16,7 +16,7 @@ async function getZipEntries(file) {
   return new Promise(async (resolve, reject) => {
     let files = [];
     let zip = await jszip.loadAsync(file);
-    zip.forEach(function(relativePath, zipEntry) {
+    zip.forEach(function (relativePath, zipEntry) {
       files.push(zipEntry);
     });
     resolve(files);
@@ -25,7 +25,7 @@ async function getZipEntries(file) {
 
 function ParseXmlString(xml) {
   return new Promise((resolve, reject) => {
-    parseString(xml, function(err, result) {
+    parseString(xml, function (err, result) {
       resolve(result);
     });
   });
@@ -54,14 +54,17 @@ async function ParseZip(file) {
         } catch (er) {
           record.failed = true;
         }
-      } else if (entry.name.includes("VIZ_FACE") && !zipEntries.find(entryRecord => entryRecord.name === "RFID_FACE" )) {
+      } else if (
+        entry.name.includes("VIZ_FACE") &&
+        !zipEntries.find((entryRecord) => entryRecord.name === "RFID_FACE")
+      ) {
         //  && !zipEntries.find(oneZipEntry => oneZipEntry.name.match(qualityPhotoRegex))) {
         let image = await entry.async("blob");
         record.image = image;
         // } else if (entry.name.match(qualityPhotoRegex)) {
         //   let qualityImage = await entry.async("blob");
         //   record.vxgenPhoto = qualityImage; // This is the high quality image but since it is in jp2 format and we can't convert from jp2 to jpg on the browser. we will ignore it for now
-      } else if(entry.name.includes("RFID_FACE")) {
+      } else if (entry.name.includes("RFID_FACE")) {
         let image = await entry.async("blob");
         record.image = image;
       } else if (entry.name.includes("image3")) {
@@ -109,6 +112,26 @@ function parseDetailsFromTxt(codelineFile) {
   });
 }
 
+function parseEagleFromJSON(eagleFile) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.onload = (result) => {
+      let eagleDataRaw = reader.result;
+      let eagleData = JSON.parse(eagleDataRaw);
+      let eagleRecord = {};
+      try {
+        eagleRecord.passIssueDt = eagleData.passIssueDt;
+        eagleRecord.comments = eagleData.comments;
+      } catch (er) {
+        eagleRecord.failed = true;
+      }
+
+      resolve(eagleRecord);
+    };
+    reader.readAsText(eagleFile);
+  });
+}
+
 async function getRecords(ComboFiles, drop3MBinder) {
   return new Promise(async (resolve, reject) => {
     let records = [];
@@ -122,6 +145,7 @@ async function getRecords(ComboFiles, drop3MBinder) {
       let detailsFile = drop3MBinder[key].find((x) =>
         x.name.match(/CODELINE/i)
       );
+      let eagleFile = drop3MBinder[key].find((x) => x.name.match(/EAGLE/i));
       let photo = drop3MBinder[key].find((x) => x.name.match(/SCDG2_PHOTO/i));
       if (!photo) {
         photo = drop3MBinder[key].find((x) => x.name.match(/IMAGEPHOTO/i));
@@ -134,6 +158,11 @@ async function getRecords(ComboFiles, drop3MBinder) {
       } else {
         record.failed = true;
       }
+      if (eagleFile){
+        const eagleRecord = await parseEagleFromJSON(eagleFile);
+        record = { ...record, ...eagleRecord };
+      }
+
       if (photo) {
         record.image = photo;
       }
@@ -165,14 +194,19 @@ function formatRecord(record) {
     passPlaceOfIssue: getNationality(record.issuingState),
     passportNumber: record.documentNumber,
     passExpireDt: passExpireDt.format(),
+    passIssueDt: record.passIssueDt,
     createDt: moment().format(),
-    comments: record.comments || '',
+    comments: record.comments.join(' ') || "",
   };
   formattedRecord.passIssueDt = defaultIssueDate(passExpireDt, formattedRecord);
   return formattedRecord;
 }
 
 function defaultIssueDate(passExpireDt, record) {
+  console.log('%cMyProject%cline:205%crecord', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px', record)
+  if (record.passIssueDt){
+    return record.passIssueDt;
+  }
   let issueDate;
   const age = moment().diff(record.birthDate, "years");
   switch (record.nationality) {
@@ -258,19 +292,20 @@ onmessage = async (msg) => {
       // Upload one image file as a full customer. Customer name is the image name
       const uniqueNumber = moment().valueOf();
       // Passport number and nationality should not change later otherwise the photo and passport images will disappear
-      const fileName = file.name.replace(/[^A-Za-z ]/,' ');
-      const splitName = fileName.split(' ');
+      const fileName = file.name.replace(/[^A-Za-z ]/, " ");
+      const splitName = fileName.split(" ");
       const record = {
         id: uniqueNumber,
-        birthDate: '701026',
-        expirationDate: '251026',
-        nationality: 'Stateless XXX',
+        birthDate: "701026",
+        expirationDate: "251026",
+        nationality: "Stateless XXX",
         firstName: splitName[0].trim(),
-        lastName: 'image file',
-        codeLine: 'P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<1234567897XXX2001012M3201015<<<<<<<<<<<<<<04',
+        lastName: "image file",
+        codeLine:
+          "P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<1234567897XXX2001012M3201015<<<<<<<<<<<<<<04",
         documentNumber: uniqueNumber,
-        issuingState: 'Stateless',
-        comments: `imported from ${file.name}`,     
+        issuingState: "Stateless",
+        comments: `imported from ${file.name}`,
       };
       let formattedRecord = formatRecord(record);
       formattedRecord.image = file;
