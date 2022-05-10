@@ -177,11 +177,22 @@ async function getRecords(ComboFiles, drop3MBinder) {
   });
 }
 
+function getComments(comments) {
+  if (!comments) {
+    return "";
+  }
+  if (Array.isArray(comments)) {
+    return comments.join("\n");
+  } 
+  return comments;
+}
+
 function formatRecord(record) {
   let birthDate = moment(record.birthDate, "YYMMDD");
   if (birthDate.isAfter(moment())) {
     birthDate = birthDate.subtract(100, "years");
   }
+  const comments = getComments(record.comments);
   let passExpireDt = moment(record.expirationDate, "YYMMDD");
   const nationality = getNationality(record.nationality);
   const formattedRecord = {
@@ -196,7 +207,7 @@ function formatRecord(record) {
     passExpireDt: passExpireDt.format(),
     passIssueDt: record.passIssueDt,
     createDt: moment().format(),
-    comments: record.comments.join(' ') || "",
+    comments,
   };
   formattedRecord.passIssueDt = defaultIssueDate(passExpireDt, formattedRecord);
   return formattedRecord;
