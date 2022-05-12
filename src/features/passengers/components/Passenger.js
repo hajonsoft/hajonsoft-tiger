@@ -6,6 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
@@ -33,14 +34,19 @@ import firebaseArabicName from "../../arabicName/firebaseArabicName";
 import InputControl from "../../Reservation/components/InputControl";
 import CoreImage from "../../../shared/macaw/CoreImage";
 import CorePassportImage from "../../../shared/macaw/CorePassportImage";
-import CoreVaccineImage from "../../../shared/macaw/CoreVaccineImage"
+import CoreVaccineImage from "../../../shared/macaw/CoreVaccineImage";
 import CustomerCodeline from "../../../shared/macaw/CustomerCodeline";
 import Dropzone from "../../../shared/macaw/Dropzone";
-import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import { useDispatch, useSelector } from "react-redux";
-import { createPassenger, deleteOnlinePassenger, deletePassenger, updatePassenger } from "../../Caravans/redux/caravanSlice";
-import t from '../../../shared/util/trans';
-import { analytics } from '../../analytics/firebaseAnalytics';
+import {
+  createPassenger,
+  deleteOnlinePassenger,
+  deletePassenger,
+  updatePassenger,
+} from "../../Caravans/redux/caravanSlice";
+import t from "../../../shared/util/trans";
+import { analytics } from "../../analytics/firebaseAnalytics";
 
 const storage = firebase.storage();
 
@@ -80,7 +86,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   let { packageName } = useParams();
-  const caravans = useSelector(state => state.caravan?.data);
+  const caravans = useSelector((state) => state.caravan?.data);
   const passengers = caravans[packageName];
 
   const savePassportImage = (values, image) => {
@@ -109,6 +115,32 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
     }
   };
 
+  const saveVaccine2Image = (values, image) => {
+    if (image) {
+      const metadata = {
+        contentType: "image/jpeg",
+        passportNumber: values.passportNumber,
+        name: values.name,
+      };
+      const fileName = `${values.nationality}/${values.passportNumber}_vaccine2.jpg`;
+      let ref = storage.ref(fileName);
+      ref.put(image, metadata);
+    }
+  };
+
+  const saveIDImage = (values, image) => {
+    if (image) {
+      const metadata = {
+        contentType: "image/jpeg",
+        passportNumber: values.passportNumber,
+        name: values.name,
+      };
+      const fileName = `${values.nationality}/${values.passportNumber}_id.jpg`;
+      let ref = storage.ref(fileName);
+      ref.put(image, metadata);
+    }
+  };
+
   const savePortrait = async (values, image) => {
     if (image) {
       const metadata = {
@@ -119,8 +151,12 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
       let ref = storage.ref(fileName);
       await ref.put(image, metadata);
       const downloadUrl = await ref.getDownloadURL();
-      dispatch(updatePassenger({name: packageName, passenger: {...values, photo: downloadUrl}}));
-
+      dispatch(
+        updatePassenger({
+          name: packageName,
+          passenger: { ...values, photo: downloadUrl },
+        })
+      );
     }
   };
 
@@ -129,14 +165,14 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
     delete values["passportImage"];
     switch (mode) {
       case "create":
-        dispatch(createPassenger({name: packageName, passenger: values}))
+        dispatch(createPassenger({ name: packageName, passenger: values }));
         break;
       case "update":
         delete values.tableData;
-        dispatch(updatePassenger({name: packageName, passenger: values}));
+        dispatch(updatePassenger({ name: packageName, passenger: values }));
         break;
       case "delete":
-        dispatch(deletePassenger({name: packageName, passenger: record}));
+        dispatch(deletePassenger({ name: packageName, passenger: record }));
         break;
       default:
         console.log("unknown mode");
@@ -181,14 +217,8 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
       .required("Required")
       .max(new Date(), "Too young!")
       .min(moment().subtract(150, "year"), "Too old!"),
-    birthPlace: yup
-      .string()
-      .required("Required")
-      .max(50, "Too long!"),
-    passPlaceOfIssue: yup
-      .string()
-      .required("Required")
-      .max(50, "Too long!"),
+    birthPlace: yup.string().required("Required").max(50, "Too long!"),
+    passPlaceOfIssue: yup.string().required("Required").max(50, "Too long!"),
     name: yup
       .string("Enter your Full Name")
       .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name.")
@@ -237,9 +267,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
   };
 
   const handleAcceptOnlineReservation = (data) => {
-    dispatch(createPassenger({name: record.packageName, passenger: data}));
-    dispatch(deleteOnlinePassenger({fid: record._fid}));
-    onClose()
+    dispatch(createPassenger({ name: record.packageName, passenger: data }));
+    dispatch(deleteOnlinePassenger({ fid: record._fid }));
+    onClose();
   };
 
   const getFullArabicName = (arabicNameDictionary) => {
@@ -291,13 +321,13 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
         initialValues={
           mode === "create"
             ? {
-              nationality: popularNationality(),
-              passExpireDt: moment().add(6, "month"),
-              passIssueDt: moment().subtract(7, "days"),
-              birthDate: moment().subtract(7, "days"),
-              profession: 'unknown',
-              passportNumber: record.passportNumber,
-            }
+                nationality: popularNationality(),
+                passExpireDt: moment().add(6, "month"),
+                passIssueDt: moment().subtract(7, "days"),
+                birthDate: moment().subtract(7, "days"),
+                profession: "unknown",
+                passportNumber: record.passportNumber,
+              }
             : record
         }
         validationSchema={mode !== "delete" ? validSchema : null}
@@ -305,20 +335,30 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
       >
         {({ setFieldValue, values, errors, isSubmitting, touched }) => (
           <Form>
-            {packageName === 'online' && record.packageName &&
-
-              <Alert severity="info" style={{ width: '100%' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                  <Typography variant="h5" >
-                    {record.packageName}
-                  </Typography>
-                  <div style={{marginLeft: '2rem'}}>
-                    <Button color="primary" size="small" variant="contained" onClick={() => handleAcceptOnlineReservation(values)} >{t('accept-reservation')}</Button>
+            {packageName === "online" && record.packageName && (
+              <Alert severity="info" style={{ width: "100%" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <Typography variant="h5">{record.packageName}</Typography>
+                  <div style={{ marginLeft: "2rem" }}>
+                    <Button
+                      color="primary"
+                      size="small"
+                      variant="contained"
+                      onClick={() => handleAcceptOnlineReservation(values)}
+                    >
+                      {t("accept-reservation")}
+                    </Button>
                   </div>
                 </div>
-
               </Alert>
-            }
+            )}
             <Card raised className={classes.formContainer}>
               <CardHeader
                 className={classes.cardTitle}
@@ -341,10 +381,17 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         <ToggleButton value="passport" aria-label="centered">
                           <RecentActorsOutlinedIcon />
                         </ToggleButton>
+                        <ToggleButton value="id" aria-label="centered">
+                          <RecentActorsIcon />
+                        </ToggleButton>
                         <ToggleButton value="vaccine" aria-label="centered">
                           <LocalHospitalIcon />
                         </ToggleButton>
+                        <ToggleButton value="vaccine2" aria-label="centered">
+                          <LocalHospitalIcon />
+                        </ToggleButton>
                       </ToggleButtonGroup>
+                      <Typography>Allowed image formats .jpg and .jpeg</Typography>
                       <br />
                       {photoMode === "photo" && (
                         <CoreImage
@@ -358,14 +405,28 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           record={values}
                         />
                       )}
+                      {photoMode === "id" && (
+                        <CorePassportImage
+                          setImage={(img) => saveIDImage(values, img)}
+                          suffix="id"
+                          record={values}
+                        />
+                      )}
                       {photoMode === "vaccine" && (
                         <CoreVaccineImage
-                        setImage={(img) => saveVaccineImage(values, img)}
-                        record={values}
-                      />
+                          setImage={(img) => saveVaccineImage(values, img)}
+                          record={values}
+                        />
+                      )}
+                      {photoMode === "vaccine2" && (
+                        <CoreVaccineImage
+                          setImage={(img) => saveVaccine2Image(values, img)}
+                          suffix="vaccine2"
+                          record={values}
+                        />
                       )}
                       {mode === "create" && (
-                        <Grid container item xs style={{ padding: '1rem' }}>
+                        <Grid container item xs style={{ padding: "1rem" }}>
                           <Dropzone
                             onClose={onClose}
                             saveToFirebase={handleSubmitForm}
@@ -381,10 +442,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                       direction="column"
                       justifyContent="space-around"
                     >
-                      <Grid
-                        item
-                        xs={12}
-                      >
+                      <Grid item xs={12}>
                         <Grid container spacing={3} alignItems="center">
                           <Grid item xs={9}>
                             <InputControl
@@ -398,17 +456,20 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           </Grid>
                           <Grid item xs={3}>
                             <IconButton>
-                              <FacebookIcon fontSize="small"
+                              <FacebookIcon
+                                fontSize="small"
                                 onClick={() => handleFacebookClick(values.name)}
                               />
                             </IconButton>
                             <IconButton>
-                              <TwitterIcon fontSize="small"
+                              <TwitterIcon
+                                fontSize="small"
                                 onClick={() => handleTwitterClick(values.name)}
                               />
                             </IconButton>
-                            <IconButton >
-                              <FontAwesomeIcon size="sm"
+                            <IconButton>
+                              <FontAwesomeIcon
+                                size="sm"
                                 icon={faGoogle}
                                 onClick={() => handleGoogleClick(values.name)}
                               />
@@ -487,7 +548,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                                 Boolean(errors.passportNumber)
                               }
                               helperText={
-                                values?.passportNumber?.length || (touched.passportNumber && errors.passportNumber)
+                                values?.passportNumber?.length ||
+                                (touched.passportNumber &&
+                                  errors.passportNumber)
                               }
                             />
                           </Grid>
@@ -510,7 +573,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="passIssueDt"
                               label={trans("reservation.passport-issue-date")}
-                              value={moment(values?.passIssueDt).format("YYYY-MM-DD")} 
+                              value={moment(values?.passIssueDt).format(
+                                "YYYY-MM-DD"
+                              )}
                               error={
                                 touched.passIssueDt &&
                                 Boolean(errors.passIssueDt)
@@ -527,7 +592,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="passExpireDt"
                               label={trans("reservation.passport-expire-date")}
-                              value={moment(values?.passExpireDt).format("YYYY-MM-DD")} 
+                              value={moment(values?.passExpireDt).format(
+                                "YYYY-MM-DD"
+                              )}
                               error={
                                 touched.passExpireDt &&
                                 Boolean(errors.passExpireDt)
@@ -543,7 +610,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="birthDate"
                               label={trans("reservation.birth-date")}
-                              value={moment(values?.birthDate).format("YYYY-MM-DD")} 
+                              value={moment(values?.birthDate).format(
+                                "YYYY-MM-DD"
+                              )}
                               error={
                                 touched.birthDate && Boolean(errors.birthDate)
                               }
@@ -592,7 +661,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               name="idNumberIssueDate"
                               label={trans("reservation.id-issue-date")}
                               required={false}
-                              value={moment(values?.idNumberIssueDate).format("YYYY-MM-DD")} 
+                              value={moment(values?.idNumberIssueDate).format(
+                                "YYYY-MM-DD"
+                              )}
                               error={
                                 touched.idNumberIssueDate &&
                                 Boolean(errors.idNumberIssueDate)
@@ -608,7 +679,9 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="idNumberExpireDate"
                               label={trans("reservation.id-expire-date")}
-                              value={moment(values?.idNumberExpireDate).format("YYYY-MM-DD")} 
+                              value={moment(values?.idNumberExpireDate).format(
+                                "YYYY-MM-DD"
+                              )}
                               required={false}
                               error={
                                 touched.idNumberExpireDate &&
@@ -625,7 +698,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             <InputControl
                               name="profession"
                               label={trans("reservation.profession")}
-                              value={values.profession || 'unknown'}
+                              value={values.profession || "unknown"}
                               error={
                                 touched.profession && Boolean(errors.profession)
                               }
@@ -660,7 +733,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               multiline
                               required={false}
                               name="comments"
-                              label={t('note')}
+                              label={t("note")}
                               value={values.comments}
                               error={
                                 touched.comments && Boolean(errors.comments)
@@ -668,40 +741,42 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               helperText={touched.comments && errors.comments}
                             />
                           </Grid>
-                          <Grid item xs={2} >
-                          <InputControl
+                          <Grid item xs={2}>
+                            <InputControl
                               required={false}
                               name="mofaNumber"
-                              label={t('mofaNumber')}
+                              label={t("mofaNumber")}
                               value={values.mofaNumber}
                               error={
                                 touched.mofaNumber && Boolean(errors.mofaNumber)
                               }
-                              helperText={touched.mofaNumber && errors.mofaNumber}
+                              helperText={
+                                touched.mofaNumber && errors.mofaNumber
+                              }
                             />
                           </Grid>
-                          <Grid item xs={2} >
-                          <InputControl
+                          <Grid item xs={2}>
+                            <InputControl
                               required={false}
                               name="eNumber"
-                              label={t('eNumber')}
+                              label={t("eNumber")}
                               value={values.eNumber}
-                              error={
-                                touched.eNumber && Boolean(errors.eNumber)
-                              }
+                              error={touched.eNumber && Boolean(errors.eNumber)}
                               helperText={touched.eNumber && errors.eNumber}
                             />
                           </Grid>
-                          <Grid item xs={2} >
-                          <InputControl
+                          <Grid item xs={2}>
+                            <InputControl
                               required={false}
                               name="airlineRef"
-                              label={t('airlineRef')}
+                              label={t("airlineRef")}
                               value={values.airlineRef}
                               error={
                                 touched.airlineRef && Boolean(errors.airlineRef)
                               }
-                              helperText={touched.airlineRef && errors.airlineRef}
+                              helperText={
+                                touched.airlineRef && errors.airlineRef
+                              }
                             />
                           </Grid>
                         </Grid>
@@ -715,8 +790,8 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                         style={{ color: "#f44336" }}
                       >
                         {errors &&
-                          Object.keys(errors).length === 0 &&
-                          errors.constructor === Object
+                        Object.keys(errors).length === 0 &&
+                        errors.constructor === Object
                           ? ""
                           : JSON.stringify(errors).replace(/"/g, "")}
                       </Typography>
@@ -748,7 +823,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           onClick={onClose}
                           startIcon={<CancelOutlinedIcon color="error" />}
                         >
-                          {t('cancel')}
+                          {t("cancel")}
                         </Button>
                       </Grid>
                       {mode === "create" && (
@@ -760,7 +835,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             color="primary"
                             startIcon={<AddOutlinedIcon />}
                           >
-                            {t('create')}
+                            {t("create")}
                           </Button>
                         </Grid>
                       )}
@@ -774,7 +849,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                             color="default"
                             startIcon={<DeleteOutlinedIcon color="error" />}
                           >
-                            {t('delete')}
+                            {t("delete")}
                           </Button>
                         </Grid>
                       )}
@@ -788,7 +863,7 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                               color="secondary"
                               startIcon={<SaveOutlinedIcon />}
                             >
-                              {t('save-and-close')}
+                              {t("save-and-close")}
                             </Button>
                           </Grid>
                         </React.Fragment>
