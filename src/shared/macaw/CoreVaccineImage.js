@@ -1,4 +1,4 @@
-import { Card, CardContent, CircularProgress, Grid, Link } from "@material-ui/core";
+import { Card, CardContent, CircularProgress, Grid, Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import firebase from "../../firebaseapp";
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CoreVaccineImage = ({ record, setImage }) => {
+const CoreVaccineImage = ({ record, setImage, suffix = 'vaccine' }) => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -55,7 +55,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
         try {
           let imgUrl = await firebase
             .storage()
-            .ref(`${record.nationality}/${record.passportNumber}_vaccine.jpg`)
+            .ref(`${record.nationality}/${record.passportNumber}_${suffix}.jpg`)
             .getDownloadURL();
           if (imgUrl) {
             setUrl(imgUrl);
@@ -72,7 +72,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
       setLoading(false);
     }
     getImage();
-  }, [record]);
+  }, [record, suffix]);
 
   let _fileInput = React.createRef();
   return (
@@ -86,7 +86,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
           {!loading && <div>
             <img
               src={url}
-              alt={"vaccine"}
+              alt={suffix}
               className={classes.imgContainer}
               style={{ display: url ? "block" : "none" }}
             ></img>
@@ -97,7 +97,7 @@ const CoreVaccineImage = ({ record, setImage }) => {
               onClick={() => _fileInput.click()}
               disabled={!record.nationality || !record.passportNumber}
             >
-              Change Vaccine Image
+              {`Change ${suffix} image`}
             </Link>
           </div>}
           {loading &&
@@ -109,6 +109,9 @@ const CoreVaccineImage = ({ record, setImage }) => {
           }
         </CardContent>
       </Card>
+      <div>
+        <Typography variant="h6" component={"span"}>{suffix}</Typography>
+      </div>
       <input
         type="file"
         onChange={handleFileOnChange}

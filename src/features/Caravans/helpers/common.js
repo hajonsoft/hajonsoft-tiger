@@ -95,10 +95,27 @@ export function getPassengersJSON(passengers, data) {
         mmm: moment(passenger.passExpireDt).format("MMM"),
         yyyy: moment(passenger.passExpireDt).format("YYYY"),
       },
+      idIssueDt: {
+        dmy: moment(passenger.idNumberIssueDate).format("DD/MM/YYYY"),
+        dmmmy: moment(passenger.idNumberIssueDate).format("DD-MMM-YYYY"),
+        dd: moment(passenger.idNumberIssueDate).format("DD"),
+        mm: moment(passenger.idNumberIssueDate).format("MM"),
+        mmm: moment(passenger.idNumberIssueDate).format("MMM"),
+        yyyy: moment(passenger.idNumberIssueDate).format("YYYY"),
+      },
+      idExpireDt: {
+        dmy: moment(passenger.isNumberExpireDate).format("DD/MM/YYYY"),
+        dmmmy: moment(passenger.isNumberExpireDate).format("DD-MMM-YYYY"),
+        dd: moment(passenger.isNumberExpireDate).format("DD"),
+        mm: moment(passenger.isNumberExpireDate).format("MM"),
+        mmm: moment(passenger.isNumberExpireDate).format("MMM"),
+        yyyy: moment(passenger.isNumberExpireDate).format("YYYY"),
+      },
       birthPlace: passenger.birthPlace,
       profession: passenger.profession || 'unknown',
       address: passenger.address || '123 utopia street',
       passportNumber: passenger.passportNumber,
+      idNumber: passenger.idNumber,
       mofaNumber: passenger.mofaNumber,
       eNumber: passenger.eNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
@@ -121,7 +138,7 @@ export async function zipWithPhotos(data, packageData) {
   const travelersCount = passengers.length;
   for (let index = 0; index < travelersCount; index++) {
     const traveler = passengers[index];
-    let [photoUrl, passportUrl, vaccineUrl] = await Promise.all([
+    let [photoUrl, passportUrl, vaccineUrl, idUrl, vaccine2Url] = await Promise.all([
       getStorageUrl(
       `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
     ),
@@ -130,6 +147,12 @@ export async function zipWithPhotos(data, packageData) {
     ),
     getStorageUrl(
       `${traveler.nationality.name}/${traveler.passportNumber}_vaccine.jpg`
+    ),
+    getStorageUrl(
+      `${traveler.nationality.name}/${traveler.passportNumber}_id.jpg`
+    ),
+    getStorageUrl(
+      `${traveler.nationality.name}/${traveler.passportNumber}_vaccine2.jpg`
     )
     ]);
     if (!photoUrl) {
@@ -139,13 +162,21 @@ export async function zipWithPhotos(data, packageData) {
     if (!passportUrl){
       passportUrl = 'https://via.placeholder.com/400x300';
     }
+    if (!idUrl){
+      idUrl = 'https://via.placeholder.com/400x300';
+    }
     if (!vaccineUrl) {
       vaccineUrl = passportUrl;
+    }
+    if (!vaccine2Url) {
+      vaccine2Url = passportUrl;
     }
     traveler.images = {
       photo: photoUrl,
       passport: passportUrl,
+      id: idUrl,
       vaccine: vaccineUrl,
+      vaccine2: vaccine2Url,
     };
   }
 
