@@ -31,10 +31,10 @@ export function getPassengersJSON(passengers, data) {
     }
 
     const codeLine = passenger?.codeLine?.trim() || createCodeLine(passenger);
-    if (!codeLine){
+    if (!codeLine && passenger.passportNumber.length <= 9) {
       return '';
     }
-    const issuerCode = codeLine?.substring(2, 5);
+    const issuerCode = passenger.passportNumber.length <= 9 ? codeLine?.substring(2, 5) : 'XXX';
 
     return {
       slug: `${passenger.name} ${moment().diff(moment(passenger.birthDate), "years", true)
