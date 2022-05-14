@@ -3,6 +3,8 @@ var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
 var moment = require("moment");
+const { v4: uuidv4 } = require('uuid');
+
 const { nationalities } = require("../data/nationality");
 
 function getNationality(code) {
@@ -301,25 +303,23 @@ onmessage = async (msg) => {
       }
     } else {
       // Upload one image file as a full customer. Customer name is the image name
-      const uniqueNumber = moment().valueOf();
+      const uniqueNumber = uuidv4();
       // Passport number and nationality should not change later otherwise the photo and passport images will disappear
-      const fileName = file.name.replace(/[^A-Za-z ]/, " ");
-      const splitName = fileName.split(" ");
+      const fileName = file.name.replace(/[^A-Za-z0-9 ]/, " ");
       const record = {
         id: uniqueNumber,
         birthDate: "701026",
         expirationDate: "251026",
         nationality: "Stateless XXX",
-        firstName: splitName[0].trim(),
+        firstName: fileName,
         lastName: "image file",
-        codeLine:
-          "P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<1234567897XXX2001012M3201015<<<<<<<<<<<<<<04",
+        codeLine: "",
         documentNumber: uniqueNumber,
         issuingState: "Stateless",
         comments: `imported from ${file.name}`,
       };
       let formattedRecord = formatRecord(record);
-      formattedRecord.image = file;
+      // formattedRecord.image = file;
       formattedRecord.passportImage = file;
       postMessage({
         type: "import prepared",
