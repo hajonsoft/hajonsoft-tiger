@@ -768,6 +768,20 @@ const Passenger = ({ mode, record, customerKey, title, onClose, onNext }) => {
                           <Grid item xs={2}>
                             <InputControl
                               required={false}
+                              name="ehajNumber"
+                              label={t("ehajNumber")}
+                              value={values.ehajNumber}
+                              error={
+                                touched.ehajNumber && Boolean(errors.ehajNumber)
+                              }
+                              helperText={
+                                touched.ehajNumber && errors.ehajNumber
+                              }
+                            />
+                          </Grid>
+                          <Grid item xs={2}>
+                            <InputControl
+                              required={false}
                               name="airlineRef"
                               label={t("airlineRef")}
                               value={values.airlineRef}
