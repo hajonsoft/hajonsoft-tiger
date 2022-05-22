@@ -198,112 +198,114 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   async function sendEmail() {
     setSendingMail(true);
     const travelersData = getPassengersJSON(selectedPassengers);
+    const exportVisaSystem = visaSystems[selectedVisaSystem];
 
-    for (let index = 0; index < travelersData.length; index++) {
-      const traveler = travelersData[index];
+    if (exportVisaSystem.usap !== "vsn") {
+      for (let index = 0; index < travelersData.length; index++) {
+        const traveler = travelersData[index];
 
-      // verify profile email
-      if (!profile.email) {
-        alert(
-          "Can't send visa by proxy. Notification email is missing in profile. To enter notification email, click your login (header top right)."
-        );
-        return setSendingMail(false);
-      }
+        // verify profile email
+        if (!profile.email) {
+          alert(
+            "Can't send visa by proxy. Notification email is missing in profile. To enter notification email, click your login (header top right)."
+          );
+          return setSendingMail(false);
+        }
 
-      // verify name
-      if (!traveler.name.full.trim()) {
-        alert(
-          "Can't send visa by proxy. Some of your passengers does not seems to have a full name"
-        );
-        return setSendingMail(false);
-      }
+        // verify name
+        if (!traveler.name.full.trim()) {
+          alert(
+            "Can't send visa by proxy. Some of your passengers does not seems to have a full name"
+          );
+          return setSendingMail(false);
+        }
 
-      // verify nationality
-      if (!traveler.nationality.name.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`
-        );
-        return setSendingMail(false);
-      }
+        // verify nationality
+        if (!traveler.nationality.name.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify gender
-      if (!traveler.gender.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a gender. Please fill the gender field to continue`
-        );
-        return setSendingMail(false);
-      }
+        // verify gender
+        if (!traveler.gender.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a gender. Please fill the gender field to continue`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify passportNumber
-      if (!traveler.passportNumber.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`
-        );
-        return setSendingMail(false);
-      }
+        // verify passportNumber
+        if (!traveler.passportNumber.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify place of issue
-      if (!traveler.placeOfIssue.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`
-        );
-        return setSendingMail(false);
-      }
+        // verify place of issue
+        if (!traveler.placeOfIssue.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify birth date
-      if (!traveler.dob.dmy.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`
-        );
-        return setSendingMail(false);
-      }
+        // verify birth date
+        if (!traveler.dob.dmy.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify birth place
-      if (!traveler.birthPlace.trim()) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`
-        );
-        return setSendingMail(false);
-      }
+        // verify birth place
+        if (!traveler.birthPlace.trim()) {
+          alert(
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`
+          );
+          return setSendingMail(false);
+        }
 
-      // verify photo
-      try {
-        const photoUrl = await getStorageUrl(
-          `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
-        );
-        if (!photoUrl) {
+        // verify photo
+        try {
+          const photoUrl = await getStorageUrl(
+            `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
+          );
+          if (!photoUrl) {
+            alert(
+              `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
+            );
+            return setSendingMail(false);
+          }
+        } catch (err) {
           alert(
             `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
           );
           return setSendingMail(false);
         }
-      } catch (err) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
-        );
-        return setSendingMail(false);
-      }
 
-      // verify passport
-      try {
-        const passportUrl = await getStorageUrl(
-          `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
-        );
-        if (!passportUrl) {
+        // verify passport
+        try {
+          const passportUrl = await getStorageUrl(
+            `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
+          );
+          if (!passportUrl) {
+            alert(
+              `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
+            );
+            return setSendingMail(false);
+          }
+        } catch (err) {
           alert(
             `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
           );
           return setSendingMail(false);
         }
-      } catch (err) {
-        alert(
-          `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
-        );
-        return setSendingMail(false);
       }
     }
 
-    const exportVisaSystem = visaSystems[selectedVisaSystem];
     const zipData = {
       system: {
         username: crypt.encrypt(exportVisaSystem.username),

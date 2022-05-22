@@ -181,7 +181,7 @@
   "muhram": "Muhram",
   "days-ago": "days ago",
   "mofaNumber": "Mofa#",
-  "ehajNumber": "Mofa#",
+  "ehajNumber": "Ehaj#",
   "eNumber": "E#",
   "mekkah-hotel-name": "Mekkah Hotel Name",
   "medinah-hotel-name": "Medinah Hotel Name",
@@ -225,7 +225,8 @@
                                                 "__i18n_ally_root__": {
                                                   "upload-your-passport": ""
                                                 }
-                                              }
+                                              },
+                                              "upload-your-vaccine": ""
                                             }
                                           },
                                           "upload-your-vaccine": ""
