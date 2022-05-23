@@ -7,7 +7,7 @@ import { nameParts } from "../../../shared/util/name";
 
 const storage = firebase.storage();
 
-export function getPassengersJSON(passengers, data) {
+export function getPassengersJSON(passengers, data, caravan) {
   let packageTravelers;
   if (data && data.name) {
     const packageName = data.name;
@@ -39,6 +39,7 @@ export function getPassengersJSON(passengers, data) {
     return {
       slug: `${passenger.name} ${moment().diff(moment(passenger.birthDate), "years", true)
         .toFixed(2)} ${passenger.gender} ${passenger.nationality}`,
+      path: `customers/${caravan}/${passenger._fid}`,
       nationality: {
         name: passenger.nationality,
         code: nationalities.find((x) => x.name === passenger.nationality)?.code,

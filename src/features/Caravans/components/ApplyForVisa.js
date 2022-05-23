@@ -197,7 +197,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   async function sendEmail() {
     setSendingMail(true);
-    const travelersData = getPassengersJSON(selectedPassengers);
+    const travelersData = getPassengersJSON(selectedPassengers, null,caravan);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
 
     if (exportVisaSystem.usap !== "vsn") {
@@ -405,7 +405,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   };
 
   async function makePassengersFile() {
-    const travelersData = getPassengersJSON(selectedPassengers);
+    const travelersData = getPassengersJSON(selectedPassengers,null,caravan);
     const exportVisaSystem = visaSystems[selectedVisaSystem];
     const data = {
       system: {
