@@ -3,7 +3,7 @@ var parseString = require("xml2js").parseString;
 var xpath = require("xml2js-xpath");
 const parse = require("mrz").parse;
 var moment = require("moment");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const { nationalities } = require("../data/nationality");
 
@@ -33,6 +33,32 @@ function ParseXmlString(xml) {
   });
 }
 
+function fixMrz1(incoming) {
+  // P<D<<DJIBRIL<SAIBOU<<MAMA<SALISSOU<<<<<<<<<<
+  if (incoming.substring(2, 5) === "D<<") {
+    return {
+      mrz: incoming.substring(0, 2) + "DEU" + incoming.substring(5),
+      nationality: "Germany",
+    };
+  }
+  return {
+    mrz: incoming,
+  };
+}
+
+function fixMrz2(incoming) {
+  // CH1HP4YVF0GER6801140M32041192101<<<<<<<<<<46
+  if (incoming.substring(10, 13) === "GER") {
+    return {
+      mrz: incoming.substring(0, 10) + "DEU" + incoming.substring(13),
+      nationality: "Germany",
+    };
+  }
+  return {
+    mrz: incoming,
+  };
+}
+
 async function ParseZip(file) {
   return new Promise(async (resolve, reject) => {
     let zipEntries = await getZipEntries(file);
@@ -49,8 +75,16 @@ async function ParseZip(file) {
 
           mrz1 = xpath.find(json, "//field[@id='MRZ1']")[0]["$"].fieldvalue;
           mrz2 = xpath.find(json, "//field[@id='MRZ2']")[0]["$"].fieldvalue;
+          const fixMrz1Result = fixMrz1(mrz1);
+          const fixMrz2Result = fixMrz2(mrz2);
 
           const parsedData = parse([mrz1, mrz2]).fields;
+          if (!parsedData.nationality) {
+            parsedData.nationality = fixMrz2Result.nationality;
+          }
+          if (!parsedData.issuingState) {
+            parsedData.nationality = fixMrz1Result.nationality;
+          }
           record = { ...record, ...parsedData };
           record.codeLine = mrz1 + mrz2;
         } catch (er) {
@@ -101,8 +135,17 @@ function parseDetailsFromTxt(codelineFile) {
           .replace("/\r/", "");
         let mrz1 = codeLine.substring(0, 44),
           mrz2 = codeLine.substring(45, 89);
+        const fixMrz1Result = fixMrz1(mrz1);
+        const fixMrz2Result = fixMrz2(mrz2);
         let parsed = parse([mrz1, mrz2]);
         record = parsed.fields;
+        if (!record.nationality) {
+          record.nationality = fixMrz2Result.nationality;
+        }
+        if (!record.issuingState) {
+          record.nationality = fixMrz1Result.nationality;
+        }
+
         record.codeLine = mrz1 + mrz2;
       } catch (er) {
         record.failed = true;
@@ -160,7 +203,7 @@ async function getRecords(ComboFiles, drop3MBinder) {
       } else {
         record.failed = true;
       }
-      if (eagleFile){
+      if (eagleFile) {
         const eagleRecord = await parseEagleFromJSON(eagleFile);
         record = { ...record, ...eagleRecord };
       }
@@ -185,7 +228,7 @@ function getComments(comments) {
   }
   if (Array.isArray(comments)) {
     return comments.join("\n");
-  } 
+  }
   return comments;
 }
 
@@ -216,8 +259,14 @@ function formatRecord(record) {
 }
 
 function defaultIssueDate(passExpireDt, record) {
-  console.log('%cMyProject%cline:205%crecord', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px', record)
-  if (record.passIssueDt){
+  console.log(
+    "%cMyProject%cline:205%crecord",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+    record
+  );
+  if (record.passIssueDt) {
     return record.passIssueDt;
   }
   let issueDate;
