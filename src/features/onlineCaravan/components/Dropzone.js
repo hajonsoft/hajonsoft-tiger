@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import firebase from "../../../firebaseapp";
 const storage = firebase.storage();
+
 const saveCustomerToFirebase = async (values, packageName, callback) => {
   let image = values.image;
   delete values["image"];

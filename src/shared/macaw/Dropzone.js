@@ -222,7 +222,7 @@ function DropZone({ packageName, onClose }) {
                   <Grid item xs={12}>
                     <Alert severity="success" color="info">{`${
                       importsLength - failed.length
-                    } customers imported`}</Alert>
+                    } passenger(s) imported`}</Alert>
                   </Grid>
                 ) : (
                   ""
