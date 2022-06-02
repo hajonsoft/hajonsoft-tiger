@@ -19,67 +19,67 @@ import {
   Snackbar,
   TextField,
   Typography,
-} from "@material-ui/core";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Backdrop from "@material-ui/core/Backdrop";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Fade from "@material-ui/core/Fade";
-import Modal from "@material-ui/core/Modal";
-import Slide from "@material-ui/core/Slide";
-import { makeStyles } from "@material-ui/core/styles";
-import { AlternateEmail, CloudDownloadOutlined } from "@material-ui/icons";
-import AddIcon from "@material-ui/icons/Add";
-import CheckCircle from "@material-ui/icons/CheckCircle";
-import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
-import Person from "@material-ui/icons/Person";
-import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import { Alert } from "@material-ui/lab";
-import emailjs from "emailjs-com";
-import moment from "moment";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import ehjImg from "../../../assets/ehj.jpg";
-import enjImg from "../../../assets/enj.jpg";
-import gmaImg from "../../../assets/gma.jpg";
-import hsfImg from "../../../assets/hsf.jpg";
-import sbrImg from "../../../assets/sbr.jpg";
-import twfImg from "../../../assets/twf.jpg";
-import vstImg from "../../../assets/vst.jpg";
-import wtuImg from "../../../assets/wtu.jpg";
-import vsnImg from "../../../assets/vsn.svg";
-import firebaseConfig from "../../../firebaseConfig";
-import hawkImg from "../../../images/hawk.svg";
-import reservationCompleteImage from "../../../images/reservation-complete.svg";
-import t from "../../../shared/util/trans";
+} from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Backdrop from '@material-ui/core/Backdrop';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Fade from '@material-ui/core/Fade';
+import Modal from '@material-ui/core/Modal';
+import Slide from '@material-ui/core/Slide';
+import { makeStyles } from '@material-ui/core/styles';
+import { AlternateEmail, CloudDownloadOutlined } from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import CloudUploadOutlined from '@material-ui/icons/CloudUploadOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import Person from '@material-ui/icons/Person';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import { Alert } from '@material-ui/lab';
+import emailjs from 'emailjs-com';
+import moment from 'moment';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ehjImg from '../../../assets/ehj.jpg';
+import enjImg from '../../../assets/enj.jpg';
+import gmaImg from '../../../assets/gma.jpg';
+import hsfImg from '../../../assets/hsf.jpg';
+import sbrImg from '../../../assets/sbr.jpg';
+import twfImg from '../../../assets/twf.jpg';
+import vstImg from '../../../assets/vst.jpg';
+import wtuImg from '../../../assets/wtu.jpg';
+import vsnImg from '../../../assets/vsn.svg';
+import firebaseConfig from '../../../firebaseConfig';
+import hawkImg from '../../../images/hawk.svg';
+import reservationCompleteImage from '../../../images/reservation-complete.svg';
+import t from '../../../shared/util/trans';
 import {
   getPassengersJSON,
   getStorageUrl,
   zipWithPhotos,
-} from "../helpers/common";
+} from '../helpers/common';
 import {
   createVisaSystem,
   deleteVisaSystem,
   getVisaSystems,
-} from "../redux/visaSystemSlice";
+} from '../redux/visaSystemSlice';
 
-const webcrypto = require("cryptr");
+const webcrypto = require('cryptr');
 
 const crypt = new webcrypto(firebaseConfig.projectId);
 
-const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, "");
+const sanitizeCaravanName = (gn) => gn.replace(/[^A-Za-z0-9]/gi, '');
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: "33.33%",
+    flexBasis: '33.33%',
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -87,36 +87,36 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   mailBtnContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "2rem 0px",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '2rem 0px',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid white",
+    border: '2px solid white',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    maxWidth: "50%",
-    margin: "auto",
-    marginTop: "5rem",
+    maxWidth: '50%',
+    margin: 'auto',
+    marginTop: '5rem',
   },
   mailBtn: {
-    background: "#178CF9",
-    paddingLeft: "3rem",
-    paddingRight: "3rem",
-    paddingTop: ".65rem",
-    paddingBottom: ".65rem",
-    textTransform: "capitalize",
-    color: "white",
+    background: '#178CF9',
+    paddingLeft: '3rem',
+    paddingRight: '3rem',
+    paddingTop: '.65rem',
+    paddingBottom: '.65rem',
+    textTransform: 'capitalize',
+    color: 'white',
   },
   viewReservationBtn: {
-    paddingLeft: "3rem",
-    paddingRight: "3rem",
-    marginRight: "1rem",
-    paddingTop: ".65rem",
-    paddingBottom: ".65rem",
-    textTransform: "capitalize",
+    paddingLeft: '3rem',
+    paddingRight: '3rem',
+    marginRight: '1rem',
+    paddingTop: '.65rem',
+    paddingBottom: '.65rem',
+    textTransform: 'capitalize',
   },
   sendCard: {},
 }));
@@ -127,41 +127,41 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const serviceProviders = [
   {
-    value: "bau",
-    name: "Bab-al-umrah (Inactive now)",
+    value: 'bau',
+    name: 'Bab-al-umrah (Inactive now)',
   },
   {
-    value: "wtu",
-    name: "Way-to-umrah [https://www.waytoumrah.com]",
+    value: 'wtu',
+    name: 'Way-to-umrah [https://www.waytoumrah.com]',
     img: wtuImg,
   },
-  { value: "gma", name: "Gabul-ya-hajj [https://eumra.com]", img: gmaImg },
-  { value: "twf", name: "Tawaf [https://tawaf.com.sa]", img: twfImg },
+  { value: 'gma', name: 'Gabul-ya-hajj [https://eumra.com]', img: gmaImg },
+  { value: 'twf', name: 'Tawaf [https://tawaf.com.sa]', img: twfImg },
   {
-    value: "hsf",
-    name: "Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]",
+    value: 'hsf',
+    name: 'Smart-form [https://visa.mofa.gov.sa/Account/HajSmartForm]',
     img: hsfImg,
   },
   {
-    value: "enj",
-    name: "Enjaz [https://enjazit.com.sa/Account/Login/Person]",
+    value: 'enj',
+    name: 'Enjaz [https://enjazit.com.sa/Account/Login/Person]',
     img: enjImg,
   },
-  { value: "ehj", name: "Ehaj [https://ehaj.haj.gov.sa/]", img: ehjImg },
+  { value: 'ehj', name: 'Ehaj [https://ehaj.haj.gov.sa/]', img: ehjImg },
   {
-    value: "vst",
-    name: "Visit-visa [https://visa.visitsaudi.com]",
+    value: 'vst',
+    name: 'Visit-visa [https://visa.visitsaudi.com]',
     img: vstImg,
   },
-  { value: "mot", name: "Egypt-Tourism" },
+  { value: 'mot', name: 'Egypt-Tourism' },
   {
-    value: "sbr",
-    name: "Sabre Ticket Reduce [https://srw.sabre.com/]",
+    value: 'sbr',
+    name: 'Sabre Ticket Reduce [https://srw.sabre.com/]',
     img: sbrImg,
   },
   {
-    value: "vsn",
-    name: "Google vision (premium passport recognition) [https://cloud.google.com/vision/]",
+    value: 'vsn',
+    name: 'Google vision (premium passport recognition) [https://cloud.google.com/vision/]',
     img: vsnImg,
   },
 ];
@@ -170,25 +170,25 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [expandedPanel, setExpandedPanel] = React.useState("");
+  const [expandedPanel, setExpandedPanel] = React.useState('');
   const [showAlert, setShowAlert] = React.useState(false);
   const [selectedPassengers, setSelectedPassengers] =
     React.useState(passengers);
   const [serviceProviderAddMode, setServiceProviderAddMode] =
     React.useState(false);
   const [selectedServiceProvider, setSelectedServiceProvider] =
-    React.useState("");
+    React.useState('');
   const [serviceProviderUsername, setServiceProviderProfileUsername] =
-    React.useState("");
+    React.useState('');
   const [serviceProviderPassword, setServiceProviderProfilePassword] =
-    React.useState("");
+    React.useState('');
   const [serviceProviderEmbassy, setServiceProviderProfileEmbassy] =
-    React.useState("");
+    React.useState('');
 
-  const [downloadFileName, setDownloadFileName] = useState("");
+  const [downloadFileName, setDownloadFileName] = useState('');
   const [downloading, setDownloading] = useState(false);
   const [selectedVisaSystem, setSelectedVisaSystem] = React.useState(
-    localStorage.getItem("selected-service-provider-profile") || ""
+    localStorage.getItem('selected-service-provider-profile') || ''
   );
   const [sendingMail, setSendingMail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState();
@@ -310,7 +310,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       system: {
         username: crypt.encrypt(exportVisaSystem.username),
         password: crypt.encrypt(exportVisaSystem.password),
-        ehajCode: profile?.ehajCode || "",
+        ehajCode: profile?.ehajCode || '',
         embassy: exportVisaSystem.embassy,
         name: exportVisaSystem.usap,
       },
@@ -327,8 +327,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     const zip = await zipWithPhotos(zipData, null);
 
     const bundleFile = await zip.generateAsync({
-      type: "base64",
-      mimeType: "application/zip",
+      type: 'base64',
+      mimeType: 'application/zip',
     });
 
     const data = {
@@ -342,15 +342,15 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         2
       )}`,
       variable_7e6p61s: bundleFile,
-      embassy: "embassy: " + exportVisaSystem.embassy,
+      embassy: 'embassy: ' + exportVisaSystem.embassy,
     };
 
     emailjs
       .send(
-        "service_kn4unr3",
-        "template_38lq7dh",
+        'service_kn4unr3',
+        'template_38lq7dh',
         data,
-        "user_ZvrCHg40AuHimkNbZAhtA"
+        'user_ZvrCHg40AuHimkNbZAhtA'
       )
       .then(
         (result) => {
@@ -372,7 +372,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
   const handleServiceProviderProfileChange = (systemIndex) => {
     if (visaSystems.length > systemIndex) {
       setSelectedVisaSystem(systemIndex);
-      localStorage.setItem("selected-service-provider-profile", systemIndex);
+      localStorage.setItem('selected-service-provider-profile', systemIndex);
     }
   };
 
@@ -380,7 +380,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     setSelectedServiceProvider(usap);
   };
   const handlePanelChange = (panel) => (event, isExpanded) => {
-    setExpandedPanel(isExpanded ? panel : "");
+    setExpandedPanel(isExpanded ? panel : '');
   };
 
   const handleDoneAddServiceProviderProfile = () => {
@@ -400,7 +400,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
 
   const handleDownloadZipFileClick = async () => {
     setDownloading(true);
-    setDownloadFileName("");
+    setDownloadFileName('');
     setTimeout(makePassengersFile, 1000);
   };
 
@@ -415,7 +415,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         password:
           exportVisaSystem?.password &&
           crypt.encrypt(exportVisaSystem?.password),
-        ehajCode: profile?.ehajCode || "",
+        ehajCode: profile?.ehajCode || '',
         embassy: exportVisaSystem?.embassy,
         name: exportVisaSystem?.usap,
       },
@@ -431,17 +431,17 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
     };
     const zip = await zipWithPhotos(data, null);
 
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      const newFile = new Blob([content], { type: "application/zip" });
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      const newFile = new Blob([content], { type: 'application/zip' });
       var csvURL = window.URL.createObjectURL(newFile);
-      const tempLink = document.createElement("a");
+      const tempLink = document.createElement('a');
       tempLink.href = csvURL;
       const fileName = `${
         sanitizeCaravanName(caravan) +
-        "_" +
-        parseInt(moment().format("X")).toString(36)
+        '_' +
+        parseInt(moment().format('X')).toString(36)
       }.zip`;
-      tempLink.setAttribute("download", fileName);
+      tempLink.setAttribute('download', fileName);
       setDownloadFileName(fileName);
       tempLink.click();
       // var elabsed = (
@@ -471,25 +471,25 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         defaultSystem?.usap
       )} - Username: ${defaultSystem?.username}`;
     } else {
-      return "No system selected";
+      return 'No system selected';
     }
   };
 
   const handleSendDownloadedFile = () => {
-    const tempLink = document.createElement("a");
+    const tempLink = document.createElement('a');
     tempLink.href = new URL(
-      "hawk://mode=send,fileName=" +
+      'hawk://mode=send,fileName=' +
         downloadFileName +
-        ",host=" +
+        ',host=' +
         firebaseConfig.projectId
     );
     tempLink.click();
   };
 
   const handleOpenHawk = () => {
-    const tempLink = document.createElement("a");
+    const tempLink = document.createElement('a');
     tempLink.href = new URL(
-      "hawk://mode=open,host=" + firebaseConfig.projectId
+      'hawk://mode=open,host=' + firebaseConfig.projectId
     );
     tempLink.click();
   };
@@ -521,25 +521,25 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         maxWidth="lg"
         keepMounted
       >
-        <DialogTitle>{t("apply-for-visa")}</DialogTitle>
+        <DialogTitle>{t('apply-for-visa')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {t(
-              "hajonsoft-uses-hawk-application-to-connect-to-travel-service-providers-if-you-are-new-or-using-macos-you-can-select-visa-by-proxy-use-eagle-or"
-            )}{" "}
+              'hajonsoft-uses-hawk-application-to-connect-to-travel-service-providers-if-you-are-new-or-using-macos-you-can-select-visa-by-proxy-use-eagle-or'
+            )}{' '}
             <a href="https://hajonsoft.talentlms.com/catalog/info/id:125">
-              {t("take-a-course")}
+              {t('take-a-course')}
             </a>
           </DialogContentText>
 
           <div className={classes.root}>
             <Accordion
-              expanded={expandedPanel === "passengersPanel"}
-              onChange={handlePanelChange("passengersPanel")}
+              expanded={expandedPanel === 'passengersPanel'}
+              onChange={handlePanelChange('passengersPanel')}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t("step-1-choose-passengers")}
+                  {t('step-1-choose-passengers')}
                 </Typography>
                 <Typography
                   className={classes.secondaryHeading}
@@ -549,12 +549,12 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                 <Grid container justifyContent="space-between">
                   <Grid item md={6}>
                     <Button onClick={() => setSelectedPassengers(passengers)}>
-                      {t("select-all")}
+                      {t('select-all')}
                     </Button>
                   </Grid>
                   <Grid item md={6} container justifyContent="flex-end">
                     <Button onClick={() => setSelectedPassengers([])}>
-                      {t("deselect-all")}
+                      {t('deselect-all')}
                     </Button>
                   </Grid>
                   {passengers &&
@@ -585,25 +585,25 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
               </AccordionDetails>
             </Accordion>
             <Accordion
-              expanded={expandedPanel === "serviceProviderPanel"}
-              onChange={handlePanelChange("serviceProviderPanel")}
+              expanded={expandedPanel === 'serviceProviderPanel'}
+              onChange={handlePanelChange('serviceProviderPanel')}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t("step-2-choose-service-provider-profile")}
+                  {t('step-2-choose-service-provider-profile')}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
                   {getSelectedServiceProviderProfile()}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Box style={{ width: "100%" }}>
+                <Box style={{ width: '100%' }}>
                   {!serviceProviderAddMode && (
                     <Grid container alignItems="center">
                       <Grid item md={11}>
                         <FormControl fullWidth variant="filled">
                           <InputLabel>
-                            {t("service-provider-profile")}
+                            {t('service-provider-profile')}
                           </InputLabel>
                           <Select
                             value={selectedVisaSystem}
@@ -612,11 +612,11 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             }
                           >
                             <MenuItem
-                              value={""}
+                              value={''}
                               key="defaultvalue_serviceproviderprofile"
                             >
                               <Typography color="textSecondary">
-                                {t("please-select-service-provider-profile")}
+                                {t('please-select-service-provider-profile')}
                               </Typography>
                             </MenuItem>
                             {visaSystems &&
@@ -688,7 +688,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     >
                       <Grid item md={12}>
                         {t(
-                          "enter-service-provider-profile-details-then-press-done"
+                          'enter-service-provider-profile-details-then-press-done'
                         )}
                       </Grid>
                       <Grid item md={7}>
@@ -754,7 +754,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Button
                           onClick={() => setServiceProviderAddMode(false)}
                         >
-                          {t("cancel")}
+                          {t('cancel')}
                         </Button>
                       </Grid>
                       <Grid item md={1}>
@@ -762,7 +762,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           onClick={handleDoneAddServiceProviderProfile}
                           color="primary"
                         >
-                          {t("done")}
+                          {t('done')}
                         </Button>
                       </Grid>
                     </Grid>
@@ -771,16 +771,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
               </AccordionDetails>
             </Accordion>
             <Accordion
-              expanded={expandedPanel === "sendPanel"}
-              onChange={handlePanelChange("sendPanel")}
+              expanded={expandedPanel === 'sendPanel'}
+              onChange={handlePanelChange('sendPanel')}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>
-                  {t("step-3-bundle-and-process")}
+                  {t('step-3-bundle-and-process')}
                 </Typography>
                 <Typography className={classes.secondaryHeading}>
                   {t(
-                    "create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket"
+                    'create-a-bundle-for-hawk-processing-or-create-visa-by-proxy-ticket'
                   )}
                 </Typography>
               </AccordionSummary>
@@ -789,41 +789,41 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                   <Grid item md={12}>
                     <Typography variant="body1">
                       {t(
-                        "bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk"
-                      )}{" "}
+                        'bundle-file-is-required-for-hawk-or-visa-by-proxy-to-install-hawk'
+                      )}{' '}
                       <a href="https://meetings.hubspot.com/haj-onsoft">
-                        {" "}
-                        {t("schedule-a-meeting")}
+                        {' '}
+                        {t('schedule-a-meeting')}
                       </a>
                       ` - OR - `
                       <a href="https://hajonsoft.talentlms.com/unit/view/id:2124">
-                        {t("or-watch-install-video")}
+                        {t('or-watch-install-video')}
                       </a>
                     </Typography>
                     <Box
                       style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        width: "100%",
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        width: '100%',
                       }}
                     >
                       <Typography variant="body2" align="right">
-                        {t("useful-links")}
+                        {t('useful-links')}
                       </Typography>
                       <Box
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "flex-end",
-                          marginLeft: "8px",
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'flex-end',
+                          marginLeft: '8px',
                         }}
                       >
                         <Link
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://nodejs.org/"
-                          style={{ marginRight: "16px" }}
+                          style={{ marginRight: '16px' }}
                         >
                           node-js,
                         </Link>
@@ -831,7 +831,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           href="https://go.dev/dl/"
-                          style={{ marginRight: "16px" }}
+                          style={{ marginRight: '16px' }}
                         >
                           go,
                         </Link>
@@ -844,7 +844,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         </Link>
                         <PowerSettingsNewIcon
                           width="16px"
-                          style={{ margin: "0 16px 0 16px" }}
+                          style={{ margin: '0 16px 0 16px' }}
                         />
                         <Link
                           target="_blank"
@@ -860,37 +860,37 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     <Grid container justifyContent="space-around" spacing={1}>
                       <Grid item md={3}>
                         <Typography variant="h5">
-                          {t("step-1-bundle")}
+                          {t('step-1-bundle')}
                         </Typography>
                         <Typography
                           variant="subtitle2"
                           color="textSecondary"
                           gutterBottom
                         >
-                          {downloadFileName ? downloadFileName : t("required")}
+                          {downloadFileName ? downloadFileName : t('required')}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t(
-                            "bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller"
+                            'bundle-file-may-include-passwords-and-or-personal-identifying-information-average-bundle-creation-time-depends-on-your-speed-2-seconds-per-traveller'
                           )}
                         </Typography>
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            marginTop: "1rem",
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '1rem',
                           }}
                         >
                           {!downloading && (
                             <Button
                               disabled={
-                                selectedVisaSystem === "" || downloading
+                                selectedVisaSystem === '' || downloading
                               }
                               onClick={handleDownloadZipFileClick}
                               startIcon={<CloudDownloadOutlined />}
-                              style={{ textTransform: "none" }}
+                              style={{ textTransform: 'none' }}
                             >
-                              {t("download-now")}
+                              {t('download-now')}
                             </Button>
                           )}
                           {downloading && (
@@ -907,7 +907,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Divider orientation="vertical" />
                       </Grid>
                       <Grid item md={3}>
-                        <Typography variant="h5">{t("step-2-hawk")}</Typography>
+                        <Typography variant="h5">{t('step-2-hawk')}</Typography>
                         <Typography
                           variant="subtitle2"
                           color="textSecondary"
@@ -916,9 +916,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                           {downloadFileName ? (
                             <div
                               style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                               }}
                             >
                               <Typography variant="caption">
@@ -932,28 +932,28 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                               </IconButton>
                             </div>
                           ) : (
-                            t("optional")
+                            t('optional')
                           )}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t(
-                            "hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting"
+                            'hawk-uploads-a-bundle-file-immediately-to-the-service-provider-for-macos-we-recommend-using-eagle-directly-to-setup-eagle-please-schedule-a-meeting'
                           )}
                         </Typography>
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            marginTop: "1rem",
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '1rem',
                           }}
                         >
                           <Button
                             disabled={!downloadFileName}
                             onClick={handleSendDownloadedFile}
-                            style={{ textTransform: "none" }}
+                            style={{ textTransform: 'none' }}
                             startIcon={<CloudUploadOutlined />}
                           >
-                            {t("hawk-bundle")}
+                            {t('hawk-bundle')}
                           </Button>
                           <Button onClick={handleOpenHawk}>
                             <img
@@ -970,36 +970,36 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       </Grid>
                       <Grid item md={4}>
                         <Typography variant="h5">
-                          {t("or-visa-by-proxy")} <CheckCircle color="action" />{" "}
+                          {t('or-visa-by-proxy')} <CheckCircle color="action" />{' '}
                         </Typography>
                         <Typography
                           variant="subtitle2"
                           color="textSecondary"
                           gutterBottom
                         >
-                          {t("premium-support-service")}
+                          {t('premium-support-service')}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           {t(
-                            "we-use-spicework-to-manage-visa-by-proxy-tickets-email-to"
+                            'we-use-spicework-to-manage-visa-by-proxy-tickets-email-to'
                           )}
                         </Typography>
 
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            marginTop: "1rem",
-                            alignItems: "center",
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '1rem',
+                            alignItems: 'center',
                           }}
                         >
                           <Button
                             onClick={sendEmail}
-                            style={{ textTransform: "none" }}
+                            style={{ textTransform: 'none' }}
                             startIcon={<Person />}
                             target="_blank"
                           >
-                            {t("create-visa-by-proxy-ticket")}
+                            {t('create-visa-by-proxy-ticket')}
                           </Button>
                           <div>
                             <a
@@ -1009,10 +1009,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                             >
                               <AlternateEmail
                                 style={{
-                                  width: "16px",
-                                  height: "16px",
-                                  color: "#009688",
-                                  marginLeft: "0.5rem",
+                                  width: '16px',
+                                  height: '16px',
+                                  color: '#009688',
+                                  marginLeft: '0.5rem',
                                 }}
                               />
                             </a>
@@ -1028,7 +1028,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>{t("close")}</Button>
+          <Button onClick={onClose}>{t('close')}</Button>
         </DialogActions>
       </Dialog>
 
@@ -1051,16 +1051,16 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
           <div className={classes.paper}>
             {sendingMail && !emailSuccess && (
               <>
-                {" "}
+                {' '}
                 <h2
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: 'center' }}
                 >{`Creating visa by proxy request for ${selectedPassengers.length} passengers. Embassy: ${visaSystems[selectedVisaSystem].embassy}`}</h2>
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <CircularProgress
@@ -1070,34 +1070,34 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                     variant="indeterminate"
                   />
                   <Typography
-                    style={{ textAlign: "center", paddingTop: "1rem" }}
+                    style={{ textAlign: 'center', paddingTop: '1rem' }}
                   >
-                    {" "}
+                    {' '}
                     {t(
-                      "this-might-take-some-time-please-do-not-refresh-page"
-                    )}{" "}
+                      'this-might-take-some-time-please-do-not-refresh-page'
+                    )}{' '}
                   </Typography>
-                </div>{" "}
+                </div>{' '}
               </>
             )}
             {emailSuccess === false && sendingMail && (
-              <p style={{ textAlign: "center" }}>
-                {" "}
-                {t("couldnt-create-ticket-please-try-again")}{" "}
+              <p style={{ textAlign: 'center' }}>
+                {' '}
+                {t('couldnt-create-ticket-please-try-again')}{' '}
               </p>
             )}
             {emailSuccess === true && sendingMail && (
               <>
-                <div style={{ width: "25%", height: 150, margin: "1rem auto" }}>
+                <div style={{ width: '25%', height: 150, margin: '1rem auto' }}>
                   <img
                     src={reservationCompleteImage}
                     alt="success-icon"
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: '100%', height: '100%' }}
                   />
                 </div>
-                <Typography style={{ textAlign: "center" }}>
+                <Typography style={{ textAlign: 'center' }}>
                   {t(
-                    "your-visa-by-proxy-request-has-been-created-please-check-your-email"
+                    'your-visa-by-proxy-request-has-been-created-please-check-your-email'
                   )}
                 </Typography>
                 <div className={classes.mailBtnContainer}>
@@ -1110,7 +1110,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                       setEmailSuccess(false);
                     }}
                   >
-                    {t("continue-to-app")}
+                    {t('continue-to-app')}
                   </Button>
                 </div>
               </>

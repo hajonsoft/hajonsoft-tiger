@@ -5,47 +5,47 @@ import {
   Grid,
   Link,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect, useState } from "react";
-import firebase from "../../firebaseapp";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import firebase from '../../firebaseapp';
 
 const useStyles = makeStyles({
   mainContainer: {
-    borderRadius: "8px",
-    position: "relative",
-    width: "210px",
-    height: "210px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "1rem",
+    borderRadius: '8px',
+    position: 'relative',
+    width: '210px',
+    height: '210px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '1rem',
   },
   imgContainer: {
-    width: "200px",
-    height: "200px",
+    width: '200px',
+    height: '200px',
   },
   pickImage: {
-    position: "absolute",
-    top: "80%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    color: "blue",
-    fontSize: "0.8em",
+    position: 'absolute',
+    top: '80%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    color: 'blue',
+    fontSize: '0.8em',
   },
   progress: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
   },
 });
 
 const CoreImage = ({ record, setImage }) => {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [isMouseOver, setIsMouseOver] = useState(false);
-  const [fileType, setFileType] = useState("");
+  const [fileType, setFileType] = useState('');
   const classes = useStyles();
 
   const handleFileOnChange = (event) => {
@@ -58,6 +58,13 @@ const CoreImage = ({ record, setImage }) => {
 
   useEffect(() => {
     async function getImage() {
+      if (record.images?.photo) {
+        setUrl(record.images.photo);
+
+        setLoading(false);
+        return;
+      }
+
       if (
         record?.nationality?.length > 3 &&
         record?.passportNumber?.length > 1
@@ -85,7 +92,7 @@ const CoreImage = ({ record, setImage }) => {
 
     function getImageType(url) {
       fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {},
       }).then((response) => {
         response.arrayBuffer().then(function (buffer) {
@@ -108,20 +115,20 @@ const CoreImage = ({ record, setImage }) => {
       bufferContent[2] === 0x4e &&
       bufferContent[3] === 0x47
     )
-      return "png";
+      return 'png';
     if (
       bufferContent[0] === 0xff &&
       bufferContent[1] === 0xd8 &&
       bufferContent[2] === 0xff
     )
-      return "jpg";
+      return 'jpg';
     if (
       bufferContent[0] === 0x47 &&
       bufferContent[1] === 0x49 &&
       bufferContent[2] === 0x46
     )
-      return "gif";
-    if (bufferContent[0] === 0x42 && bufferContent[1] === 0x4d) return "bmp";
+      return 'gif';
+    if (bufferContent[0] === 0x42 && bufferContent[1] === 0x4d) return 'bmp';
   }
 
   let _fileInput = React.createRef();
@@ -137,9 +144,9 @@ const CoreImage = ({ record, setImage }) => {
             <div>
               <img
                 src={url}
-                alt={"portrait"}
+                alt={'portrait'}
                 className={classes.imgContainer}
-                style={{ display: url ? "block" : "none" }}
+                style={{ display: url ? 'block' : 'none' }}
                 onLoad={() => setLoading(false)}
               ></img>
               <Link
@@ -148,8 +155,8 @@ const CoreImage = ({ record, setImage }) => {
                 style={{
                   display:
                     isMouseOver && record.nationality && record.passportNumber
-                      ? "block"
-                      : "none",
+                      ? 'block'
+                      : 'none',
                 }}
                 onClick={() => _fileInput.click()}
                 disabled={!record.nationality || !record.passportNumber}
@@ -168,11 +175,13 @@ const CoreImage = ({ record, setImage }) => {
         </CardContent>
       </Card>
       <div>
-        <Typography variant="h6" component={"span"}>Portrait</Typography>
+        <Typography variant="h6" component={'span'}>
+          Portrait
+        </Typography>
         <Typography
           variant="caption"
           color="textSecondary"
-          component={"span"}
+          component={'span'}
         >{`${fileType}`}</Typography>
       </div>
 
@@ -180,7 +189,7 @@ const CoreImage = ({ record, setImage }) => {
         type="file"
         onChange={handleFileOnChange}
         accept="image/jpeg"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         ref={(fileInput) => (_fileInput = fileInput)}
       />
     </React.Fragment>

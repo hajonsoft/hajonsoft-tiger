@@ -1,9 +1,9 @@
-import jszip from "jszip";
-import moment from "moment";
-import { nationalities } from "../../../data/nationality";
-import firebase from "../../../firebaseapp";
-import { createCodeLine } from "../../../shared/util/codeline";
-import { nameParts } from "../../../shared/util/name";
+import jszip from 'jszip';
+import moment from 'moment';
+import { nationalities } from '../../../data/nationality';
+import firebase from '../../../firebaseapp';
+import { createCodeLine } from '../../../shared/util/codeline';
+import { nameParts } from '../../../shared/util/name';
 
 const storage = firebase.storage();
 
@@ -16,9 +16,23 @@ export function getPassengersJSON(passengers, data, caravan) {
     packageTravelers = passengers;
   }
   let sortedTravelers;
-  const adultMales = packageTravelers.filter(traveler => traveler.gender === "Male" && moment().diff(traveler.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
-  const adultFemales = packageTravelers.filter(traveler => traveler.gender !== "Male" && moment().diff(traveler.birthDate, 'years') > 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
-  const minors = packageTravelers.filter(traveler => moment().diff(traveler.birthDate, 'years') <= 18).sort((a, b) => moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1); //oldest first
+  const adultMales = packageTravelers
+    .filter(
+      (traveler) =>
+        traveler.gender === 'Male' &&
+        moment().diff(traveler.birthDate, 'years') > 18
+    )
+    .sort((a, b) => (moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1)); //oldest first
+  const adultFemales = packageTravelers
+    .filter(
+      (traveler) =>
+        traveler.gender !== 'Male' &&
+        moment().diff(traveler.birthDate, 'years') > 18
+    )
+    .sort((a, b) => (moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1)); //oldest first
+  const minors = packageTravelers
+    .filter((traveler) => moment().diff(traveler.birthDate, 'years') <= 18)
+    .sort((a, b) => (moment(a.birthDate).isAfter(b.birthDate) ? 1 : -1)); //oldest first
   sortedTravelers = adultMales || [];
   sortedTravelers.push(...adultFemales);
   sortedTravelers.push(...minors);
@@ -26,25 +40,29 @@ export function getPassengersJSON(passengers, data, caravan) {
   const exportData = sortedTravelers.map((passenger) => {
     const _nameParts = nameParts(passenger.name);
     let _nameArabicParts = nameParts(passenger.nameArabic);
-    if (_nameArabicParts[0] === "invalid") {
-      _nameArabicParts = ["", "", "", ""];
+    if (_nameArabicParts[0] === 'invalid') {
+      _nameArabicParts = ['', '', '', ''];
     }
 
     const codeLine = passenger?.codeLine?.trim() || createCodeLine(passenger);
     if (!codeLine && passenger.passportNumber.length <= 9) {
       return '';
     }
-    const issuerCode = passenger.passportNumber.length <= 9 ? codeLine?.substring(2, 5) : 'XXX';
+    const issuerCode =
+      passenger.passportNumber.length <= 9 ? codeLine?.substring(2, 5) : 'XXX';
 
     return {
-      slug: `${passenger.name} ${moment().diff(moment(passenger.birthDate), "years", true)
+      slug: `${passenger.name} ${moment()
+        .diff(moment(passenger.birthDate), 'years', true)
         .toFixed(2)} ${passenger.gender} ${passenger.nationality}`,
       path: `customer/${caravan}/${passenger._fid}`,
       nationality: {
         name: passenger.nationality,
         code: nationalities.find((x) => x.name === passenger.nationality)?.code,
-        telCode: nationalities.find((x) => x.name === passenger.nationality)?.telCode,
-        isArabic: nationalities.find((x) => x.name === passenger.nationality)?.isArabic,
+        telCode: nationalities.find((x) => x.name === passenger.nationality)
+          ?.telCode,
+        isArabic: nationalities.find((x) => x.name === passenger.nationality)
+          ?.isArabic,
       },
       issuer: {
         name: nationalities.find((x) => x.code === issuerCode)?.name,
@@ -52,7 +70,7 @@ export function getPassengersJSON(passengers, data, caravan) {
         telCode: nationalities.find((x) => x.code === issuerCode)?.telCode,
       },
       name: {
-        full: passenger.name.replace(/[^A-Z ]/g, " ")?.trim(),
+        full: passenger.name.replace(/[^A-Z ]/g, ' ')?.trim(),
         given: _nameParts.slice(0, -1).join(' ').trim(),
         first: _nameParts[0],
         last: _nameParts[3],
@@ -70,47 +88,47 @@ export function getPassengersJSON(passengers, data, caravan) {
       mobileNumber: passenger.phone,
       gender: passenger.gender,
       dob: {
-        dmy: moment(passenger.birthDate).format("DD/MM/YYYY"),
-        dmmmy: moment(passenger.birthDate).format("DD-MMM-YYYY"),
-        dd: moment(passenger.birthDate).format("DD"),
-        mm: moment(passenger.birthDate).format("MM"),
-        mmm: moment(passenger.birthDate).format("MMM"),
-        yyyy: moment(passenger.birthDate).format("YYYY"),
+        dmy: moment(passenger.birthDate).format('DD/MM/YYYY'),
+        dmmmy: moment(passenger.birthDate).format('DD-MMM-YYYY'),
+        dd: moment(passenger.birthDate).format('DD'),
+        mm: moment(passenger.birthDate).format('MM'),
+        mmm: moment(passenger.birthDate).format('MMM'),
+        yyyy: moment(passenger.birthDate).format('YYYY'),
         age: moment()
-          .diff(moment(passenger.birthDate), "years", true)
+          .diff(moment(passenger.birthDate), 'years', true)
           .toFixed(2),
       },
       passIssueDt: {
-        dmy: moment(passenger.passIssueDt).format("DD/MM/YYYY"),
-        dmmmy: moment(passenger.passIssueDt).format("DD-MMM-YYYY"),
-        dd: moment(passenger.passIssueDt).format("DD"),
-        mm: moment(passenger.passIssueDt).format("MM"),
-        mmm: moment(passenger.passIssueDt).format("MMM"),
-        yyyy: moment(passenger.passIssueDt).format("YYYY"),
+        dmy: moment(passenger.passIssueDt).format('DD/MM/YYYY'),
+        dmmmy: moment(passenger.passIssueDt).format('DD-MMM-YYYY'),
+        dd: moment(passenger.passIssueDt).format('DD'),
+        mm: moment(passenger.passIssueDt).format('MM'),
+        mmm: moment(passenger.passIssueDt).format('MMM'),
+        yyyy: moment(passenger.passIssueDt).format('YYYY'),
       },
       passExpireDt: {
-        dmy: moment(passenger.passExpireDt).format("DD/MM/YYYY"),
-        dmmmy: moment(passenger.passExpireDt).format("DD-MMM-YYYY"),
-        dd: moment(passenger.passExpireDt).format("DD"),
-        mm: moment(passenger.passExpireDt).format("MM"),
-        mmm: moment(passenger.passExpireDt).format("MMM"),
-        yyyy: moment(passenger.passExpireDt).format("YYYY"),
+        dmy: moment(passenger.passExpireDt).format('DD/MM/YYYY'),
+        dmmmy: moment(passenger.passExpireDt).format('DD-MMM-YYYY'),
+        dd: moment(passenger.passExpireDt).format('DD'),
+        mm: moment(passenger.passExpireDt).format('MM'),
+        mmm: moment(passenger.passExpireDt).format('MMM'),
+        yyyy: moment(passenger.passExpireDt).format('YYYY'),
       },
       idIssueDt: {
-        dmy: moment(passenger.idNumberIssueDate).format("DD/MM/YYYY"),
-        dmmmy: moment(passenger.idNumberIssueDate).format("DD-MMM-YYYY"),
-        dd: moment(passenger.idNumberIssueDate).format("DD"),
-        mm: moment(passenger.idNumberIssueDate).format("MM"),
-        mmm: moment(passenger.idNumberIssueDate).format("MMM"),
-        yyyy: moment(passenger.idNumberIssueDate).format("YYYY"),
+        dmy: moment(passenger.idNumberIssueDate).format('DD/MM/YYYY'),
+        dmmmy: moment(passenger.idNumberIssueDate).format('DD-MMM-YYYY'),
+        dd: moment(passenger.idNumberIssueDate).format('DD'),
+        mm: moment(passenger.idNumberIssueDate).format('MM'),
+        mmm: moment(passenger.idNumberIssueDate).format('MMM'),
+        yyyy: moment(passenger.idNumberIssueDate).format('YYYY'),
       },
       idExpireDt: {
-        dmy: moment(passenger.isNumberExpireDate).format("DD/MM/YYYY"),
-        dmmmy: moment(passenger.isNumberExpireDate).format("DD-MMM-YYYY"),
-        dd: moment(passenger.isNumberExpireDate).format("DD"),
-        mm: moment(passenger.isNumberExpireDate).format("MM"),
-        mmm: moment(passenger.isNumberExpireDate).format("MMM"),
-        yyyy: moment(passenger.isNumberExpireDate).format("YYYY"),
+        dmy: moment(passenger.isNumberExpireDate).format('DD/MM/YYYY'),
+        dmmmy: moment(passenger.isNumberExpireDate).format('DD-MMM-YYYY'),
+        dd: moment(passenger.isNumberExpireDate).format('DD'),
+        mm: moment(passenger.isNumberExpireDate).format('MM'),
+        mmm: moment(passenger.isNumberExpireDate).format('MMM'),
+        yyyy: moment(passenger.isNumberExpireDate).format('YYYY'),
       },
       birthPlace: passenger.birthPlace,
       profession: passenger.profession || 'unknown',
@@ -121,10 +139,11 @@ export function getPassengersJSON(passengers, data, caravan) {
       eNumber: passenger.eNumber,
       placeOfIssue: passenger.passPlaceOfIssue,
       codeline: codeLine,
+      images: passenger?.images,
     };
   });
 
-  return exportData.filter(d => d && d !== '');
+  return exportData.filter((d) => d && d !== '');
 }
 
 export async function zipWithPhotos(data, packageData) {
@@ -135,35 +154,57 @@ export async function zipWithPhotos(data, packageData) {
   } else {
     passengers = data.travellers;
   }
-  passengers = passengers.filter(d=> d && d !== '');
+  passengers = passengers.filter((d) => d && d !== '');
   const travelersCount = passengers.length;
   for (let index = 0; index < travelersCount; index++) {
     const traveler = passengers[index];
-    let [photoUrl, passportUrl, vaccineUrl, idUrl, vaccine2Url] = await Promise.all([
-      getStorageUrl(
-      `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
-    ),
-    getStorageUrl(
-      `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
-    ),
-    getStorageUrl(
-      `${traveler.nationality.name}/${traveler.passportNumber}_vaccine.jpg`
-    ),
-    getStorageUrl(
-      `${traveler.nationality.name}/${traveler.passportNumber}_id.jpg`
-    ),
-    getStorageUrl(
-      `${traveler.nationality.name}/${traveler.passportNumber}_vaccine2.jpg`
-    )
-    ]);
+    let [photoUrl, passportUrl, vaccineUrl, idUrl, vaccine2Url] =
+      await Promise.all([
+        getStorageUrl(
+          `${traveler.nationality.name}/${traveler.passportNumber}.jpg`
+        ),
+        getStorageUrl(
+          `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
+        ),
+        getStorageUrl(
+          `${traveler.nationality.name}/${traveler.passportNumber}_vaccine.jpg`
+        ),
+        getStorageUrl(
+          `${traveler.nationality.name}/${traveler.passportNumber}_id.jpg`
+        ),
+        getStorageUrl(
+          `${traveler.nationality.name}/${traveler.passportNumber}_vaccine2.jpg`
+        ),
+      ]);
+
+    if (traveler.images?.photo) {
+      photoUrl = traveler.images.photo;
+    }
+
+    if (traveler.images?.passport) {
+      passportUrl = traveler.images.passport;
+    }
+
+    if (traveler.images?.vaccine) {
+      vaccineUrl = traveler.images.vaccine;
+    }
+
+    if (traveler.images?.id) {
+      idUrl = traveler.images.id;
+    }
+
+    if (traveler.images?.vaccine2) {
+      vaccine2Url = traveler.images.vaccine2;
+    }
+
     if (!photoUrl) {
       photoUrl = 'https://via.placeholder.com/200';
     }
 
-    if (!passportUrl){
+    if (!passportUrl) {
       passportUrl = 'https://via.placeholder.com/400x300';
     }
-    if (!idUrl){
+    if (!idUrl) {
       idUrl = 'https://via.placeholder.com/400x300';
     }
     if (!vaccineUrl) {
@@ -172,6 +213,7 @@ export async function zipWithPhotos(data, packageData) {
     if (!vaccine2Url) {
       vaccine2Url = passportUrl;
     }
+
     traveler.images = {
       photo: photoUrl,
       passport: passportUrl,
@@ -182,7 +224,7 @@ export async function zipWithPhotos(data, packageData) {
   }
 
   const jsonData = JSON.stringify(data);
-  zip.file("data.json", jsonData);
+  zip.file('data.json', jsonData);
   return zip;
 }
 
@@ -194,8 +236,8 @@ export const getStorageUrl = async (blobPath) => {
     return blobUrl;
   } catch (err) {
     console.log(
-      "%c 🍚 err: ",
-      "font-size:20px;background-color: #EA7E5C;color:#fff;",
+      '%c 🍚 err: ',
+      'font-size:20px;background-color: #EA7E5C;color:#fff;',
       err
     );
   }
