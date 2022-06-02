@@ -2,6 +2,7 @@
 // You will also need to load the Firebase SDK.
 // See https://firebase.google.com/docs/web/setup for more details.
 
+
 const firebaseConfig = {
   "projectId": "maison-du-hadj",
   "appId": "1:712881328222:web:f326f06e799e3d1561a4cf",
