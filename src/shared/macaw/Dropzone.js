@@ -146,7 +146,7 @@ function DropZone({ packageName, onClose }) {
         );
       } else if (event.data.type === "import prepared") {
         let record = { ...imports[event.data.id] };
-        console.log(event.data.import);
+        console.log('imported record' , event.data.import);
         saveCustomerToFirebase(event.data.import, packageName, (res) => {
           record.status = !res || res.success ? "imported" : "failed";
           setImports((prev) =>
