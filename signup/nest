@@ -28,3 +28,4 @@ git restore src/firebaseConfig.js
 git add .
 git commit -m $1
 git show HEAD
+git push

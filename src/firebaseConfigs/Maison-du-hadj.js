@@ -3,14 +3,14 @@
 // See https://firebase.google.com/docs/web/setup for more details.
 
 const firebaseConfig = {
-  "projectId": "orga-voyages-2022",
-  "appId": "1:48287385982:web:1a8e308bcaa99c653a8b2f",
-  "databaseURL": "https://orga-voyages-2022-default-rtdb.europe-west1.firebasedatabase.app",
-  "storageBucket": "orga-voyages-2022.appspot.com",
-  "locationId": "europe-west",
-  "apiKey": "AIzaSyCV0hsya5wE-ohRqWzRm1gxOWVJyE9zG8o",
-  "authDomain": "orga-voyages-2022.firebaseapp.com",
-  "messagingSenderId": "48287385982"
+  "projectId": "maison-du-hadj",
+  "appId": "1:712881328222:web:f326f06e799e3d1561a4cf",
+  "databaseURL": "https://maison-du-hadj-default-rtdb.firebaseio.com",
+  "storageBucket": "maison-du-hadj.appspot.com",
+  "locationId": "us-central",
+  "apiKey": "AIzaSyCG_dsTEL91B-qy4hDQgcoG3fZzwnRD5JU",
+  "authDomain": "maison-du-hadj.firebaseapp.com",
+  "messagingSenderId": "712881328222"
 };
 export default firebaseConfig;
 
