@@ -31,7 +31,7 @@ export function getPassengersJSON(passengers, data, caravan) {
     }
 
     const codeLine = passenger?.codeLine?.trim() || createCodeLine(passenger);
-    if (!codeLine && passenger.passportNumber.length <= 9) {
+    if (!codeLine || passenger.name === 'DEMO PASSENGER' || passenger.passportNumber?.length < 8) {
       return '';
     }
     const issuerCode = passenger.passportNumber.length <= 9 ? codeLine?.substring(2, 5) : 'XXX';

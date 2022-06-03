@@ -795,7 +795,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         {" "}
                         {t("schedule-a-meeting")}
                       </a>
-                      ` - OR - `
+                      - OR -
                       <a href="https://hajonsoft.talentlms.com/unit/view/id:2124">
                         {t("or-watch-install-video")}
                       </a>
