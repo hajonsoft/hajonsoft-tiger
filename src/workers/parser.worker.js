@@ -57,7 +57,8 @@ async function ParseZip(file) {
         }
       } else if (
         entry.name.includes("VIZ_FACE") &&
-        !zipEntries.find((entryRecord) => entryRecord.name === "RFID_FACE")
+        !zipEntries.find((entryRecord) => entryRecord.name === "RFID_FACE") && 
+        !zipEntries.find((entryRecord) => entryRecord.name === "vxgen0004")
       ) {
         //  && !zipEntries.find(oneZipEntry => oneZipEntry.name.match(qualityPhotoRegex))) {
         let image = await entry.async("blob");
@@ -65,7 +66,13 @@ async function ParseZip(file) {
         // } else if (entry.name.match(qualityPhotoRegex)) {
         //   let qualityImage = await entry.async("blob");
         //   record.vxgenPhoto = qualityImage; // This is the high quality image but since it is in jp2 format and we can't convert from jp2 to jpg on the browser. we will ignore it for now
-      } else if (entry.name.includes("RFID_FACE")) {
+      } else if (
+        entry.name.includes("RFID_FACE") && 
+        !zipEntries.find((entryRecord) => entryRecord.name === "vxgen0004")
+      ) {
+        let image = await entry.async("blob");
+        record.image = image;
+      } else if (entry.name.includes("vxgen0004")) {
         let image = await entry.async("blob");
         record.image = image;
       } else if (entry.name.includes("image3")) {
