@@ -45,6 +45,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ehjImg from "../../../assets/ehj.jpg";
 import enjImg from "../../../assets/enj.jpg";
+import mtfImg from "../../../assets/mtf.jpg";
 import gmaImg from "../../../assets/gma.jpg";
 import hsfImg from "../../../assets/hsf.jpg";
 import sbrImg from "../../../assets/sbr.jpg";
@@ -148,6 +149,7 @@ const serviceProviders = [
     img: enjImg,
   },
   { value: "ehj", name: "Ehaj [https://ehaj.haj.gov.sa/]", img: ehjImg },
+  { value: "mtf", name: "Motawif [https://www.motawif.com.sa/]", img: mtfImg },
   {
     value: "vst",
     name: "Visit-visa [https://visa.visitsaudi.com]",
