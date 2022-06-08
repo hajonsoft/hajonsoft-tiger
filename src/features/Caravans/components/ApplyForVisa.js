@@ -217,7 +217,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify name
         if (!traveler.name.full.trim()) {
           alert(
-            "Can't send visa by proxy. Some of your passengers does not seems to have a full name"
+            "Can't send visa by proxy. Some of your passengers does not seem to have a full name"
           );
           return setSendingMail(false);
         }
@@ -225,7 +225,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify nationality
         if (!traveler.nationality.name.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a nationality. Please fill the nationality field to contine`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a nationality. Please fill the nationality field to contine`
           );
           return setSendingMail(false);
         }
@@ -233,7 +233,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify gender
         if (!traveler.gender.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a gender. Please fill the gender field to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a gender. Please fill the gender field to continue`
           );
           return setSendingMail(false);
         }
@@ -241,7 +241,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify passportNumber
         if (!traveler.passportNumber.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport number. Please fill the passport number field to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a passport number. Please fill the passport number field to continue`
           );
           return setSendingMail(false);
         }
@@ -249,7 +249,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify place of issue
         if (!traveler.placeOfIssue.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a place of issue. Please fill the place of issue field to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a place of issue. Please fill the place of issue field to continue`
           );
           return setSendingMail(false);
         }
@@ -257,7 +257,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify birth date
         if (!traveler.dob.dmy.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a date of birth. Please fill the date of birth field to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a date of birth. Please fill the date of birth field to continue`
           );
           return setSendingMail(false);
         }
@@ -265,7 +265,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         // verify birth place
         if (!traveler.birthPlace.trim()) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a birth place. Please fill the birth place field to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a birth place. Please fill the birth place field to continue`
           );
           return setSendingMail(false);
         }
@@ -277,31 +277,13 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
           );
           if (!photoUrl) {
             alert(
-              `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
+              `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a photo. Please upload the passenger photo to continue`
             );
             return setSendingMail(false);
           }
         } catch (err) {
           alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a photo. Please upload the passenger photo to continue`
-          );
-          return setSendingMail(false);
-        }
-
-        // verify passport
-        try {
-          const passportUrl = await getStorageUrl(
-            `${traveler.nationality.name}/${traveler.passportNumber}_passport.jpg`
-          );
-          if (!passportUrl) {
-            alert(
-              `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
-            );
-            return setSendingMail(false);
-          }
-        } catch (err) {
-          alert(
-            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seems to have a passport. Please upload the passenger passport to continue`
+            `Can't send visa by proxy. The passenger with the name ( ${traveler.name.full} ) does not seem to have a photo. Please upload the passenger photo to continue`
           );
           return setSendingMail(false);
         }
