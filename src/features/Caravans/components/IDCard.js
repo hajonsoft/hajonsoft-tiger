@@ -21,6 +21,8 @@ import OtagoBlurPreview from "../../../assets/otago_blur.png";
 import OtagoLeafPreview from "../../../assets/otago_leaf.png";
 import OtagoMadinahPreview from "../../../assets/otago_madinah.png";
 import verticalBlank from "../../../assets/vertical_blank.png";
+import bracelet from "../../../assets/bracelet.jpg";
+import id4x4 from "../../../assets/id4x4.jpg";
 import firebase from "../../../firebaseapp";
 import t from "../../../shared/util/trans";
 import S from "./styles";
@@ -147,7 +149,90 @@ const getIDPositionProps = (idType) => {
         y: 0,
       },
     };
-  }
+  }  else if (idType.includes("id4x4")) {
+    return {
+      verticalCaravanLogo: {
+        x: 25,
+        y: 190,
+      },
+      verticalCaravanName: {
+        x: 5,
+        y: 120,
+      },
+      verticalImage: {
+        x: 60,
+        y: 75,
+      },
+      fullName: {
+        x: 60,
+        y: 62,
+      },
+      verticalPassportNumber: {
+        x: 10,
+        y: 50,
+      },
+      verticalPhoneNumber: {
+        x: 10,
+        y: 35,
+      },
+      verticalMedinahHotel: {
+        x: 10,
+        y: 19,
+      },
+      verticalMekahHotel: {
+        x: 10,
+        y: 4,
+      },
+      verticalCountryLogo: {
+        x: 2,
+        y: 153,
+      },
+      verticalBackground: {
+        x: 0,
+        y: 0,
+      },
+    };
+  } else if (idType.includes("bracelet")) {
+    return {
+      verticalCaravanLogo: {
+        x: 25,
+        y: 190,
+      },
+      verticalCaravanName: {
+        x: 5,
+        y: 120,
+      },
+      image: {
+        x: 150,
+        y: 5,
+      },
+      fullName: {
+        x: 230,
+        y: 15,
+      },
+      passportNumber: {
+        x: 230,
+        y: 25,
+      },
+      telephone: {
+        x: 400,
+        y: 50,
+      },
+      medinahHotel: {
+        x: 230,
+        y: 40,
+      },
+      mekahHotel: {
+        x: 230,
+        y: 50,
+      },
+      birthDate: {
+        x: 400,
+        y: 25
+      }
+      
+    };
+  } 
 };
 
 async function getAsByteArray(file) {
@@ -698,13 +783,6 @@ const IDCard = ({ passengers, caravanName }) => {
                 });
               })
               .catch((err) => {
-                console.log(
-                  "%cMyProject%cline:679%cerr",
-                  "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-                  "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-                  "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-                  err
-                );
                 alert("An error occurred!! - " + err.message);
                 setDownloading(false);
               });
@@ -752,6 +830,10 @@ const IDCard = ({ passengers, caravanName }) => {
                         setPreviewURL(OtagoMadinahPreview);
                       } else if (e.target.value === "vertical_blank") {
                         setPreviewURL(verticalBlank);
+                      } else if (e.target.value === "bracelet") {
+                        setPreviewURL(bracelet);
+                      } else if (e.target.value === "id4x4") {
+                        setPreviewURL(id4x4);
                       }
                     }}
                   >
@@ -764,6 +846,8 @@ const IDCard = ({ passengers, caravanName }) => {
                     <MenuItem value="otago_leaf">Otago Leaf</MenuItem>
                     <MenuItem value="otago_madinah">Otago Madinah</MenuItem>
                     <MenuItem value="vertical_blank">Vertical</MenuItem>
+                    <MenuItem value="bracelet">Bracelet</MenuItem>
+                    <MenuItem value="id4x4">ID Laser 4x4</MenuItem>
                   </Field>
                   <FormHelperText error={!!errors.idType}>
                     {touched.idType && errors.idType}
