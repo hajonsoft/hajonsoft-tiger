@@ -294,8 +294,9 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       system: {
         username: crypt.encrypt(exportVisaSystem.username),
         password: crypt.encrypt(exportVisaSystem.password),
-        ehajCode: profile?.ehajCode || "",
-        embassy: exportVisaSystem.embassy,
+        ehajCode: exportVisaSystem.ehajCode || profile?.ehajCode || "",
+        path: "visaSystem/" + exportVisaSystem._fid,
+        embassy:  exportVisaSystem.embassy,
         name: exportVisaSystem.usap,
       },
       info: {
@@ -399,7 +400,8 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
         password:
           exportVisaSystem?.password &&
           crypt.encrypt(exportVisaSystem?.password),
-        ehajCode: profile?.ehajCode || "",
+        ehajCode: exportVisaSystem.ehajCode || profile?.ehajCode || "",
+        path: "visaSystem/" + exportVisaSystem._fid,
         embassy: exportVisaSystem?.embassy,
         name: exportVisaSystem?.usap,
       },
