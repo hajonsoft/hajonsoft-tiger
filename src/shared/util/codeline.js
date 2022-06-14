@@ -43,6 +43,9 @@ const checkDigitDiagram = {
 };
 
 export function createCodeLine(passenger) {
+  if (passenger.passportNumber.length > 10) {
+    return "P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<C3FKH36VR4XXX6702029M2510295<<<<<<<<<<<<<<00"
+  }
   try {
     let codeLine1;
     let codeLine2;
@@ -85,18 +88,22 @@ export function createCodeLine(passenger) {
       }
       codeLine2 =
         codeLine2 + checkDigit(moment(passenger.passExpireDt).format("YYMMDD"));
-      const filler = "<".repeat(42 - codeLine2.length);
-      codeLine2 = codeLine2 + filler;
-      codeLine2 = codeLine2 + checkDigit(filler);
+      if (codeLine2.length) {
+        const filler = "<".repeat(42 - codeLine2.length);
+        codeLine2 = codeLine2 + filler;
+        codeLine2 = codeLine2 + checkDigit(filler);
 
-      //Composite check digit for characters of machine readable data of the lower line in positions 1 to 10, 14 to 20 and 22 to 43, including values for
-      //letters that are a part of the number fields and their check digits.
-      const compositeCheckDigit = checkDigit(
-        codeLine2.substring(0, 10) +
-          codeLine2.substring(13, 20) +
-          codeLine2.substring(21, 43)
-      );
-      codeLine2 = codeLine2 + compositeCheckDigit.replace(/[-]/g, "<");
+        //Composite check digit for characters of machine readable data of the lower line in positions 1 to 10, 14 to 20 and 22 to 43, including values for
+        //letters that are a part of the number fields and their check digits.
+        const compositeCheckDigit = checkDigit(
+          codeLine2.substring(0, 10) +
+            codeLine2.substring(13, 20) +
+            codeLine2.substring(21, 43)
+        );
+        codeLine2 = codeLine2 + compositeCheckDigit.replace(/[-]/g, "<");
+      }
+    } else {
+      return codeLine1 = "P<XXXPASSENGER<<DEMO<<<<<<<<<<<<<<<<<<<<<<<<C3FKH36VR4XXX6702029M2510295<<<<<<<<<<<<<<00"
     }
 
     return codeLine1 + codeLine2;
