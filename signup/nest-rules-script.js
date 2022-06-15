@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const usersData = JSON.parse(fs.readFileSync("./users", "utf-8"));
+console.log('%cMyProject%cline:3%cusersData', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(23, 44, 60);padding:3px;border-radius:2px', usersData)
 const hajonSoftuser = usersData.users.find(user=> user.email.toLowerCase() === "hajonsoft@gmail.com")
 const sortedUsers =   usersData.users.filter(user=> user.email.toLowerCase() !== "hajonsoft@gmail.com").sort((a, b) => {
     return parseInt(a.createdAt) - parseInt(b.createdAt)
