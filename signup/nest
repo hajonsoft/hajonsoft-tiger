@@ -1,5 +1,5 @@
 cd ..
-# firebase logout
+firebase logout
 firebase login
 rm .firebaserc
 firebase use --add $1

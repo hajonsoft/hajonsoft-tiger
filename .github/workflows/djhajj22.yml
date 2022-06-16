@@ -18,12 +18,12 @@ jobs:
       - run: 'echo $FIREBASE_CONFIG'
         shell: bash
         env:
-          FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DJHAJJ22}}
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DJHAJJ22 }}
       - uses: nick-invision/retry@v2
         with:
           max_attempts: 3
           timeout_minutes: 10
-          command: npm i --legacy-peer-deps && npm run build
+          command: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
