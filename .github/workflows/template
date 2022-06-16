@@ -23,7 +23,7 @@ jobs:
         with:
           max_attempts: 3
           timeout_minutes: 10
-          command: npm i --legacy-peer-deps && npm run build
+          command: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
