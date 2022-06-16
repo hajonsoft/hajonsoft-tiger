@@ -816,14 +816,6 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                         <Link
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="https://go.dev/dl/"
-                          style={{ marginRight: "16px" }}
-                        >
-                          go,
-                        </Link>
-                        <Link
-                          target="_blank"
-                          rel="noopener noreferrer"
                           href="https://git-scm.com/downloads"
                         >
                           git
