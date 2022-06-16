@@ -1,3 +1,4 @@
+#!/usr/bin/zsh
 cd ..
 firebase logout
 firebase login
@@ -22,8 +23,8 @@ cp ./signup/storage.rules .
 firebase deploy --only storage
 rm .github/workflows/firebase-hosting-pull-request.yml
 gsutil cors set ./signup/cors.json gs://$1.appspot.com
-npm run build
-firebase deploy --only hosting
+# npm run build
+# firebase deploy --only hosting
 git restore src/firebaseConfig.js
 git add .
 git commit -m $1
