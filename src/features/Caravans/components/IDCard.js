@@ -1,34 +1,34 @@
-import { CircularProgress, TextField, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import axios from 'axios';
-import { Field, Form, Formik } from 'formik';
-import JSZip from 'jszip';
-import JSZipUtils from 'jszip-utils';
-import _ from 'lodash';
-import moment from 'moment-hijri';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import React from 'react';
-import saveAs from 'save-as';
-import HotelPreview from '../../../assets/hotel.png';
-import HotelHolyPreview from '../../../assets/hotel_holy.png';
-import HotelWavePreview from '../../../assets/hotel_wave.png';
-import OtagoPreview from '../../../assets/otago.png';
-import OtagoBasicPreview from '../../../assets/otago_basic.png';
-import OtagoBlurPreview from '../../../assets/otago_blur.png';
-import OtagoLeafPreview from '../../../assets/otago_leaf.png';
-import OtagoMadinahPreview from '../../../assets/otago_madinah.png';
-import verticalBlank from '../../../assets/vertical_blank.png';
-import bracelet from '../../../assets/bracelet.jpg';
-import id4x4 from '../../../assets/id4x4.jpg';
-import firebase from '../../../firebaseapp';
-import t from '../../../shared/util/trans';
-import S from './styles';
+import { CircularProgress, TextField, Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import axios from "axios";
+import { Field, Form, Formik } from "formik";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import _ from "lodash";
+import moment from "moment-hijri";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import React from "react";
+import saveAs from "save-as";
+import HotelPreview from "../../../assets/hotel.png";
+import HotelHolyPreview from "../../../assets/hotel_holy.png";
+import HotelWavePreview from "../../../assets/hotel_wave.png";
+import OtagoPreview from "../../../assets/otago.png";
+import OtagoBasicPreview from "../../../assets/otago_basic.png";
+import OtagoBlurPreview from "../../../assets/otago_blur.png";
+import OtagoLeafPreview from "../../../assets/otago_leaf.png";
+import OtagoMadinahPreview from "../../../assets/otago_madinah.png";
+import verticalBlank from "../../../assets/vertical_blank.png";
+import bracelet from "../../../assets/bracelet.jpg";
+import id4x4 from "../../../assets/id4x4.jpg";
+import firebase from "../../../firebaseapp";
+import t from "../../../shared/util/trans";
+import S from "./styles";
 
 const getIDPositionProps = (idType) => {
-  if (idType.includes('otago')) {
+  if (idType.includes("otago")) {
     return {
       umrah: {
         x: 15,
@@ -71,7 +71,7 @@ const getIDPositionProps = (idType) => {
         y: 107,
       },
     };
-  } else if (idType.includes('hotel')) {
+  } else if (idType.includes("hotel")) {
     return {
       image: {
         x: 9,
@@ -106,7 +106,7 @@ const getIDPositionProps = (idType) => {
         y: 140,
       },
     };
-  } else if (idType.includes('vertical')) {
+  } else if (idType.includes("vertical")) {
     return {
       verticalCaravanLogo: {
         x: 25,
@@ -149,314 +149,314 @@ const getIDPositionProps = (idType) => {
         y: 0,
       },
     };
-  } else if (idType.includes('id4x4')) {
+  } else if (idType.includes("id4x4")) {
     return {
-      'telephone-0': {
+      "telephone-0": {
         x: 20,
         y: 50,
       },
-      'telephone-1': {
+      "telephone-1": {
         x: 310,
         y: 50,
       },
-      'telephone-2': {
+      "telephone-2": {
         x: 20,
         y: 410,
       },
-      'telephone-3': {
+      "telephone-3": {
         x: 310,
         y: 410,
       },
-      'flag-0': {
+      "flag-0": {
         x: 180,
         y: 100,
       },
-      'flag-1': {
+      "flag-1": {
         x: 460,
         y: 100,
       },
-      'flag-2': {
+      "flag-2": {
         x: 180,
         y: 460,
       },
-      'flag-3': {
+      "flag-3": {
         x: 460,
         y: 460,
       },
-      'caravanLogo-0': {
+      "caravanLogo-0": {
         x: 30,
         y: 100,
       },
-      'caravanLogo-1': {
+      "caravanLogo-1": {
         x: 320,
         y: 100,
       },
-      'caravanLogo-2': {
+      "caravanLogo-2": {
         x: 30,
         y: 460,
       },
-      'caravanLogo-3': {
+      "caravanLogo-3": {
         x: 320,
         y: 460,
       },
-      'caravanName-0': {
+      "caravanName-0": {
         x: 100,
         y: 75,
       },
-      'caravanName-1': {
+      "caravanName-1": {
         x: 380,
         y: 75,
       },
-      'caravanName-2': {
+      "caravanName-2": {
         x: 100,
         y: 440,
       },
-      'caravanName-3': {
+      "caravanName-3": {
         x: 380,
         y: 440,
       },
-      'fullName-0': {
+      "fullName-0": {
         x: 150,
         y: 110,
       },
-      'fullName-1': {
+      "fullName-1": {
         x: 430,
         y: 110,
       },
-      'fullName-2': {
+      "fullName-2": {
         x: 150,
         y: 470,
       },
-      'fullName-3': {
+      "fullName-3": {
         x: 430,
         y: 470,
       },
-      'fullNameArabic-0': {
+      "fullNameArabic-0": {
         x: 60,
         y: 130,
       },
-      'fullNameArabic-1': {
+      "fullNameArabic-1": {
         x: 350,
         y: 130,
       },
-      'fullNameArabic-2': {
+      "fullNameArabic-2": {
         x: 60,
         y: 490,
       },
-      'fullNameArabic-3': {
+      "fullNameArabic-3": {
         x: 350,
         y: 490,
       },
-      'passportImage-0': {
+      "passportImage-0": {
         x: 50,
         y: 230,
       },
-      'passportImage-1': {
+      "passportImage-1": {
         x: 340,
         y: 230,
       },
-      'passportImage-2': {
+      "passportImage-2": {
         x: 50,
         y: 590,
       },
-      'passportImage-3': {
+      "passportImage-3": {
         x: 340,
         y: 590,
       },
-      'passportNumber-0': {
+      "passportNumber-0": {
         x: 125,
         y: 160,
       },
-      'passportNumber-1': {
+      "passportNumber-1": {
         x: 410,
         y: 160,
       },
-      'passportNumber-2': {
+      "passportNumber-2": {
         x: 125,
         y: 520,
       },
-      'passportNumber-3': {
+      "passportNumber-3": {
         x: 410,
         y: 520,
       },
-      'passportExpiryDate-0': {
+      "passportExpiryDate-0": {
         x: 125,
         y: 180,
       },
-      'passportExpiryDate-1': {
+      "passportExpiryDate-1": {
         x: 410,
         y: 180,
       },
-      'passportExpiryDate-2': {
+      "passportExpiryDate-2": {
         x: 125,
         y: 540,
       },
-      'passportExpiryDate-3': {
+      "passportExpiryDate-3": {
         x: 410,
         y: 540,
       },
-      'birthDate-0': {
+      "birthDate-0": {
         x: 125,
         y: 192,
       },
-      'birthDate-1': {
+      "birthDate-1": {
         x: 410,
         y: 192,
       },
-      'birthDate-2': {
+      "birthDate-2": {
         x: 125,
         y: 550,
       },
-      'birthDate-3': {
+      "birthDate-3": {
         x: 410,
         y: 550,
       },
-      'flightNumber-0': {
+      "flightNumber-0": {
         x: 135,
         y: 210,
       },
-      'flightNumber-1': {
+      "flightNumber-1": {
         x: 418,
         y: 210,
       },
-      'flightNumber-2': {
+      "flightNumber-2": {
         x: 140,
         y: 562,
       },
-      'flightNumber-3': {
+      "flightNumber-3": {
         x: 418,
         y: 562,
       },
-      'flightDate-0': {
+      "flightDate-0": {
         x: 140,
         y: 222,
       },
-      'flightDate-1': {
+      "flightDate-1": {
         x: 420,
         y: 222,
       },
-      'flightDate-2': {
+      "flightDate-2": {
         x: 135,
         y: 585,
       },
-      'flightDate-3': {
+      "flightDate-3": {
         x: 420,
         y: 585,
       },
-      'medinah-0': {
+      "medinah-0": {
         x: 100,
         y: 245,
       },
-      'medinah-1': {
+      "medinah-1": {
         x: 380,
         y: 245,
       },
-      'medinah-2': {
+      "medinah-2": {
         x: 100,
         y: 605,
       },
-      'medinah-3': {
+      "medinah-3": {
         x: 380,
         y: 605,
       },
-      'mekah-0': {
+      "mekah-0": {
         x: 100,
         y: 258,
       },
-      'mekah-1': {
+      "mekah-1": {
         x: 380,
         y: 258,
       },
-      'mekah-2': {
+      "mekah-2": {
         x: 100,
         y: 620,
       },
-      'mekah-3': {
+      "mekah-3": {
         x: 380,
         y: 620,
       },
-      'hajDate-0': {
+      "hajDate-0": {
         x: 100,
         y: 270,
       },
-      'hajDate-1': {
+      "hajDate-1": {
         x: 380,
         y: 270,
       },
-      'hajDate-2': {
+      "hajDate-2": {
         x: 100,
         y: 632,
       },
-      'hajDate-3': {
+      "hajDate-3": {
         x: 380,
         y: 632,
       },
-      'hajDate2-0': {
+      "hajDate2-0": {
         x: 182,
         y: 335,
       },
-      'hajDate2-1': {
+      "hajDate2-1": {
         x: 467,
         y: 335,
       },
-      'hajDate2-2': {
+      "hajDate2-2": {
         x: 182,
         y: 690,
       },
-      'hajDate2-3': {
+      "hajDate2-3": {
         x: 467,
         y: 690,
       },
-      'flag2-0': {
+      "flag2-0": {
         x: 170,
         y: 320,
       },
-      'flag2-1': {
+      "flag2-1": {
         x: 460,
         y: 320,
       },
-      'flag2-2': {
+      "flag2-2": {
         x: 170,
         y: 675,
       },
-      'flag2-3': {
+      "flag2-3": {
         x: 460,
         y: 675,
       },
-      'passportImage2-0': {
+      "passportImage2-0": {
         x: 200,
         y: 320,
       },
-      'passportImage2-1': {
+      "passportImage2-1": {
         x: 490,
         y: 320,
       },
-      'passportImage2-2': {
+      "passportImage2-2": {
         x: 200,
         y: 675,
       },
-      'passportImage2-3': {
+      "passportImage2-3": {
         x: 490,
         y: 675,
       },
-      'passengerNumber-0': {
+      "passengerNumber-0": {
         x: 100,
         y: 320,
       },
-      'passengerNumber-1': {
+      "passengerNumber-1": {
         x: 400,
         y: 320,
       },
-      'passengerNumber-2': {
+      "passengerNumber-2": {
         x: 100,
         y: 675,
       },
-      'passengerNumber-3': {
+      "passengerNumber-3": {
         x: 400,
         y: 675,
       },
     };
-  } else if (idType.includes('bracelet')) {
+  } else if (idType.includes("bracelet")) {
     return {
       verticalCaravanLogo: {
         x: 25,
@@ -508,8 +508,8 @@ function readFile(file) {
     let reader = new FileReader();
 
     // Register event listeners
-    reader.addEventListener('loadend', (e) => resolve(e.target.result));
-    reader.addEventListener('error', reject);
+    reader.addEventListener("loadend", (e) => resolve(e.target.result));
+    reader.addEventListener("error", reject);
 
     // Read file
     reader.readAsArrayBuffer(file);
@@ -521,7 +521,7 @@ const IDCard = ({ passengers, caravanName }) => {
   const [companyLogo, setCompanyLogo] = React.useState();
   const [downloading, setDownloading] = React.useState(false);
   const [cardBackgroundColor, setCardBackgroundColor] =
-    React.useState('r255g255b255');
+    React.useState("r255g255b255");
 
   const downloadFiles = (pdfBytes, cb) => {
     const zip = new JSZip();
@@ -534,11 +534,11 @@ const IDCard = ({ passengers, caravanName }) => {
         if (err) {
           throw err; // or handle the error
         }
-        zip.file(filename + '.pdf', data, { binary: true });
+        zip.file(filename + ".pdf", data, { binary: true });
         count++;
         if (count === pdfBytes.length) {
-          zip.generateAsync({ type: 'blob' }).then(function (content) {
-            saveAs(content, caravanName + '.zip');
+          zip.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, caravanName + ".zip");
             cb(true);
           });
         }
@@ -563,259 +563,267 @@ const IDCard = ({ passengers, caravanName }) => {
     let passengerNumber = 1;
 
     for (let i = 0; i < fourPassengers.length; i++) {
-      let imageURL = '';
-
       try {
-        imageURL = await firebase
-          .storage()
-          .ref(
-            `${fourPassengers[i].nationality}/${fourPassengers[i].passportNumber}.jpg`
-          )
-          .getDownloadURL();
-      } catch (err) {
-        console.log('firebase error', err);
-      }
+        let imageURL = "";
 
-      const { data } = await axios.get('https://flagcdn.com/en/codes.json');
-
-      let countryCode = '';
-
-      for (const key in data) {
-        if (
-          data[key].toLowerCase() ===
-          fourPassengers[i].nationality.toLowerCase()
-        ) {
-          countryCode = key;
-          break;
+        try {
+          imageURL = await firebase
+            .storage()
+            .ref(
+              `${fourPassengers[i].nationality}/${fourPassengers[i].passportNumber}.jpg`
+            )
+            .getDownloadURL();
+        } catch (err) {
+          imageURL = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
         }
-      }
 
-      let jpgImage = '';
+        const { data } = await axios.get("https://flagcdn.com/en/codes.json");
 
-      if (imageURL) {
-        const jpgImageBytes = await fetch(imageURL)
+        let countryCode = "";
+
+        for (const key in data) {
+          if (
+            data[key].toLowerCase() ===
+            fourPassengers[i].nationality.toLowerCase()
+          ) {
+            countryCode = key;
+            break;
+          }
+        }
+
+        let jpgImage = "";
+
+        if (imageURL) {
+          const jpgImageBytes = await fetch(imageURL)
+            .then((res) => res.arrayBuffer())
+            .catch((err) => {});
+
+          jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+        }
+
+        const flagImageBytes = await fetch(
+          `https://flagcdn.com/32x24/${countryCode}.png`
+        )
           .then((res) => res.arrayBuffer())
           .catch((err) => {});
 
-        jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
-      }
-
-      const flagImageBytes = await fetch(
-        `https://flagcdn.com/32x24/${countryCode}.png`
-      )
-        .then((res) => res.arrayBuffer())
-        .catch((err) => {});
-
-      let flagImage;
-      if (flagImageBytes) {
-        flagImage = await pdfDoc.embedPng(flagImageBytes);
-      }
-
-      let logo;
-      if (companyLogo) {
-        const companyLogoBytes = await getAsByteArray(companyLogo);
-
-        if (companyLogo.type.split('/')[1].includes('jp')) {
-          logo = await pdfDoc.embedJpg(companyLogoBytes);
-        } else {
-          logo = await pdfDoc.embedPng(companyLogoBytes);
+        let flagImage;
+        if (flagImageBytes) {
+          flagImage = await pdfDoc.embedPng(flagImageBytes);
         }
-      }
 
-      // TODO: phone number, caravan name, country logo , fullName, passportNumber, issueDate, date of birth, arrival date, hajj year,
+        let logo;
+        if (companyLogo) {
+          const companyLogoBytes = await getAsByteArray(companyLogo);
 
-      // telephone-0
+          if (companyLogo.type.split("/")[1].includes("jp")) {
+            logo = await pdfDoc.embedJpg(companyLogoBytes);
+          } else {
+            logo = await pdfDoc.embedPng(companyLogoBytes);
+          }
+        }
 
-      // write telephone number
-      firstPage.drawText(values?.telNumber, {
-        x: getIDPositionProps(values.idType)[`telephone-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`telephone-${i}`].y,
-        size: 10,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
+        // TODO: phone number, caravan name, country logo , fullName, passportNumber, issueDate, date of birth, arrival date, hajj year,
 
-      // write flag image
-      firstPage.drawImage(flagImage, {
-        x: getIDPositionProps(values.idType)[`flag-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`flag-${i}`].y,
-        width: 40,
-        height: 40,
-      });
+        // telephone-0
 
-      // write caravan logo
-      firstPage.drawImage(logo || jpgImage, {
-        x: getIDPositionProps(values.idType)[`caravanLogo-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`caravanLogo-${i}`].y,
-        width: 40,
-        height: 40,
-      });
-
-      // write caravan name
-      firstPage.drawText(caravanName, {
-        x: getIDPositionProps(values.idType)[`caravanName-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`caravanName-${i}`].y,
-        size: 10,
-        font: helveticaFont,
-        color: rgb(0 / 255, 0 / 255, 0 / 255),
-      });
-
-      // write full name
-      const nameParts = fourPassengers[i].name.split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
-      firstPage.drawText(shortName, {
-        x: getIDPositionProps(values.idType)[`fullName-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`fullName-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write full name Arabic
-      firstPage.drawText(shortName, {
-        x: getIDPositionProps(values.idType)[`fullNameArabic-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`fullNameArabic-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write passport number
-      firstPage.drawText(fourPassengers[i].passportNumber, {
-        x: getIDPositionProps(values.idType)[`passportNumber-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`passportNumber-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write passport image
-      if (jpgImage) {
-        firstPage.drawImage(jpgImage, {
-          x: getIDPositionProps(values.idType)[`passportImage-${i}`].x,
-          y: height - getIDPositionProps(values.idType)[`passportImage-${i}`].y,
-          width: 50,
-          height: 65,
+        // write telephone number
+        firstPage.drawText(values?.telNumber, {
+          x: getIDPositionProps(values.idType)[`telephone-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`telephone-${i}`].y,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
         });
-      }
 
-      // write passport expiry date
-      firstPage.drawText(
-        new Date(fourPassengers[i].passExpireDt).toLocaleDateString('en-US'),
-        {
-          x: getIDPositionProps(values.idType)[`passportExpiryDate-${i}`].x,
-          y:
-            height -
-            getIDPositionProps(values.idType)[`passportExpiryDate-${i}`].y,
+        // write flag image
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(values.idType)[`flag-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`flag-${i}`].y,
+          width: 40,
+          height: 40,
+        });
+
+        // write caravan logo
+        firstPage.drawImage(logo || jpgImage, {
+          x: getIDPositionProps(values.idType)[`caravanLogo-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`caravanLogo-${i}`].y,
+          width: 40,
+          height: 40,
+        });
+
+        // write caravan name
+        firstPage.drawText(caravanName, {
+          x: getIDPositionProps(values.idType)[`caravanName-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`caravanName-${i}`].y,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(0 / 255, 0 / 255, 0 / 255),
+        });
+
+        // write full name
+        const nameParts = fourPassengers[i].name.split(" ");
+        const shortName = _.head(nameParts) + " " + _.last(nameParts);
+        firstPage.drawText(shortName, {
+          x: getIDPositionProps(values.idType)[`fullName-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`fullName-${i}`].y,
           size: 8,
           font: helveticaFont,
           color: rgb(0, 0, 0),
-        }
-      );
+        });
 
-      // write date of birth
-      firstPage.drawText(
-        new Date(fourPassengers[i].birthDate).toLocaleDateString('en-US'),
-        {
-          x: getIDPositionProps(values.idType)[`birthDate-${i}`].x,
-          y: height - getIDPositionProps(values.idType)[`birthDate-${i}`].y,
+        // write full name Arabic
+        firstPage.drawText(shortName, {
+          x: getIDPositionProps(values.idType)[`fullNameArabic-${i}`].x,
+          y:
+            height - getIDPositionProps(values.idType)[`fullNameArabic-${i}`].y,
           size: 8,
           font: helveticaFont,
           color: rgb(0, 0, 0),
-        }
-      );
+        });
 
-      // write flight number
-      firstPage.drawText(passengerNumber.toString(), {
-        x: getIDPositionProps(values.idType)[`flightNumber-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`flightNumber-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write date of flight
-      firstPage.drawText(values.flightDate, {
-        x: getIDPositionProps(values.idType)[`flightDate-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`flightDate-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write hajj date
-      firstPage.drawText('Hajj 1443 / 2022', {
-        x: getIDPositionProps(values.idType)[`hajDate-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`hajDate-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(0, 0, 0),
-      });
-
-      // write hajj year
-      firstPage.drawText('Hajj 1443 / 2022', {
-        x: getIDPositionProps(values.idType)[`hajDate2-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`hajDate2-${i}`].y,
-        size: 8,
-        font: helveticaFont,
-        color: rgb(1, 1, 1),
-      });
-
-      // write passport image 2
-      if (jpgImage) {
-        firstPage.drawImage(jpgImage, {
-          x: getIDPositionProps(values.idType)[`passportImage2-${i}`].x,
+        // write passport number
+        firstPage.drawText(fourPassengers[i].passportNumber, {
+          x: getIDPositionProps(values.idType)[`passportNumber-${i}`].x,
           y:
-            height - getIDPositionProps(values.idType)[`passportImage2-${i}`].y,
+            height - getIDPositionProps(values.idType)[`passportNumber-${i}`].y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+
+        // write passport image
+        if (jpgImage) {
+          firstPage.drawImage(jpgImage, {
+            x: getIDPositionProps(values.idType)[`passportImage-${i}`].x,
+            y:
+              height -
+              getIDPositionProps(values.idType)[`passportImage-${i}`].y,
+            width: 50,
+            height: 65,
+          });
+        }
+
+        // write passport expiry date
+        firstPage.drawText(
+          new Date(fourPassengers[i].passExpireDt).toLocaleDateString("en-US"),
+          {
+            x: getIDPositionProps(values.idType)[`passportExpiryDate-${i}`].x,
+            y:
+              height -
+              getIDPositionProps(values.idType)[`passportExpiryDate-${i}`].y,
+            size: 8,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
+          }
+        );
+
+        // write date of birth
+        firstPage.drawText(
+          new Date(fourPassengers[i].birthDate).toLocaleDateString("en-US"),
+          {
+            x: getIDPositionProps(values.idType)[`birthDate-${i}`].x,
+            y: height - getIDPositionProps(values.idType)[`birthDate-${i}`].y,
+            size: 8,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
+          }
+        );
+
+        // write flight number
+        firstPage.drawText(passengerNumber.toString(), {
+          x: getIDPositionProps(values.idType)[`flightNumber-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`flightNumber-${i}`].y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+
+        // write date of flight
+        firstPage.drawText(values.flightDate, {
+          x: getIDPositionProps(values.idType)[`flightDate-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`flightDate-${i}`].y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+
+        // write hajj date
+        firstPage.drawText("Hajj 1443 / 2022", {
+          x: getIDPositionProps(values.idType)[`hajDate-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`hajDate-${i}`].y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+
+        // write hajj year
+        firstPage.drawText("Hajj 1443 / 2022", {
+          x: getIDPositionProps(values.idType)[`hajDate2-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`hajDate2-${i}`].y,
+          size: 8,
+          font: helveticaFont,
+          color: rgb(1, 1, 1),
+        });
+
+        // write passport image 2
+        if (jpgImage) {
+          firstPage.drawImage(jpgImage, {
+            x: getIDPositionProps(values.idType)[`passportImage2-${i}`].x,
+            y:
+              height -
+              getIDPositionProps(values.idType)[`passportImage2-${i}`].y,
+            width: 28,
+            height: 28,
+          });
+        }
+
+        // write flag image 2
+        firstPage.drawImage(flagImage, {
+          x: getIDPositionProps(values.idType)[`flag2-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`flag2-${i}`].y,
           width: 28,
           height: 28,
         });
+
+        // write Mekah Hotel Name
+        firstPage.drawText(values.mekahHotel, {
+          x: getIDPositionProps(values.idType)[`mekah-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`mekah-${i}`].y,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(1 / 255, 87 / 255, 155 / 255),
+        });
+
+        // write Medinah Hotel Name
+        firstPage.drawText(values.medinahHotel, {
+          x: getIDPositionProps(values.idType)[`medinah-${i}`].x,
+          y: height - getIDPositionProps(values.idType)[`medinah-${i}`].y,
+          size: 10,
+          font: helveticaFont,
+          color: rgb(27 / 255, 94 / 255, 32 / 255),
+        });
+
+        // write Medinah Hotel Name
+        firstPage.drawText(passengerNumber.toString(), {
+          x: getIDPositionProps(values.idType)[`passengerNumber-${i}`].x,
+          y:
+            height -
+            getIDPositionProps(values.idType)[`passengerNumber-${i}`].y,
+          size: 40,
+          font: helveticaFont,
+          color: rgb(27 / 255, 94 / 255, 32 / 255),
+        });
+
+        passengerNumber++;
+      } catch (err) {
+        console.log(err);
       }
-
-      // write flag image 2
-      firstPage.drawImage(flagImage, {
-        x: getIDPositionProps(values.idType)[`flag2-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`flag2-${i}`].y,
-        width: 28,
-        height: 28,
-      });
-
-      // write Mekah Hotel Name
-      firstPage.drawText(values.mekahHotel, {
-        x: getIDPositionProps(values.idType)[`mekah-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`mekah-${i}`].y,
-        size: 10,
-        font: helveticaFont,
-        color: rgb(1 / 255, 87 / 255, 155 / 255),
-      });
-
-      // write Medinah Hotel Name
-      firstPage.drawText(values.medinahHotel, {
-        x: getIDPositionProps(values.idType)[`medinah-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`medinah-${i}`].y,
-        size: 10,
-        font: helveticaFont,
-        color: rgb(27 / 255, 94 / 255, 32 / 255),
-      });
-
-      // write Medinah Hotel Name
-      firstPage.drawText(passengerNumber.toString(), {
-        x: getIDPositionProps(values.idType)[`passengerNumber-${i}`].x,
-        y: height - getIDPositionProps(values.idType)[`passengerNumber-${i}`].y,
-        size: 40,
-        font: helveticaFont,
-        color: rgb(27 / 255, 94 / 255, 32 / 255),
-      });
-
-      passengerNumber++
     }
 
     const pdfBytes = await pdfDoc.save();
-
-
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = window.URL.createObjectURL(blob);
-
 
     return url;
 
@@ -842,7 +850,7 @@ const IDCard = ({ passengers, caravanName }) => {
     const firstPage = pages[0];
     const { height, width } = firstPage.getSize();
 
-    let imageURL = '';
+    let imageURL = "";
 
     try {
       imageURL = await firebase
@@ -851,9 +859,9 @@ const IDCard = ({ passengers, caravanName }) => {
         .getDownloadURL();
     } catch (err) {}
 
-    const { data } = await axios.get('https://flagcdn.com/en/codes.json');
+    const { data } = await axios.get("https://flagcdn.com/en/codes.json");
 
-    let countryCode = '';
+    let countryCode = "";
 
     for (const key in data) {
       if (data[key].toLowerCase() === nationality.toLowerCase()) {
@@ -878,7 +886,7 @@ const IDCard = ({ passengers, caravanName }) => {
       });
     }
 
-    let jpgImage = '';
+    let jpgImage = "";
 
     if (imageURL) {
       const jpgImageBytes = await fetch(imageURL)
@@ -903,7 +911,7 @@ const IDCard = ({ passengers, caravanName }) => {
     if (companyLogo) {
       const companyLogoBytes = await getAsByteArray(companyLogo);
 
-      if (companyLogo.type.split('/')[1].includes('jp')) {
+      if (companyLogo.type.split("/")[1].includes("jp")) {
         logo = await pdfDoc.embedJpg(companyLogoBytes);
       } else {
         logo = await pdfDoc.embedPng(companyLogoBytes);
@@ -985,7 +993,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write vertical caravan name
     if (getIDPositionProps(idType).verticalCaravanName !== undefined) {
-      const caravanNameParts = caravanName.trim().split(' ');
+      const caravanNameParts = caravanName.trim().split(" ");
       for (let i = 0; i < caravanNameParts.length; i++) {
         firstPage.drawText(caravanNameParts[i], {
           x: getIDPositionProps(idType).verticalCaravanName.x,
@@ -999,7 +1007,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write UMRAH
     if (getIDPositionProps(idType).umrah !== undefined) {
-      firstPage.drawText('UMRAH', {
+      firstPage.drawText("UMRAH", {
         x: getIDPositionProps(idType).umrah.x,
         y: height - getIDPositionProps(idType).umrah.y,
         size: 10,
@@ -1011,9 +1019,9 @@ const IDCard = ({ passengers, caravanName }) => {
     // write UMRAH year
     if (getIDPositionProps(idType).year !== undefined) {
       firstPage.drawText(
-        `${new Date().getFullYear()} / ${moment('2022', 'YYYY')
-          .endOf('iMonth')
-          .format('iYYYY')}`,
+        `${new Date().getFullYear()} / ${moment("2022", "YYYY")
+          .endOf("iMonth")
+          .format("iYYYY")}`,
         {
           x: getIDPositionProps(idType).year.x,
           y: height - getIDPositionProps(idType).year.y,
@@ -1044,8 +1052,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).fullName !== undefined) {
-      const nameParts = name.split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).fullName.x,
         y: height - getIDPositionProps(idType).fullName.y,
@@ -1057,7 +1065,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write passport Label
     if (getIDPositionProps(idType).passportLabel !== undefined) {
-      firstPage.drawText('PASS #', {
+      firstPage.drawText("PASS #", {
         x: getIDPositionProps(idType).passportLabel.x,
         y: height - getIDPositionProps(idType).passportLabel.y,
         size: 8,
@@ -1068,7 +1076,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write vertical passport Label
     if (getIDPositionProps(idType).verticalPassportNumber !== undefined) {
-      firstPage.drawText('Passport No:  ' + passportNumber, {
+      firstPage.drawText("Passport No:  " + passportNumber, {
         x: getIDPositionProps(idType).verticalPassportNumber.x,
         y: getIDPositionProps(idType).verticalPassportNumber.y,
         size: 10,
@@ -1156,7 +1164,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write firstName
     if (getIDPositionProps(idType).firstName !== undefined) {
-      firstPage.drawText(name.split(' ')[0], {
+      firstPage.drawText(name.split(" ")[0], {
         x: getIDPositionProps(idType).firstName.x,
         y: height - getIDPositionProps(idType).firstName.y,
         size: 8,
@@ -1194,8 +1202,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).name !== undefined) {
-      const nameParts = name.split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).name.x,
         y: height - getIDPositionProps(idType).name.y,
@@ -1207,8 +1215,8 @@ const IDCard = ({ passengers, caravanName }) => {
 
     // write full name
     if (getIDPositionProps(idType).verticalName !== undefined) {
-      const nameParts = name.trim().split(' ');
-      const shortName = _.head(nameParts) + ' ' + _.last(nameParts);
+      const nameParts = name.trim().split(" ");
+      const shortName = _.head(nameParts) + " " + _.last(nameParts);
       firstPage.drawText(shortName, {
         x: getIDPositionProps(idType).verticalName.x,
         y: getIDPositionProps(idType).verticalName.y,
@@ -1220,7 +1228,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write lastName
     if (getIDPositionProps(idType).lastName !== undefined) {
-      firstPage.drawText(_.last(name.split(' ')), {
+      firstPage.drawText(_.last(name.split(" ")), {
         x: getIDPositionProps(idType).lastName.x,
         y: height - getIDPositionProps(idType).lastName.y,
         size: 8,
@@ -1241,7 +1249,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     /// write birthDate
     if (getIDPositionProps(idType).birthDate !== undefined) {
-      firstPage.drawText(new Date(birthDate).toLocaleDateString('en-US'), {
+      firstPage.drawText(new Date(birthDate).toLocaleDateString("en-US"), {
         x: getIDPositionProps(idType).birthDate.x,
         y: height - getIDPositionProps(idType).birthDate.y,
         size: 8,
@@ -1263,7 +1271,7 @@ const IDCard = ({ passengers, caravanName }) => {
 
     const pdfBytes = await pdfDoc.save();
 
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = window.URL.createObjectURL(blob);
 
     return url;
@@ -1287,21 +1295,21 @@ const IDCard = ({ passengers, caravanName }) => {
     <S.Container>
       <S.Left>
         <Typography variant="h4" gutterBottom>
-          {t('card-options')}
+          {t("card-options")}
         </Typography>
 
         <Formik
           enableReinitialize
           initialValues={{
-            idType: '',
-            reportName: '',
+            idType: "",
+            reportName: "",
           }}
           onSubmit={async (values, actions) => {
             setDownloading(true);
 
             let fns;
 
-            if (values.idType === 'id4x4') {
+            if (values.idType === "id4x4") {
               fns = _.chunk(passengers, 4).map(async (fourPassengers) => {
                 return await PDF4x4(fourPassengers, values, caravanName);
               });
@@ -1332,8 +1340,8 @@ const IDCard = ({ passengers, caravanName }) => {
                 });
               })
               .catch((err) => {
-                console.log(err, 'this is an error');
-                alert('An error occurred!! - ' + err.message);
+                console.log(err, "this is an error");
+                alert("An error occurred!! - " + err.message);
                 setDownloading(false);
               });
           }}
@@ -1360,29 +1368,29 @@ const IDCard = ({ passengers, caravanName }) => {
                     error={!!errors.idType}
                     value={values.idType}
                     onChange={(e) => {
-                      setFieldValue('idType', e.target.value);
+                      setFieldValue("idType", e.target.value);
 
-                      if (e.target.value === 'hotel_holy') {
+                      if (e.target.value === "hotel_holy") {
                         setPreviewURL(HotelHolyPreview);
-                      } else if (e.target.value === 'hotel') {
+                      } else if (e.target.value === "hotel") {
                         setPreviewURL(HotelPreview);
-                      } else if (e.target.value === 'hotel_wave') {
+                      } else if (e.target.value === "hotel_wave") {
                         setPreviewURL(HotelWavePreview);
-                      } else if (e.target.value === 'otago') {
+                      } else if (e.target.value === "otago") {
                         setPreviewURL(OtagoPreview);
-                      } else if (e.target.value === 'otago_basic') {
+                      } else if (e.target.value === "otago_basic") {
                         setPreviewURL(OtagoBasicPreview);
-                      } else if (e.target.value === 'otago_blur') {
+                      } else if (e.target.value === "otago_blur") {
                         setPreviewURL(OtagoBlurPreview);
-                      } else if (e.target.value === 'otago_leaf') {
+                      } else if (e.target.value === "otago_leaf") {
                         setPreviewURL(OtagoLeafPreview);
-                      } else if (e.target.value === 'otag_madinah') {
+                      } else if (e.target.value === "otag_madinah") {
                         setPreviewURL(OtagoMadinahPreview);
-                      } else if (e.target.value === 'vertical_blank') {
+                      } else if (e.target.value === "vertical_blank") {
                         setPreviewURL(verticalBlank);
-                      } else if (e.target.value === 'bracelet') {
+                      } else if (e.target.value === "bracelet") {
                         setPreviewURL(bracelet);
-                      } else if (e.target.value === 'id4x4') {
+                      } else if (e.target.value === "id4x4") {
                         setPreviewURL(id4x4);
                       }
                     }}
@@ -1416,8 +1424,8 @@ const IDCard = ({ passengers, caravanName }) => {
                       >
                         <div
                           style={{
-                            width: '100%',
-                            height: '25px',
+                            width: "100%",
+                            height: "25px",
                             backgroundColor: `rgb(${colorItem.r},${colorItem.g},${colorItem.b})`,
                           }}
                         ></div>
@@ -1523,7 +1531,7 @@ const IDCard = ({ passengers, caravanName }) => {
                     disabled={downloading || !isValid}
                     startIcon={downloading && <CircularProgress size={16} />}
                   >
-                    {downloading ? 'Creating...' : 'Create Cards'}
+                    {downloading ? "Creating..." : "Create Cards"}
                   </Button>
                 </S.Control>
               </Form>
@@ -1534,13 +1542,13 @@ const IDCard = ({ passengers, caravanName }) => {
 
       <S.Right>
         <Typography variant="h4" gutterBottom>
-          {t('card-preview')}
+          {t("card-preview")}
         </Typography>
         {previewURL && (
           <img
             src={previewURL}
             style={{
-              width: '100%',
+              width: "100%",
               backgroundColor: `rgb(${cardBackgroundColor.r},${cardBackgroundColor.g},${cardBackgroundColor.b})`,
             }}
             alt="id card type preview"
