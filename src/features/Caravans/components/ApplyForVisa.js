@@ -423,9 +423,10 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       const tempLink = document.createElement("a");
       tempLink.href = csvURL;
       const fileName = `${
-        sanitizeCaravanName(caravan) +
-        "_" +
-        parseInt(moment().format("X")).toString(36)
+        firebaseConfig.projectId + "_" +
+        sanitizeCaravanName(caravan) +  "_" +
+        travelersData.length + "PAX_" +
+        moment().format("YYYY-MM-DD_HH-mm")
       }.zip`;
       tempLink.setAttribute("download", fileName);
       setDownloadFileName(fileName);
