@@ -430,12 +430,6 @@ const Dashboard = () => {
                         setState((st) => ({ ...st, record: rowData }));
                       },
                     },
-                  !isPast && {
-                    icon: () => <tableIcons.CallMerge />,
-                    name: "merge",
-                    tooltip: `Merge ${title}`,
-                    onClick: (event, rowData) => handleMergeClick(rowData),
-                  },
                   !isPast &&
                     state.mode === "list" && {
                       icon: () => <tableIcons.Delete />,
