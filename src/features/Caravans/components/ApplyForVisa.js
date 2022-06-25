@@ -456,7 +456,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       const defaultSystem = visaSystems[selectedVisaSystem];
       return `${getServiceProviderProfileName(
         defaultSystem?.usap
-      )} - Username: ${defaultSystem?.username}`;
+      )} - Username: ${defaultSystem?.username} - ${defaultSystem?.embassy}`;
     } else {
       return "No system selected";
     }
@@ -632,7 +632,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
                                     <Grid item style={{ flexGrow: 1 }}>
                                       {`${getServiceProviderProfileName(
                                         x.usap
-                                      )} ${x.username}`}
+                                      )} ${x.username} - ${x.embassy}`}
                                     </Grid>
                                     {i !== selectedVisaSystem && (
                                       <Grid item>
