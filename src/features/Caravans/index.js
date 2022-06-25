@@ -250,27 +250,6 @@ const Dashboard = () => {
     setShowConfirmDeleteExpired(true);
   };
 
-  const handleMergeClick = (rowData) => {
-    if (state.mode === "merge") {
-      for (const passenger of caravans[state.record.name]) {
-        dispatch(createPassenger({ name: rowData.name, passenger }));
-      }
-      dispatch(deleteUpcomingCaravan(state.record.name));
-      // delete caravan rowData.name
-      setState((st) => ({
-        ...st,
-        mode: "list",
-        record: {},
-      }));
-    } else {
-      setState((st) => ({
-        ...st,
-        mode: "merge",
-        record: rowData,
-      }));
-    }
-  };
-
   return (
     <React.Fragment>
       <div
