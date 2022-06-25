@@ -52,7 +52,6 @@ import {
   deleteExpiredPassports,
   deleteUpcomingCaravan,
   getUpcomingCaravans,
-  createPassenger,
 } from "./redux/caravanSlice";
 import { getPastCaravans } from "./redux/pastCaravanSlice";
 import { faPassport } from "@fortawesome/free-solid-svg-icons";
