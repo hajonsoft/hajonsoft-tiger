@@ -425,6 +425,7 @@ const ApplyForVisa = ({ open, onClose, passengers, caravan }) => {
       const fileName = `${
         firebaseConfig.projectId + "_" +
         sanitizeCaravanName(caravan) +  "_" +
+        exportVisaSystem?.usap +  "_" +
         travelersData.length + "PAX_" +
         moment().format("YYYY-MM-DD_HH-mm")
       }.zip`;
