@@ -23,6 +23,7 @@ export function getPassengersJSON(passengers, data, caravan) {
   sortedTravelers.push(...adultFemales);
   sortedTravelers.push(...minors);
 
+  // Main loop
   const exportData = sortedTravelers.map((passenger) => {
     const _nameParts = nameParts(passenger.name);
     let _nameArabicParts = nameParts(passenger.nameArabic);
@@ -31,7 +32,7 @@ export function getPassengersJSON(passengers, data, caravan) {
     }
 
     const codeLine = passenger?.codeLine?.trim() || createCodeLine(passenger);
-    if (!codeLine || passenger.name === 'DEMO PASSENGER' || passenger.passportNumber?.length < 7) {
+    if (!codeLine || !passenger.name ||  passenger.name === 'DEMO PASSENGER' || passenger.passportNumber?.length < 7) {
       return '';
     }
     const issuerCode = passenger.passportNumber.length <= 9 ? codeLine?.substring(2, 5) : 'XXX';
