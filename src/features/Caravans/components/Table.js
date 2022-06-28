@@ -241,7 +241,7 @@ function Table({
         </Box>
       </Modal>
 
-      <table {...getTableProps()} className={styles.table}>
+      <table {...getTableProps()} className={styles.table} dir={navigator.language.includes('ar') ? 'rtl' : 'ltr'} >
         <thead>
           {// Loop over the header rows
           headerGroups.map((headerGroup) => (
