@@ -166,6 +166,9 @@ My name is ... and my job is to ... so you can .....
 ---
 We use puppeteer to submit passengers to various visa websites. Video https://youtu.be/BMtcwF96j6I
 
+### git-autoconfig
+
+Is a useful extension to switch your git configuration between HAJonSoft and your other work related git config's
 
 ### Hubspot
 ---
