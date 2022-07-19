@@ -52,6 +52,7 @@ import sbrImg from "../../../assets/sbr.jpg";
 import twfImg from "../../../assets/twf.jpg";
 import vstImg from "../../../assets/vst.jpg";
 import wtuImg from "../../../assets/wtu.jpg";
+import bauImg from "../../../assets/bau.jpg";
 import vsnImg from "../../../assets/vsn.svg";
 import firebaseConfig from "../../../firebaseConfig";
 import hawkImg from "../../../images/hawk.svg";
@@ -129,7 +130,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const serviceProviders = [
   {
     value: "bau",
-    name: "Bab-al-umrah (Inactive now)",
+    name: "Bab-al-umrah [https://app1.babalumra.com/]",
+    img: bauImg,
   },
   {
     value: "wtu",
