@@ -744,7 +744,7 @@ const IDCard = ({ passengers, caravanName }) => {
       });
 
       // write hajj date
-      firstPage.drawText('Hajj 1443 / 2022', {
+      firstPage.drawText('Hajj 1444 / 2022', {
         x: getIDPositionProps(values.idType)[`hajDate-${i}`].x,
         y: height - getIDPositionProps(values.idType)[`hajDate-${i}`].y,
         size: 8,
@@ -753,7 +753,7 @@ const IDCard = ({ passengers, caravanName }) => {
       });
 
       // write hajj year
-      firstPage.drawText('Hajj 1443 / 2022', {
+      firstPage.drawText('Hajj 1444 / 2022', {
         x: getIDPositionProps(values.idType)[`hajDate2-${i}`].x,
         y: height - getIDPositionProps(values.idType)[`hajDate2-${i}`].y,
         size: 8,
